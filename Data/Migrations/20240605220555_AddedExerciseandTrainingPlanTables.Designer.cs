@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240605220555_AddedExerciseandTrainingPlanTables")]
+    partial class AddedExerciseandTrainingPlanTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,6 +197,12 @@ namespace TrainingPlanApp.Web.Data.Migrations
                     b.Property<int>("OverallNumberOfSets")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RPE")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Weight")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Exercises");
@@ -207,6 +216,9 @@ namespace TrainingPlanApp.Web.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("ExerciseFirstId")
                         .HasColumnType("int");
 
@@ -218,6 +230,9 @@ namespace TrainingPlanApp.Web.Data.Migrations
 
                     b.Property<int>("ExerciseThirdId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240605212424_ExtendedUserTable")]
+    partial class ExtendedUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,83 +162,6 @@ namespace TrainingPlanApp.Web.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TrainingPlanApp.Web.Data.Exercise", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AdditionalExerciseDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AdditionalExerciseName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("AdditionalExerciseNumberOfRepeats")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AdditionalExerciseVideoLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MainExerciseDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MainExerciseName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MainExerciseNumberOfRepeats")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MainExerciseVideoLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("OverallNumberOfSets")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exercises");
-                });
-
-            modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ExerciseFirstId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExerciseFourthId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExerciseSecondId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ExerciseThirdId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExerciseFirstId");
-
-                    b.HasIndex("ExerciseFourthId");
-
-                    b.HasIndex("ExerciseSecondId");
-
-                    b.HasIndex("ExerciseThirdId");
-
-                    b.ToTable("TrainingPlans");
-                });
-
             modelBuilder.Entity("TrainingPlanApp.Web.Data.User", b =>
                 {
                     b.Property<string>("Id")
@@ -359,41 +285,6 @@ namespace TrainingPlanApp.Web.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
-                {
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseFirst")
-                        .WithMany()
-                        .HasForeignKey("ExerciseFirstId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseFourth")
-                        .WithMany()
-                        .HasForeignKey("ExerciseFourthId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseSecond")
-                        .WithMany()
-                        .HasForeignKey("ExerciseSecondId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseThird")
-                        .WithMany()
-                        .HasForeignKey("ExerciseThirdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ExerciseFirst");
-
-                    b.Navigation("ExerciseFourth");
-
-                    b.Navigation("ExerciseSecond");
-
-                    b.Navigation("ExerciseThird");
                 });
 #pragma warning restore 612, 618
         }
