@@ -1,0 +1,63 @@
+﻿@model ExerciseVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Exercise</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="MainExerciseName" class="control-label"></label>
+                <input asp-for="MainExerciseName" class="form-control" />
+                <span asp-validation-for="MainExerciseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainExerciseNumberOfRepeats" class="control-label"></label>
+                <input asp-for="MainExerciseNumberOfRepeats" class="form-control" />
+                <span asp-validation-for="MainExerciseNumberOfRepeats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainExerciseVideoLink" class="control-label"></label>
+                <input asp-for="MainExerciseVideoLink" class="form-control" />
+                <span asp-validation-for="MainExerciseVideoLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalExerciseName" class="control-label"></label>
+                <input asp-for="AdditionalExerciseName" class="form-control" />
+                <span asp-validation-for="AdditionalExerciseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalExerciseNumberOfRepeats" class="control-label"></label>
+                <input asp-for="AdditionalExerciseNumberOfRepeats" class="form-control" />
+                <span asp-validation-for="AdditionalExerciseNumberOfRepeats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AdditionalExerciseVideoLink" class="control-label"></label>
+                <input asp-for="AdditionalExerciseVideoLink" class="form-control" />
+                <span asp-validation-for="AdditionalExerciseVideoLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OverallNumberOfSets" class="control-label"></label>
+                <input asp-for="OverallNumberOfSets" class="form-control" />
+                <span asp-validation-for="OverallNumberOfSets" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-dark">Back to List</a> &nbsp;
+                <input type="submit" value="Save changes" class="btn btn-warning" />
+            </div>
+        </form>
+    </div>
+</div>
+

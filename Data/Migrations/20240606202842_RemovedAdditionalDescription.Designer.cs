@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240606202842_RemovedAdditionalDescription")]
+    partial class RemovedAdditionalDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,7 +173,7 @@ namespace TrainingPlanApp.Web.Data.Migrations
                     b.Property<string>("AdditionalExerciseName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("AdditionalExerciseNumberOfRepeats")
+                    b.Property<int>("AdditionalExerciseNumberOfRepeats")
                         .HasColumnType("int");
 
                     b.Property<string>("AdditionalExerciseVideoLink")
@@ -182,13 +185,13 @@ namespace TrainingPlanApp.Web.Data.Migrations
                     b.Property<string>("MainExerciseName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("MainExerciseNumberOfRepeats")
+                    b.Property<int>("MainExerciseNumberOfRepeats")
                         .HasColumnType("int");
 
                     b.Property<string>("MainExerciseVideoLink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OverallNumberOfSets")
+                    b.Property<int>("OverallNumberOfSets")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -204,19 +207,20 @@ namespace TrainingPlanApp.Web.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ExerciseFirstId")
+                    b.Property<int>("ExerciseFirstId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ExerciseFourthId")
+                    b.Property<int>("ExerciseFourthId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ExerciseSecondId")
+                    b.Property<int>("ExerciseSecondId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ExerciseThirdId")
+                    b.Property<int>("ExerciseThirdId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -361,19 +365,27 @@ namespace TrainingPlanApp.Web.Data.Migrations
                 {
                     b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseFirst")
                         .WithMany()
-                        .HasForeignKey("ExerciseFirstId");
+                        .HasForeignKey("ExerciseFirstId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseFourth")
                         .WithMany()
-                        .HasForeignKey("ExerciseFourthId");
+                        .HasForeignKey("ExerciseFourthId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseSecond")
                         .WithMany()
-                        .HasForeignKey("ExerciseSecondId");
+                        .HasForeignKey("ExerciseSecondId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseThird")
                         .WithMany()
-                        .HasForeignKey("ExerciseThirdId");
+                        .HasForeignKey("ExerciseThirdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ExerciseFirst");
 

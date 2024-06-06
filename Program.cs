@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TrainingPlanApp.Web.Configurations;
 using TrainingPlanApp.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
 	.AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
