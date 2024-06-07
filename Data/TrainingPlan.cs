@@ -4,6 +4,7 @@ namespace TrainingPlanApp.Web.Data
 {
 	public class TrainingPlan
 	{
+		public string? Name { get; set; }
 		public int Id { get; set; }
 		[ForeignKey("ExerciseFirstId")]
 		public Exercise? ExerciseFirst {  get; set; }

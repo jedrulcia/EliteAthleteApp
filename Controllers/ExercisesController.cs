@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
 
@@ -13,36 +14,30 @@ namespace TrainingPlanApp.Web.Controllers
 {
     public class ExercisesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IExerciseRepository exerciseRepository;
         private readonly IMapper mapper;
 
-        public ExercisesController(ApplicationDbContext context, IMapper mapper)
+        public ExercisesController(IExerciseRepository exerciseRepository, IMapper mapper)
         {
-            _context = context;
+            this.exerciseRepository = exerciseRepository;
             this.mapper = mapper;
         }
 
         // GET: Exercises
         public async Task<IActionResult> Index()
         {
-            var exercisesVM = mapper.Map<List<ExerciseVM>>(await _context.Exercises.ToListAsync());
-			return View(exercisesVM);
+            var exercisesVM = mapper.Map<List<ExerciseVM>>(await exerciseRepository.GetAllAsync());
+            return View(exercisesVM);
         }
 
         // GET: Exercises/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var exercise = await _context.Exercises.FindAsync(id);
+            var exercise = await exerciseRepository.GetAsync(id);
             if (exercise == null)
             {
                 return NotFound();
             }
-
             var exerciseVM = mapper.Map<ExerciseVM>(exercise);
             return View(exerciseVM);
         }
@@ -63,8 +58,7 @@ namespace TrainingPlanApp.Web.Controllers
             if (ModelState.IsValid)
             {
                 var exercise = mapper.Map<Exercise>(exerciseVM);
-                _context.Add(exercise);
-                await _context.SaveChangesAsync();
+                await exerciseRepository.AddAsync(exercise);
                 return RedirectToAction(nameof(Index));
             }
             return View(exerciseVM);
@@ -73,12 +67,7 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: Exercises/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var exercise = await _context.Exercises.FindAsync(id);
+            var exercise = await exerciseRepository.GetAsync(id);
             if (exercise == null)
             {
                 return NotFound();
@@ -106,12 +95,11 @@ namespace TrainingPlanApp.Web.Controllers
                 try
                 {
                     var exercise = mapper.Map<Exercise>(exerciseVM);
-                    _context.Update(exercise);
-                    await _context.SaveChangesAsync();
+                    await exerciseRepository.UpdateAsync(exercise);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ExerciseExists(exerciseVM.Id))
+                    if (!await exerciseRepository.Exists(exerciseVM.Id))
                     {
                         return NotFound();
                     }
@@ -125,42 +113,13 @@ namespace TrainingPlanApp.Web.Controllers
             return View(exerciseVM);
         }
 
-        // GET: Exercises/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var exercise = await _context.Exercises
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (exercise == null)
-            {
-                return NotFound();
-            }
-
-            return View(exercise);
-        }
-
         // POST: Exercises/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var exercise = await _context.Exercises.FindAsync(id);
-            if (exercise != null)
-            {
-                _context.Exercises.Remove(exercise);
-            }
-
-            await _context.SaveChangesAsync();
+            await exerciseRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool ExerciseExists(int id)
-        {
-            return _context.Exercises.Any(e => e.Id == id);
         }
     }
 }
