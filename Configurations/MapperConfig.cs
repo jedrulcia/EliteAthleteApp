@@ -9,6 +9,8 @@ namespace TrainingPlanApp.Web.Configurations
         public MapperConfig() 
         {
             CreateMap<Exercise, ExerciseVM>().ReverseMap();
+            CreateMap<TrainingPlan, TrainingPlanVM>().ReverseMap();
+            CreateMap<User, UserListVM>().ReverseMap();
         }
     }
 }

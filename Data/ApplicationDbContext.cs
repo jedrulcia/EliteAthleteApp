@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Configurations.Entities;
 using TrainingPlanApp.Web.Data;
+using TrainingPlanApp.Web.Models;
 
 namespace TrainingPlanApp.Web.Data
 {

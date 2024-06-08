@@ -4,6 +4,5 @@ namespace TrainingPlanApp.Web.Contracts
 {
     public interface IExerciseRepository : IGenericRepository<Exercise>
     {
-
     }
 }

@@ -20,6 +20,7 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
