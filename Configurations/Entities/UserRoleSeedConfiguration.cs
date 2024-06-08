@@ -1,0 +1,25 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace TrainingPlanApp.Web.Configurations.Entities
+{
+    public class UserRoleSeedConfiguration : IEntityTypeConfiguration<IdentityUserRole<string>>
+    {
+        public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
+        {
+            builder.HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = "543bced5-375b-5291-0a59-1dc59923d1b0",
+                    UserId = "654bced5-375b-5291-0a59-1dc59923d1b0"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "543bced5-375b-5291-0a59-1dc59923d1b1",
+                    UserId = "654bced5-375b-5291-0a59-1dc59923d1b1"
+                }
+                );
+        }
+    }
+}

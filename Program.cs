@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Configurations;
+using TrainingPlanApp.Web.Configurations.Entities;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Repositories;
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+	.AddRoles<IdentityRole>() 
 	.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
