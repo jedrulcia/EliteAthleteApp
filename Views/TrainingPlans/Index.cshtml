@@ -6,10 +6,12 @@
 }
 
 <h1>Your Training Plans</h1>
-@*@if (User.IsInRole(Roles.Administrator)) { }*@
-<p>
-	<a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>Create New</a>
-</p>
+@*@if (User.IsInRole(Roles.Administrator))
+{
+	<p>
+		<a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>Create New</a>
+	</p>
+}*@
 <table class="table">
 	<thead>
 		<tr>

@@ -222,7 +222,7 @@ namespace TrainingPlanApp.Web.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
@@ -267,7 +267,7 @@ namespace TrainingPlanApp.Web.Data.Migrations
 
                     b.HasIndex("ExerciseThirdId");
 
-                    b.ToTable("TrainingPlans");
+                    b.ToTable("TrainingPlans", (string)null);
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.User", b =>

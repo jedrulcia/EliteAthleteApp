@@ -5,7 +5,7 @@ namespace TrainingPlanApp.Web.Models
 {
     public class TrainingPlanCreateVM
     {
-        public int Id { get; set; }
+        public int? Id {  get; set; }
         [Display(Name = "Training Plan name")]
         [Required]
         public string? Name { get; set; }

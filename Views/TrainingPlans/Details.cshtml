@@ -9,48 +9,48 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>
+			<th class="text-center">
 				@Html.DisplayNameFor(model => model.ExerciseFirst)
 			</th>
-			<th>
+			<th class="text-center">
 				@Html.DisplayNameFor(model => model.ExerciseSecond)
 			</th>
-			<th>
+			<th class="text-center">
 				@Html.DisplayNameFor(model => model.ExerciseThird)
 			</th>
-			<th>
+			<th class="text-center">
 				@Html.DisplayNameFor(model => model.ExerciseFourth)
 			</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseFirst.MainExerciseName)
 			</td>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseSecond.MainExerciseName)
 			</td>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseThird.MainExerciseName)
 			</td>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseFourth.MainExerciseName)
 			</td>
 		</tr>
 	</tbody>
 	<tbody>
 		<tr>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseFirst.AdditionalExerciseName)
 			</td>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseSecond.AdditionalExerciseName)
 			</td>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseThird.AdditionalExerciseName)
 			</td>
-			<td>
+			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseFourth.AdditionalExerciseName)
 			</td>
 		</tr>
@@ -58,7 +58,7 @@
 	<tbody>
 		<tr>
 			<td class="text-center">
-				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises"  asp-route-id="@Model.ExerciseFirstId">
+				<a asp-action="ExerciseDetails" class="btn btn-secondary btn-sm" asp-controller="TrainingPlans"  asp-route-exerciseId="@Model.ExerciseFirstId" asp-route-trainingPlanId="@Model.Id">
 					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
 				</a>
 			</td>
@@ -89,3 +89,12 @@
 	<a asp-action="Index" class="btn btn-secondary">Back to List</a>
 	<a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Id">Edit</a>
 </div>
+
+@section Scripts
+{
+	<script>
+		$(function () {
+			$('.table').DataTable();
+		});
+	</script>
+}

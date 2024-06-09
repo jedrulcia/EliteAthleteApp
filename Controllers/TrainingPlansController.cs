@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
@@ -19,19 +22,38 @@ namespace TrainingPlanApp.Web.Controllers
     {
         private readonly ITrainingPlanRepository trainingPlanRepository;
         private readonly IMapper mapper;
-        private readonly ApplicationDbContext context;
+		private readonly UserManager<User> userManager;
+		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly IExerciseRepository exerciseRepository;
+		private readonly ApplicationDbContext context;
 
-        public TrainingPlansController(ApplicationDbContext context, ITrainingPlanRepository trainingPlanRepository, IMapper mapper)
+        public TrainingPlansController(ApplicationDbContext context, 
+            ITrainingPlanRepository trainingPlanRepository, 
+            IMapper mapper, 
+            UserManager<User> userManager,
+            IHttpContextAccessor httpContextAccessor,
+            IExerciseRepository exerciseRepository)
         {
             this.trainingPlanRepository = trainingPlanRepository;
             this.mapper = mapper;
-            this.context = context;
+			this.userManager = userManager;
+			this.httpContextAccessor = httpContextAccessor;
+			this.exerciseRepository = exerciseRepository;
+			this.context = context;
         }
 
         // GET: TrainingPlans
-        public async Task<IActionResult> Index()
-        {
-            var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(await trainingPlanRepository.GetAllAsync());
+        public async Task<IActionResult> Index(string? id)
+		{
+            var userId = id;
+            if(userId == null)
+            {
+                var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
+                userId = user.Id;
+            }
+
+            var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(await trainingPlanRepository.GetUserTrainingPlans(userId));
+
             return View(trainingPlansVM);
         }
 
@@ -43,16 +65,33 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-            var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
+            trainingPlan.ExerciseFirst = await exerciseRepository.GetAsync(trainingPlan.ExerciseFirstId);
+			trainingPlan.ExerciseSecond = await exerciseRepository.GetAsync(trainingPlan.ExerciseSecondId);
+			trainingPlan.ExerciseThird = await exerciseRepository.GetAsync(trainingPlan.ExerciseThirdId);
+			trainingPlan.ExerciseFourth = await exerciseRepository.GetAsync(trainingPlan.ExerciseFourthId);
+			var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
             return View(trainingPlanVM);
         }
 
+        public async Task<IActionResult> ExerciseDetails(int? exerciseId, int? trainingPlanId)
+        {
+            var exercise = await exerciseRepository.GetAsync(exerciseId);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+            var exerciseVM = mapper.Map<TrainingPlanExerciseVM>(exercise);
+            exerciseVM.TrainingPlanId = trainingPlanId;
+            return View(exerciseVM);
+        }
+
         // GET: TrainingPlans/Create
-        public IActionResult Create()
+        public IActionResult Create(string? id)
         {
             var model = new TrainingPlanCreateVM
             {
                 Exercises = new SelectList(context.Exercises, "Id", "Name"),
+                UserId = id
             };
             return View(model);
         }
@@ -78,6 +117,7 @@ namespace TrainingPlanApp.Web.Controllers
                 ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
 
+            model.Exercises = new SelectList(context.Exercises, "Id", "Name");
             return View(model);
         }
 
@@ -94,11 +134,11 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-            ViewData["ExerciseFirstId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseFirstId);
-            ViewData["ExerciseSecondId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseSecondId);
-            ViewData["ExerciseThirdId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseThirdId);
-            ViewData["ExerciseFourthId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseFourthId);
-            return View(trainingPlan);
+
+            var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
+            trainingPlanCreateVM.Exercises = new SelectList(context.Exercises, "Id", "Name");
+
+            return View(trainingPlanCreateVM);
         }
 
         // POST: TrainingPlans/Edit/5

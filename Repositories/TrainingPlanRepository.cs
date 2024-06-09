@@ -22,10 +22,6 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task<List<TrainingPlanVM>> GetUserTrainingPlans(string userId)
 		{
 			var trainingPlans = await context.TrainingPlans
-				.Include(x => x.ExerciseFirst)
-				.Include(x=> x.ExerciseSecond)
-				.Include(x=> x.ExerciseThird)
-				.Include(x => x.ExerciseFourth)
 				.Where(x => x.UserId == userId)
 				.ToListAsync();
 			var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(trainingPlans);
