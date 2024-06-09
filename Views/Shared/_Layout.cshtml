@@ -28,15 +28,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="TrainingPlans" asp-action="Index">Training Plans</a>
                         </li>
-                        @if(User.IsInRole("Administrator"))
-                        {
-                            <li class="nav-item">
+                        @*@if (User.IsInRole("Administrator")) { }*@
+                        <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Exercises" asp-action="Index">Exercises</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="Index">Athletes</a>
                             </li>
-                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

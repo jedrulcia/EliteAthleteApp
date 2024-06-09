@@ -4,6 +4,7 @@ namespace TrainingPlanApp.Web.Models
 {
     public class ExerciseVM
     {
+        public string Name { get; set; }
         public int Id { get; set; }
         [Display(Name = "Exercise")]
         [Required]
@@ -13,12 +14,16 @@ namespace TrainingPlanApp.Web.Models
         [Range(1, 200, ErrorMessage = "Please enter a valid number")]
         public int MainExerciseNumberOfRepeats { get; set; }
         [Display(Name = "Video")]
+        [Required]
         public string? MainExerciseVideoLink { get; set; }
         [Display(Name = "Additional exercise")]
+        [Required]
         public string? AdditionalExerciseName { get; set; }
         [Display(Name = "Repeats")]
+        [Required]
         public int? AdditionalExerciseNumberOfRepeats { get; set; }
         [Display(Name = "Video")]
+        [Required]
         public string? AdditionalExerciseVideoLink { get; set; }
         [Display(Name = "Number of sets")]
         [Required]

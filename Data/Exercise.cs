@@ -2,6 +2,7 @@
 {
 	public class Exercise
 	{
+        public string? Name { get; set; }
 		public int Id { get; set; }
 		public string? MainExerciseName { get; set; }
         public int? MainExerciseNumberOfRepeats { get; set; }

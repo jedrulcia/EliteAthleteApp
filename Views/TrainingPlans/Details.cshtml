@@ -1,54 +1,91 @@
 ﻿@model TrainingPlanVM
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Model.Name</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.ExerciseFirst)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ExerciseSecond)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ExerciseThird)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ExerciseFourth)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseFirst.MainExerciseName)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseSecond.MainExerciseName)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseThird.MainExerciseName)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseFourth.MainExerciseName)
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseFirst.AdditionalExerciseName)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseSecond.AdditionalExerciseName)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseThird.AdditionalExerciseName)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.ExerciseFourth.AdditionalExerciseName)
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td class="text-center">
+				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises"  asp-route-id="@Model.ExerciseFirstId">
+					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
+				</a>
+			</td>
+			<td class="text-center">
+				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises" asp-route-id="@Model.ExerciseSecondId">
+					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
+				</a>
+			</td>
+			<td class="text-center">
+				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises"  asp-route-id="@Model.ExerciseThirdId">
+					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
+				</a>
+			</td>
+			<td class="text-center">
+				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises" asp-route-id="@Model.ExerciseFourthId">
+					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
+				</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+
+
 
 <div>
-    <h4>TrainingPlan</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExerciseFirst)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExerciseFirst.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExerciseSecond)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExerciseSecond.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExerciseThird)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExerciseThird.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ExerciseFourth)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ExerciseFourth.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+	<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+	<a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Id">Edit</a>
 </div>

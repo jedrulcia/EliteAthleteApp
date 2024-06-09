@@ -50,7 +50,11 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: TrainingPlans/Create
         public IActionResult Create()
         {
-            return View();
+            var model = new TrainingPlanCreateVM
+            {
+                Exercises = new SelectList(context.Exercises, "Id", "Name"),
+            };
+            return View(model);
         }
 
         // POST: TrainingPlans/Create
@@ -58,7 +62,7 @@ namespace TrainingPlanApp.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TrainingPlanVM model)
+        public async Task<IActionResult> Create(TrainingPlanCreateVM model)
         {
             try
             {
@@ -139,8 +143,8 @@ namespace TrainingPlanApp.Web.Controllers
 
         // POST: TrainingPlans/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = Roles.Administrator)]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await trainingPlanRepository.DeleteAsync(id);
