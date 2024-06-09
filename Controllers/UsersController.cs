@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
 
 namespace TrainingPlanApp.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)]
     public class UsersController : Controller
     {
         private readonly UserManager<User> userManager;

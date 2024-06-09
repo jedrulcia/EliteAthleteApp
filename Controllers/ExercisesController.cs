@@ -14,7 +14,7 @@ using TrainingPlanApp.Web.Models;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-    //[Authorize(Roles = Roles.Administrator)]
+    [Authorize(Roles = Roles.Administrator)]
     public class ExercisesController : Controller
     {
         private readonly IExerciseRepository exerciseRepository;

@@ -86,6 +86,7 @@ namespace TrainingPlanApp.Web.Controllers
         }
 
         // GET: TrainingPlans/Create
+        [Authorize(Roles = Roles.Administrator)]
         public IActionResult Create(string? id)
         {
             var model = new TrainingPlanCreateVM
@@ -101,6 +102,7 @@ namespace TrainingPlanApp.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Create(TrainingPlanCreateVM model)
         {
             try
@@ -109,7 +111,21 @@ namespace TrainingPlanApp.Web.Controllers
                 {
                     var trainingPlan = mapper.Map<TrainingPlan>(model);
                     await trainingPlanRepository.AddAsync(trainingPlan);
+                    var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(await trainingPlanRepository.GetUserTrainingPlans(model.UserId));
+                    foreach (var plan in trainingPlansVM)
+                    {
+                        plan.IsActive = false;
+                    }
                     return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    // Debugging ModelState errors
+                    var errors = ModelState.Values.SelectMany(v => v.Errors);
+                    foreach (var error in errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
                 }
             }
             catch (Exception ex)
@@ -122,6 +138,7 @@ namespace TrainingPlanApp.Web.Controllers
         }
 
         // GET: TrainingPlans/Edit/5
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -137,6 +154,7 @@ namespace TrainingPlanApp.Web.Controllers
 
             var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
             trainingPlanCreateVM.Exercises = new SelectList(context.Exercises, "Id", "Name");
+            trainingPlanCreateVM.IsActive = true;
 
             return View(trainingPlanCreateVM);
         }
@@ -146,6 +164,7 @@ namespace TrainingPlanApp.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Id,ExerciseFirstId,ExerciseSecondId,ExerciseThirdId,ExerciseFourthId,UserId")] TrainingPlan trainingPlan)
         {
             if (id != trainingPlan.Id)
@@ -162,7 +181,7 @@ namespace TrainingPlanApp.Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TrainingPlanExists(trainingPlan.Id))
+                    if (!context.TrainingPlans.Any(e => e.Id == id))
                     {
                         return NotFound();
                     }
@@ -183,17 +202,12 @@ namespace TrainingPlanApp.Web.Controllers
 
         // POST: TrainingPlans/Delete/5
         [HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //[Authorize(Roles = Roles.Administrator)]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await trainingPlanRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool TrainingPlanExists(int id)
-        {
-            return context.TrainingPlans.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿@model TrainingPlanVM
+﻿@using TrainingPlanApp.Web.Constants
+@model TrainingPlanVM
 
 @{
 	ViewData["Title"] = "Details";
@@ -9,22 +10,38 @@
 <table class="table">
 	<thead>
 		<tr>
+			<th></th>
 			<th class="text-center">
-				@Html.DisplayNameFor(model => model.ExerciseFirst)
+				<a asp-action="ExerciseDetails" class="w-100 btn btn-lg btn-sm btn-primary" asp-controller="TrainingPlans" asp-route-exerciseId="@Model.ExerciseFirstId" asp-route-trainingPlanId="@Model.Id">
+					@Html.DisplayNameFor(model => model.ExerciseFirst)
+					<i class="fa-solid fa-circle-info"></i>
+				</a>
 			</th>
 			<th class="text-center">
-				@Html.DisplayNameFor(model => model.ExerciseSecond)
+				<a asp-action="ExerciseDetails" class="w-100 btn btn-lg btn-sm btn-primary" asp-controller="TrainingPlans" asp-route-exerciseId="@Model.ExerciseSecondId" asp-route-trainingPlanId="@Model.Id">
+					@Html.DisplayNameFor(model => model.ExerciseSecond)
+					<i class="fa-solid fa-circle-info"></i>
+				</a>
 			</th>
 			<th class="text-center">
-				@Html.DisplayNameFor(model => model.ExerciseThird)
+				<a asp-action="ExerciseDetails" class="w-100 btn btn-lg btn-sm btn-primary" asp-controller="TrainingPlans" asp-route-exerciseId="@Model.ExerciseThirdId" asp-route-trainingPlanId="@Model.Id">
+					@Html.DisplayNameFor(model => model.ExerciseThird)
+					<i class="fa-solid fa-circle-info"></i>
+				</a>
 			</th>
 			<th class="text-center">
-				@Html.DisplayNameFor(model => model.ExerciseFourth)
+				<a asp-action="ExerciseDetails" class="w-100 btn btn-lg btn-sm btn-primary" asp-controller="TrainingPlans" asp-route-exerciseId="@Model.ExerciseFourthId" asp-route-trainingPlanId="@Model.Id">
+					@Html.DisplayNameFor(model => model.ExerciseFourth)
+					<i class="fa-solid fa-circle-info"></i>
+				</a>
 			</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
+			<th class="text-left">
+				Main Exercise
+			</th>
 			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseFirst.MainExerciseName)
 			</td>
@@ -41,6 +58,28 @@
 	</tbody>
 	<tbody>
 		<tr>
+			<th class="text-left">
+				Number of repeats
+			</th>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseFirst.MainExerciseNumberOfRepeats)
+			</td>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseSecond.MainExerciseNumberOfRepeats)
+			</td>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseThird.MainExerciseNumberOfRepeats)
+			</td>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseFourth.MainExerciseNumberOfRepeats)
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<th class="text-left">
+				Additional Exercise
+			</th>
 			<td class="text-center">
 				@Html.DisplayFor(model => model.ExerciseFirst.AdditionalExerciseName)
 			</td>
@@ -57,37 +96,50 @@
 	</tbody>
 	<tbody>
 		<tr>
+			<th class="text-left">
+				Number of repeats
+			</th>
 			<td class="text-center">
-				<a asp-action="ExerciseDetails" class="btn btn-secondary btn-sm" asp-controller="TrainingPlans"  asp-route-exerciseId="@Model.ExerciseFirstId" asp-route-trainingPlanId="@Model.Id">
-					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
-				</a>
+				@Html.DisplayFor(model => model.ExerciseFirst.AdditionalExerciseNumberOfRepeats)
 			</td>
 			<td class="text-center">
-				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises" asp-route-id="@Model.ExerciseSecondId">
-					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
-				</a>
+				@Html.DisplayFor(model => model.ExerciseSecond.AdditionalExerciseNumberOfRepeats)
 			</td>
 			<td class="text-center">
-				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises"  asp-route-id="@Model.ExerciseThirdId">
-					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
-				</a>
+				@Html.DisplayFor(model => model.ExerciseThird.AdditionalExerciseNumberOfRepeats)
 			</td>
 			<td class="text-center">
-				<a asp-action="Details" class="btn btn-secondary btn-sm" asp-controller="Exercises" asp-route-id="@Model.ExerciseFourthId">
-					<i class="fa-solid fa-circle-info">&nbsp;</i> Details of exercise
-				</a>
+				@Html.DisplayFor(model => model.ExerciseFourth.AdditionalExerciseNumberOfRepeats)
+			</td>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<th class="text-left">
+				Number of sets
+			</th>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseFirst.OverallNumberOfSets)
+			</td>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseSecond.OverallNumberOfSets)
+			</td>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseThird.OverallNumberOfSets)
+			</td>
+			<td class="text-center">
+				@Html.DisplayFor(model => model.ExerciseFourth.OverallNumberOfSets)
 			</td>
 		</tr>
 	</tbody>
 </table>
 
-
-
-
-
 <div>
 	<a asp-action="Index" class="btn btn-secondary">Back to List</a>
-	<a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Id">Edit</a>
+	@if (User.IsInRole(Roles.Administrator))
+	{
+		<a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.Id">Edit</a>
+	}
 </div>
 
 @section Scripts
@@ -97,4 +149,4 @@
 			$('.table').DataTable();
 		});
 	</script>
-}
+} 

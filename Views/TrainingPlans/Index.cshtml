@@ -5,7 +5,7 @@
 	ViewData["Title"] = "Index";
 }
 
-<h1>Your Training Plans</h1>
+<h1>Training Plans</h1>
 @*@if (User.IsInRole(Roles.Administrator))
 {
 	<p>
@@ -19,10 +19,10 @@
 				@Html.DisplayNameFor(model => model.Name)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.StartDate)
+				@Html.DisplayNameFor(model => model.IsActive)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Description)
+				@Html.DisplayNameFor(model => model.StartDate)
 			</th>
 			<th></th>
 		</tr>
@@ -35,16 +35,29 @@
 					@Html.DisplayFor(modelItem => item.Name)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.StartDate)
+@* 					@if (item.IsActive == true)
+					{
+						<span class="badge bg-success">Active</span>
+					}
+					else
+					{
+						<span class="badge bg-danger">Not Active</span>
+					} *@
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Description)
+					@Html.DisplayFor(modelItem => item.StartDate)
 				</td>
 				<td class="text-end">
-					<a asp-action="Details" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
-					@*@if(User.IsInRole(Roles.Administrator)) {}*@
-					<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
-					<button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+					@if(User.IsInRole(Roles.User))
+					{
+						<a asp-action="Details" class="btn btn-secondary btn-lg btn-sm w-100" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
+					}
+					@if(User.IsInRole(Roles.Administrator))
+					{
+						<a asp-action="Details" class="btn btn-secondary btn-lg btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
+						<a asp-action="Edit" class="btn btn-secondary btn-lg btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
+						<button data-id="@item.Id" class="btn btn-danger btn-lg btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+					}
 				</td>
 			</tr>
 		}
