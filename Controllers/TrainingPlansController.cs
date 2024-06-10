@@ -61,15 +61,11 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: TrainingPlans/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var trainingPlan = await trainingPlanRepository.GetAsync(id);
-            if (trainingPlan == null)
+			var trainingPlan = await trainingPlanRepository.GetTrainingPlanDetails(id);
+			if (trainingPlan == null)
             {
                 return NotFound();
             }
-            trainingPlan.ExerciseFirst = await exerciseRepository.GetAsync(trainingPlan.ExerciseFirstId);
-			trainingPlan.ExerciseSecond = await exerciseRepository.GetAsync(trainingPlan.ExerciseSecondId);
-			trainingPlan.ExerciseThird = await exerciseRepository.GetAsync(trainingPlan.ExerciseThirdId);
-			trainingPlan.ExerciseFourth = await exerciseRepository.GetAsync(trainingPlan.ExerciseFourthId);
 			var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
             return View(trainingPlanVM);
         }
@@ -110,9 +106,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
 				if (ModelState.IsValid)
                 {
-                    var trainingPlan = mapper.Map<TrainingPlan>(model);
-                    trainingPlan.IsActive = true;
-					await trainingPlanRepository.AddAsync(trainingPlan);
+                    trainingPlanRepository.CreateTrainingPlan(model);
 					return RedirectToAction(nameof(Index), new { id = model.UserId });
 				}
             }
@@ -168,9 +162,7 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					var trainingPlan = mapper.Map<TrainingPlan>(model);
-					trainingPlan.IsActive = true;
-					await trainingPlanRepository.UpdateAsync(trainingPlan);
+                    trainingPlanRepository.UpdateTrainingPlan(model);
 					return RedirectToAction(nameof(Index), new { id = model.UserId });
 				}
 			}

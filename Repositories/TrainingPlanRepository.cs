@@ -13,12 +13,14 @@ namespace TrainingPlanApp.Web.Repositories
     {
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
+		private readonly IExerciseRepository exerciseRepository;
 
-        public TrainingPlanRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+		public TrainingPlanRepository(ApplicationDbContext context, IMapper mapper, IExerciseRepository exerciseRepository) : base(context)
         {
 			this.context = context;
 			this.mapper = mapper;
-        }
+			this.exerciseRepository = exerciseRepository;
+		}
 
 		public async Task<List<TrainingPlanVM>> GetUserTrainingPlans(string userId)
 		{
@@ -42,6 +44,28 @@ namespace TrainingPlanApp.Web.Repositories
 			}
 
 			await UpdateAsync(trainingPlan);
+		}
+
+		public async Task<TrainingPlan> GetTrainingPlanDetails(int? id)
+		{
+			var trainingPlan = await GetAsync(id);
+			trainingPlan.ExerciseFirst = await exerciseRepository.GetAsync(trainingPlan.ExerciseFirstId);
+			trainingPlan.ExerciseSecond = await exerciseRepository.GetAsync(trainingPlan.ExerciseSecondId);
+			trainingPlan.ExerciseThird = await exerciseRepository.GetAsync(trainingPlan.ExerciseThirdId);
+			trainingPlan.ExerciseFourth = await exerciseRepository.GetAsync(trainingPlan.ExerciseFourthId);
+			return trainingPlan;
+		}
+
+		public async Task CreateTrainingPlan(TrainingPlanCreateVM model)
+		{
+			var trainingPlan = mapper.Map<TrainingPlan>(model);
+			trainingPlan.IsActive = true;
+			await AddAsync(trainingPlan);
+		}
+
+		public async Task UpdateTrainingPlan(TrainingPlanCreateVM model)
+		{
+
 		}
 	}
 }

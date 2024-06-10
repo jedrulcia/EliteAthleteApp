@@ -8,5 +8,6 @@ namespace TrainingPlanApp.Web.Repositories
         public ExerciseRepository(ApplicationDbContext context) : base(context)
         {
         }
-    }
+
+	}
 }

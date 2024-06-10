@@ -96,7 +96,6 @@ namespace TrainingPlanApp.Web.Controllers
 				return NotFound();
 			}
 
-
 			if (ModelState.IsValid)
 			{
 				try
