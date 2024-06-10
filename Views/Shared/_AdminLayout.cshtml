@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using TrainingPlanApp.Web.Constants
 @using TrainingPlanApp.Web.Data
 @using System.Security.Claims
 @inject SignInManager<User> SignInManager
@@ -13,9 +14,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<!-- Tell the browser to be responsive to screen width -->
 	<meta name="keywords"
-		  content="leave management">
+		  content="">
 	<meta name="description"
-		  content="Educational project for .NET 8 Development">
+		  content="">
 	<meta name="robots" content="noindex,nofollow">
 
 	<title>@ViewData["Title"] - TrainingPlanApp.Web</title>
@@ -115,7 +116,14 @@
 											<h5 class="m-b-0 user-name font-medium">
 												@User.Identity?.Name <i class="fa fa-angle-down"></i>
 											</h5>
-											<span class="op-5 user-email">@User.FindFirstValue(ClaimTypes.Role)</span>
+											@if (User.FindFirstValue(ClaimTypes.Role) == Roles.Administrator)
+											{
+												<span class="op-5 user-email">Coach</span>
+											}
+											else if (User.FindFirstValue(ClaimTypes.Role) == Roles.User)
+											{
+												<span class="op-5 user-email">Athlete</span>
+											}
 										</a>
 									</div>
 								</div>
