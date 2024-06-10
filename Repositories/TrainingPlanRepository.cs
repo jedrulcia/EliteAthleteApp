@@ -65,7 +65,9 @@ namespace TrainingPlanApp.Web.Repositories
 
 		public async Task UpdateTrainingPlan(TrainingPlanCreateVM model)
 		{
-
+			var trainingPlan = mapper.Map<TrainingPlan>(model);
+			trainingPlan.IsActive = true;
+			await UpdateAsync(trainingPlan);
 		}
 	}
 }
