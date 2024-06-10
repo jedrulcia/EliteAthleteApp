@@ -57,16 +57,18 @@
 						<form asp-action="ChangeStatus" class="d-inline">
 							<input name="Id" value="@item.Id" type="hidden" />
 							<input name="status" value="true" type="hidden" />
+							<input name="userId" value="@item.UserId" type="hidden" />
 							<button type="submit" class="btn btn-success btn-sm">Activate Plan</button>
 						</form>
 						<form asp-action="ChangeStatus" class="d-inline">
 							<input name="Id" value="@item.Id" type="hidden" />
 							<input name="status" value="false" type="hidden" />
+							<input name="userId" value="@item.UserId" type="hidden" />
 							<button type="submit" class="btn btn-danger btn-sm">Deactivate Plan</button>
 						</form>
 						<a asp-action="Details" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
 						<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
-						<button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+						<button data-id="@item.Id" data-userid="@item.UserId" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
 					}
 				</td>
 			</tr>
@@ -76,6 +78,7 @@
 
 <form id="deleteForm" asp-action="Delete">
 	<input type="hidden" id="exerciseId" name="Id" />
+	<input type="hidden" id="userId" name="UserId" />
 </form>
 
 @section Scripts
@@ -97,7 +100,9 @@
 					if (confirm) {
 						var btn = $(this);
 						var id = btn.data("id");
+						var userId = btn.data("userid")
 						$('#exerciseId').val(id);
+						$('#userId').val(userId)
 						$('#deleteForm').submit();
 					}
 				}

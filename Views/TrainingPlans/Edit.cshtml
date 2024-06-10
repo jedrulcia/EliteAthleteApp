@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserId" />
             <div class="form-group col-md-12">
@@ -58,7 +58,7 @@
             </div>
             <br />
             <div class="form-group col-md-12">
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                <a asp-action="Index" class="btn btn-secondary" asp-route-id="@Model?.UserId">Back to List</a>
                 <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </form>

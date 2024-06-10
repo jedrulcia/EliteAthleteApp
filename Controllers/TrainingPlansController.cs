@@ -112,8 +112,9 @@ namespace TrainingPlanApp.Web.Controllers
                 {
                     var trainingPlan = mapper.Map<TrainingPlan>(model);
                     trainingPlan.IsActive = true;
-                    return RedirectToAction(nameof(Index));
-                }
+					await trainingPlanRepository.AddAsync(trainingPlan);
+					return RedirectToAction(nameof(Index), new { id = model.UserId });
+				}
             }
             catch (Exception ex)
             {
@@ -127,10 +128,10 @@ namespace TrainingPlanApp.Web.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> ChangeStatus(int id, bool status)
+        public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
 		{
 			await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
-			return RedirectToAction(nameof(Index));
+			return RedirectToAction(nameof(Index), new { id = userId });
 		}
 
 
@@ -151,7 +152,6 @@ namespace TrainingPlanApp.Web.Controllers
 
             var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
             trainingPlanCreateVM.Exercises = new SelectList(context.Exercises, "Id", "Name");
-            trainingPlanCreateVM.IsActive = true;
 
             return View(trainingPlanCreateVM);
         }
@@ -162,49 +162,36 @@ namespace TrainingPlanApp.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,ExerciseFirstId,ExerciseSecondId,ExerciseThirdId,ExerciseFourthId,UserId")] TrainingPlan trainingPlan)
+        public async Task<IActionResult> Edit(TrainingPlanCreateVM model)
         {
-            if (id != trainingPlan.Id)
-            {
-                return NotFound();
-            }
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					var trainingPlan = mapper.Map<TrainingPlan>(model);
+					trainingPlan.IsActive = true;
+					await trainingPlanRepository.UpdateAsync(trainingPlan);
+					return RedirectToAction(nameof(Index), new { id = model.UserId });
+				}
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
+			}
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    context.Update(trainingPlan);
-                    await context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!context.TrainingPlans.Any(e => e.Id == id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ExerciseFirstId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseFirstId);
-            ViewData["ExerciseSecondId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseSecondId);
-            ViewData["ExerciseThirdId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseThirdId);
-            ViewData["ExerciseFourthId"] = new SelectList(context.Exercises, "Id", "Id", trainingPlan.ExerciseFourthId);
-            return View(trainingPlan);
-        }
+			model.Exercises = new SelectList(context.Exercises, "Id", "Name");
+			return View(model);
+		}
 
 
         // POST: TrainingPlans/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string userId)
         {
             await trainingPlanRepository.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
+			return RedirectToAction(nameof(Index), new { id = userId });
+		}
     }
 }

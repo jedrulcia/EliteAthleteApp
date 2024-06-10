@@ -7,6 +7,5 @@ namespace TrainingPlanApp.Web.Contracts
     {
         Task<List<TrainingPlanVM>> GetUserTrainingPlans(string userId);
         Task ChangeTrainingPlanStatus(int trainingPlanId, bool status);
-
 	}
 }
