@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
@@ -87,12 +88,12 @@ namespace TrainingPlanApp.Web.Controllers
 
         // GET: TrainingPlans/Create
         [Authorize(Roles = Roles.Administrator)]
-        public IActionResult Create(string? id)
+        public IActionResult Create(string? userId)
         {
             var model = new TrainingPlanCreateVM
             {
                 Exercises = new SelectList(context.Exercises, "Id", "Name"),
-                UserId = id
+                UserId = userId
             };
             return View(model);
         }
@@ -107,25 +108,11 @@ namespace TrainingPlanApp.Web.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+				if (ModelState.IsValid)
                 {
                     var trainingPlan = mapper.Map<TrainingPlan>(model);
-                    await trainingPlanRepository.AddAsync(trainingPlan);
-                    var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(await trainingPlanRepository.GetUserTrainingPlans(model.UserId));
-                    foreach (var plan in trainingPlansVM)
-                    {
-                        plan.IsActive = false;
-                    }
+                    trainingPlan.IsActive = true;
                     return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    // Debugging ModelState errors
-                    var errors = ModelState.Values.SelectMany(v => v.Errors);
-                    foreach (var error in errors)
-                    {
-                        Console.WriteLine(error.ErrorMessage);
-                    }
                 }
             }
             catch (Exception ex)
@@ -137,8 +124,18 @@ namespace TrainingPlanApp.Web.Controllers
             return View(model);
         }
 
-        // GET: TrainingPlans/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> ChangeStatus(int id, bool status)
+		{
+			await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
+			return RedirectToAction(nameof(Index));
+		}
+
+
+		// GET: TrainingPlans/Edit/5
+		[Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)

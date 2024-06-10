@@ -7,7 +7,6 @@ namespace TrainingPlanApp.Web.Models
 {
     public class TrainingPlanVM
     {
-        public int? Id { get; set; }
         [Display(Name = "Training Plan")]
         [Required]
         public string? Name { get; set; }
@@ -30,7 +29,8 @@ namespace TrainingPlanApp.Web.Models
         public int ExerciseFourthId { get; set; }
         [Display(Name = "Athlete")]
         public string? UserId { get; set; }
-        public string? Description { get; set; }
+		public int? Id { get; set; }
+		public string? Description { get; set; }
 
 		[Display(Name = "Status")]
 		public bool? IsActive { get; set; }

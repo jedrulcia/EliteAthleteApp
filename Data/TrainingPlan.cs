@@ -5,7 +5,6 @@ namespace TrainingPlanApp.Web.Data
 	public class TrainingPlan
 	{
 		public string? Name { get; set; }
-		public int Id { get; set; }
 		[ForeignKey("ExerciseFirstId")]
 		public Exercise? ExerciseFirst {  get; set; }
 		public int? ExerciseFirstId { get; set; }
@@ -20,6 +19,8 @@ namespace TrainingPlanApp.Web.Data
 		public int? ExerciseFourthId { get; set; }
 		[ForeignKey("UserId")]
 		public string? UserId { get; set; }
+		public int? Id { get; set; }
+		public bool? IsActive { get; set; }
 		public DateTime? StartDate {  get; set; }
 		public string? Description {  get; set; }
 	}

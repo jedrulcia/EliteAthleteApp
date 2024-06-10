@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TrainingPlanApp.Web.Contracts;
@@ -26,6 +27,21 @@ namespace TrainingPlanApp.Web.Repositories
 				.ToListAsync();
 			var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(trainingPlans);
 			return trainingPlansVM;
+		}
+
+		public async Task ChangeTrainingPlanStatus(int trainingPlanId, bool status)
+		{
+			var trainingPlan = await GetAsync(trainingPlanId);
+			if(status)
+			{
+				trainingPlan.IsActive = true;
+			}
+			else
+			{
+				trainingPlan.IsActive = false;
+			}
+
+			await UpdateAsync(trainingPlan);
 		}
 	}
 }

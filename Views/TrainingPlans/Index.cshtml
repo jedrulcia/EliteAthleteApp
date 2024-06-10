@@ -35,28 +35,38 @@
 					@Html.DisplayFor(modelItem => item.Name)
 				</td>
 				<td>
-@* 					@if (item.IsActive == true)
+					@if (item.IsActive == true)
 					{
 						<span class="badge bg-success">Active</span>
 					}
 					else
 					{
 						<span class="badge bg-danger">Not Active</span>
-					} *@
+					}
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.StartDate)
 				</td>
 				<td class="text-end">
-					@if(User.IsInRole(Roles.User))
+					@if (User.IsInRole(Roles.User))
 					{
-						<a asp-action="Details" class="btn btn-secondary btn-lg btn-sm w-100" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
+						<a asp-action="Details" class="btn btn-secondary btn-sm w-100" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
 					}
-					@if(User.IsInRole(Roles.Administrator))
+					@if (User.IsInRole(Roles.Administrator))
 					{
-						<a asp-action="Details" class="btn btn-secondary btn-lg btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
-						<a asp-action="Edit" class="btn btn-secondary btn-lg btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
-						<button data-id="@item.Id" class="btn btn-danger btn-lg btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+						<form asp-action="ChangeStatus" class="d-inline">
+							<input name="Id" value="@item.Id" type="hidden" />
+							<input name="status" value="true" type="hidden" />
+							<button type="submit" class="btn btn-success btn-sm">Activate Plan</button>
+						</form>
+						<form asp-action="ChangeStatus" class="d-inline">
+							<input name="Id" value="@item.Id" type="hidden" />
+							<input name="status" value="false" type="hidden" />
+							<button type="submit" class="btn btn-danger btn-sm">Deactivate Plan</button>
+						</form>
+						<a asp-action="Details" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
+						<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
+						<button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
 					}
 				</td>
 			</tr>
