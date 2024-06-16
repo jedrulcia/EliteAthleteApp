@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -9,17 +10,19 @@ using TrainingPlanApp.Web.Models;
 
 namespace TrainingPlanApp.Web.Repositories
 {
-    public class TrainingPlanRepository : GenericRepository<TrainingPlan>, ITrainingPlanRepository
-    {
+	public class TrainingPlanRepository : GenericRepository<TrainingPlan>, ITrainingPlanRepository
+	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
 		private readonly IExerciseRepository exerciseRepository;
+		private readonly UserManager<User> userManager;
 
-		public TrainingPlanRepository(ApplicationDbContext context, IMapper mapper, IExerciseRepository exerciseRepository) : base(context)
-        {
+		public TrainingPlanRepository(ApplicationDbContext context, IMapper mapper, IExerciseRepository exerciseRepository, UserManager<User> userManager) : base(context)
+		{
 			this.context = context;
 			this.mapper = mapper;
 			this.exerciseRepository = exerciseRepository;
+			this.userManager = userManager;
 		}
 
 		public async Task<List<TrainingPlanVM>> GetUserTrainingPlans(string userId)
@@ -34,7 +37,7 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task ChangeTrainingPlanStatus(int trainingPlanId, bool status)
 		{
 			var trainingPlan = await GetAsync(trainingPlanId);
-			if(status)
+			if (status)
 			{
 				trainingPlan.IsActive = true;
 			}
@@ -68,6 +71,19 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingPlan = mapper.Map<TrainingPlan>(model);
 			trainingPlan.IsActive = true;
 			await UpdateAsync(trainingPlan);
+		}
+
+		public async Task<List<TrainingPlanAdminVM>> GetAllTrainingPlans()
+		{
+			var trainingPlans = await context.TrainingPlans.ToListAsync();
+			var trainingPlansVM = mapper.Map<List<TrainingPlanAdminVM>>(trainingPlans);
+			foreach (var trainingPlan in trainingPlansVM)
+			{
+				var user = await userManager.FindByIdAsync(trainingPlan.UserId);
+				trainingPlan.FirstName = user.FirstName;
+				trainingPlan.LastName = user.LastName;
+			}
+			return trainingPlansVM;
 		}
 	}
 }

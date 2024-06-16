@@ -22,5 +22,6 @@ namespace TrainingPlanApp.Web.Data
 
         public DbSet<Exercise> Exercises {  get; set; }
 		public DbSet<TrainingPlan> TrainingPlans { get; set; }
+	    public DbSet<TrainingPlanApp.Web.Models.TrainingPlanVM> TrainingPlanVM { get; set; } = default!;
 	}
 }

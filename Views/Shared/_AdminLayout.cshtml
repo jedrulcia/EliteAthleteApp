@@ -171,7 +171,7 @@
 						}
 						@if (User.IsInRole("Administrator"))
 						{
-								<li class="sidebar-item">
+							<li class="sidebar-item">
 								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Exercises" asp-action="Index">
 									<i class="fa-solid fa-book"></i>
 									<span>Exercises</span>
@@ -181,6 +181,12 @@
 								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Users" asp-action="Index">
 									<i class="fa-solid fa-user"></i>
 									<span>Athletes</span>
+								</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="TrainingPlans" asp-action="IndexAdmin">
+									<i class="fa-solid fa-list"></i>
+									<span>Training Plans</span>
 								</a>
 							</li>
 						}

@@ -53,13 +53,18 @@ namespace TrainingPlanApp.Web.Controllers
                 userId = user.Id;
             }
 
-            var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(await trainingPlanRepository.GetUserTrainingPlans(userId));
+            var trainingPlansVM = await trainingPlanRepository.GetUserTrainingPlans(userId);
 
             return View(trainingPlansVM);
-        }
+		}
+		public async Task<IActionResult> IndexAdmin()
+		{
+			var trainingPlansVM = await trainingPlanRepository.GetAllTrainingPlans();
+			return View(trainingPlansVM);
+		}
 
-        // GET: TrainingPlans/Details/5
-        public async Task<IActionResult> Details(int? id)
+		// GET: TrainingPlans/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
 			var trainingPlan = await trainingPlanRepository.GetTrainingPlanDetails(id);
 			if (trainingPlan == null)
@@ -88,7 +93,7 @@ namespace TrainingPlanApp.Web.Controllers
         {
             var model = new TrainingPlanCreateVM
             {
-                Exercises = new SelectList(context.Exercises, "Id", "Name"),
+                Exercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
                 UserId = userId
             };
             return View(model);
@@ -125,6 +130,10 @@ namespace TrainingPlanApp.Web.Controllers
         public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
 		{
 			await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
+			if (userId == null)
+			{
+				return RedirectToAction(nameof(IndexAdmin));
+			}
 			return RedirectToAction(nameof(Index), new { id = userId });
 		}
 
@@ -183,6 +192,10 @@ namespace TrainingPlanApp.Web.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id, string userId)
         {
             await trainingPlanRepository.DeleteAsync(id);
+            if (userId == null)
+			{
+				return RedirectToAction(nameof(IndexAdmin));
+			}
 			return RedirectToAction(nameof(Index), new { id = userId });
 		}
     }
