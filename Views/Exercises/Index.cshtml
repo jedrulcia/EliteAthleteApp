@@ -27,9 +27,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.AdditionalExerciseNumberOfRepeats)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OverallNumberOfSets)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -50,9 +47,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AdditionalExerciseNumberOfRepeats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OverallNumberOfSets)
             </td>
                 <td class="text-end">
                     <a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
