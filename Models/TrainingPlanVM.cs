@@ -34,5 +34,6 @@ namespace TrainingPlanApp.Web.Models
 
 		[Display(Name = "Status")]
 		public bool? IsActive { get; set; }
+        public bool RedirectToAdmin {  get; set; }
     }
 }

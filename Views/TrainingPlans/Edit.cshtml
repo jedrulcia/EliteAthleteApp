@@ -58,7 +58,14 @@
             </div>
             <br />
             <div class="form-group col-md-12">
-                <a asp-action="Index" class="btn btn-secondary" asp-route-id="@Model?.UserId">Back to List</a>
+                @if(Model.RedirectToAdmin)
+                {
+                    <a asp-action="IndexAdmin" class="btn btn-secondary">Back to List</a>
+                }
+                else if (!Model.RedirectToAdmin)
+                {
+                    <a asp-action="Index" class="btn btn-secondary" asp-route-id="@Model?.UserId">Back to List</a>
+                }
                 <input type="submit" value="Edit" class="btn btn-primary" />
             </div>
         </form>

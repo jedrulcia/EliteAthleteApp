@@ -64,7 +64,7 @@ namespace TrainingPlanApp.Web.Controllers
 		}
 
 		// GET: TrainingPlans/Details/5
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(int? id, bool redirectToAdmin)
         {
 			var trainingPlan = await trainingPlanRepository.GetTrainingPlanDetails(id);
 			if (trainingPlan == null)
@@ -72,6 +72,7 @@ namespace TrainingPlanApp.Web.Controllers
                 return NotFound();
             }
 			var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
+            trainingPlanVM.RedirectToAdmin = redirectToAdmin;
             return View(trainingPlanVM);
         }
 
@@ -140,7 +141,7 @@ namespace TrainingPlanApp.Web.Controllers
 
 		// GET: TrainingPlans/Edit/5
 		[Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
         {
             if (id == null)
             {
@@ -154,6 +155,7 @@ namespace TrainingPlanApp.Web.Controllers
             }
 
             var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
+            trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
             trainingPlanCreateVM.Exercises = new SelectList(context.Exercises, "Id", "Name");
 
             return View(trainingPlanCreateVM);
