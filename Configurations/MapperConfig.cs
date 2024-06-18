@@ -15,6 +15,11 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<TrainingPlanVM, TrainingPlanCreateVM>().ReverseMap();
             CreateMap<Exercise, TrainingPlanExerciseVM>().ReverseMap();
             CreateMap<TrainingPlan, TrainingPlanAdminVM>().ReverseMap();
+            CreateMap<Meal, MealVM>().ReverseMap();
+            CreateMap<Meal, MealCreateVM>().ReverseMap();
+            CreateMap<Ingredient, MealCreateVM>().ReverseMap()
+                .ForMember(dest => dest.MealId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }

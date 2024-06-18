@@ -2,44 +2,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TrainingPlanApp.Web.Constants;
+using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
+using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
+    [Authorize(Roles = Roles.Administrator)]
     public class MealsController : Controller
     {
         private readonly ApplicationDbContext _context;
+		private readonly IMapper mapper;
+		private readonly IMealRepository mealRepository;
+        private readonly IIngredientRepository ingredientRepository;
 
-        public MealsController(ApplicationDbContext context)
+        public MealsController(ApplicationDbContext context, IMapper mapper, IMealRepository mealRepository, IIngredientRepository ingredientRepository)
         {
             _context = context;
+			this.mapper = mapper;
+			this.mealRepository = mealRepository;
+            this.ingredientRepository = ingredientRepository;
         }
 
         // GET: Meals
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Meals.ToListAsync());
+            var mealsVM = mapper.Map<List<MealVM>>(await mealRepository.GetAllAsync());
+            return View(mealsVM);
         }
 
         // GET: Meals/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+
+            var mealVM = mapper.Map<MealVM>(mealRepository.GetAsync(id));
+            if (mealVM == null)
             {
                 return NotFound();
             }
-
-            var meal = await _context.Meals
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (meal == null)
-            {
-                return NotFound();
-            }
-
-            return View(meal);
+            return View(mealVM);
         }
 
         // GET: Meals/Create
@@ -51,33 +59,38 @@ namespace TrainingPlanApp.Web.Controllers
         // POST: Meals/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        public async Task<IActionResult> CreateIngredient(MealCreateVM mealCreateVM)
+        {
+            await ingredientRepository.AddIngredient(mealCreateVM);
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,Kcal,Protein,Fat,Carbs")] Meal meal)
+        public async Task<IActionResult> Create(MealVM mealVM)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(meal);
-                await _context.SaveChangesAsync();
+                var meal = mapper.Map<Meal>(mealVM);
+                await mealRepository.AddAsync(meal);
                 return RedirectToAction(nameof(Index));
             }
-            return View(meal);
+            return View(mealVM);
         }
 
         // GET: Meals/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var meal = await _context.Meals.FindAsync(id);
+            var meal = await mealRepository.GetAsync(id);
             if (meal == null)
             {
                 return NotFound();
             }
-            return View(meal);
+
+            var mealVM = mapper.Map<MealVM>(meal);
+            return View(mealVM);
         }
 
         // POST: Meals/Edit/5
@@ -85,72 +98,39 @@ namespace TrainingPlanApp.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Name,Id,Kcal,Protein,Fat,Carbs")] Meal meal)
-        {
-            if (id != meal.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(meal);
-                    await _context.SaveChangesAsync();
+        public async Task<IActionResult> Edit(MealVM mealVM)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+                    var meal = mapper.Map<Meal>(mealVM);
+                    await mealRepository.UpdateAsync(meal);
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MealExists(meal.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(meal);
-        }
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!await mealRepository.Exists(mealVM.Id))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			return View(mealVM);
+		}
 
-        // GET: Meals/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var meal = await _context.Meals
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (meal == null)
-            {
-                return NotFound();
-            }
-
-            return View(meal);
-        }
 
         // POST: Meals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int? id)
-        {
-            var meal = await _context.Meals.FindAsync(id);
-            if (meal != null)
-            {
-                _context.Meals.Remove(meal);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool MealExists(int? id)
-        {
-            return _context.Meals.Any(e => e.Id == id);
-        }
+        public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			await mealRepository.DeleteAsync(id);
+			return RedirectToAction(nameof(Index));
+		}
     }
 }
