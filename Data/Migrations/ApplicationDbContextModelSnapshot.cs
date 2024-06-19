@@ -281,11 +281,14 @@ namespace TrainingPlanApp.Web.Data.Migrations
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Ingredient", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<int?>("MealCreateVMId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("MealId")
                         .HasColumnType("int");
@@ -298,6 +301,8 @@ namespace TrainingPlanApp.Web.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MealCreateVMId");
 
                     b.HasIndex("MealId");
 
@@ -458,7 +463,7 @@ namespace TrainingPlanApp.Web.Data.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2896c0b3-b070-47f6-80c1-2c25a654912d",
+                            ConcurrencyStamp = "acd4b6a3-3926-43a3-8094-dd13bdeeb7d5",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -466,9 +471,9 @@ namespace TrainingPlanApp.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPA8CKShq/viSyvrmSnoZfo+iYBVYcguSQEEI8ain31t4aOG0kTxZmsuW/TWoGCZ8g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAR7GhFnA9m9zMUcN3Cyl2gYGojSL/APgmW1vtD/0IU5imjz6NsvWiR59U6RcRK+Dw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "73ce84d6-6904-459f-8798-27b612fb339c",
+                            SecurityStamp = "ebcd9e97-e260-4e21-b7fd-f53b99a10725",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -476,7 +481,7 @@ namespace TrainingPlanApp.Web.Data.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "82e939bd-0c7d-424b-a0cd-0d415a120a29",
+                            ConcurrencyStamp = "8b989947-df16-47af-891d-377e5e2c773e",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -484,12 +489,46 @@ namespace TrainingPlanApp.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG9AcUgzE1Viv2oOZqLKwlzqcNDDSKxbsU1nG8jnjRBaYF+jYxF+9LRX/xFsV5IiUA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECHx2liRzAghwo6Z5oswxYiGKb48zf/GlFLzC7de6T93ItVVmjnwpylHKnPujSxhcQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e55a2928-96a3-4140-998b-228b9ba27980",
+                            SecurityStamp = "cab1428b-6456-4219-a4c8-215baa6555f9",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });
+                });
+
+            modelBuilder.Entity("TrainingPlanApp.Web.Models.MealCreateVM", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+
+                    b.Property<int?>("Carbs")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Fat")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IngredientName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IngredientServingSize")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Kcal")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Protein")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MealCreateVM");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -578,6 +617,10 @@ namespace TrainingPlanApp.Web.Data.Migrations
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Ingredient", b =>
                 {
+                    b.HasOne("TrainingPlanApp.Web.Models.MealCreateVM", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("MealCreateVMId");
+
                     b.HasOne("TrainingPlanApp.Web.Data.Meal", "Meal")
                         .WithMany()
                         .HasForeignKey("MealId");
@@ -610,6 +653,11 @@ namespace TrainingPlanApp.Web.Data.Migrations
                     b.Navigation("ExerciseSecond");
 
                     b.Navigation("ExerciseThird");
+                });
+
+            modelBuilder.Entity("TrainingPlanApp.Web.Models.MealCreateVM", b =>
+                {
+                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }

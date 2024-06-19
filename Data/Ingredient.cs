@@ -4,7 +4,7 @@ namespace TrainingPlanApp.Web.Data
 {
 	public class Ingredient
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 		public string Name { get; set; }
 		public int ServingSize { get; set; }
 

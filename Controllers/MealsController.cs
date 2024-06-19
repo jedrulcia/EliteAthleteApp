@@ -18,14 +18,14 @@ namespace TrainingPlanApp.Web.Controllers
     [Authorize(Roles = Roles.Administrator)]
     public class MealsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
 		private readonly IMealRepository mealRepository;
         private readonly IIngredientRepository ingredientRepository;
 
         public MealsController(ApplicationDbContext context, IMapper mapper, IMealRepository mealRepository, IIngredientRepository ingredientRepository)
         {
-            _context = context;
+            this.context = context;
 			this.mapper = mapper;
 			this.mealRepository = mealRepository;
             this.ingredientRepository = ingredientRepository;
@@ -59,25 +59,47 @@ namespace TrainingPlanApp.Web.Controllers
         // POST: Meals/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-        public async Task<IActionResult> CreateIngredient(MealCreateVM mealCreateVM)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(MealCreateVM mealCreateVM)
         {
-            await ingredientRepository.AddIngredient(mealCreateVM);
-            return View();
+            if (ModelState.IsValid)
+            {
+                var meal = mapper.Map<Meal>(mealCreateVM);
+                await mealRepository.AddAsync(meal);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(mealCreateVM);
+        }
+
+        public async Task<IActionResult> AddIngredients(int? id)
+        {
+            var meal = await mealRepository.GetAsync(id);
+            if (meal == null)
+            {
+                return NotFound();
+            }
+            var mealCreateVM = mapper.Map<MealCreateVM>(meal);
+            mealCreateVM.Ingredients = new List<Ingredient>(context.Ingredients.Where(e => e.MealId == id));
+            return View(mealCreateVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(MealVM mealVM)
+        public async Task<IActionResult> AddIngredients(MealCreateVM mealCreateVM)
         {
             if (ModelState.IsValid)
             {
-                var meal = mapper.Map<Meal>(mealVM);
-                await mealRepository.AddAsync(meal);
-                return RedirectToAction(nameof(Index));
+                var ingredient = mapper.Map<Ingredient>(mealCreateVM);
+                await ingredientRepository.AddAsync(ingredient);
+                mealCreateVM.IngredientName = null;
+                mealCreateVM.IngredientServingSize = null;
+                mealCreateVM.Ingredients = new List<Ingredient>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
+                return View(mealCreateVM);
             }
-            return View(mealVM);
+            return View(mealCreateVM);
         }
+
 
         // GET: Meals/Edit/5
         public async Task<IActionResult> Edit(int? id)

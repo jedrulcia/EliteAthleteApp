@@ -1,0 +1,68 @@
+﻿@model MealCreateVM
+
+@{
+    ViewData["Title"] = "AddIngredients";
+}
+
+<h1>Add Ingredients</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddIngredients">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IngredientName" class="control-label"></label>
+                <input asp-for="IngredientName" class="form-control" />
+                <span asp-validation-for="IngredientName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IngredientServingSize" class="control-label"></label>
+                <input asp-for="IngredientServingSize" class="form-control" />
+                <span asp-validation-for="IngredientServingSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IngredientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IngredientServingSize)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Ingredients)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServingSize)
+                </td>
+                <td class="text-end">
+                    <button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form id="deleteForm" asp-action="Delete">
+    <input type="hidden" id="exerciseId" name="Id" />
+</form>
+
