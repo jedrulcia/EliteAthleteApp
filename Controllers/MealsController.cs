@@ -80,7 +80,8 @@ namespace TrainingPlanApp.Web.Controllers
                 return NotFound();
             }
             var mealCreateVM = mapper.Map<MealCreateVM>(meal);
-            mealCreateVM.Ingredients = new List<Ingredient>(context.Ingredients.Where(e => e.MealId == id));
+            var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
+            mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
             return View(mealCreateVM);
         }
 
@@ -94,12 +95,12 @@ namespace TrainingPlanApp.Web.Controllers
                 await ingredientRepository.AddAsync(ingredient);
                 mealCreateVM.IngredientName = null;
                 mealCreateVM.IngredientServingSize = null;
-                mealCreateVM.Ingredients = new List<Ingredient>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
+                var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
+                mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
                 return View(mealCreateVM);
             }
             return View(mealCreateVM);
         }
-
 
         // GET: Meals/Edit/5
         public async Task<IActionResult> Edit(int? id)

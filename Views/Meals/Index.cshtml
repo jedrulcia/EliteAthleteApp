@@ -61,7 +61,7 @@
 </table>
 
 <form id="deleteForm" asp-action="Delete">
-    <input type="hidden" id="exerciseId" name="Id" />
+    <input type="hidden" id="mealId" name="Id" />
 </form>
 
 @section Scripts
@@ -83,7 +83,7 @@
                     if (confirm) {
                         var btn = $(this);
                         var id = btn.data("id");
-                        $('#exerciseId').val(id);
+                        $('#mealId').val(id);
                         $('#deleteForm').submit();
                     }
                 }
