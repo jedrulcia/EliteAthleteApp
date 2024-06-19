@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using TrainingPlanApp.Web.Configurations.Entities;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
@@ -18,6 +19,14 @@ namespace TrainingPlanApp.Web.Data
 			builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+
+            builder.Entity<Ingredient>()
+                .HasOne(i => i.Meal)
+                .WithMany(m => m.Ingredients)
+                .HasForeignKey(i => i.MealId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            base.OnModelCreating(builder);
         }
 
         public DbSet<Exercise> Exercises {  get; set; }

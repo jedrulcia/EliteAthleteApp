@@ -10,5 +10,6 @@ namespace TrainingPlanApp.Web.Data
 		public int? Protein { get; set; }
 		public int? Fat { get; set; }
 		public int? Carbs { get; set; }
+		public List<Ingredient>? Ingredients {  get; set; }
 	}
 }
