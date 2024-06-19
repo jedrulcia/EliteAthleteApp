@@ -41,12 +41,17 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: Meals/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
-            var mealVM = mapper.Map<MealVM>(mealRepository.GetAsync(id));
-            if (mealVM == null)
+            if (id == null)
             {
                 return NotFound();
             }
+            var meal = await mealRepository.GetAsync(id.Value);
+            if (meal == null)
+            {
+                return NotFound();
+            }
+
+            var mealVM = mapper.Map<MealVM>(meal);
             return View(mealVM);
         }
 
@@ -93,10 +98,10 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 var ingredient = mapper.Map<Ingredient>(mealCreateVM);
                 await ingredientRepository.AddAsync(ingredient);
-                mealCreateVM.IngredientName = null;
-                mealCreateVM.IngredientServingSize = null;
                 var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
                 mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
+                mealCreateVM.IngredientName = null;
+                mealCreateVM.IngredientServingSize = null;
                 return View(mealCreateVM);
             }
             return View(mealCreateVM);
