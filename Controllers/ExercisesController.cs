@@ -35,7 +35,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(exercisesVM);
 		}
 
-		// GET: Exercises/Details/5
+		// GET: Exercises/Details
 		public async Task<IActionResult> Details(int? id)
 		{
 			var exercise = await exerciseRepository.GetAsync(id);
@@ -61,17 +61,16 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> Create(ExerciseVM exerciseVM)
 		{
 			if (ModelState.IsValid)
-			{
-				var exercise = mapper.Map<Exercise>(exerciseVM);
-				await exerciseRepository.AddAsync(exercise);
-				return RedirectToAction(nameof(Index));
-			}
+            {
+				 await exerciseRepository.CreateNewExercise(exerciseVM);
+                return RedirectToAction(nameof(Index));
+            }
 			return View(exerciseVM);
 		}
 
 
 
-		// GET: Exercises/Edit/5
+		// GET: Exercises/Edit
 		public async Task<IActionResult> Edit(int? id)
 		{
 			var exercise = await exerciseRepository.GetAsync(id);
@@ -79,12 +78,11 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-
 			var exerciseVM = mapper.Map<ExerciseVM>(exercise);
 			return View(exerciseVM);
 		}
 
-		// POST: Exercises/Edit/5
+		// POST: Exercises/Edit
 		// To protect from overposting attacks, enable the specific properties you want to bind to.
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
@@ -95,7 +93,6 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-
 			if (ModelState.IsValid)
 			{
 				try
@@ -119,7 +116,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(exerciseVM);
 		}
 
-		// POST: Exercises/Delete/5
+		// POST: Exercises/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
