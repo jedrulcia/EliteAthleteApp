@@ -23,47 +23,35 @@ namespace TrainingPlanApp.Web.Controllers
     {
         private readonly ITrainingPlanRepository trainingPlanRepository;
         private readonly IMapper mapper;
-		private readonly UserManager<User> userManager;
-		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly IExerciseRepository exerciseRepository;
 		private readonly ApplicationDbContext context;
 
         public TrainingPlansController(ApplicationDbContext context, 
             ITrainingPlanRepository trainingPlanRepository, 
             IMapper mapper, 
-            UserManager<User> userManager,
-            IHttpContextAccessor httpContextAccessor,
             IExerciseRepository exerciseRepository)
         {
-            this.trainingPlanRepository = trainingPlanRepository;
             this.mapper = mapper;
-			this.userManager = userManager;
-			this.httpContextAccessor = httpContextAccessor;
 			this.exerciseRepository = exerciseRepository;
-			this.context = context;
+            this.trainingPlanRepository = trainingPlanRepository;
+            this.context = context;
         }
 
         // GET: TrainingPlans
         public async Task<IActionResult> Index(string? id)
 		{
-            var userId = id;
-            if(userId == null)
-            {
-                var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
-                userId = user.Id;
-            }
-
-            var trainingPlansVM = await trainingPlanRepository.GetUserTrainingPlans(userId);
-
+            var trainingPlansVM = await trainingPlanRepository.GetUserTrainingPlans(id);
             return View(trainingPlansVM);
 		}
+
+        // GET : TrainingPlans
 		public async Task<IActionResult> IndexAdmin()
 		{
 			var trainingPlansVM = await trainingPlanRepository.GetAllTrainingPlans();
 			return View(trainingPlansVM);
 		}
 
-		// GET: TrainingPlans/Details/5
+		// GET: TrainingPlans/Details
 		public async Task<IActionResult> Details(int? id, bool redirectToAdmin)
         {
 			var trainingPlan = await trainingPlanRepository.GetTrainingPlanDetails(id);
@@ -112,7 +100,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
 				if (ModelState.IsValid)
                 {
-                    trainingPlanRepository.CreateTrainingPlan(model);
+                    await trainingPlanRepository.CreateTrainingPlan(model);
 					return RedirectToAction(nameof(Index), new { id = model.UserId });
 				}
             }
@@ -120,13 +108,10 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
-
             model.Exercises = new SelectList(context.Exercises, "Id", "Name");
             return View(model);
         }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
 		{
@@ -138,8 +123,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(Index), new { id = userId });
 		}
 
-
-		// GET: TrainingPlans/Edit/5
+		// GET: TrainingPlans/Edit
 		[Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
         {
@@ -147,21 +131,18 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-
             var trainingPlan = await context.TrainingPlans.FindAsync(id);
             if (trainingPlan == null)
             {
                 return NotFound();
             }
-
             var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
             trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
             trainingPlanCreateVM.Exercises = new SelectList(context.Exercises, "Id", "Name");
-
             return View(trainingPlanCreateVM);
         }
 
-        // POST: TrainingPlans/Edit/5
+        // POST: TrainingPlans/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -186,8 +167,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(model);
 		}
 
-
-        // POST: TrainingPlans/Delete/5
+        // POST: TrainingPlans/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]

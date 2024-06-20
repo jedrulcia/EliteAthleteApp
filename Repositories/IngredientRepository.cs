@@ -16,11 +16,24 @@ namespace TrainingPlanApp.Web.Repositories
             this.mapper = mapper;
         }
 
-        public async Task AddIngredient(MealCreateVM mealCreateVM)
+        public async Task<MealCreateVM> AddIngredientSequence(MealCreateVM mealCreateVM)
         {
+
             var ingredient = mapper.Map<Ingredient>(mealCreateVM);
-            await context.AddAsync(ingredient);
-            await context.SaveChangesAsync();
+            await AddAsync(ingredient);
+            var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
+            mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
+            mealCreateVM.IngredientName = null;
+            mealCreateVM.IngredientServingSize = null;
+            return mealCreateVM;
+        }
+
+        public MealCreateVM CreateIngredientAddingModel(Meal meal)
+        {
+            var mealCreateVM = mapper.Map<MealCreateVM>(meal);
+            var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
+            mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
+            return mealCreateVM;
         }
     }
 }

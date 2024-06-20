@@ -19,13 +19,11 @@ namespace TrainingPlanApp.Web.Controllers
 	{
 		private readonly IExerciseRepository exerciseRepository;
 		private readonly IMapper mapper;
-		private readonly ITrainingPlanRepository trainingPlanRepository;
 
-		public ExercisesController(IExerciseRepository exerciseRepository, IMapper mapper, ITrainingPlanRepository trainingPlanRepository)
+		public ExercisesController(IExerciseRepository exerciseRepository, IMapper mapper)
 		{
 			this.exerciseRepository = exerciseRepository;
 			this.mapper = mapper;
-			this.trainingPlanRepository = trainingPlanRepository;
 		}
 
 		// GET: Exercises
@@ -62,7 +60,7 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			if (ModelState.IsValid)
             {
-				 await exerciseRepository.CreateNewExercise(exerciseVM);
+				await exerciseRepository.CreateNewExercise(exerciseVM);
                 return RedirectToAction(nameof(Index));
             }
 			return View(exerciseVM);
@@ -97,8 +95,7 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				try
 				{
-					var exercise = mapper.Map<Exercise>(exerciseVM);
-					await exerciseRepository.UpdateAsync(exercise);
+					await exerciseRepository.EditExercise(exerciseVM);
 				}
 				catch (DbUpdateConcurrencyException)
 				{

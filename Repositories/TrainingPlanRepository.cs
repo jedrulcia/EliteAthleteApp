@@ -16,23 +16,29 @@ namespace TrainingPlanApp.Web.Repositories
 		private readonly IMapper mapper;
 		private readonly IExerciseRepository exerciseRepository;
 		private readonly UserManager<User> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-		public TrainingPlanRepository(ApplicationDbContext context, IMapper mapper, IExerciseRepository exerciseRepository, UserManager<User> userManager) : base(context)
+        public TrainingPlanRepository(ApplicationDbContext context, IMapper mapper, IExerciseRepository exerciseRepository, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.exerciseRepository = exerciseRepository;
 			this.userManager = userManager;
-		}
+            this.httpContextAccessor = httpContextAccessor;
+        }
 
-		public async Task<List<TrainingPlanVM>> GetUserTrainingPlans(string userId)
-		{
-			var trainingPlans = await context.TrainingPlans
+		public async Task<List<TrainingPlanVM>> GetUserTrainingPlans(string? userId)
+        {
+            if (userId == null)
+            {
+                var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
+                userId = user.Id;
+            }
+            var trainingPlans = await context.TrainingPlans
 				.Where(x => x.UserId == userId)
 				.ToListAsync();
-			var trainingPlansVM = mapper.Map<List<TrainingPlanVM>>(trainingPlans);
-			return trainingPlansVM;
-		}
+			return mapper.Map<List<TrainingPlanVM>>(trainingPlans);
+        }
 
 		public async Task ChangeTrainingPlanStatus(int trainingPlanId, bool status)
 		{

@@ -8,19 +8,14 @@ namespace TrainingPlanApp.Web.Models
     {
         public int? Id { get; set; }
         [Display(Name = "Name")]
-        [Required]
         public string? Name { get; set; }
         [Display(Name = "Amount of kcal")]
-        [Required]
         public int? Kcal { get; set; }
         [Display(Name = "Amount of proteins")]
-        [Required]
         public int? Protein { get; set; }
         [Display(Name = "Amount of fats")]
-        [Required]
         public int? Fat { get; set; }
         [Display(Name = "Amount of carbs")]
-        [Required]
         public int? Carbs { get; set; }
         [Display(Name = "List of ingredients")]
         public List<IngredientVM>? Ingredients { get; set; }

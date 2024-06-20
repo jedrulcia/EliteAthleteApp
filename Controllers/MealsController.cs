@@ -38,19 +38,14 @@ namespace TrainingPlanApp.Web.Controllers
             return View(mealsVM);
         }
 
-        // GET: Meals/Details/5
+        // GET: Meals/Details
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var meal = await mealRepository.GetAsync(id.Value);
             if (meal == null)
             {
                 return NotFound();
             }
-
             var mealVM = mapper.Map<MealVM>(meal);
             return View(mealVM);
         }
@@ -70,8 +65,7 @@ namespace TrainingPlanApp.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var meal = mapper.Map<Meal>(mealCreateVM);
-                await mealRepository.AddAsync(meal);
+                await mealRepository.CreateNewMeal(mealCreateVM);
                 return RedirectToAction(nameof(Index));
             }
             return View(mealCreateVM);
@@ -84,9 +78,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-            var mealCreateVM = mapper.Map<MealCreateVM>(meal);
-            var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
-            mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
+            var mealCreateVM = ingredientRepository.CreateIngredientAddingModel(meal);
             return View(mealCreateVM);
         }
 
@@ -96,32 +88,24 @@ namespace TrainingPlanApp.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ingredient = mapper.Map<Ingredient>(mealCreateVM);
-                await ingredientRepository.AddAsync(ingredient);
-                var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
-                mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
-                mealCreateVM.IngredientName = null;
-                mealCreateVM.IngredientServingSize = null;
-                return View(mealCreateVM);
+                return View(await ingredientRepository.AddIngredientSequence(mealCreateVM));
             }
             return View(mealCreateVM);
         }
 
-        // GET: Meals/Edit/5
+        // GET: Meals/Edit
         public async Task<IActionResult> Edit(int? id)
         {
-
             var meal = await mealRepository.GetAsync(id);
             if (meal == null)
             {
                 return NotFound();
             }
-
             var mealVM = mapper.Map<MealVM>(meal);
             return View(mealVM);
         }
 
-        // POST: Meals/Edit/5
+        // POST: Meals/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -132,8 +116,7 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				try
 				{
-                    var meal = mapper.Map<Meal>(mealVM);
-                    await mealRepository.UpdateAsync(meal);
+                    await mealRepository.EditMeal(mealVM);
                 }
 				catch (DbUpdateConcurrencyException)
 				{
@@ -151,7 +134,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealVM);
 		}
 
-        // POST: Meals/Delete/5
+        // POST: Meals/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -160,7 +143,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(Index));
         }        
 
-        // POST: Meals/Delete/5      
+        // POST: Meals/AddIngredients/Delete
         [HttpPost, ActionName("DeleteIngredient")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteIngredient(int ingredientId, int mealId)

@@ -236,7 +236,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasIndex("SnackId");
 
-                    b.ToTable("Diets");
+                    b.ToTable("Diets", (string)null);
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Exercise", b =>
@@ -276,7 +276,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises");
+                    b.ToTable("Exercises", (string)null);
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Ingredient", b =>
@@ -301,7 +301,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasIndex("MealId");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Meal", b =>
@@ -332,7 +332,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals");
+                    b.ToTable("Meals", (string)null);
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
@@ -380,7 +380,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasIndex("ExerciseThirdId");
 
-                    b.ToTable("TrainingPlans");
+                    b.ToTable("TrainingPlans", (string)null);
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.User", b =>

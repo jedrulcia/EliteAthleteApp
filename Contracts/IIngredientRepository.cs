@@ -5,6 +5,7 @@ namespace TrainingPlanApp.Web.Contracts
 {
     public interface IIngredientRepository : IGenericRepository<Ingredient>
     {
-        Task AddIngredient(MealCreateVM mealCreateVM);
+        MealCreateVM CreateIngredientAddingModel(Meal meal);
+        Task<MealCreateVM> AddIngredientSequence(MealCreateVM mealCreateVM);
     }
 }

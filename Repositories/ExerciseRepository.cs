@@ -22,5 +22,11 @@ namespace TrainingPlanApp.Web.Repositories
             var exercise = mapper.Map<Exercise>(exerciseVM);
             await AddAsync(exercise);
         }
+
+        public async Task EditExercise(ExerciseVM exerciseVM)
+        {
+            var exercise = mapper.Map<Exercise>(exerciseVM);
+            await UpdateAsync(exercise);
+        }
     }
 }
