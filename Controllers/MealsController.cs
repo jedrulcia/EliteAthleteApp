@@ -151,7 +151,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealVM);
 		}
 
-
         // POST: Meals/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -159,6 +158,15 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			await mealRepository.DeleteAsync(id);
 			return RedirectToAction(nameof(Index));
-		}
+        }        
+
+        // POST: Meals/Delete/5      
+        [HttpPost, ActionName("DeleteIngredient")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteIngredient(int ingredientId, int mealId)
+        {
+            await ingredientRepository.DeleteAsync(ingredientId);
+            return RedirectToAction(nameof(AddIngredients), new { id = mealId});
+        }
     }
 }

@@ -52,15 +52,16 @@
                     @Html.DisplayFor(modelItem => item.ServingSize)
                 </td>
                 <td class="text-end">
-                    <button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+                    <button data-ingredientId="@item.Id" data-mealId="@item.MealId" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<form id="deleteForm" asp-action="Delete">
-    <input type="hidden" id="ingredientId" name="Id" />
+<form id="deleteForm" asp-action="DeleteIngredient">
+    <input type="hidden" id="ingredientId" name="ingredientId" />
+    <input type="hidden" id="mealId" name="mealId" />
 </form>
 @section Scripts
 {
@@ -80,8 +81,10 @@
                 ).then((confirm) => {
                     if (confirm) {
                         var btn = $(this);
-                        var id = btn.data("id");
-                        $('#ingredientId').val(id);
+                        var ingredientId = btn.data("ingredientid");
+                        var mealId = btn.data("mealid");
+                        $('#ingredientId').val(ingredientId);
+                        $('#mealId').val(mealId);
                         $('#deleteForm').submit();
                     }
                 }
