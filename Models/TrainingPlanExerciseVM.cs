@@ -4,14 +4,15 @@ namespace TrainingPlanApp.Web.Models
 {
     public class TrainingPlanExerciseVM
     {
-        public string Name { get; set; }
         public int Id { get; set; }
+        public int? TrainingPlanId { get; set; }
+        [Display(Name = "Name")]
+        public string Name { get; set; }
         [Display(Name = "Exercise")]
         [Required]
         public string? MainExerciseName { get; set; }
         [Display(Name = "Repeats")]
         [Required]
-        [Range(1, 200, ErrorMessage = "Please enter a valid number")]
         public int MainExerciseNumberOfRepeats { get; set; }
         [Display(Name = "Video")]
         [Required]
@@ -27,9 +28,8 @@ namespace TrainingPlanApp.Web.Models
         public string? AdditionalExerciseVideoLink { get; set; }
         [Display(Name = "Number of sets")]
         [Required]
-        [Range(1, 25, ErrorMessage = "Please enter a valid number")]
         public int OverallNumberOfSets { get; set; }
+        [Display(Name = "Description")]
         public string? Description { get; set; }
-        public int? TrainingPlanId { get; set; }
     }
 }

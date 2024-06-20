@@ -19,7 +19,7 @@ namespace TrainingPlanApp.Web.Models
         [Display(Name = "Amount of fats")]
         [Required]
         public int? Fat { get; set; }
-        [Display(Name = "Amount of carbohydrates")]
+        [Display(Name = "Amount of carbs")]
         [Required]
         public int? Carbs { get; set; }
         [Display(Name = "List of ingredients")]

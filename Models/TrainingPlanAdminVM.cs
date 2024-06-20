@@ -4,8 +4,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Models
 {
 	public class TrainingPlanAdminVM
-	{
-		[Display(Name = "Training Plan")]
+    {
+        public int? Id { get; set; }
+        [Display(Name = "Athlete")]
+        public string? UserId { get; set; }
+        [Display(Name = "Training Plan")]
 		[Required]
 		public string? Name { get; set; }
 		[Required]
@@ -13,7 +16,16 @@ namespace TrainingPlanApp.Web.Models
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
 		[DataType(DataType.Date)]
 		public DateTime? StartDate { get; set; }
-		[Display(Name = "Exercise 1")]
+        [Display(Name = "Description")]
+        public string? Description { get; set; }
+        [Display(Name = "Status")]
+        public bool? IsActive { get; set; }
+        [Display(Name = "First name")]
+        public string? FirstName { get; set; }
+        [Display(Name = "Last name")]
+        public string? LastName { get; set; }
+
+        [Display(Name = "Exercise 1")]
 		public Exercise? ExerciseFirst { get; set; }
 		public int ExerciseFirstId { get; set; }
 		[Display(Name = "Exercise 2")]
@@ -25,15 +37,6 @@ namespace TrainingPlanApp.Web.Models
 		[Display(Name = "Exercise 4")]
 		public Exercise? ExerciseFourth { get; set; }
 		public int ExerciseFourthId { get; set; }
-		[Display(Name = "Athlete")]
-		public string? UserId { get; set; }
-		public int? Id { get; set; }
-		public string? Description { get; set; }
-
-		[Display(Name = "Status")]
-		public bool? IsActive { get; set; }
-		public bool? RedirectToAdmin { get; set; }
-		public string? FirstName {  get; set; }
-		public string? LastName { get; set; }
-	}
+        public bool? RedirectToAdmin { get; set; }
+    }
 }

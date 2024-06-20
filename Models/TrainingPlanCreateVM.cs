@@ -6,6 +6,9 @@ namespace TrainingPlanApp.Web.Models
     public class TrainingPlanCreateVM
     {
 
+        public int? Id { get; set; }
+        [Display(Name = "Athlete")]
+        public string? UserId { get; set; }
         [Display(Name = "Training Plan name")]
         [Required]
         public string? Name { get; set; }
@@ -13,6 +16,10 @@ namespace TrainingPlanApp.Web.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
+        [Display(Name = "Description")]
+        public string? Description { get; set; }
+        [Display(Name = "Status")]
+        public bool? IsActive { get; set; }
         [Display(Name = "Exercise 1")]
         public int? ExerciseFirstId { get; set; }
         public SelectList? Exercises { get; set; }
@@ -22,11 +29,6 @@ namespace TrainingPlanApp.Web.Models
         public int? ExerciseThirdId { get; set; }
         [Display(Name = "Exercise 4")]
         public int? ExerciseFourthId { get; set; }
-        [Display(Name = "Athlete")]
-        public string? UserId { get; set; }
-		public int? Id { get; set; }
-		public string? Description { get; set; }
-		public bool? IsActive { get; set; }
 		public bool RedirectToAdmin { get; set; }
 	}
 }
