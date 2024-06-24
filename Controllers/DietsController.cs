@@ -2,186 +2,159 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TrainingPlanApp.Web.Constants;
+using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
+using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
     public class DietsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
+        private readonly IDietRepository dietRepository;
+		private readonly IMealRepository mealRepository;
+		private readonly IMapper mapper;
 
-        public DietsController(ApplicationDbContext context)
+        public DietsController(ApplicationDbContext context, IDietRepository dietRepository, IMealRepository mealRepository, IMapper mapper)
         {
-            _context = context;
+            this.context = context;
+            this.dietRepository = dietRepository;
+			this.mealRepository = mealRepository;
+			this.mapper = mapper;
         }
 
         // GET: Diets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Diets.Include(d => d.Breakfast).Include(d => d.Dinner).Include(d => d.Lunch).Include(d => d.SecondBreakfast).Include(d => d.Snack);
-            return View(await applicationDbContext.ToListAsync());
+            var dietsVM = mapper.Map<List<DietVM>>(await dietRepository.GetAllAsync());            
+            return View(dietsVM);
         }
 
-        // GET: Diets/Details/5
+        // GET: Diets/Details
         public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+		{
+			var diet = (await dietRepository.GetAsync(id));
+			if (diet == null)
             {
                 return NotFound();
-            }
+			}
+			var dietVM = mapper.Map<DietVM>(diet);
+            return View(dietVM);
+		}
+        public async Task<IActionResult> MealDetails(int? mealId, int? dietId)
+		{
+			var meal = await mealRepository.GetAsync(mealId);
+			if (meal == null)
+			{
+				return NotFound();
+			}
+            var mealVM = mapper.Map<DietMealVM>(meal);
+            mealVM.DietId = dietId;
+            return View(mealVM);
+		}
 
-            var diet = await _context.Diets
-                .Include(d => d.Breakfast)
-                .Include(d => d.Dinner)
-                .Include(d => d.Lunch)
-                .Include(d => d.SecondBreakfast)
-                .Include(d => d.Snack)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (diet == null)
-            {
-                return NotFound();
-            }
-
-            return View(diet);
-        }
-
-        // GET: Diets/Create
-        public IActionResult Create()
-        {
-            ViewData["BreakfastId"] = new SelectList(_context.Meals, "Id", "Id");
-            ViewData["DinnerId"] = new SelectList(_context.Meals, "Id", "Id");
-            ViewData["LunchId"] = new SelectList(_context.Meals, "Id", "Id");
-            ViewData["SecondBreakfastId"] = new SelectList(_context.Meals, "Id", "Id");
-            ViewData["SnackId"] = new SelectList(_context.Meals, "Id", "Id");
-            return View();
-        }
+		// GET: Diets/Create
+		public IActionResult Create(string? userId)
+		{
+			var model = new DietCreateVM
+			{
+				Meals = new SelectList(context.Meals.OrderBy(e => e.Name), "Id", "Name"),
+				UserId = userId
+			};
+			return View(model);
+		}
 
         // POST: Diets/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id,UserId,IsActive,Description,StartDate,BreakfastId,SecondBreakfastId,LunchId,SnackId,DinnerId")] Diet diet)
+        public async Task<IActionResult> Create(DietCreateVM model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(diet);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    await dietRepository.CreateDiet(model);
+                    return RedirectToAction(nameof(Index), new { id = model.UserId });
+                }
             }
-            ViewData["BreakfastId"] = new SelectList(_context.Meals, "Id", "Id", diet.BreakfastId);
-            ViewData["DinnerId"] = new SelectList(_context.Meals, "Id", "Id", diet.DinnerId);
-            ViewData["LunchId"] = new SelectList(_context.Meals, "Id", "Id", diet.LunchId);
-            ViewData["SecondBreakfastId"] = new SelectList(_context.Meals, "Id", "Id", diet.SecondBreakfastId);
-            ViewData["SnackId"] = new SelectList(_context.Meals, "Id", "Id", diet.SnackId);
-            return View(diet);
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
+            }
+            model.Meals = new SelectList(context.Meals, "Id", "Name");
+            return View(model);
         }
 
-        // GET: Diets/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
+        {
+            await dietRepository.ChangeDietStatus(id, status);
+            /*            if (userId == null)
+                        {
+                            return RedirectToAction(nameof(IndexAdmin));
+                        }
+                        return RedirectToAction(nameof(Index), new { id = userId });*/
+            return RedirectToAction(nameof(Index));
+        }
+        // GET: Diets/Edit
+        public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var diet = await _context.Diets.FindAsync(id);
+            var diet = await context.Diets.FindAsync(id);
             if (diet == null)
             {
                 return NotFound();
             }
-            ViewData["BreakfastId"] = new SelectList(_context.Meals, "Id", "Id", diet.BreakfastId);
-            ViewData["DinnerId"] = new SelectList(_context.Meals, "Id", "Id", diet.DinnerId);
-            ViewData["LunchId"] = new SelectList(_context.Meals, "Id", "Id", diet.LunchId);
-            ViewData["SecondBreakfastId"] = new SelectList(_context.Meals, "Id", "Id", diet.SecondBreakfastId);
-            ViewData["SnackId"] = new SelectList(_context.Meals, "Id", "Id", diet.SnackId);
-            return View(diet);
+            var dietCreateVM = mapper.Map<DietCreateVM>(diet);
+            dietCreateVM.RedirectToAdmin = redirectToAdmin;
+            dietCreateVM.Meals = new SelectList(context.Meals, "Id", "Name");
+            return View(dietCreateVM);
         }
 
-        // POST: Diets/Edit/5
+        // POST: Diets/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Id,UserId,IsActive,Description,StartDate,BreakfastId,SecondBreakfastId,LunchId,SnackId,DinnerId")] Diet diet)
+        public async Task<IActionResult> Edit(DietCreateVM model)
         {
-            if (id != diet.Id)
+            try
             {
-                return NotFound();
+                if (ModelState.IsValid)
+                {
+                    dietRepository.UpdateDiet(model);
+                    return RedirectToAction(nameof(Index));
+                    /*return RedirectToAction(nameof(Index), new { id = model.UserId });*/
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(diet);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DietExists(diet.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BreakfastId"] = new SelectList(_context.Meals, "Id", "Id", diet.BreakfastId);
-            ViewData["DinnerId"] = new SelectList(_context.Meals, "Id", "Id", diet.DinnerId);
-            ViewData["LunchId"] = new SelectList(_context.Meals, "Id", "Id", diet.LunchId);
-            ViewData["SecondBreakfastId"] = new SelectList(_context.Meals, "Id", "Id", diet.SecondBreakfastId);
-            ViewData["SnackId"] = new SelectList(_context.Meals, "Id", "Id", diet.SnackId);
-            return View(diet);
+            model.Meals = new SelectList(context.Meals, "Id", "Name");
+            return View(model);
         }
 
-        // GET: Diets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var diet = await _context.Diets
-                .Include(d => d.Breakfast)
-                .Include(d => d.Dinner)
-                .Include(d => d.Lunch)
-                .Include(d => d.SecondBreakfast)
-                .Include(d => d.Snack)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (diet == null)
-            {
-                return NotFound();
-            }
-
-            return View(diet);
-        }
-
-        // POST: Diets/Delete/5
+        // POST: Diets/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var diet = await _context.Diets.FindAsync(id);
-            if (diet != null)
-            {
-                _context.Diets.Remove(diet);
-            }
-
-            await _context.SaveChangesAsync();
+            await dietRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool DietExists(int id)
-        {
-            return _context.Diets.Any(e => e.Id == id);
         }
     }
 }

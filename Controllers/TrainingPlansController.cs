@@ -79,14 +79,14 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: TrainingPlans/Create
         [Authorize(Roles = Roles.Administrator)]
         public IActionResult Create(string? userId)
-        {
-            var model = new TrainingPlanCreateVM
-            {
-                Exercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
-                UserId = userId
-            };
-            return View(model);
-        }
+		{
+			var model = new TrainingPlanCreateVM
+			{
+				Exercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
+				UserId = userId
+			};
+			return View(model);
+		}
 
         // POST: TrainingPlans/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

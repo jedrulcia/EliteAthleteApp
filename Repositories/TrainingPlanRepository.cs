@@ -31,7 +31,7 @@ namespace TrainingPlanApp.Web.Repositories
         {
             if (userId == null)
             {
-                var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
+                var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
                 userId = user.Id;
             }
             var trainingPlans = await context.TrainingPlans
