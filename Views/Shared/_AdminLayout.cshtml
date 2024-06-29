@@ -172,15 +172,15 @@
 						@if (User.IsInRole("Administrator"))
 						{
 							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Exercises" asp-action="Index">
-									<i class="fa-solid fa-book"></i>
-									<span>Exercises</span>
-								</a>
-							</li>
-								<li class="sidebar-item">
 								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Users" asp-action="Index">
 									<i class="fa-solid fa-user"></i>
 									<span>Athletes</span>
+								</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Exercises" asp-action="Index">
+									<i class="fa-solid fa-book"></i>
+									<span>Exercises</span>
 								</a>
 							</li>
 							<li class="sidebar-item">
@@ -190,15 +190,15 @@
 								</a>
 							</li>
 							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Diets" asp-action="Index">
-									<i class="fa-solid fa-apple-whole"></i>
-									<span>Diets</span>
-								</a>
-							</li>
-							<li class="sidebar-item">
 								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Meals" asp-action="Index">
 									<i class="fa-solid fa-utensils"></i>
 									<span>Meals</span>
+								</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Diets" asp-action="Index">
+									<i class="fa-solid fa-apple-whole"></i>
+									<span>Diets</span>
 								</a>
 							</li>
 						}
