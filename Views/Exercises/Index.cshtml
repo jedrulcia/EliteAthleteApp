@@ -16,16 +16,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MainExerciseName)
+                @Html.DisplayNameFor(model => model.VideoLink)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MainExerciseNumberOfRepeats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalExerciseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalExerciseNumberOfRepeats)
+                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th></th>
         </tr>
@@ -36,17 +30,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
+                <td>
+                    <a href="@item.VideoLink" target="_blank" rel="noopener noreferrer">@item.VideoLink</a>
+                </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MainExerciseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MainExerciseNumberOfRepeats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdditionalExerciseName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdditionalExerciseNumberOfRepeats)
+                @Html.DisplayFor(modelItem => item.Description)
             </td>
                 <td class="text-end">
                     <a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
