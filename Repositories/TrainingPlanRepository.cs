@@ -58,10 +58,10 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task<TrainingPlan> GetTrainingPlanDetails(int? id)
 		{
 			var trainingPlan = await GetAsync(id);
-			trainingPlan.ExerciseFirst = await exerciseRepository.GetAsync(trainingPlan.ExerciseFirstId);
-			trainingPlan.ExerciseSecond = await exerciseRepository.GetAsync(trainingPlan.ExerciseSecondId);
-			trainingPlan.ExerciseThird = await exerciseRepository.GetAsync(trainingPlan.ExerciseThirdId);
-			trainingPlan.ExerciseFourth = await exerciseRepository.GetAsync(trainingPlan.ExerciseFourthId);
+			for(int i = 0; i < trainingPlan.Exercises.Count; i++)
+			{
+				trainingPlan.Exercises[i] = await exerciseRepository.GetAsync(trainingPlan.Exercises[i].Id);
+			}
 			return trainingPlan;
 		}
 

@@ -10,40 +10,14 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MainExerciseName)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MainExerciseName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MainExerciseNumberOfRepeats)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MainExerciseNumberOfRepeats)
+            @Html.DisplayFor(model => model.Name)
         </dd>
         <dd class="col-sm-12">
             @{
-                var mainVideoUrl = Model.MainExerciseVideoLink;
-                var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
-                var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
-            }
-            <iframe width="560" height="315" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AdditionalExerciseName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AdditionalExerciseName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AdditionalExerciseNumberOfRepeats)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AdditionalExerciseNumberOfRepeats)
-        </dd>
-        <dd class="col-sm-12">
-            @{
-                var additionalVideoUrl = Model.AdditionalExerciseVideoLink;
+                var additionalVideoUrl = Model.VideoLink;
                 var additionalVideoId = additionalVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
                 var additionalEmbedUrl = "https://www.youtube.com/embed/" + additionalVideoId;
             }

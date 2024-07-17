@@ -82,7 +82,7 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			var model = new TrainingPlanCreateVM
 			{
-				Exercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
+				AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
 				UserId = userId
 			};
 			return View(model);
@@ -108,7 +108,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
-            model.Exercises = new SelectList(context.Exercises, "Id", "Name");
+            model.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
             return View(model);
         }
 
@@ -138,7 +138,7 @@ namespace TrainingPlanApp.Web.Controllers
             }
             var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
             trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
-            trainingPlanCreateVM.Exercises = new SelectList(context.Exercises, "Id", "Name");
+            trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
             return View(trainingPlanCreateVM);
         }
 
@@ -163,7 +163,7 @@ namespace TrainingPlanApp.Web.Controllers
 				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
 			}
 
-			model.Exercises = new SelectList(context.Exercises, "Id", "Name");
+			model.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
 			return View(model);
 		}
 
