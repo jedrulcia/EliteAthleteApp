@@ -28,5 +28,16 @@ namespace TrainingPlanApp.Web.Repositories
             var exercise = mapper.Map<Exercise>(exerciseVM);
             await UpdateAsync(exercise);
         }
-    }
+
+        public async Task<List<ExerciseVM>> GetListOfExercises(List<int> exercisesIds)
+        {
+            List<ExerciseVM> exercises = new List<ExerciseVM>();
+			foreach (int id in exercisesIds)
+            {
+                var exerciseVM = mapper.Map<ExerciseVM>(await GetAsync(id));
+                exercises.Add(exerciseVM);
+            }
+            return exercises;
+		}
+	}
 }

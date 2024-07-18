@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TrainingPlanApp.Web.Controllers;
 using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Models
@@ -25,8 +26,17 @@ namespace TrainingPlanApp.Web.Models
         public bool? IsActive { get; set; }
         public bool RedirectToAdmin {  get; set; }
         [Display(Name = "Exercises")]
-        public List<ExerciseVM>? Exercises { get; set; }
+        public List<int>? ExerciseIds { get; set; }
         [Display(Name = "Exercise")]
         public string? ExerciseName { get; set; }
-    }
+        [Display(Name = "Number of the exercise")]
+        public List<string?>? Index { get; set; }
+        public List<ExerciseVM?>? Exercises {  get; set; }
+		[Display(Name = "Weight")]
+		public List<int?>? Weight { get; set; }
+		[Display(Name = "Sets")]
+		public List<int?>? Sets { get; set; }
+		[Display(Name = "Repeats")]
+		public List<int?>? Repeats { get; set; }
+	}
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Models
 {
@@ -22,9 +23,17 @@ namespace TrainingPlanApp.Web.Models
         public bool? IsActive { get; set; }
 		public bool RedirectToAdmin { get; set; }
         [Display(Name = "Exercises")]
-        public List<ExerciseVM>? Exercises { get; set; }
+        public List<int>? ExerciseIds { get; set; }
         [Display(Name = "Exercise")]
-        public string? ExerciseName { get; set; }
+        public int? Exercise { get; set; }
         public SelectList? AvailableExercises { get; set; }
+		[Display(Name = "Weight")]
+		public int? Weight { get; set; }
+		[Display(Name = "Sets")]
+		public int? Sets { get; set; }
+		[Display(Name = "Repeats")]
+		public int? Repeats { get; set; }
+        [Display(Name = "Number of the exercise")]
+        public string? Index { get; set; }
     }
 }

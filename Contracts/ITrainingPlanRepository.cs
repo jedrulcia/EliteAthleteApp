@@ -12,5 +12,7 @@ namespace TrainingPlanApp.Web.Contracts
         Task CreateTrainingPlan(TrainingPlanCreateVM model);
         Task UpdateTrainingPlan(TrainingPlanCreateVM model);
         Task<List<TrainingPlanAdminVM>> GetAllTrainingPlans();
-	}
+        Task<TrainingPlanCreateVM> AddExerciseSequence(TrainingPlanCreateVM trainingPlanCreateVM);
+
+    }
 }

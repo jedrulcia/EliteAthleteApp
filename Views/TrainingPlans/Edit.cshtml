@@ -22,7 +22,7 @@
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
-            <div class="form-group col-md-12">
+@*             <div class="form-group col-md-12">
                 <label asp-for="ExerciseFirstId" class="control-label"></label>
                 <select asp-for="ExerciseFirstId" asp-items="Model?.Exercises" class="form-select">
                     <option>Select exercise</option>
@@ -54,7 +54,7 @@
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+            </div> *@
             <br />
             <div class="form-group col-md-12">
                 @if(Model.RedirectToAdmin)

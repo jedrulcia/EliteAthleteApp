@@ -23,43 +23,44 @@ namespace TrainingPlanApp.Web.Controllers
     {
         private readonly ITrainingPlanRepository trainingPlanRepository;
         private readonly IMapper mapper;
-		private readonly IExerciseRepository exerciseRepository;
-		private readonly ApplicationDbContext context;
+        private readonly IExerciseRepository exerciseRepository;
+        private readonly ApplicationDbContext context;
 
-        public TrainingPlansController(ApplicationDbContext context, 
-            ITrainingPlanRepository trainingPlanRepository, 
-            IMapper mapper, 
+        public TrainingPlansController(ApplicationDbContext context,
+            ITrainingPlanRepository trainingPlanRepository,
+            IMapper mapper,
             IExerciseRepository exerciseRepository)
         {
             this.mapper = mapper;
-			this.exerciseRepository = exerciseRepository;
+            this.exerciseRepository = exerciseRepository;
             this.trainingPlanRepository = trainingPlanRepository;
             this.context = context;
         }
 
         // GET: TrainingPlans
         public async Task<IActionResult> Index(string? id)
-		{
+        {
             var trainingPlansVM = await trainingPlanRepository.GetUserTrainingPlans(id);
             return View(trainingPlansVM);
-		}
+        }
 
         // GET : TrainingPlans
-		public async Task<IActionResult> IndexAdmin()
-		{
-			var trainingPlansVM = await trainingPlanRepository.GetAllTrainingPlans();
-			return View(trainingPlansVM);
-		}
-
-		// GET: TrainingPlans/Details
-		public async Task<IActionResult> Details(int? id, bool redirectToAdmin)
+        public async Task<IActionResult> IndexAdmin()
         {
-			var trainingPlan = await trainingPlanRepository.GetTrainingPlanDetails(id);
-			if (trainingPlan == null)
+            var trainingPlansVM = await trainingPlanRepository.GetAllTrainingPlans();
+            return View(trainingPlansVM);
+        }
+
+        // GET: TrainingPlans/Details
+        public async Task<IActionResult> Details(int? id, bool redirectToAdmin)
+        {
+            var trainingPlan = await trainingPlanRepository.GetTrainingPlanDetails(id);
+            if (trainingPlan == null)
             {
                 return NotFound();
             }
-			var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
+            var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
+            trainingPlanVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanVM.ExerciseIds);
             trainingPlanVM.RedirectToAdmin = redirectToAdmin;
             return View(trainingPlanVM);
         }
@@ -79,14 +80,13 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: TrainingPlans/Create
         [Authorize(Roles = Roles.Administrator)]
         public IActionResult Create(string? userId)
-		{
-			var model = new TrainingPlanCreateVM
-			{
-				AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
-				UserId = userId
-			};
-			return View(model);
-		}
+        {
+            var model = new TrainingPlanCreateVM
+            {
+                UserId = userId
+            };
+            return View(model);
+        }
 
         // POST: TrainingPlans/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -98,33 +98,56 @@ namespace TrainingPlanApp.Web.Controllers
         {
             try
             {
-				if (ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     await trainingPlanRepository.CreateTrainingPlan(model);
-					return RedirectToAction(nameof(Index), new { id = model.UserId });
-				}
+                    return RedirectToAction(nameof(Index), new { id = model.UserId });
+                }
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
-            model.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
             return View(model);
         }
 
+        // GET: TrainingPlans/AddExercises
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> AddExercises(int? id)
+        {
+            var trainingPlanCreateVM = new TrainingPlanCreateVM
+            {
+                AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
+                Id = id
+            };
+            return View(trainingPlanCreateVM);
+        }
+
+        // POST: TrainingPlans/AddExercises
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> AddExercises(TrainingPlanCreateVM trainingPlanCreateVM)
+        {
+            return View(await trainingPlanRepository.AddExerciseSequence(trainingPlanCreateVM));
+        }
+
+
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
-		{
-			await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
-			if (userId == null)
-			{
-				return RedirectToAction(nameof(IndexAdmin));
-			}
-			return RedirectToAction(nameof(Index), new { id = userId });
-		}
+        {
+            await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
+            if (userId == null)
+            {
+                return RedirectToAction(nameof(IndexAdmin));
+            }
+            return RedirectToAction(nameof(Index), new { id = userId });
+        }
 
-		// GET: TrainingPlans/Edit
-		[Authorize(Roles = Roles.Administrator)]
+        // GET: TrainingPlans/Edit
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
         {
             if (id == null)
@@ -150,22 +173,22 @@ namespace TrainingPlanApp.Web.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Edit(TrainingPlanCreateVM model)
         {
-			try
-			{
-				if (ModelState.IsValid)
-				{
+            try
+            {
+                if (ModelState.IsValid)
+                {
                     trainingPlanRepository.UpdateTrainingPlan(model);
-					return RedirectToAction(nameof(Index), new { id = model.UserId });
-				}
-			}
-			catch (Exception ex)
-			{
-				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-			}
+                    return RedirectToAction(nameof(Index), new { id = model.UserId });
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
+            }
 
-			model.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
-			return View(model);
-		}
+            model.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
+            return View(model);
+        }
 
         // POST: TrainingPlans/Delete
         [HttpPost, ActionName("Delete")]
@@ -175,10 +198,10 @@ namespace TrainingPlanApp.Web.Controllers
         {
             await trainingPlanRepository.DeleteAsync(id);
             if (userId == null)
-			{
-				return RedirectToAction(nameof(IndexAdmin));
-			}
-			return RedirectToAction(nameof(Index), new { id = userId });
-		}
+            {
+                return RedirectToAction(nameof(IndexAdmin));
+            }
+            return RedirectToAction(nameof(Index), new { id = userId });
+        }
     }
 }
