@@ -26,7 +26,7 @@ namespace TrainingPlanApp.Web.Models
         public bool? IsActive { get; set; }
         public bool RedirectToAdmin {  get; set; }
         [Display(Name = "Exercises")]
-        public List<int>? ExerciseIds { get; set; }
+        public List<int?>? ExerciseIds { get; set; }
         [Display(Name = "Exercise")]
         public string? ExerciseName { get; set; }
         [Display(Name = "Number of the exercise")]

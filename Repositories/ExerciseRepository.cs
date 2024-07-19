@@ -29,7 +29,7 @@ namespace TrainingPlanApp.Web.Repositories
             await UpdateAsync(exercise);
         }
 
-        public async Task<List<ExerciseVM>> GetListOfExercises(List<int> exercisesIds)
+        public async Task<List<ExerciseVM>> GetListOfExercises(List<int?> exercisesIds)
         {
             List<ExerciseVM> exercises = new List<ExerciseVM>();
 			foreach (int id in exercisesIds)

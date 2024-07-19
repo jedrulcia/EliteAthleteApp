@@ -115,12 +115,10 @@ namespace TrainingPlanApp.Web.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> AddExercises(int? id)
         {
-            var trainingPlanCreateVM = new TrainingPlanCreateVM
-            {
-                AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
-                Id = id
-            };
-            return View(trainingPlanCreateVM);
+            var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await trainingPlanRepository.GetAsync(id));
+            trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
+            trainingPlanCreateVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanCreateVM.ExerciseIds);
+			return View(trainingPlanCreateVM);
         }
 
         // POST: TrainingPlans/AddExercises
@@ -133,7 +131,6 @@ namespace TrainingPlanApp.Web.Controllers
         {
             return View(await trainingPlanRepository.AddExerciseSequence(trainingPlanCreateVM));
         }
-
 
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
