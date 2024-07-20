@@ -66,12 +66,16 @@ namespace TrainingPlanApp.Web.Repositories
         {
             var trainingPlan = mapper.Map<TrainingPlan>(model);
             trainingPlan.IsActive = true;
+            trainingPlan.ExerciseIds = null;
             await AddAsync(trainingPlan);
         }
 
         public async Task UpdateTrainingPlan(TrainingPlanCreateVM model)
         {
-            var trainingPlan = mapper.Map<TrainingPlan>(model);
+            var trainingPlan = await GetAsync(model.Id);
+            trainingPlan.Name = model.Name;
+            trainingPlan.Description = model.Description;
+            trainingPlan.StartDate = model.StartDate;
             trainingPlan.IsActive = true;
             await UpdateAsync(trainingPlan);
         }
@@ -91,31 +95,44 @@ namespace TrainingPlanApp.Web.Repositories
 
         public async Task<TrainingPlanCreateVM> AddExerciseSequence(TrainingPlanCreateVM trainingPlanCreateVM)
         {
-            var exerciseId = trainingPlanCreateVM.Exercise;
-            var exercise = await exerciseRepository.GetAsync(exerciseId);
+            var exercise = await exerciseRepository.GetAsync(trainingPlanCreateVM.Exercise);
             if (exercise == null)
-            {
-                return trainingPlanCreateVM;
-            }
+			{
+				trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
+				return trainingPlanCreateVM;
+			}
 
             var trainingPlan = await GetAsync(trainingPlanCreateVM.Id);
             if (trainingPlan.ExerciseIds == null)
             {
-                trainingPlan.ExerciseIds = new List<int?>();
-                trainingPlan.Weight = new List<int?>();
-                trainingPlan.Sets = new List<int?>();
-                trainingPlan.Repeats = new List<int?>();
-                trainingPlan.Index = new List<string?>();
+                trainingPlan = AddListsToTrainingPlan(trainingPlan);
             }
-            trainingPlan.ExerciseIds.Add(exerciseId);
-            trainingPlan.Weight.Add(trainingPlanCreateVM.Weight);
-            trainingPlan.Sets.Add(trainingPlanCreateVM.Sets);
-            trainingPlan.Repeats.Add(trainingPlanCreateVM.Repeats);
-            trainingPlan.Index.Add(trainingPlanCreateVM.Index);
-
+            trainingPlan = AddSingleAtributesToTrainingPlan(trainingPlan, trainingPlanCreateVM);
             await UpdateAsync(trainingPlan);
+
+            trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await GetAsync(trainingPlanCreateVM.Id));
             trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
-            return trainingPlanCreateVM;
+			trainingPlanCreateVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanCreateVM.ExerciseIds);
+			return trainingPlanCreateVM;
+        }
+
+        public TrainingPlan AddListsToTrainingPlan(TrainingPlan trainingPlan)
+        {
+			trainingPlan.ExerciseIds = new List<int?>();
+			trainingPlan.Weight = new List<int?>();
+			trainingPlan.Sets = new List<int?>();
+			trainingPlan.Repeats = new List<int?>();
+			trainingPlan.Index = new List<string?>();
+			return trainingPlan;
+        }
+        public TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanCreateVM trainingPlanCreateVM)
+		{
+			trainingPlan.ExerciseIds.Add(trainingPlanCreateVM.Exercise);
+			trainingPlan.Weight.Add(trainingPlanCreateVM.Weight);
+			trainingPlan.Sets.Add(trainingPlanCreateVM.Sets);
+			trainingPlan.Repeats.Add(trainingPlanCreateVM.Repeats);
+			trainingPlan.Index.Add(trainingPlanCreateVM.Index);
+			return trainingPlan;
         }
     }
 }
