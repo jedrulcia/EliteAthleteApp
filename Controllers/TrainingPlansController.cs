@@ -47,14 +47,14 @@ namespace TrainingPlanApp.Web.Controllers
         // GET : TrainingPlans
         public async Task<IActionResult> IndexAdmin()
         {
-            var trainingPlansVM = await trainingPlanRepository.GetAllTrainingPlans();
+            var trainingPlansVM = await trainingPlanRepository.GetAllTrainingPlansToVM();
             return View(trainingPlansVM);
         }
 
         // GET: TrainingPlans/Details
         public async Task<IActionResult> Details(int? id, bool redirectToAdmin)
         {
-            var trainingPlan = await trainingPlanRepository.GetTrainingPlanDetails(id);
+            var trainingPlan = await trainingPlanRepository.GetAsync(id);
             if (trainingPlan == null)
             {
                 return NotFound();
@@ -131,7 +131,7 @@ namespace TrainingPlanApp.Web.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> AddExercises(TrainingPlanCreateVM trainingPlanCreateVM)
         {
-            return View(await trainingPlanRepository.AddExerciseSequence(trainingPlanCreateVM));
+            return View(await trainingPlanRepository.AddExerciseToTrainingPlanSequence(trainingPlanCreateVM));
         }
 
 		// POST: TrainingPlans/AddExercises/RemoveExercise
@@ -186,7 +186,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await trainingPlanRepository.UpdateTrainingPlan(model);
+                    await trainingPlanRepository.UpdateBasicTrainingPlanDetails(model);
                     return RedirectToAction(nameof(Index), new { id = model.UserId });
                 }
             }
