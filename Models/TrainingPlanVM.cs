@@ -38,5 +38,6 @@ namespace TrainingPlanApp.Web.Models
 		public List<int?>? Sets { get; set; }
 		[Display(Name = "Repeats")]
 		public List<int?>? Repeats { get; set; }
+		public List<int>? Order { get; set; }
 	}
 }

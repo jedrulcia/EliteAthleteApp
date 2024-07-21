@@ -116,7 +116,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return trainingPlanCreateVM;
         }
 
-        public TrainingPlan AddListsToTrainingPlan(TrainingPlan trainingPlan)
+        private TrainingPlan AddListsToTrainingPlan(TrainingPlan trainingPlan)
         {
 			trainingPlan.ExerciseIds = new List<int?>();
 			trainingPlan.Weight = new List<int?>();
@@ -125,7 +125,7 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.Index = new List<string?>();
 			return trainingPlan;
         }
-        public TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanCreateVM trainingPlanCreateVM)
+        private TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanCreateVM trainingPlanCreateVM)
 		{
 			trainingPlan.ExerciseIds.Add(trainingPlanCreateVM.Exercise);
 			trainingPlan.Weight.Add(trainingPlanCreateVM.Weight);
@@ -146,5 +146,66 @@ namespace TrainingPlanApp.Web.Repositories
             await UpdateAsync(trainingPlan);
 		}
 
+		public async Task<List<int>?> GetOrderOfExercises(List<string?>? index)
+		{
+			if (index == null)
+			{
+				return null;
+			}
+
+			var indexedItems = index
+				.Select((value, idx) => new { Value = value, OriginalIndex = idx })
+				.ToList();
+
+			var sortedItems = indexedItems
+				.OrderBy(item => item.Value, new StringComparer())
+				.ToList();
+
+			var order = sortedItems
+				.Select(item => item.OriginalIndex)
+				.ToList();
+
+			var sortedIndex = sortedItems
+				.Select(item => item.Value)
+				.ToList();
+
+			return order;
+		}
+
+		// Custom string comparer to match the logic used in Compare method
+		private class StringComparer : IComparer<string?>
+		{
+			public int Compare(string? x, string? y)
+			{
+				if (x == null && y == null) return 0;
+				if (x == null) return -1;
+				if (y == null) return 1;
+
+				(int numberX, string letterX) = SplitNumericAndAlpha(x);
+				(int numberY, string letterY) = SplitNumericAndAlpha(y);
+
+				int numberComparison = numberX.CompareTo(numberY);
+				if (numberComparison != 0)
+				{
+					return numberComparison;
+				}
+
+				return string.Compare(letterX, letterY, StringComparison.Ordinal);
+			}
+
+			private (int, string) SplitNumericAndAlpha(string value)
+			{
+				int index = 0;
+				while (index < value.Length && char.IsDigit(value[index]))
+				{
+					index++;
+				}
+
+				int numberPart = int.Parse(value.Substring(0, index));
+				string alphaPart = value.Substring(index);
+
+				return (numberPart, alphaPart);
+			}
+		}
 	}
 }

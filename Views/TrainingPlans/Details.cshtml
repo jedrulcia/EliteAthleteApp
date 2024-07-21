@@ -27,47 +27,47 @@
 						@Html.DisplayFor(model => model.Description)
 					</dd>
 			<th></th>
-					@for (int i = 0; i < Model.ExerciseIds.Count; i++)
+					@for (int i = 0; i < Model.Order.Count; i++)
 					{
 				<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Index)
 				</dt>
 				<dd class="col-sm-10">
-							@Html.DisplayFor(model => model.Index[i])
+							@Html.DisplayFor(model => model.Index[Model.Order[i]])
 				</dd>
 				<dt class="col-sm-2">
-							@Html.DisplayNameFor(model => model.Exercises[i].Name)
+							@Html.DisplayNameFor(model => model.Exercises[Model.Order[i]].Name)
 				</dt>
 				<dd class="col-sm-10">
-							@Html.DisplayFor(model => model.Exercises[i].Name)
+							@Html.DisplayFor(model => model.Exercises[Model.Order[i]].Name)
 				</dd>
 				<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Weight)
 				</dt>
 				<dd class="col-sm-10">
-							@Html.DisplayFor(model => model.Weight[i])
+							@Html.DisplayFor(model => model.Weight[Model.Order[i]])
 				</dd>
 				<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Repeats)
 				</dt>
 				<dd class="col-sm-10">
-							@Html.DisplayFor(model => model.Repeats[i])
+							@Html.DisplayFor(model => model.Repeats[Model.Order[i]])
 				</dd>
 				<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Sets)
 				</dt>
 				<dd class="col-sm-10">
-							@Html.DisplayFor(model => model.Sets[i])
+							@Html.DisplayFor(model => model.Sets[Model.Order[Model.Order[i]]])
 				</dd>
 				<dt class="col-sm-2">
-							@Html.DisplayNameFor(model => model.Exercises[i].Description)
+							@Html.DisplayNameFor(model => model.Exercises[Model.Order[i]].Description)
 				</dt>
 				<dd class="col-sm-10">
-							@Html.DisplayFor(model => model.Exercises[i].Description)
+							@Html.DisplayFor(model => model.Exercises[Model.Order[i]].Description)
 				</dd>
 				<dd class="col-sm-12">
 							@{
-								var mainVideoUrl = Model.Exercises[i].VideoLink;
+								var mainVideoUrl = Model.Exercises[Model.Order[i]].VideoLink;
 								var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
 								var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
 							}

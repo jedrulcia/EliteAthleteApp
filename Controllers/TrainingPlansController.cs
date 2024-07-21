@@ -61,6 +61,7 @@ namespace TrainingPlanApp.Web.Controllers
             }
             var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
             trainingPlanVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanVM.ExerciseIds);
+            trainingPlanVM.Order = await trainingPlanRepository.GetOrderOfExercises(trainingPlanVM.Index);
             trainingPlanVM.RedirectToAdmin = redirectToAdmin;
             return View(trainingPlanVM);
         }
