@@ -13,6 +13,8 @@ namespace TrainingPlanApp.Web.Contracts
         Task UpdateTrainingPlan(TrainingPlanCreateVM model);
         Task<List<TrainingPlanAdminVM>> GetAllTrainingPlans();
         Task<TrainingPlanCreateVM> AddExerciseSequence(TrainingPlanCreateVM trainingPlanCreateVM);
-
-    }
+        TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanCreateVM trainingPlanCreateVM);
+        TrainingPlan AddListsToTrainingPlan(TrainingPlan trainingPlan);
+        Task RemoveExerciseFromTrainingPlan(int id, int index);
+	}
 }

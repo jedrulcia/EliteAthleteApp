@@ -132,7 +132,17 @@ namespace TrainingPlanApp.Web.Controllers
             return View(await trainingPlanRepository.AddExerciseSequence(trainingPlanCreateVM));
         }
 
-        [Authorize(Roles = Roles.Administrator)]
+		// POST: TrainingPlans/AddExercises/RemoveExercise
+		[HttpPost, ActionName("RemoveExercise")]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> RemoveExercise(int trainingPlanId, int index)
+		{
+			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(trainingPlanId, index);
+			return RedirectToAction(nameof(AddExercises), new { id = trainingPlanId });
+		}
+
+		[Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
         {
             await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);

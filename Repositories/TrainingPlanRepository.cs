@@ -134,5 +134,17 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.Index.Add(trainingPlanCreateVM.Index);
 			return trainingPlan;
         }
-    }
+
+        public async Task RemoveExerciseFromTrainingPlan(int id, int index)
+        {
+            var trainingPlan = await GetAsync(id);
+            trainingPlan.ExerciseIds.RemoveAt(index);
+			trainingPlan.Weight.RemoveAt(index);
+			trainingPlan.Sets.RemoveAt(index);
+			trainingPlan.Repeats.RemoveAt(index);
+			trainingPlan.Index.RemoveAt(index);
+            await UpdateAsync(trainingPlan);
+		}
+
+	}
 }

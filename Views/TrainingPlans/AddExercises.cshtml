@@ -4,7 +4,7 @@
 	ViewData["Title"] = "AddExercises";
 }
 
-<h1>Add Exercises</h1>
+<h1>Manage Exercises</h1>
 
 <div class="row">
 	<div class="col-md-12">
@@ -57,14 +57,15 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.Exercises)
+		@* @foreach (var item in Model.Exercises) *@
+		@for (int i = 0; i < Model.Exercises.Count; i++)
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.Name)
+					@Html.DisplayFor(modelItem => Model.Exercises[i].Name)
 				</td>
 				<td class="text-end">
-					<button data-exerciseId="@item.Id" data-trainingPlanId="@Model.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+					<button data-trainingplanid="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
 				</td>
 			</tr>
 		}
@@ -72,8 +73,8 @@
 </table>
 
 <form id="deleteForm" asp-action="RemoveExercise">
-	<input type="hidden" id="exerciseId" name="exerciseId" />
 	<input type="hidden" id="trainingPlanId" name="trainingPlanId" />
+	<input type="hidden" id="index" name="index" />
 </form>
 
 @section Scripts
@@ -94,10 +95,10 @@
 				).then((confirm) => {
 					if (confirm) {
 						var btn = $(this);
-						var exerciseId = btn.data("exerciseid");
 						var trainingPlanId = btn.data("trainingplanid");
-						$('#exerciseId').val(exerciseId);
+						var index = btn.data("index");
 						$('#trainingPlanId').val(trainingPlanId);
+						$('#index').val(index);
 						$('#deleteForm').submit();
 					}
 				}
