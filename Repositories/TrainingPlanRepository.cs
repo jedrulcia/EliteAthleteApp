@@ -34,6 +34,16 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.ExerciseIds = null;
 			await AddAsync(trainingPlan);
 		}
+
+		public async Task<TrainingPlanCreateVM> GetTrainingPlanVMForExerciseManagementView(int? id, bool redirectToAdmin)
+		{
+			var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await GetAsync(id));
+			trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
+			trainingPlanCreateVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanCreateVM.ExerciseIds);
+			trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
+			return trainingPlanCreateVM;
+		}
+
 		public async Task<TrainingPlanCreateVM> AddExerciseToTrainingPlanSequence(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanCreateVM.Exercise);
@@ -88,6 +98,15 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(trainingPlan);
 		}
 
+		public async Task<TrainingPlanCreateVM> GetTrainingPlanVMForEditingView(int? id, bool redirectToAdmin)
+		{
+			var trainingPlan = await context.TrainingPlans.FindAsync(id);
+			var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
+			trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
+			trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
+			return trainingPlanCreateVM;
+		}
+
 		public async Task UpdateBasicTrainingPlanDetails(TrainingPlanCreateVM model)
 		{
 			var trainingPlan = await GetAsync(model.Id);
@@ -139,65 +158,14 @@ namespace TrainingPlanApp.Web.Repositories
             return trainingPlansVM;
         }
 
-		public async Task<List<int>?> GetOrderOfExercises(List<string?>? index)
+		public async Task<TrainingPlanVM> GetDetailsOfTrainingPlan(TrainingPlan trainingPlan, bool redirectToAdmin)
 		{
-			if (index == null)
-			{
-				return null;
-			}
-
-			var indexedItems = index
-				.Select((value, idx) => new { Value = value, OriginalIndex = idx })
-				.ToList();
-
-			var sortedItems = indexedItems
-				.OrderBy(item => item.Value, new StringComparer())
-				.ToList();
-
-			var order = sortedItems
-				.Select(item => item.OriginalIndex)
-				.ToList();
-
-			var sortedIndex = sortedItems
-				.Select(item => item.Value)
-				.ToList();
-
-			return order;
+			var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
+			trainingPlanVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanVM.ExerciseIds);
+			trainingPlanVM.Order = await exerciseRepository.GetOrderOfExercises(trainingPlanVM.Index);
+			trainingPlanVM.RedirectToAdmin = redirectToAdmin;
+			return trainingPlanVM;
 		}
 
-		private class StringComparer : IComparer<string?>
-		{
-			public int Compare(string? x, string? y)
-			{
-				if (x == null && y == null) return 0;
-				if (x == null) return -1;
-				if (y == null) return 1;
-
-				(int numberX, string letterX) = SplitNumericAndAlpha(x);
-				(int numberY, string letterY) = SplitNumericAndAlpha(y);
-
-				int numberComparison = numberX.CompareTo(numberY);
-				if (numberComparison != 0)
-				{
-					return numberComparison;
-				}
-
-				return string.Compare(letterX, letterY, StringComparison.Ordinal);
-			}
-
-			private (int, string) SplitNumericAndAlpha(string value)
-			{
-				int index = 0;
-				while (index < value.Length && char.IsDigit(value[index]))
-				{
-					index++;
-				}
-
-				int numberPart = int.Parse(value.Substring(0, index));
-				string alphaPart = value.Substring(index);
-
-				return (numberPart, alphaPart);
-			}
-		}
 	}
 }

@@ -59,10 +59,8 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-            var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
-            trainingPlanVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanVM.ExerciseIds);
-            trainingPlanVM.Order = await trainingPlanRepository.GetOrderOfExercises(trainingPlanVM.Index);
-            trainingPlanVM.RedirectToAdmin = redirectToAdmin;
+
+            var trainingPlanVM = await trainingPlanRepository.GetDetailsOfTrainingPlan(trainingPlan, redirectToAdmin);
             return View(trainingPlanVM);
         }
 
@@ -116,10 +114,7 @@ namespace TrainingPlanApp.Web.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> AddExercises(int? id, bool redirectToAdmin)
         {
-            var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await trainingPlanRepository.GetAsync(id));
-            trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
-            trainingPlanCreateVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanCreateVM.ExerciseIds);
-			trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
+            var trainingPlanCreateVM = await trainingPlanRepository.GetTrainingPlanVMForExerciseManagementView(id, redirectToAdmin);
 			return View(trainingPlanCreateVM);
         }
 
@@ -163,14 +158,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-            var trainingPlan = await context.TrainingPlans.FindAsync(id);
-            if (trainingPlan == null)
-            {
-                return NotFound();
-            }
-            var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
-            trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
-            trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
+            var trainingPlanCreateVM = await trainingPlanRepository.GetTrainingPlanVMForEditingView(id, redirectToAdmin);
             return View(trainingPlanCreateVM);
         }
 

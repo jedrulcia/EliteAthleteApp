@@ -9,6 +9,7 @@ namespace TrainingPlanApp.Web.Contracts
         Task CreateNewExercise(ExerciseVM exercise);
         Task EditExercise(ExerciseVM exerciseVM);
         Task<List<ExerciseVM>> GetListOfExercises(List<int?> exercisesIds);
+		Task<List<int>?> GetOrderOfExercises(List<string?>? index);
 
 	}
 }
