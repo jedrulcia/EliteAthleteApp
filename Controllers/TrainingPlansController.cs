@@ -174,7 +174,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    trainingPlanRepository.UpdateTrainingPlan(model);
+                    await trainingPlanRepository.UpdateTrainingPlan(model);
                     return RedirectToAction(nameof(Index), new { id = model.UserId });
                 }
             }
