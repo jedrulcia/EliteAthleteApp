@@ -113,11 +113,12 @@ namespace TrainingPlanApp.Web.Controllers
 
         // GET: TrainingPlans/AddExercises
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> AddExercises(int? id)
+        public async Task<IActionResult> AddExercises(int? id, bool redirectToAdmin)
         {
             var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await trainingPlanRepository.GetAsync(id));
             trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
             trainingPlanCreateVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanCreateVM.ExerciseIds);
+			trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
 			return View(trainingPlanCreateVM);
         }
 
