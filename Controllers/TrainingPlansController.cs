@@ -44,7 +44,7 @@ namespace TrainingPlanApp.Web.Controllers
             return View(trainingPlansVM);
         }
 
-        // GET : TrainingPlans
+        // GET : TrainingPlansAdmin
         public async Task<IActionResult> IndexAdmin()
         {
             var trainingPlansVM = await trainingPlanRepository.GetAllTrainingPlansToVM();
@@ -64,17 +64,6 @@ namespace TrainingPlanApp.Web.Controllers
             return View(trainingPlanDetailsVM);
         }
 
-        public async Task<IActionResult> ExerciseDetails(int? exerciseId, int? trainingPlanId)
-        {
-            var exercise = await exerciseRepository.GetAsync(exerciseId);
-            if (exercise == null)
-            {
-                return NotFound();
-            }
-            var exerciseVM = mapper.Map<TrainingPlanExerciseVM>(exercise);
-            exerciseVM.TrainingPlanId = trainingPlanId;
-            return View(exerciseVM);
-        }
 
         // GET: TrainingPlans/Create
         [Authorize(Roles = Roles.Administrator)]
@@ -112,10 +101,10 @@ namespace TrainingPlanApp.Web.Controllers
 
         // GET: TrainingPlans/AddExercises
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> AddExercises(int? id, bool redirectToAdmin)
+        public async Task<IActionResult> ManageExercises(int? id, bool redirectToAdmin)
         {
-            var trainingPlanAddExercisesVM = await trainingPlanRepository.GetTrainingPlanAddExerciseVM(id, redirectToAdmin);
-			return View(trainingPlanAddExercisesVM);
+            var trainingPlanManageExercisesVM = await trainingPlanRepository.GetTrainingPlanManageExercisesVM(id, redirectToAdmin);
+			return View(trainingPlanManageExercisesVM);
         }
 
         // POST: TrainingPlans/AddExercises
@@ -124,7 +113,7 @@ namespace TrainingPlanApp.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> AddExercises(TrainingPlanAddExercisesVM trainingPlanAddExercisesVM)
+        public async Task<IActionResult> ManageExercises(TrainingPlanManageExercisesVM trainingPlanAddExercisesVM)
         {
             return View(await trainingPlanRepository.AddExerciseToTrainingPlanSequence(trainingPlanAddExercisesVM));
         }
@@ -136,7 +125,7 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> RemoveExercise(int trainingPlanId, int index)
 		{
 			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(trainingPlanId, index);
-			return RedirectToAction(nameof(AddExercises), new { id = trainingPlanId });
+			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanId });
 		}
 
 		[Authorize(Roles = Roles.Administrator)]

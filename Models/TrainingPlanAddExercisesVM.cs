@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TrainingPlanApp.Web.Models
 {
-	public class TrainingPlanAddExercisesVM
+	public class TrainingPlanManageExercisesVM
 	{
 		public int? Id { get; set; }
 

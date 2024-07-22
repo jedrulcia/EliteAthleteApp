@@ -34,16 +34,16 @@ namespace TrainingPlanApp.Web.Repositories
 			await AddAsync(trainingPlan);
 		}
 
-		public async Task<TrainingPlanAddExercisesVM> GetTrainingPlanAddExerciseVM(int? id, bool redirectToAdmin)
+		public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id, bool redirectToAdmin)
 		{
-			var trainingPlanAddExercisesVM = mapper.Map<TrainingPlanAddExercisesVM>(await GetAsync(id));
+			var trainingPlanAddExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(id));
 			trainingPlanAddExercisesVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
 			trainingPlanAddExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanAddExercisesVM.ExerciseIds);
 			trainingPlanAddExercisesVM.RedirectToAdmin = redirectToAdmin;
 			return trainingPlanAddExercisesVM;
 		}
 
-		public async Task<TrainingPlanAddExercisesVM> AddExerciseToTrainingPlanSequence(TrainingPlanAddExercisesVM trainingPlanAddExercisesVM)
+		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanSequence(TrainingPlanManageExercisesVM trainingPlanAddExercisesVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExercisesVM.NewExerciseId);
 			if (exercise == null)
@@ -60,7 +60,7 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan = AddSingleAtributesToTrainingPlan(trainingPlan, trainingPlanAddExercisesVM);
 			await UpdateAsync(trainingPlan);
 
-			trainingPlanAddExercisesVM = mapper.Map<TrainingPlanAddExercisesVM>(await GetAsync(trainingPlanAddExercisesVM.Id));
+			trainingPlanAddExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(trainingPlanAddExercisesVM.Id));
 			trainingPlanAddExercisesVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
 			trainingPlanAddExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanAddExercisesVM.ExerciseIds);
 			return trainingPlanAddExercisesVM;
@@ -76,7 +76,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return trainingPlan;
 		}
 
-		private TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanAddExercisesVM trainingPlanAddExercisesVM)
+		private TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanManageExercisesVM trainingPlanAddExercisesVM)
 		{
 			trainingPlan.ExerciseIds.Add(trainingPlanAddExercisesVM.NewExerciseId);
 			trainingPlan.Weight.Add(trainingPlanAddExercisesVM.NewExerciseWeight);
