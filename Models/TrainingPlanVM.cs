@@ -9,9 +9,9 @@ namespace TrainingPlanApp.Web.Models
     public class TrainingPlanVM
     {
         public int? Id { get; set; }
-        [Display(Name = "Athlete")]
-        public string? UserId { get; set; }
-        [Display(Name = "Training Plan")]
+		[Display(Name = "Athlete")]
+		public string? UserId { get; set; }
+		[Display(Name = "Training Plan")]
         [Required]
         public string? Name { get; set; }
         [Display(Name = "Description")]

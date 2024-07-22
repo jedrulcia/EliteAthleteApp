@@ -154,7 +154,21 @@ namespace TrainingPlanApp.Web.Repositories
                 trainingPlan.LastName = user.LastName;
             }
             return trainingPlansVM;
-        }
+		}
+
+		public async Task<List<TrainingPlanActiveVM>> GetUserActiveTrainingPlans(string userId)
+		{
+			if (userId == null)
+			{
+				var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+				userId = user.Id;
+			}
+			var trainingPlans = await context.TrainingPlans
+				.Where(x => x.UserId == userId)
+				.Where(x => x.IsActive == true)
+				.ToListAsync();
+			return mapper.Map<List<TrainingPlanActiveVM>>(trainingPlans);
+		}
 
 		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin)
 		{
@@ -164,6 +178,5 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlanDetailsVM.RedirectToAdmin = redirectToAdmin;
 			return trainingPlanDetailsVM;
 		}
-
 	}
 }

@@ -1,28 +1,16 @@
 ﻿@using TrainingPlanApp.Web.Constants
-@model IEnumerable<TrainingPlanVM>
+@model IEnumerable<TrainingPlanActiveVM>
 
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "TrainingPlanActive";
 }
 
-<h1>Training Plans</h1>
-@if (User.IsInRole(Roles.Administrator))
-{
-	<p>
-		<a asp-action="ActiveTrainingPlans" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>My Active Training Plans</a>
-	</p>
-}
+<h1>Active Training Plans</h1>
 <table class="table">
 	<thead>
 		<tr>
 			<th>
 				@Html.DisplayNameFor(model => model.Name)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.IsActive)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.StartDate)
 			</th>
 			<th></th>
 		</tr>
@@ -33,19 +21,6 @@
 			<tr>
 				<td>
 					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td>
-					@if (item.IsActive == true)
-					{
-						<span class="badge bg-success">Active</span>
-					}
-					else
-					{
-						<span class="badge bg-danger">Not Active</span>
-					}
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.StartDate)
 				</td>
 				<td class="text-end">
 					@if (User.IsInRole(Roles.User))
