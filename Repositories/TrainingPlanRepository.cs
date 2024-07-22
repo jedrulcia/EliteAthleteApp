@@ -31,40 +31,39 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(model);
 			trainingPlan.IsActive = true;
-			trainingPlan.ExerciseIds = null;
 			await AddAsync(trainingPlan);
 		}
 
-		public async Task<TrainingPlanCreateVM> GetTrainingPlanVMForExerciseManagementView(int? id, bool redirectToAdmin)
+		public async Task<TrainingPlanAddExercisesVM> GetTrainingPlanAddExerciseVM(int? id, bool redirectToAdmin)
 		{
-			var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await GetAsync(id));
-			trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
-			trainingPlanCreateVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanCreateVM.ExerciseIds);
-			trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
-			return trainingPlanCreateVM;
+			var trainingPlanAddExercisesVM = mapper.Map<TrainingPlanAddExercisesVM>(await GetAsync(id));
+			trainingPlanAddExercisesVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
+			trainingPlanAddExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanAddExercisesVM.ExerciseIds);
+			trainingPlanAddExercisesVM.RedirectToAdmin = redirectToAdmin;
+			return trainingPlanAddExercisesVM;
 		}
 
-		public async Task<TrainingPlanCreateVM> AddExerciseToTrainingPlanSequence(TrainingPlanCreateVM trainingPlanCreateVM)
+		public async Task<TrainingPlanAddExercisesVM> AddExerciseToTrainingPlanSequence(TrainingPlanAddExercisesVM trainingPlanAddExercisesVM)
 		{
-			var exercise = await exerciseRepository.GetAsync(trainingPlanCreateVM.Exercise);
+			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExercisesVM.NewExerciseId);
 			if (exercise == null)
 			{
-				trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
-				return trainingPlanCreateVM;
+				trainingPlanAddExercisesVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
+				return trainingPlanAddExercisesVM;
 			}
 
-			var trainingPlan = await GetAsync(trainingPlanCreateVM.Id);
+			var trainingPlan = await GetAsync(trainingPlanAddExercisesVM.Id);
 			if (trainingPlan.ExerciseIds == null)
 			{
 				trainingPlan = AddListsToTrainingPlan(trainingPlan);
 			}
-			trainingPlan = AddSingleAtributesToTrainingPlan(trainingPlan, trainingPlanCreateVM);
+			trainingPlan = AddSingleAtributesToTrainingPlan(trainingPlan, trainingPlanAddExercisesVM);
 			await UpdateAsync(trainingPlan);
 
-			trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await GetAsync(trainingPlanCreateVM.Id));
-			trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
-			trainingPlanCreateVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanCreateVM.ExerciseIds);
-			return trainingPlanCreateVM;
+			trainingPlanAddExercisesVM = mapper.Map<TrainingPlanAddExercisesVM>(await GetAsync(trainingPlanAddExercisesVM.Id));
+			trainingPlanAddExercisesVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
+			trainingPlanAddExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanAddExercisesVM.ExerciseIds);
+			return trainingPlanAddExercisesVM;
 		}
 
 		private TrainingPlan AddListsToTrainingPlan(TrainingPlan trainingPlan)
@@ -77,13 +76,13 @@ namespace TrainingPlanApp.Web.Repositories
 			return trainingPlan;
 		}
 
-		private TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanCreateVM trainingPlanCreateVM)
+		private TrainingPlan AddSingleAtributesToTrainingPlan(TrainingPlan trainingPlan, TrainingPlanAddExercisesVM trainingPlanAddExercisesVM)
 		{
-			trainingPlan.ExerciseIds.Add(trainingPlanCreateVM.Exercise);
-			trainingPlan.Weight.Add(trainingPlanCreateVM.Weight);
-			trainingPlan.Sets.Add(trainingPlanCreateVM.Sets);
-			trainingPlan.Repeats.Add(trainingPlanCreateVM.Repeats);
-			trainingPlan.Index.Add(trainingPlanCreateVM.Index);
+			trainingPlan.ExerciseIds.Add(trainingPlanAddExercisesVM.NewExerciseId);
+			trainingPlan.Weight.Add(trainingPlanAddExercisesVM.NewExerciseWeight);
+			trainingPlan.Sets.Add(trainingPlanAddExercisesVM.NewExerciseSets);
+			trainingPlan.Repeats.Add(trainingPlanAddExercisesVM.NewExerciseRepeats);
+			trainingPlan.Index.Add(trainingPlanAddExercisesVM.NewExerciseIndex);
 			return trainingPlan;
 		}
 
@@ -98,12 +97,11 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(trainingPlan);
 		}
 
-		public async Task<TrainingPlanCreateVM> GetTrainingPlanVMForEditingView(int? id, bool redirectToAdmin)
+		public async Task<TrainingPlanCreateVM> GetTrainingPlanCreateVMForEditingView(int? id, bool redirectToAdmin)
 		{
 			var trainingPlan = await context.TrainingPlans.FindAsync(id);
 			var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(trainingPlan);
 			trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
-			trainingPlanCreateVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
 			return trainingPlanCreateVM;
 		}
 
@@ -158,13 +156,13 @@ namespace TrainingPlanApp.Web.Repositories
             return trainingPlansVM;
         }
 
-		public async Task<TrainingPlanVM> GetDetailsOfTrainingPlan(TrainingPlan trainingPlan, bool redirectToAdmin)
+		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin)
 		{
-			var trainingPlanVM = mapper.Map<TrainingPlanVM>(trainingPlan);
-			trainingPlanVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanVM.ExerciseIds);
-			trainingPlanVM.Order = await exerciseRepository.GetOrderOfExercises(trainingPlanVM.Index);
-			trainingPlanVM.RedirectToAdmin = redirectToAdmin;
-			return trainingPlanVM;
+			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
+			trainingPlanDetailsVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
+			trainingPlanDetailsVM.Order = await exerciseRepository.GetOrderOfExercises(trainingPlanDetailsVM.Index);
+			trainingPlanDetailsVM.RedirectToAdmin = redirectToAdmin;
+			return trainingPlanDetailsVM;
 		}
 
 	}

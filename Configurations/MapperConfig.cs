@@ -11,21 +11,15 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<User, UserListVM>().ReverseMap();
 
 			CreateMap<Exercise, ExerciseVM>().ReverseMap();
-			CreateMap<Exercise, TrainingPlanExerciseVM>().ReverseMap();
-			CreateMap<Exercise, TrainingPlanCreateVM>().ReverseMap();
+
 			CreateMap<TrainingPlan, TrainingPlanVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanAdminVM>().ReverseMap();
-			CreateMap<TrainingPlanVM, TrainingPlanCreateVM>().ReverseMap();
-			CreateMap<TrainingPlan, TrainingPlanCreateVM>()
-			.ForMember(dest => dest.Weight, opt => opt.Ignore())
-			.ForMember(dest => dest.Sets, opt => opt.Ignore())
-			.ForMember(dest => dest.Repeats, opt => opt.Ignore())
-			.ForMember(dest => dest.Index, opt => opt.Ignore());
-			CreateMap<TrainingPlanCreateVM, TrainingPlan>()
-			.ForMember(dest => dest.Weight, opt => opt.Ignore())
-			.ForMember(dest => dest.Sets, opt => opt.Ignore())
-			.ForMember(dest => dest.Repeats, opt => opt.Ignore())
-			.ForMember(dest => dest.Index, opt => opt.Ignore());
+			CreateMap<TrainingPlan, TrainingPlanCreateVM>().ReverseMap();
+			CreateMap<TrainingPlan, TrainingPlanAddExercisesVM>().ReverseMap();
+			CreateMap<TrainingPlan, TrainingPlanDetailsVM>().ReverseMap();
+			CreateMap<TrainingPlan, TrainingPlanExerciseVM>().ReverseMap();
+
+
 
 			CreateMap<Meal, MealVM>().ReverseMap();
 			CreateMap<Meal, MealCreateVM>().ReverseMap();

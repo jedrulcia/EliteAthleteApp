@@ -60,8 +60,8 @@ namespace TrainingPlanApp.Web.Controllers
                 return NotFound();
             }
 
-            var trainingPlanVM = await trainingPlanRepository.GetDetailsOfTrainingPlan(trainingPlan, redirectToAdmin);
-            return View(trainingPlanVM);
+            var trainingPlanDetailsVM = await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan, redirectToAdmin);
+            return View(trainingPlanDetailsVM);
         }
 
         public async Task<IActionResult> ExerciseDetails(int? exerciseId, int? trainingPlanId)
@@ -114,8 +114,8 @@ namespace TrainingPlanApp.Web.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> AddExercises(int? id, bool redirectToAdmin)
         {
-            var trainingPlanCreateVM = await trainingPlanRepository.GetTrainingPlanVMForExerciseManagementView(id, redirectToAdmin);
-			return View(trainingPlanCreateVM);
+            var trainingPlanAddExercisesVM = await trainingPlanRepository.GetTrainingPlanAddExerciseVM(id, redirectToAdmin);
+			return View(trainingPlanAddExercisesVM);
         }
 
         // POST: TrainingPlans/AddExercises
@@ -124,9 +124,9 @@ namespace TrainingPlanApp.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> AddExercises(TrainingPlanCreateVM trainingPlanCreateVM)
+        public async Task<IActionResult> AddExercises(TrainingPlanAddExercisesVM trainingPlanAddExercisesVM)
         {
-            return View(await trainingPlanRepository.AddExerciseToTrainingPlanSequence(trainingPlanCreateVM));
+            return View(await trainingPlanRepository.AddExerciseToTrainingPlanSequence(trainingPlanAddExercisesVM));
         }
 
 		// POST: TrainingPlans/AddExercises/RemoveExercise
@@ -158,7 +158,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-            var trainingPlanCreateVM = await trainingPlanRepository.GetTrainingPlanVMForEditingView(id, redirectToAdmin);
+            var trainingPlanCreateVM = await trainingPlanRepository.GetTrainingPlanCreateVMForEditingView(id, redirectToAdmin);
             return View(trainingPlanCreateVM);
         }
 
@@ -183,7 +183,6 @@ namespace TrainingPlanApp.Web.Controllers
                 ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
 
-            model.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
             return View(model);
         }
 

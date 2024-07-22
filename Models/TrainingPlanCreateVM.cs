@@ -19,22 +19,6 @@ namespace TrainingPlanApp.Web.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
-        [Display(Name = "Status")]
-        public bool? IsActive { get; set; }
 		public bool RedirectToAdmin { get; set; }
-        [Display(Name = "Exercises")]
-		public List<ExerciseVM?>? Exercises { get; set; }
-        public List<int?>? ExerciseIds { get; set; }
-		[Display(Name = "Exercise")]
-        public int? Exercise { get; set; }
-        public SelectList? AvailableExercises { get; set; }
-		[Display(Name = "Weight")]
-		public int? Weight { get; set; }
-		[Display(Name = "Sets")]
-		public int? Sets { get; set; }
-		[Display(Name = "Repeats")]
-		public int? Repeats { get; set; }
-        [Display(Name = "Number of the exercise")]
-        public string? Index { get; set; }
 	}
 }
