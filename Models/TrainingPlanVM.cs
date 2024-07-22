@@ -24,20 +24,5 @@ namespace TrainingPlanApp.Web.Models
 
         [Display(Name = "Status")]
         public bool? IsActive { get; set; }
-        public bool RedirectToAdmin {  get; set; }
-        [Display(Name = "Exercises")]
-        public List<int?>? ExerciseIds { get; set; }
-        [Display(Name = "Exercise")]
-        public string? ExerciseName { get; set; }
-        [Display(Name = "Number of the exercise")]
-        public List<string?>? Index { get; set; }
-        public List<ExerciseVM?>? Exercises {  get; set; }
-		[Display(Name = "Weight")]
-		public List<int?>? Weight { get; set; }
-		[Display(Name = "Sets")]
-		public List<int?>? Sets { get; set; }
-		[Display(Name = "Repeats")]
-		public List<int?>? Repeats { get; set; }
-		public List<int>? Order { get; set; }
 	}
 }
