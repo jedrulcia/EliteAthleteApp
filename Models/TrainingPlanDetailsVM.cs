@@ -24,7 +24,6 @@ namespace TrainingPlanApp.Web.Models
 		[Display(Name = "Number of the exercise")]
 		public List<string?>? Index { get; set; }
 
-		public List<int>? Order { get; set; }
 		public bool RedirectToAdmin { get; set; }
 	}
 }

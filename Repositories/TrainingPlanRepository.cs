@@ -172,7 +172,6 @@ namespace TrainingPlanApp.Web.Repositories
 			for (int i = 0; i < trainingPlanActiveVM.Count; i++)
 			{
 				trainingPlanActiveVM[i].Exercises = await exerciseRepository.GetListOfExercises(trainingPlanActiveVM[i].ExerciseIds);
-				trainingPlanActiveVM[i].Order = await exerciseRepository.GetOrderOfExercises(trainingPlanActiveVM[i].Index);
 			}
 			return trainingPlanActiveVM;
 		}
@@ -181,7 +180,6 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
 			trainingPlanDetailsVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
-			trainingPlanDetailsVM.Order = await exerciseRepository.GetOrderOfExercises(trainingPlanDetailsVM.Index);
 			trainingPlanDetailsVM.RedirectToAdmin = redirectToAdmin;
 			return trainingPlanDetailsVM;
 		}

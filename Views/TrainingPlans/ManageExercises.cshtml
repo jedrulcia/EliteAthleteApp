@@ -59,7 +59,19 @@
 	<thead>
 		<tr>
 			<th>
+				@Html.DisplayNameFor(model => model.Index)
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.Exercises)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Sets)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Repeats)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Weight)
 			</th>
 			<th></th>
 		</tr>
@@ -69,7 +81,19 @@
 		{
 			<tr>
 				<td>
+					@Html.DisplayFor(modelItem => Model.Index[i])
+				</td>
+				<td>
 					@Html.DisplayFor(modelItem => Model.Exercises[i].Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Sets[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Repeats[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Weight[i])
 				</td>
 				<td class="text-end">
 					<button data-trainingplanid="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
@@ -88,7 +112,6 @@
 {
 	<script>
 		$(function () {
-			$('.table').DataTable();
 
 			$('.deleteBtn').click(function (e) {
 				swal(

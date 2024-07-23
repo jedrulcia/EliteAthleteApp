@@ -25,6 +25,5 @@ namespace TrainingPlanApp.Web.Models
 		[Display(Name = "Exercise number")]
 		public List<string?>? Index { get; set; }
 
-		public List<int>? Order { get; set; }
 	}
 }
