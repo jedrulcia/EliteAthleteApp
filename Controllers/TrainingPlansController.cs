@@ -160,7 +160,14 @@ namespace TrainingPlanApp.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     await trainingPlanRepository.UpdateBasicTrainingPlanDetails(model);
-                    return RedirectToAction(nameof(Index), new { id = model.UserId });
+                    if (model.RedirectToAdmin)
+					{
+						return RedirectToAction(nameof(IndexAdmin));
+					}
+                    else
+					{
+						return RedirectToAction(nameof(Index), new { id = model.UserId });
+					}
                 }
             }
             catch (Exception ex)
