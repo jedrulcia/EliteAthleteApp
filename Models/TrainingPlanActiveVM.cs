@@ -22,10 +22,9 @@ namespace TrainingPlanApp.Web.Models
 		public List<int?>? Sets { get; set; }
 		[Display(Name = "Repeats")]
 		public List<int?>? Repeats { get; set; }
-		[Display(Name = "Number of the exercise")]
+		[Display(Name = "Exercise number")]
 		public List<string?>? Index { get; set; }
 
 		public List<int>? Order { get; set; }
-		public bool RedirectToAdmin { get; set; }
 	}
 }

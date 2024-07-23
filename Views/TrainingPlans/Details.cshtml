@@ -11,80 +11,93 @@
 	<thead>
 		<tr>
 			<th></th>
-			<div>
-				<hr />
-				<dl class="row">
-					<dt class="col-sm-2">
-						@Html.DisplayNameFor(model => model.Name)
-					</dt>
-					<dd class="col-sm-10">
-						@Html.DisplayFor(model => model.Name)
-					</dd>
-					<dt class="col-sm-2">
-						@Html.DisplayNameFor(model => model.Description)
-					</dt>
-					<dd class="col-sm-10">
-						@Html.DisplayFor(model => model.Description)
-					</dd>
-			<th></th>
-					@for (int i = 0; i < Model.Order.Count; i++)
-					{
-				<dt class="col-sm-2">
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<div>
+					<hr />
+					<dl class="row">
+						<dt class="col-sm-2">
+							@Html.DisplayNameFor(model => model.Name)
+						</dt>
+						<dd class="col-sm-10">
+							@Html.DisplayFor(model => model.Name)
+						</dd>
+						<dt class="col-sm-2">
+							@Html.DisplayNameFor(model => model.Description)
+						</dt>
+						<dd class="col-sm-10">
+							@Html.DisplayFor(model => model.Description)
+						</dd>
+					</dl>
+				</div>
+			</td>
+		</tr>
+		@for (int i = 0; i < Model.Order.Count; i++)
+		{
+			<tr>
+				<td>
+					<dl class="row">
+						<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Index)
-				</dt>
-				<dd class="col-sm-10">
+						</dt>
+						<dd class="col-sm-10">
 							@Html.DisplayFor(model => model.Index[Model.Order[i]])
-				</dd>
-				<dt class="col-sm-2">
+						</dd>
+						<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Exercises[Model.Order[i]].Name)
-				</dt>
-				<dd class="col-sm-10">
+						</dt>
+						<dd class="col-sm-10">
 							@Html.DisplayFor(model => model.Exercises[Model.Order[i]].Name)
-				</dd>
-				<dt class="col-sm-2">
+						</dd>
+						<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Weight)
-				</dt>
-				<dd class="col-sm-10">
+						</dt>
+						<dd class="col-sm-10">
 							@Html.DisplayFor(model => model.Weight[Model.Order[i]])
-				</dd>
-				<dt class="col-sm-2">
+						</dd>
+						<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Repeats)
-				</dt>
-				<dd class="col-sm-10">
+						</dt>
+						<dd class="col-sm-10">
 							@Html.DisplayFor(model => model.Repeats[Model.Order[i]])
-				</dd>
-				<dt class="col-sm-2">
+						</dd>
+						<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Sets)
-				</dt>
-				<dd class="col-sm-10">
-							@Html.DisplayFor(model => model.Sets[Model.Order[Model.Order[i]]])
-				</dd>
-				<dt class="col-sm-2">
+						</dt>
+						<dd class="col-sm-10">
+							@Html.DisplayFor(model => model.Sets[Model.Order[i]])
+						</dd>
+						<dt class="col-sm-2">
 							@Html.DisplayNameFor(model => model.Exercises[Model.Order[i]].Description)
-				</dt>
-				<dd class="col-sm-10">
+						</dt>
+						<dd class="col-sm-10">
 							@Html.DisplayFor(model => model.Exercises[Model.Order[i]].Description)
-				</dd>
-				<dd class="col-sm-12">
+						</dd>
+						<dd class="col-sm-12">
 							@{
 								var mainVideoUrl = Model.Exercises[Model.Order[i]].VideoLink;
 								var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
 								var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
 							}
-					<iframe width="560" height="315" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-				</dd>
-				<th></th>
-					}
-			</dl>
-			</div>
+							<iframe width="560" height="315" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</dd>
+					</dl>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
 
-			<div>
-				@if (Model.RedirectToAdmin)
-				{
-					<a asp-action="IndexAdmin" class="btn btn-secondary">Back to List</a>
-				}
-				else if (!Model.RedirectToAdmin)
-				{
-					<a asp-action="Index" class="btn btn-secondary" asp-route-id="@Model.UserId">Back to List</a>
-				}
-			</div>
+<div>
+	@if (Model.RedirectToAdmin)
+	{
+		<a asp-action="IndexAdmin" class="btn btn-secondary">Back to List</a>
+	}
+	else
+	{
+		<a asp-action="Index" class="btn btn-secondary" asp-route-id="@Model.UserId">Back to List</a>
+	}
+</div>

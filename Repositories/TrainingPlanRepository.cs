@@ -167,7 +167,14 @@ namespace TrainingPlanApp.Web.Repositories
 				.Where(x => x.UserId == userId)
 				.Where(x => x.IsActive == true)
 				.ToListAsync();
-			return mapper.Map<List<TrainingPlanActiveVM>>(trainingPlans);
+			var trainingPlanActiveVM = mapper.Map<List<TrainingPlanActiveVM>>(trainingPlans);
+
+			for (int i = 0; i < trainingPlanActiveVM.Count; i++)
+			{
+				trainingPlanActiveVM[i].Exercises = await exerciseRepository.GetListOfExercises(trainingPlanActiveVM[i].ExerciseIds);
+				trainingPlanActiveVM[i].Order = await exerciseRepository.GetOrderOfExercises(trainingPlanActiveVM[i].Index);
+			}
+			return trainingPlanActiveVM;
 		}
 
 		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin)

@@ -6,84 +6,69 @@
 }
 
 <h1>Active Training Plans</h1>
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Name)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td class="text-end">
-					@if (User.IsInRole(Roles.User))
-					{
-						<a asp-action="Details" class="btn btn-secondary btn-sm w-100" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
-					}
-					@if (User.IsInRole(Roles.Administrator))
-					{
-						<form asp-action="ChangeStatus" class="d-inline">
-							<input name="Id" value="@item.Id" type="hidden" />
-							<input name="status" value="true" type="hidden" />
-							<input name="userId" value="@item.UserId" type="hidden" />
-							<button type="submit" class="btn btn-success btn-sm">Activate Plan</button>
-						</form>
-						<form asp-action="ChangeStatus" class="d-inline">
-							<input name="Id" value="@item.Id" type="hidden" />
-							<input name="status" value="false" type="hidden" />
-							<input name="userId" value="@item.UserId" type="hidden" />
-							<button type="submit" class="btn btn-danger btn-sm">Deactivate Plan</button>
-						</form>
-						<a asp-action="ManageExercises" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-circle-info">&nbsp;</i>Manage Exercises</a>
-						<a asp-action="Details" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
-						<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
-						<button data-id="@item.Id" data-userid="@item.UserId" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-					}
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
 
-<form id="deleteForm" asp-action="Delete">
-	<input type="hidden" id="trainingPlanId" name="Id" />
-	<input type="hidden" id="userId" name="UserId" />
-</form>
+@foreach (var item in Model)
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.Exercises)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Index)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Sets)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Repeats)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Weight)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Exercises[0].VideoLink)
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@for (int i = 0; i < item.Order.Count; i++)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => item.Exercises[item.Order[i]].Name)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Index[item.Order[i]])
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Sets[item.Order[i]])
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Repeats[item.Order[i]])
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Weight[item.Order[i]])
+					</td>
+					<td>
+						<a href="@item.Exercises[item.Order[i]].VideoLink" target="_blank" rel="noopener noreferrer">@item.Exercises[item.Order[i]].VideoLink</a>
+					</td>
+					<td class="text-end">
+						<a asp-action="Details" class="btn btn-secondary btn-sm w-100" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
 
 @section Scripts
 {
 	<script>
 		$(function () {
 			$('.table').DataTable();
-
-			$('.deleteBtn').click(function (e) {
-				swal(
-					{
-						title: "Are you sure?",
-						text: "Are you sure you want to delete this record?",
-						icon: "warning",
-						buttons: true,
-						dangerMode: true
-					}
-				).then((confirm) => {
-					if (confirm) {
-						var btn = $(this);
-						var id = btn.data("id");
-						var userId = btn.data("userid")
-						$('#trainingPlanId').val(id);
-						$('#userId').val(userId)
-						$('#deleteForm').submit();
-					}
-				}
-				);
-			});
 		});
 	</script>
 }
