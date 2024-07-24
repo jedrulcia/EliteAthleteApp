@@ -21,7 +21,7 @@ namespace TrainingPlanApp.Web.Models
 
 		public SelectList? AvailableExercises { get; set; }
 		public List<int?>? ExerciseIds { get; set; }
-		[Display(Name = "Exercises")]
+		[Display(Name = "Exercise")]
 		public List<ExerciseVM?>? Exercises { get; set; }
 
 
