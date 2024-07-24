@@ -58,6 +58,13 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(trainingPlansActiveVM);
 		}
 
+		// GET: TrainingPlans/ExerciseDetails
+		public async Task<IActionResult> ExerciseDetails(int? id, string? userId)
+		{
+            var trainingPlanExerciseDetailsVM = await trainingPlanRepository.GetTrainingPlanExerciseDetailsVM(id, userId);
+			return View(trainingPlanExerciseDetailsVM);
+		}
+
 		// GET: TrainingPlans/Details
 		public async Task<IActionResult> Details(int? id, bool redirectToAdmin)
 		{

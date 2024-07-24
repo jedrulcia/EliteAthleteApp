@@ -58,7 +58,7 @@
 						<a href="@item.Exercises[i].VideoLink" target="_blank" rel="noopener noreferrer">@item.Exercises[i].VideoLink</a>
 					</td>
 					<td class="text-end">
-						<a asp-action="Details" class="btn btn-secondary btn-sm w-100" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
+						<a asp-action="ExerciseDetails" class="btn btn-secondary btn-sm w-100" asp-route-userid="@item.UserId" asp-route-id="@item.Exercises[i].Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
 					</td>
 				</tr>
 			}

@@ -183,5 +183,16 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlanDetailsVM.RedirectToAdmin = redirectToAdmin;
 			return trainingPlanDetailsVM;
 		}
+
+		public async Task<TrainingPlanExerciseDetailsVM> GetTrainingPlanExerciseDetailsVM(int? id, string userId)
+		{
+			var exercise = await exerciseRepository.GetAsync(id);
+			var trainingPlanExerciseDetailsVM = new TrainingPlanExerciseDetailsVM
+			{
+				Exercise = mapper.Map<ExerciseVM>(exercise),
+				UserId = userId
+			};
+			return trainingPlanExerciseDetailsVM;
+		}
 	}
 }

@@ -13,6 +13,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task ChangeTrainingPlanStatus(int trainingPlanId, bool status);
 		Task<List<TrainingPlanVM>> GetUserTrainingPlans(string userId);
 		Task<List<TrainingPlanActiveVM>> GetUserActiveTrainingPlans(string userId);
+		Task<TrainingPlanExerciseDetailsVM> GetTrainingPlanExerciseDetailsVM(int? id, string UserId);
 		Task<List<TrainingPlanAdminVM>> GetAllTrainingPlansToVM();
 		Task<TrainingPlanCreateVM> GetTrainingPlanCreateVMForEditingView(int? id, bool redirectToAdmin);
 		Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin);
