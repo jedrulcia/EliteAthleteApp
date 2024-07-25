@@ -71,7 +71,7 @@ namespace TrainingPlanApp.Web.Controllers
             return View(mealCreateVM);
         }
 
-        public async Task<IActionResult> AddIngredients(int? id)
+/*        public async Task<IActionResult> AddIngredients(int? id)
         {
             var meal = await mealRepository.GetAsync(id);
             if (meal == null)
@@ -91,7 +91,7 @@ namespace TrainingPlanApp.Web.Controllers
                 return View(await ingredientRepository.AddIngredientSequence(mealCreateVM));
             }
             return View(mealCreateVM);
-        }
+        }*/
 
         // GET: Meals/Edit
         public async Task<IActionResult> Edit(int? id)
@@ -143,13 +143,13 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(Index));
         }        
 
-        // POST: Meals/AddIngredients/Delete
+/*        // POST: Meals/AddIngredients/Delete
         [HttpPost, ActionName("DeleteIngredient")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteIngredient(int ingredientId, int mealId)
         {
             await ingredientRepository.DeleteAsync(ingredientId);
             return RedirectToAction(nameof(AddIngredients), new { id = mealId});
-        }
+        }*/
     }
 }

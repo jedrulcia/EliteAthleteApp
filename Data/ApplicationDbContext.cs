@@ -15,16 +15,9 @@ namespace TrainingPlanApp.Web.Data
 		}
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
 			builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
-
-            builder.Entity<Ingredient>()
-                .HasOne(i => i.Meal)
-                .WithMany(m => m.Ingredients)
-                .HasForeignKey(i => i.MealId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(builder);
         }

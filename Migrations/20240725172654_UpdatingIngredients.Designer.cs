@@ -12,15 +12,15 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240619203756_AddedIngredientsToMealCS1")]
-    partial class AddedIngredientsToMealCS1
+    [Migration("20240725172654_UpdatingIngredients")]
+    partial class UpdatingIngredients
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.5")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -196,30 +196,15 @@ namespace TrainingPlanApp.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("BreakfastId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DinnerId")
-                        .HasColumnType("int");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LunchId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SecondBreakfastId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SnackId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -228,16 +213,6 @@ namespace TrainingPlanApp.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BreakfastId");
-
-                    b.HasIndex("DinnerId");
-
-                    b.HasIndex("LunchId");
-
-                    b.HasIndex("SecondBreakfastId");
-
-                    b.HasIndex("SnackId");
 
                     b.ToTable("Diets");
                 });
@@ -250,32 +225,14 @@ namespace TrainingPlanApp.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AdditionalExerciseName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("AdditionalExerciseNumberOfRepeats")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AdditionalExerciseVideoLink")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MainExerciseName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MainExerciseNumberOfRepeats")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MainExerciseVideoLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OverallNumberOfSets")
-                        .HasColumnType("int");
+                    b.Property<string>("VideoLink")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -284,25 +241,28 @@ namespace TrainingPlanApp.Web.Migrations
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Ingredient", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("MealId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("Carbohydrates")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ServingSize")
-                        .HasColumnType("int");
+                    b.Property<string>("Fats")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kcal")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Proteins")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MealId");
 
                     b.ToTable("Ingredients");
                 });
@@ -315,20 +275,11 @@ namespace TrainingPlanApp.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
-                    b.Property<int?>("Carbs")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Fat")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Kcal")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Protein")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -346,22 +297,22 @@ namespace TrainingPlanApp.Web.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ExerciseFirstId")
-                        .HasColumnType("int");
+                    b.Property<string>("ExerciseIds")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ExerciseFourthId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ExerciseSecondId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ExerciseThirdId")
-                        .HasColumnType("int");
+                    b.Property<string>("Index")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Repeats")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sets")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartDate")
@@ -370,15 +321,10 @@ namespace TrainingPlanApp.Web.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Weight")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("ExerciseFirstId");
-
-                    b.HasIndex("ExerciseFourthId");
-
-                    b.HasIndex("ExerciseSecondId");
-
-                    b.HasIndex("ExerciseThirdId");
 
                     b.ToTable("TrainingPlans");
                 });
@@ -461,7 +407,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "397c24da-8136-4871-ae2e-61b22ea4b892",
+                            ConcurrencyStamp = "63cc8336-550a-4811-ae76-c2abe05c0a6e",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -469,9 +415,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK2pCYwf4x7SNBXiKj/X1wUKs9InvmgEnxI2D/+622VQT+sjv13Qo9PSAQcViFDN/g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELBUHap98Kgxkzn9WWGNw18GKn9U44sxeia/+RxxCHLh630FmsDZ3+pSpmLDtPlvow==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8aec876b-3013-4e5a-bf9d-76db57b9ffd9",
+                            SecurityStamp = "319fdbcd-5c02-41a3-82ae-2636344be89a",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -479,7 +425,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ee1c58e3-f277-4ca7-84c3-3c49261170e7",
+                            ConcurrencyStamp = "a0c40bb2-a4d9-4354-8ebe-8719f19f8f59",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -487,9 +433,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDjRpZvgE9EWL11b+lpt4ugqheUU01zL3wfByts11ASt4tKw7dIWZyKSeUjduviCEA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENiAIgeH3cUx0kEV0zoTDj46iZQNWWbthOiZPpyimVo18Uz/kxFCkOiw42t0kpNmmg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3f81719f-9ba0-446c-9399-6dc1a770d203",
+                            SecurityStamp = "76f5dcdd-5a95-432c-a8f8-c8e72d54006b",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });
@@ -544,81 +490,6 @@ namespace TrainingPlanApp.Web.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TrainingPlanApp.Web.Data.Diet", b =>
-                {
-                    b.HasOne("TrainingPlanApp.Web.Data.Meal", "Breakfast")
-                        .WithMany()
-                        .HasForeignKey("BreakfastId");
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Meal", "Dinner")
-                        .WithMany()
-                        .HasForeignKey("DinnerId");
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Meal", "Lunch")
-                        .WithMany()
-                        .HasForeignKey("LunchId");
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Meal", "SecondBreakfast")
-                        .WithMany()
-                        .HasForeignKey("SecondBreakfastId");
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Meal", "Snack")
-                        .WithMany()
-                        .HasForeignKey("SnackId");
-
-                    b.Navigation("Breakfast");
-
-                    b.Navigation("Dinner");
-
-                    b.Navigation("Lunch");
-
-                    b.Navigation("SecondBreakfast");
-
-                    b.Navigation("Snack");
-                });
-
-            modelBuilder.Entity("TrainingPlanApp.Web.Data.Ingredient", b =>
-                {
-                    b.HasOne("TrainingPlanApp.Web.Data.Meal", "Meal")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Meal");
-                });
-
-            modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
-                {
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseFirst")
-                        .WithMany()
-                        .HasForeignKey("ExerciseFirstId");
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseFourth")
-                        .WithMany()
-                        .HasForeignKey("ExerciseFourthId");
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseSecond")
-                        .WithMany()
-                        .HasForeignKey("ExerciseSecondId");
-
-                    b.HasOne("TrainingPlanApp.Web.Data.Exercise", "ExerciseThird")
-                        .WithMany()
-                        .HasForeignKey("ExerciseThirdId");
-
-                    b.Navigation("ExerciseFirst");
-
-                    b.Navigation("ExerciseFourth");
-
-                    b.Navigation("ExerciseSecond");
-
-                    b.Navigation("ExerciseThird");
-                });
-
-            modelBuilder.Entity("TrainingPlanApp.Web.Data.Meal", b =>
-                {
-                    b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
         }
