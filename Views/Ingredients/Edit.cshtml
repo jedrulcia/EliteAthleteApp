@@ -1,10 +1,10 @@
-﻿@model TrainingPlanApp.Web.Data.Ingredient
+﻿@model IngredientVM
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Edit @Model.Name</h1>
 
 <h4>Ingredient</h4>
 <hr />
@@ -39,13 +39,10 @@
                 <span asp-validation-for="Fats" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <a asp-action="Index" class="btn btn-dark">Back to List</a> &nbsp;
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 

@@ -19,27 +19,13 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task CreateNewIngredient(IngredientVM ingredientVM)
 		{
 			var ingredient = mapper.Map<Ingredient>(ingredientVM);
-			await context.AddAsync(ingredient);
+			await AddAsync(ingredient);
 		}
 
-		/*        public async Task<MealCreateVM> AddIngredientSequence(MealCreateVM mealCreateVM)
-				{
-
-					var ingredient = mapper.Map<Ingredient>(mealCreateVM);
-					await AddAsync(ingredient);
-					var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
-					mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
-					mealCreateVM.IngredientName = null;
-					mealCreateVM.IngredientServingSize = null;
-					return mealCreateVM;
-				}
-
-				public MealCreateVM CreateIngredientAddingModel(Meal meal)
-				{
-					var mealCreateVM = mapper.Map<MealCreateVM>(meal);
-					var ingredientVM = mapper.Map<List<IngredientVM>>(context.Ingredients.Where(e => e.MealId == mealCreateVM.Id));
-					mealCreateVM.Ingredients = new List<IngredientVM>(ingredientVM);
-					return mealCreateVM;
-				}*/
+		public async Task EditIngredient(IngredientVM ingredientVM)
+		{
+			var ingredient = mapper.Map<Ingredient>(ingredientVM);
+			await UpdateAsync(ingredient);
+		}
 	}
 }

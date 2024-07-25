@@ -53,44 +53,38 @@ namespace TrainingPlanApp.Web
             return View(ingredientVM);
         }
 
-        // GET: Ingredients/Edit/5
+        // GET: Ingredients/Edit
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ingredient = await _context.Ingredients.FindAsync(id);
+            var ingredient = await ingredientRepository.GetAsync(id);
             if (ingredient == null)
             {
                 return NotFound();
             }
-            return View(ingredient);
+            var ingredientVM = mapper.Map<IngredientVM>(ingredient);
+            return View(ingredientVM);
         }
 
-        // POST: Ingredients/Edit/5
+        // POST: Ingredients/Edit
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Kcal,Proteins,Carbohydrates,Fats")] Ingredient ingredient)
+        public async Task<IActionResult> Edit(int id, IngredientVM ingredientVM)
         {
-            if (id != ingredient.Id)
+            if (id != ingredientVM.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(ingredient);
-                    await _context.SaveChangesAsync();
+                    await ingredientRepository.EditIngredient(ingredientVM);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (await ingredientRepository.GetAsync(ingredient.Id) == null)
+                    if (await ingredientRepository.Exists(id))
                     {
                         return NotFound();
                     }
@@ -101,10 +95,10 @@ namespace TrainingPlanApp.Web
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(ingredient);
+            return View(ingredientVM);
         }
 
-        // POST: Ingredients/Delete/5
+        // POST: Ingredients/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -112,7 +106,5 @@ namespace TrainingPlanApp.Web
             await ingredientRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

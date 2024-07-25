@@ -66,8 +66,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(exerciseVM);
 		}
 
-
-
 		// GET: Exercises/Edit
 		public async Task<IActionResult> Edit(int? id)
 		{
