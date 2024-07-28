@@ -54,7 +54,6 @@
 					@Html.DisplayFor(modelItem => item.StartDate)
 				</td>
 				<td class="text-end">
-					<a asp-action="Details" class="btn btn-info btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-circle-info">&nbsp;</i></a>
 					<form asp-action="ChangeStatus" class="d-inline">
 						<input name="Id" value="@item.Id" type="hidden" />
 						<input name="status" value="true" type="hidden" />
@@ -67,6 +66,7 @@
 						<input name="userId" value="@item.UserId" type="hidden" />
 						<button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-circle-pause"></i></button>
 					</form>
+					<a asp-action="Details" class="btn btn-info btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-circle-info">&nbsp;</i></a>
 					<a asp-action="ManageExercises" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
 						<i class="fa-regular fa-pen-to-square">&nbsp;</i>Manage Exercises
 					</a>

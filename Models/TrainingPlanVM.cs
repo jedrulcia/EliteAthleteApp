@@ -14,8 +14,6 @@ namespace TrainingPlanApp.Web.Models
 		[Display(Name = "Training Plan")]
         [Required]
         public string? Name { get; set; }
-        [Display(Name = "Description")]
-        public string? Description { get; set; }
         [Required]
         [Display(Name = "Start date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
