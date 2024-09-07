@@ -6,9 +6,9 @@ namespace TrainingPlanApp.Web.Data
 	{
 		public int Id { get; set; }
 		public string? Name { get; set; }
-		public string? Kcal {  get; set; }
-		public string? Proteins { get; set; }
-		public string? Carbohydrates { get; set; }
-		public string? Fats { get; set; }
+		public int? Kcal {  get; set; }
+		public int? Proteins { get; set; }
+		public int? Carbohydrates { get; set; }
+		public int? Fats { get; set; }
 	}
 }
