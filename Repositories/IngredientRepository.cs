@@ -27,5 +27,16 @@ namespace TrainingPlanApp.Web.Repositories
 			var ingredient = mapper.Map<Ingredient>(ingredientVM);
 			await UpdateAsync(ingredient);
 		}
+
+		public async Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds)
+		{
+            List<IngredientVM> ingredients = new List<IngredientVM>();
+			foreach (int id in ingredientIds)
+            {
+                var ingredientVM = mapper.Map<IngredientVM>(await GetAsync(id));
+                ingredients.Add(ingredientVM);
+            }
+            return ingredients;
+		}
 	}
 }
