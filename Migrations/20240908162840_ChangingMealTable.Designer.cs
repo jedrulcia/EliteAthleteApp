@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240908162840_ChangingMealTable")]
+    partial class ChangingMealTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,9 +278,6 @@ namespace TrainingPlanApp.Web.Migrations
                     b.Property<string>("IngredientIds")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IngredientQuantities")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -410,7 +410,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fbd19402-9606-4a21-882a-42d62b72f301",
+                            ConcurrencyStamp = "3b2c0242-8cc2-4288-851f-e465935f80cf",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -418,9 +418,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBpSEkjsxZDiP+fKXE+nsPV2Ft/CwzbLHs2/NP/xBpJRG62jGyPtfoVgeWxCaQsccA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOg1xQelzshELLQ718v1z8z0Rf4ltE0cEPtIOuJD/qJ4vAEB0pI0NQpMdnlCPIIfDA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "46f2d312-9174-491f-8caa-509318162ee5",
+                            SecurityStamp = "898da8da-dafb-4784-95d7-cba2bd5f5c6d",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -428,7 +428,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ce3bf524-40e9-4d14-b80a-f5f81bbd5dd9",
+                            ConcurrencyStamp = "5e38379f-2618-4387-9b7e-cd9560a35cc2",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -436,9 +436,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOTMd+opMKqebvrZHmKcwAt4oS8QU0LFBcYsEMOp2oU9iXeW0zCqXnyHG/NDmRpmLA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELQyc4UPumSHXgJOhia7JuPpHUH34a+elFMQjP/zBZtMd8go74I2NZrqvnTDBmPXbg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "68ff5223-3361-497a-9e00-f62d9f1043ad",
+                            SecurityStamp = "9a8c311e-c200-4f03-9297-d9bf3ffd1b36",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });

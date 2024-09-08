@@ -7,5 +7,7 @@ namespace TrainingPlanApp.Web.Contracts
 	{
 		Task CreateNewMeal(MealCreateVM mealCreateVM);
 		Task EditMeal(MealVM mealVM);
-	}
+		Task<List<MealVM>> GetMacrosOfTheMeals(List<MealVM> mealVM);
+
+    }
 }

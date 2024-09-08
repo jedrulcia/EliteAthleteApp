@@ -10,12 +10,12 @@ namespace TrainingPlanApp.Web.Models
         [Display(Name = "Amount of kcal")]
         public int? Kcal { get; set; }
         [Display(Name = "Amount of proteins")]
-        public int? Protein { get; set; }
+        public int? Proteins { get; set; }
         [Display(Name = "Amount of fats")]
-        public int? Fat { get; set; }
+        public int? Fats { get; set; }
         [Display(Name = "Amount of carbs")]
-        public int? Carbs { get; set; }
-        [Display(Name = "Description")]
-        public string? Description { get; set; }
-	}
+        public int? Carbohydrates { get; set; }
+        public List<int?>? IngredientIds { get; set; }
+        public List<int?>? IngredientQuantities { get; set; }
+    }
 }

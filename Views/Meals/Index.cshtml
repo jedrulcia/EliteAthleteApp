@@ -19,13 +19,13 @@
                 @Html.DisplayNameFor(model => model.Kcal)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Protein)
+                @Html.DisplayNameFor(model => model.Proteins)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Fat)
+                @Html.DisplayNameFor(model => model.Fats)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Carbs)
+                @Html.DisplayNameFor(model => model.Carbohydrates)
             </th>
             <th></th>
         </tr>
@@ -41,13 +41,13 @@
                     @Html.DisplayFor(modelItem => item.Kcal)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Protein)
+                    @Html.DisplayFor(modelItem => item.Proteins)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Fat)
+                    @Html.DisplayFor(modelItem => item.Fats)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Carbs)
+                    @Html.DisplayFor(modelItem => item.Carbohydrates)
                 </td>
                 <td class="text-end">
                     <a asp-action="AddIngredients" class="btn btn-primary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Ingredients</a>
