@@ -11,6 +11,6 @@ namespace TrainingPlanApp.Web.Contracts
 		Task<MealVM> GetMacrosOfTheMeal(MealVM mealVM);
 		Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id, bool redirectToAdmin);
 		Task<MealManageIngredientsVM> AddIngredientToMealSequence(MealManageIngredientsVM mealManageIngredientsVM);
-
+		Task RemoveIngredientFromMeal(int mealId, int index);
 	}
 }

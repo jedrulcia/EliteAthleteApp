@@ -35,31 +35,35 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			for (int i = 0; i < mealsVM.Count; i++)
 			{
+				mealsVM[i].Proteins = 0;
+				mealsVM[i].Carbohydrates = 0;
+				mealsVM[i].Fats = 0;
 				for (int j = 0; j < mealsVM[i].IngredientIds.Count; j++)
 				{
 					Ingredient ingredient = await ingredientRepository.GetAsync(mealsVM[i].IngredientIds[j]);
-					Console.WriteLine("--------------------NAME--------------" + ingredient.Name);
 					double? ingredientMultiplier = mealsVM[i].IngredientQuantities[j] / 100.00;
-					mealsVM[i].Kcal += Convert.ToInt32(ingredient.Kcal * ingredientMultiplier);
-					Console.WriteLine(mealsVM[i].Kcal);
-					mealsVM[i].Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
-					mealsVM[i].Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
-					mealsVM[i].Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
+					mealsVM[i].Proteins += (ingredient.Proteins * ingredientMultiplier);
+					mealsVM[i].Fats += (ingredient.Fats * ingredientMultiplier);
+					mealsVM[i].Carbohydrates += (ingredient.Carbohydrates * ingredientMultiplier);
 				}
+				mealsVM[i].Kcal = mealsVM[i].Proteins * 4 + mealsVM[i].Carbohydrates * 4 + mealsVM[i].Fats * 9;
 			}
 			return mealsVM;
 		}
 		public async Task<MealVM> GetMacrosOfTheMeal(MealVM mealVM)
 		{
+			mealVM.Proteins = 0;
+			mealVM.Carbohydrates = 0;
+			mealVM.Fats = 0;
 			for (int j = 0; j < mealVM.IngredientIds.Count; j++)
 			{
 				Ingredient ingredient = await ingredientRepository.GetAsync(mealVM.IngredientIds[j]);
 				double? ingredientMultiplier = mealVM.IngredientQuantities[j] / 100.00;
-				mealVM.Kcal += Convert.ToInt32(ingredient.Kcal * ingredientMultiplier);
 				mealVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
 				mealVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
 				mealVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
 			}
+			mealVM.Kcal = mealVM.Proteins * 4 + mealVM.Carbohydrates * 4 + mealVM.Fats * 9;
 
 			return mealVM;
 		}
@@ -111,14 +115,13 @@ namespace TrainingPlanApp.Web.Repositories
 			return meal;
 		}
 
-
-/*		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanSequence(TrainingPlanManageExercisesVM trainingPlanAddExercisesVM)
+		public async Task RemoveIngredientFromMeal(int mealId, int index)
 		{
+			var meal = await GetAsync(mealId);
+			meal.IngredientIds.RemoveAt(index);
+			meal.IngredientQuantities.RemoveAt(index);
+			await UpdateAsync(meal);
+		}
 
-			trainingPlanAddExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(trainingPlanAddExercisesVM.Id));
-			trainingPlanAddExercisesVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
-			trainingPlanAddExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanAddExercisesVM.ExerciseIds);
-			return trainingPlanAddExercisesVM;
-		}*/
 	}
 }

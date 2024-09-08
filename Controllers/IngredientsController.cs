@@ -10,20 +10,20 @@ using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
 
-namespace TrainingPlanApp.Web
+namespace TrainingPlanApp.Web.Controllers
 {
     public class IngredientsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IIngredientRepository ingredientRepository;
-		private readonly IMapper mapper;
+        private readonly IMapper mapper;
 
-		public IngredientsController(ApplicationDbContext context, IIngredientRepository ingredientRepository, IMapper mapper)
+        public IngredientsController(ApplicationDbContext context, IIngredientRepository ingredientRepository, IMapper mapper)
         {
             _context = context;
             this.ingredientRepository = ingredientRepository;
-			this.mapper = mapper;
-		}
+            this.mapper = mapper;
+        }
 
         // GET: Ingredients
         public async Task<IActionResult> Index()

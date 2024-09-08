@@ -141,13 +141,14 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		/*        // POST: Meals/AddIngredients/Delete
-				[HttpPost, ActionName("DeleteIngredient")]
-				[ValidateAntiForgeryToken]
-				public async Task<IActionResult> DeleteIngredient(int ingredientId, int mealId)
-				{
-					await ingredientRepository.DeleteAsync(ingredientId);
-					return RedirectToAction(nameof(AddIngredients), new { id = mealId});
-				}*/
+		// POST: Meals/ManageIngredients/RemoveIngredient
+		[HttpPost, ActionName("RemoveIngredient")]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> RemoveIngredient(int mealId, int index)
+		{
+			await mealRepository.RemoveIngredientFromMeal(mealId, index);
+			return RedirectToAction(nameof(ManageIngredients), new { id = mealId });
+		}
 	}
 }
