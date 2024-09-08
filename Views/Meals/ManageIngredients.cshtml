@@ -6,6 +6,41 @@
 
 <h1>Manage Ingredients</h1>
 
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Kcal)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Proteins)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Carbohydrates)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Fats)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				@Html.DisplayFor(model => model.Kcal)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.Proteins)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.Carbohydrates)
+			</td>
+			<td>
+				@Html.DisplayFor(model => model.Fats)
+			</td>
+		</tr>
+	</tbody>
+</table>
+
 <div class="row">
 	<div class="col-md-12">
 		<form asp-action="ManageIngredients">

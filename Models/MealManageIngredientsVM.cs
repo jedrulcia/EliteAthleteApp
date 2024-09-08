@@ -13,6 +13,14 @@ namespace TrainingPlanApp.Web.Models
 		[Display(Name = "Quantity (g)")]
 		public int? NewIngredientQuantity { get; set; }
 
+		[Display(Name = "Amount of kcal")]
+		public double? Kcal { get; set; }
+		[Display(Name = "Amount of proteins")]
+		public double? Proteins { get; set; }
+		[Display(Name = "Amount of fats")]
+		public double? Fats { get; set; }
+		[Display(Name = "Amount of carbs")]
+		public double? Carbohydrates { get; set; }
 		public SelectList? AvailableIngredients { get; set; }
 		public List<int?>? IngredientIds { get; set; }
 		[Display(Name = "Ingredient")]

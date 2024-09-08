@@ -74,13 +74,25 @@ namespace TrainingPlanApp.Web.Repositories
 			mealManageIngredientsVM.AvailableIngredients = new SelectList(context.Ingredients.OrderBy(e => e.Name), "Id", "Name");
 			mealManageIngredientsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealManageIngredientsVM.IngredientIds);
 			mealManageIngredientsVM.RedirectToAdmin = redirectToAdmin;
+			mealManageIngredientsVM.Proteins = 0;
+			mealManageIngredientsVM.Fats = 0;
+			mealManageIngredientsVM.Carbohydrates = 0;
+			for (int j = 0; j < mealManageIngredientsVM.IngredientIds.Count; j++)
+			{
+				Ingredient ingredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[j]);
+				double? ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[j] / 100.00;
+				mealManageIngredientsVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
+				mealManageIngredientsVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
+				mealManageIngredientsVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
+			}
+			mealManageIngredientsVM.Kcal = mealManageIngredientsVM.Proteins * 4 + mealManageIngredientsVM.Carbohydrates * 4 + mealManageIngredientsVM.Fats * 9;
 			return mealManageIngredientsVM;
 		}
 
 		public async Task<MealManageIngredientsVM> AddIngredientToMealSequence(MealManageIngredientsVM mealManageIngredientsVM)
 		{
-			var ingredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.NewIngredientId);
-			if (ingredient == null)
+			var newIngredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.NewIngredientId);
+			if (newIngredient == null)
 			{
 				mealManageIngredientsVM.AvailableIngredients = new SelectList(context.Ingredients, "Id", "Name");
 				return mealManageIngredientsVM;
@@ -98,6 +110,18 @@ namespace TrainingPlanApp.Web.Repositories
 			mealManageIngredientsVM = mapper.Map<MealManageIngredientsVM>(await GetAsync(mealManageIngredientsVM.Id));
 			mealManageIngredientsVM.AvailableIngredients = new SelectList(context.Ingredients, "Id", "Name");
 			mealManageIngredientsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealManageIngredientsVM.IngredientIds);
+			mealManageIngredientsVM.Proteins = 0;
+			mealManageIngredientsVM.Fats = 0;
+			mealManageIngredientsVM.Carbohydrates = 0;
+			for (int j = 0; j < mealManageIngredientsVM.IngredientIds.Count; j++)
+			{
+				Ingredient ingredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[j]);
+				double? ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[j] / 100.00;
+				mealManageIngredientsVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
+				mealManageIngredientsVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
+				mealManageIngredientsVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
+			}
+			mealManageIngredientsVM.Kcal = mealManageIngredientsVM.Proteins * 4 + mealManageIngredientsVM.Carbohydrates * 4 + mealManageIngredientsVM.Fats * 9;
 			return mealManageIngredientsVM;
 		}
 
