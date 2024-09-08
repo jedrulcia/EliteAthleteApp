@@ -10,7 +10,6 @@ namespace TrainingPlanApp.Web.Models
 		[Required]
 		[Display (Name = "Name")]
 		public string? Name { get; set; }
-		[Required]
 		[Display(Name = "Kcal in 100g")]
 		public int? Kcal { get; set; }
 		[Required]

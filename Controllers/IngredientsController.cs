@@ -28,7 +28,7 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: Ingredients
         public async Task<IActionResult> Index()
         {
-            var ingredientVM = mapper.Map<List<IngredientVM>>(await ingredientRepository.GetAllAsync());
+            var ingredientVM = await ingredientRepository.GetIngredientVM();
             return View(ingredientVM);
         }
 

@@ -28,6 +28,16 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(ingredient);
 		}
 
+		public async Task<List<IngredientVM>> GetIngredientVM()
+		{
+			var ingredientVM = mapper.Map<List<IngredientVM>>(await GetAllAsync());
+			for (var i = 0; i < ingredientVM.Count; i++) 
+			{
+				ingredientVM[i].Kcal = ingredientVM[i].Proteins * 4 + ingredientVM[i].Carbohydrates * 4 + ingredientVM[i].Fats * 9;
+			}
+			return ingredientVM;
+		}
+
 		public async Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds)
 		{
             List<IngredientVM> ingredients = new List<IngredientVM>();
@@ -38,5 +48,7 @@ namespace TrainingPlanApp.Web.Repositories
             }
             return ingredients;
 		}
+
+
 	}
 }

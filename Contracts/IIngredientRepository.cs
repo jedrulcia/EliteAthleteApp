@@ -8,5 +8,6 @@ namespace TrainingPlanApp.Web.Contracts
         Task CreateNewIngredient(IngredientVM ingredientVM);
         Task EditIngredient(IngredientVM ingredientVM);
 		Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds);
+        Task<List<IngredientVM>> GetIngredientVM();
 	}
 }
