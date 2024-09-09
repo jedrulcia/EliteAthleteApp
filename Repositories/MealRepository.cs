@@ -40,13 +40,13 @@ namespace TrainingPlanApp.Web.Repositories
 				mealsVM[i].Fats = 0;
 				for (int j = 0; j < mealsVM[i].IngredientIds.Count; j++)
 				{
-					Ingredient ingredient = await ingredientRepository.GetAsync(mealsVM[i].IngredientIds[j]);
-					double? ingredientMultiplier = mealsVM[i].IngredientQuantities[j] / 100.00;
-					mealsVM[i].Proteins += (ingredient.Proteins * ingredientMultiplier);
-					mealsVM[i].Fats += (ingredient.Fats * ingredientMultiplier);
-					mealsVM[i].Carbohydrates += (ingredient.Carbohydrates * ingredientMultiplier);
+					IngredientVM ingredientVM = mapper.Map<IngredientVM>(await ingredientRepository.GetAsync(mealsVM[i].IngredientIds[j]));
+					decimal ingredientMultiplier = mealsVM[i].IngredientQuantities[j] / (decimal)100.00;
+					mealsVM[i].Proteins += Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1);
+					mealsVM[i].Fats += Math.Round(ingredientVM.Fats * ingredientMultiplier, 1);
+					mealsVM[i].Carbohydrates += Math.Round(ingredientVM.Carbohydrates * ingredientMultiplier, 1);
 				}
-				mealsVM[i].Kcal = mealsVM[i].Proteins * 4 + mealsVM[i].Carbohydrates * 4 + mealsVM[i].Fats * 9;
+				mealsVM[i].Kcal = Convert.ToInt16(mealsVM[i].Proteins * 4 + mealsVM[i].Carbohydrates * 4 + mealsVM[i].Fats * 9);
 			}
 			return mealsVM;
 		}
@@ -96,13 +96,29 @@ namespace TrainingPlanApp.Web.Repositories
 			mealManageIngredientsVM.Carbohydrates = 0;
 			for (int i = 0; i < mealManageIngredientsVM.IngredientIds.Count; i++)
 			{
-				Ingredient ingredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[i]);
-				double? ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[i] / 100.00;
-				mealManageIngredientsVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
-				mealManageIngredientsVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
-				mealManageIngredientsVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
+				IngredientVM ingredientVM = mapper.Map<IngredientVM>(await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[i]));
+				decimal ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[i] / (decimal)100.00;
+				Console.WriteLine($"Multiplier: {ingredientMultiplier}");
+				mealManageIngredientsVM.Proteins += Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1);
+				mealManageIngredientsVM.Carbohydrates += Math.Round(ingredientVM.Carbohydrates * ingredientMultiplier, 1);
+				mealManageIngredientsVM.Fats += Math.Round(ingredientVM.Fats * ingredientMultiplier, 1);
 			}
-			mealManageIngredientsVM.Kcal = mealManageIngredientsVM.Proteins * 4 + mealManageIngredientsVM.Carbohydrates * 4 + mealManageIngredientsVM.Fats * 9;
+			mealManageIngredientsVM.Kcal = Convert.ToInt16(mealManageIngredientsVM.Proteins * 4 + mealManageIngredientsVM.Carbohydrates * 4 + mealManageIngredientsVM.Fats * 9);
+			return mealManageIngredientsVM;
+		}
+
+		private async Task<MealManageIngredientsVM> CountTheMacrosOfSingleIngredients(MealManageIngredientsVM mealManageIngredientsVM)
+		{
+			for (int i = 0; i < mealManageIngredientsVM.IngredientIds.Count; i++)
+			{
+				IngredientVM ingredientVM = mapper.Map<IngredientVM>(await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[i]));
+				decimal ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[i] / (decimal)100.00;
+				mealManageIngredientsVM.IngredientProteins[i] = Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1);
+				mealManageIngredientsVM.IngredientCarbohydrates[i] = Math.Round(ingredientVM.Carbohydrates * ingredientMultiplier, 1);
+				mealManageIngredientsVM.IngredientFats[i] = Math.Round(ingredientVM.Fats * ingredientMultiplier, 1);
+				mealManageIngredientsVM.Kcal = Convert.ToInt16
+					(mealManageIngredientsVM.IngredientProteins[i] * 4 + mealManageIngredientsVM.IngredientCarbohydrates[i] * 4 + mealManageIngredientsVM.IngredientFats[i] * 9);
+			}
 			return mealManageIngredientsVM;
 		}
 

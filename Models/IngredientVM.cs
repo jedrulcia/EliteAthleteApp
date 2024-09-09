@@ -14,12 +14,12 @@ namespace TrainingPlanApp.Web.Models
 		public int? Kcal { get; set; }
 		[Required]
 		[Display(Name = "Protein in 100g")]
-		public int? Proteins { get; set; }
+		public decimal Proteins { get; set; }
 		[Required]
 		[Display(Name = "Carbohydrates in 100g")]
-		public int? Carbohydrates { get; set; }
+		public decimal Carbohydrates { get; set; }
 		[Required]
 		[Display(Name = "Fats in 100g")]
-		public int? Fats { get; set; }
+		public decimal Fats { get; set; }
 	}
 }

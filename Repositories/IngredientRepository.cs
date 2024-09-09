@@ -33,7 +33,10 @@ namespace TrainingPlanApp.Web.Repositories
 			var ingredientVM = mapper.Map<List<IngredientVM>>(await GetAllAsync());
 			for (var i = 0; i < ingredientVM.Count; i++) 
 			{
-				ingredientVM[i].Kcal = ingredientVM[i].Proteins * 4 + ingredientVM[i].Carbohydrates * 4 + ingredientVM[i].Fats * 9;
+				ingredientVM[i].Proteins = Math.Round(ingredientVM[i].Proteins, 1);
+				ingredientVM[i].Carbohydrates = Math.Round(ingredientVM[i].Carbohydrates, 1);
+				ingredientVM[i].Fats = Math.Round(ingredientVM[i].Fats, 1);
+				ingredientVM[i].Kcal = Convert.ToInt16(ingredientVM[i].Proteins * 4 + ingredientVM[i].Carbohydrates * 4 + ingredientVM[i].Fats * 9);
 			}
 			return ingredientVM;
 		}

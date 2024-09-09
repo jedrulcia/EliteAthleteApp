@@ -8,14 +8,14 @@ namespace TrainingPlanApp.Web.Models
         [Display(Name = "Name")]
         public string? Name { get; set; }
         [Display(Name = "Amount of kcal")]
-        public double? Kcal { get; set; }
+        public int? Kcal { get; set; }
         [Display(Name = "Amount of proteins")]
-        public double? Proteins { get; set; }
+        public decimal? Proteins { get; set; }
         [Display(Name = "Amount of fats")]
-        public double? Fats { get; set; }
+        public decimal? Fats { get; set; }
         [Display(Name = "Amount of carbs")]
-        public double? Carbohydrates { get; set; }
+        public decimal? Carbohydrates { get; set; }
         public List<int?>? IngredientIds { get; set; }
-        public List<int?>? IngredientQuantities { get; set; }
+        public List<int>? IngredientQuantities { get; set; }
     }
 }
