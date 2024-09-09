@@ -31,7 +31,7 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(meal);
 		}
 
-		public async Task<List<MealVM>> GetMacrosOfTheMeals(List<MealVM> mealsVM)
+		public async Task<List<MealVM>> GetMacrosOfFewMeals(List<MealVM> mealsVM)
 		{
 			for (int i = 0; i < mealsVM.Count; i++)
 			{
@@ -50,42 +50,13 @@ namespace TrainingPlanApp.Web.Repositories
 			}
 			return mealsVM;
 		}
-		public async Task<MealVM> GetMacrosOfTheMeal(MealVM mealVM)
-		{
-			mealVM.Proteins = 0;
-			mealVM.Carbohydrates = 0;
-			mealVM.Fats = 0;
-			for (int j = 0; j < mealVM.IngredientIds.Count; j++)
-			{
-				Ingredient ingredient = await ingredientRepository.GetAsync(mealVM.IngredientIds[j]);
-				double? ingredientMultiplier = mealVM.IngredientQuantities[j] / 100.00;
-				mealVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
-				mealVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
-				mealVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
-			}
-			mealVM.Kcal = mealVM.Proteins * 4 + mealVM.Carbohydrates * 4 + mealVM.Fats * 9;
-
-			return mealVM;
-		}
-
 		public async Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id, bool redirectToAdmin)
 		{
 			var mealManageIngredientsVM = mapper.Map<MealManageIngredientsVM>(await GetAsync(id));
 			mealManageIngredientsVM.AvailableIngredients = new SelectList(context.Ingredients.OrderBy(e => e.Name), "Id", "Name");
 			mealManageIngredientsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealManageIngredientsVM.IngredientIds);
 			mealManageIngredientsVM.RedirectToAdmin = redirectToAdmin;
-			mealManageIngredientsVM.Proteins = 0;
-			mealManageIngredientsVM.Fats = 0;
-			mealManageIngredientsVM.Carbohydrates = 0;
-			for (int j = 0; j < mealManageIngredientsVM.IngredientIds.Count; j++)
-			{
-				Ingredient ingredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[j]);
-				double? ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[j] / 100.00;
-				mealManageIngredientsVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
-				mealManageIngredientsVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
-				mealManageIngredientsVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
-			}
-			mealManageIngredientsVM.Kcal = mealManageIngredientsVM.Proteins * 4 + mealManageIngredientsVM.Carbohydrates * 4 + mealManageIngredientsVM.Fats * 9;
+			mealManageIngredientsVM = await CountTheMacrosOfSingleMeal(mealManageIngredientsVM);
 			return mealManageIngredientsVM;
 		}
 
@@ -107,36 +78,7 @@ namespace TrainingPlanApp.Web.Repositories
 			meal = AddIngredientToMeal(meal, mealManageIngredientsVM);
 			await UpdateAsync(meal);
 
-			mealManageIngredientsVM = mapper.Map<MealManageIngredientsVM>(await GetAsync(mealManageIngredientsVM.Id));
-			mealManageIngredientsVM.AvailableIngredients = new SelectList(context.Ingredients, "Id", "Name");
-			mealManageIngredientsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealManageIngredientsVM.IngredientIds);
-			mealManageIngredientsVM.Proteins = 0;
-			mealManageIngredientsVM.Fats = 0;
-			mealManageIngredientsVM.Carbohydrates = 0;
-			for (int j = 0; j < mealManageIngredientsVM.IngredientIds.Count; j++)
-			{
-				Ingredient ingredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[j]);
-				double? ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[j] / 100.00;
-				mealManageIngredientsVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
-				mealManageIngredientsVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
-				mealManageIngredientsVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
-			}
-			mealManageIngredientsVM.Kcal = mealManageIngredientsVM.Proteins * 4 + mealManageIngredientsVM.Carbohydrates * 4 + mealManageIngredientsVM.Fats * 9;
-			return mealManageIngredientsVM;
-		}
-
-		public Meal AddListsToMeal(Meal meal)
-		{
-			meal.IngredientIds = new List<int?>();
-			meal.IngredientQuantities = new List<int?>();
-			return meal;
-		}
-
-		public Meal AddIngredientToMeal(Meal meal, MealManageIngredientsVM mealManageIngredientsVM)
-		{
-			meal.IngredientIds.Add(mealManageIngredientsVM.NewIngredientId);
-			meal.IngredientQuantities.Add(mealManageIngredientsVM.NewIngredientQuantity);
-			return meal;
+			return await GetMealManageIngredientsVM(mealManageIngredientsVM.Id, mealManageIngredientsVM.RedirectToAdmin);
 		}
 
 		public async Task RemoveIngredientFromMeal(int mealId, int index)
@@ -146,6 +88,38 @@ namespace TrainingPlanApp.Web.Repositories
 			meal.IngredientQuantities.RemoveAt(index);
 			await UpdateAsync(meal);
 		}
+
+		private async Task<MealManageIngredientsVM> CountTheMacrosOfSingleMeal(MealManageIngredientsVM mealManageIngredientsVM)
+		{
+			mealManageIngredientsVM.Proteins = 0;
+			mealManageIngredientsVM.Fats = 0;
+			mealManageIngredientsVM.Carbohydrates = 0;
+			for (int i = 0; i < mealManageIngredientsVM.IngredientIds.Count; i++)
+			{
+				Ingredient ingredient = await ingredientRepository.GetAsync(mealManageIngredientsVM.IngredientIds[i]);
+				double? ingredientMultiplier = mealManageIngredientsVM.IngredientQuantities[i] / 100.00;
+				mealManageIngredientsVM.Proteins += Convert.ToInt32(ingredient.Proteins * ingredientMultiplier);
+				mealManageIngredientsVM.Fats += Convert.ToInt32(ingredient.Fats * ingredientMultiplier);
+				mealManageIngredientsVM.Carbohydrates += Convert.ToInt32(ingredient.Carbohydrates * ingredientMultiplier);
+			}
+			mealManageIngredientsVM.Kcal = mealManageIngredientsVM.Proteins * 4 + mealManageIngredientsVM.Carbohydrates * 4 + mealManageIngredientsVM.Fats * 9;
+			return mealManageIngredientsVM;
+		}
+
+		private Meal AddListsToMeal(Meal meal)
+		{
+			meal.IngredientIds = new List<int?>();
+			meal.IngredientQuantities = new List<int?>();
+			return meal;
+		}
+
+		private Meal AddIngredientToMeal(Meal meal, MealManageIngredientsVM mealManageIngredientsVM)
+		{
+			meal.IngredientIds.Add(mealManageIngredientsVM.NewIngredientId);
+			meal.IngredientQuantities.Add(mealManageIngredientsVM.NewIngredientQuantity);
+			return meal;
+		}
+
 
 	}
 }
