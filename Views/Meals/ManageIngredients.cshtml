@@ -48,6 +48,9 @@
 				@Html.DisplayNameFor(model => model.IngredientQuantities)
 			</th>
 			<th>
+				@Html.DisplayNameFor(model => model.IngredientKcal)
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.IngredientProteins)
 			</th>
 			<th>
@@ -56,15 +59,12 @@
 			<th>
 				@Html.DisplayNameFor(model => model.IngredientFats)
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.IngredientKcal)
-			</th>
 
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@for (int i = 0; i < Model.Ingredients.Count; i++)
+		@for (int i = 0; i < Model.IngredientIds.Count; i++)
 		{
 			<tr>
 				<td>
@@ -74,16 +74,16 @@
 					@Html.DisplayFor(modelItem => Model.IngredientQuantities[i])
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => Model.IngredientProteins[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.IngredientCarbohydrates[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.IngredientFats[i])
-				</td>
-				<td>
 					@Html.DisplayFor(modelItem => Model.IngredientKcal[i])
+				</td>
+				<td>
+					@Model.IngredientProteins[i].ToString("F1")
+				</td>
+				<td>
+					@Model.IngredientCarbohydrates[i].ToString("F1")
+				</td>
+				<td>
+					@Model.IngredientFats[i].ToString("F1")
 				</td>
 				<td class="text-end">
 					<button data-mealid="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
@@ -122,13 +122,13 @@
 				@Html.DisplayFor(model => model.Kcal)
 			</td>
 			<td>
-				@Html.DisplayFor(model => model.Proteins)
+				@Model.Proteins.ToString("F1")
 			</td>
 			<td>
-				@Html.DisplayFor(model => model.Carbohydrates)
+				@Model.Carbohydrates.ToString("F1")
 			</td>
 			<td>
-				@Html.DisplayFor(model => model.Fats)
+				@Model.Fats.ToString("F1")
 			</td>
 		</tr>
 	</tbody>

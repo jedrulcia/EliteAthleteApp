@@ -16,11 +16,11 @@ namespace TrainingPlanApp.Web.Models
 		[Display(Name = "Amount of kcal")]
 		public int? Kcal { get; set; }
 		[Display(Name = "Amount of proteins")]
-		public decimal? Proteins { get; set; }
+		public decimal Proteins { get; set; }
 		[Display(Name = "Amount of fats")]
-		public decimal? Fats { get; set; }
+		public decimal Fats { get; set; }
 		[Display(Name = "Amount of carbs")]
-		public decimal? Carbohydrates { get; set; }
+		public decimal Carbohydrates { get; set; }
 		public SelectList? AvailableIngredients { get; set; }
 		public List<int?>? IngredientIds { get; set; }
 		[Display(Name = "Ingredient")]

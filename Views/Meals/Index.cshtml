@@ -41,13 +41,13 @@
                     @Html.DisplayFor(modelItem => item.Kcal)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Proteins)
+                    @item.Proteins.ToString("F1")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Fats)
+                    @item.Carbohydrates.ToString("F1")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Carbohydrates)
+                    @item.Fats.ToString("F1")
                 </td>
                 <td class="text-end">
                     <a asp-action="ManageIngredients" class="btn btn-primary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Ingredients</a>

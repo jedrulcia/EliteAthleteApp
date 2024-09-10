@@ -118,8 +118,8 @@ namespace TrainingPlanApp.Web.Repositories
 				mealManageIngredientsVM.IngredientProteins.Add(Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1));
 				mealManageIngredientsVM.IngredientCarbohydrates.Add(Math.Round(ingredientVM.Carbohydrates * ingredientMultiplier, 1));
 				mealManageIngredientsVM.IngredientFats.Add(Math.Round(ingredientVM.Fats * ingredientMultiplier, 1));
-				mealManageIngredientsVM.Kcal = Convert.ToInt16
-					(mealManageIngredientsVM.IngredientProteins[i] * 4 + mealManageIngredientsVM.IngredientCarbohydrates[i] * 4 + mealManageIngredientsVM.IngredientFats[i] * 9);
+				mealManageIngredientsVM.IngredientKcal.Add(Convert.ToInt16
+					(mealManageIngredientsVM.IngredientProteins[i] * 4 + mealManageIngredientsVM.IngredientCarbohydrates[i] * 4 + mealManageIngredientsVM.IngredientFats[i] * 9));
 			}
 			return mealManageIngredientsVM;
 		}
