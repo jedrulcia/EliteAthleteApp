@@ -6,7 +6,7 @@ namespace TrainingPlanApp.Web.Models
 {
     public class MealCreateVM
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         [Display(Name = "Name")]
         public string? Name { get; set; }
         [Display(Name = "Recipe")]

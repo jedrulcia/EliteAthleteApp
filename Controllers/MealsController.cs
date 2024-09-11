@@ -99,8 +99,8 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-			var mealVM = mapper.Map<MealVM>(meal);
-			return View(mealVM);
+			var mealCreateVM = mapper.Map<MealCreateVM>(meal);
+			return View(mealCreateVM);
 		}
 
 		// POST: Meals/Edit
@@ -108,17 +108,17 @@ namespace TrainingPlanApp.Web.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(MealVM mealVM)
+		public async Task<IActionResult> Edit(MealCreateVM mealCreateVM)
 		{
 			if (ModelState.IsValid)
 			{
 				try
 				{
-					await mealRepository.EditMeal(mealVM);
+					await mealRepository.EditMeal(mealCreateVM);
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!await mealRepository.Exists(mealVM.Id))
+					if (!await mealRepository.Exists(mealCreateVM.Id))
 					{
 						return NotFound();
 					}
@@ -129,7 +129,7 @@ namespace TrainingPlanApp.Web.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
-			return View(mealVM);
+			return View(mealCreateVM);
 		}
 
 		// POST: Meals/Delete

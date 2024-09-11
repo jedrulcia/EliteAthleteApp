@@ -25,9 +25,11 @@ namespace TrainingPlanApp.Web.Repositories
 			await AddAsync(meal);
 		}
 
-		public async Task EditMeal(MealVM mealVM)
+		public async Task EditMeal(MealCreateVM mealCreateVM)
 		{
-			var meal = mapper.Map<Meal>(mealVM);
+			var meal = await GetAsync(mealCreateVM.Id);
+			meal.Name = mealCreateVM.Name;
+			meal.Recipe = mealCreateVM.Recipe;
 			await UpdateAsync(meal);
 		}
 
