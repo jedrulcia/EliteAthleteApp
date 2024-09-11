@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using TrainingPlanApp.Web.Contracts;
 
 namespace TrainingPlanApp.Web.Models
 {
-	public class MealManageIngredientsVM
+	public class MealManageIngredientsVM : IMealMacrosRepository
 	{
 		public int? Id { get; set; }
 

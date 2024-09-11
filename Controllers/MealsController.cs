@@ -34,8 +34,7 @@ namespace TrainingPlanApp.Web.Controllers
 		// GET: Meals
 		public async Task<IActionResult> Index()
 		{
-			var mealsVM = mapper.Map<List<MealVM>>(await mealRepository.GetAllAsync());
-			mealsVM = await mealRepository.GetMacrosOfFewMeals(mealsVM);
+			var mealsVM = await mealRepository.GetMealIndexVM();
 			return View(mealsVM);
 		}
 
@@ -47,8 +46,8 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-			var mealVM = mapper.Map<MealVM>(meal);
-			return View(mealVM);
+			var mealDetailsVM = await mealRepository.GetMealDetailsVM(meal);
+			return View(mealDetailsVM);
 		}
 
 		// GET: Meals/Create

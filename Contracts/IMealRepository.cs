@@ -7,8 +7,9 @@ namespace TrainingPlanApp.Web.Contracts
 	{
 		Task CreateNewMeal(MealCreateVM mealCreateVM);
 		Task EditMeal(MealCreateVM mealCreateVM);
-		Task<List<MealVM>> GetMacrosOfFewMeals(List<MealVM> mealVM);
-		Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id, bool redirectToAdmin);
+		Task<List<MealVM>> GetMealIndexVM();
+		Task<MealDetailsVM> GetMealDetailsVM(Meal meal);
+        Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id, bool redirectToAdmin);
 		Task<MealManageIngredientsVM> AddIngredientToMealSequence(MealManageIngredientsVM mealManageIngredientsVM);
 		Task RemoveIngredientFromMeal(int mealId, int index);
 	}

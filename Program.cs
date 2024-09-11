@@ -24,6 +24,7 @@ builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IMealRepository, MealRepository>();
 builder.Services.AddScoped<IDietRepository, DietRepository>();
+builder.Services.AddScoped<IMealMacrosRepository, MealMacrosRepository>();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
