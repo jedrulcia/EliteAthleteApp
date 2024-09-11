@@ -90,6 +90,27 @@
 				</td>
 			</tr>
 		}
+		<tr>
+			<td>
+				<Strong>Total</Strong>
+			</td>
+			<td>
+				<Strong></Strong>
+			</td>
+			<td>
+				<Strong>@Html.DisplayFor(model => model.Kcal)</Strong>
+			</td>
+			<td>
+				<Strong>@Model.Proteins.ToString("F1")</Strong>
+			</td>
+			<td>
+				<Strong>@Model.Carbohydrates.ToString("F1")</Strong>
+			</td>
+			<td>
+				<Strong>@Model.Fats.ToString("F1")</Strong>
+			</td>
+			<td></td>
+		</tr>
 	</tbody>
 </table>
 
@@ -99,41 +120,15 @@
 </form>
 
 
-<table class="table">
+@* <table class="table">
 	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Kcal)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Proteins)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Carbohydrates)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Fats)
-			</th>
-		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td>
-				@Html.DisplayFor(model => model.Kcal)
-			</td>
-			<td>
-				@Model.Proteins.ToString("F1")
-			</td>
-			<td>
-				@Model.Carbohydrates.ToString("F1")
-			</td>
-			<td>
-				@Model.Fats.ToString("F1")
-			</td>
 		</tr>
 	</tbody>
 </table>
-
+ *@
 @section Scripts
 {
 	<script>
