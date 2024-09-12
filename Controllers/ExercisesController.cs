@@ -60,7 +60,7 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			if (ModelState.IsValid)
             {
-				await exerciseRepository.CreateNewExercise(exerciseVM);
+				await exerciseRepository.CreateExercise(exerciseVM);
                 return RedirectToAction(nameof(Index));
             }
 			return View(exerciseVM);

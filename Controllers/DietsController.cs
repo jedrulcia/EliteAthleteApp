@@ -48,17 +48,6 @@ namespace TrainingPlanApp.Web.Controllers
 			var dietVM = mapper.Map<DietIndexVM>(diet);
             return View(dietVM);
 		}
-        public async Task<IActionResult> MealDetails(int? mealId, int? dietId)
-		{
-			var meal = await mealRepository.GetAsync(mealId);
-			if (meal == null)
-			{
-				return NotFound();
-			}
-            var mealVM = mapper.Map<DietMealVM>(meal);
-            mealVM.DietId = dietId;
-            return View(mealVM);
-		}
 
 		// GET: Diets/Create
 		public IActionResult Create(string? userId)
@@ -131,7 +120,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await dietRepository.UpdateDiet(dietCreateVM);
+                    await dietRepository.EditDiet(dietCreateVM);
                     return RedirectToAction(nameof(Index));
                     /*return RedirectToAction(nameof(Index), new { id = model.UserId });*/
                 }

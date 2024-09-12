@@ -14,14 +14,28 @@ namespace TrainingPlanApp.Web.Repositories
 			this.mapper = mapper;
 		}
 
-		public async Task CreateDiet(DietCreateVM dietCreateVM)
+        // Creates new database entity in diet table
+        public async Task CreateDiet(DietCreateVM dietCreateVM)
 		{
 			var diet = mapper.Map<Diet>(dietCreateVM);
 			diet.IsActive = true; 
             diet.MealIds = Enumerable.Repeat<int?>(null, 35).ToList();
             Console.WriteLine($"list length: {diet.MealIds.Count}");
             await AddAsync(diet);
-		}
+        }
+
+        // Edits the Name, Description, StartDate of diet
+        public async Task EditDiet(DietCreateVM dietCreateVM)
+        {
+            var diet = await GetAsync(dietCreateVM.Id);
+            diet.Name = dietCreateVM.Name;
+            diet.StartDate = dietCreateVM.StartDate;
+            diet.Description = dietCreateVM.Description;
+            diet.IsActive = true;
+            await UpdateAsync(diet);
+        }
+
+        // Changes status of diet (Active/Not Active)
         public async Task ChangeDietStatus(int dietId, bool status)
         {
             var diet = await GetAsync(dietId);
@@ -33,17 +47,6 @@ namespace TrainingPlanApp.Web.Repositories
             {
                 diet.IsActive = false;
             }
-
-            await UpdateAsync(diet);
-        }
-
-        public async Task UpdateDiet(DietCreateVM dietCreateVM)
-        {
-            var diet = await GetAsync(dietCreateVM.Id);
-            diet.Name = dietCreateVM.Name;
-            diet.StartDate = dietCreateVM.StartDate;
-            diet.Description = dietCreateVM.Description;
-            diet.IsActive = true;
             await UpdateAsync(diet);
         }
     }

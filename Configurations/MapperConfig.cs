@@ -8,29 +8,32 @@ namespace TrainingPlanApp.Web.Configurations
 	{
 		public MapperConfig()
 		{
+			// User module mapping
 			CreateMap<User, UserListVM>().ReverseMap();
 
+			// Exercise module mapping
 			CreateMap<Exercise, ExerciseVM>().ReverseMap();
 
-			CreateMap<TrainingPlan, TrainingPlanIndexVM>().ReverseMap();
+			// Training Plan module mapping
+            CreateMap<TrainingPlan, TrainingPlanIndexVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanAdminVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanCreateVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanManageExercisesVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanDetailsVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanActiveVM>().ReverseMap();
 
-			CreateMap<Ingredient, IngredientVM>().ReverseMap();
+			// Ingredient module mapping
+            CreateMap<Ingredient, IngredientVM>().ReverseMap();
 
-			CreateMap<Meal, MealIndexVM>().ReverseMap();
+			// Meal module mapping
+            CreateMap<Meal, MealIndexVM>().ReverseMap();
 			CreateMap<Meal, MealCreateVM>().ReverseMap();
 			CreateMap<Meal, MealManageIngredientsVM>().ReverseMap();
 			CreateMap<Meal, MealDetailsVM>().ReverseMap();
 
+			// Diet module mapping
 			CreateMap<Diet, DietIndexVM>().ReverseMap();
-			CreateMap<DietIndexVM, DietCreateVM>().ReverseMap();
 			CreateMap<Diet, DietCreateVM>().ReverseMap();
-			CreateMap<Diet, DietMealVM>().ReverseMap();
-
 		}
 	}
 }

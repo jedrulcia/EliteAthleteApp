@@ -65,7 +65,7 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await mealRepository.CreateNewMeal(mealCreateVM);
+				await mealRepository.CreateMeal(mealCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
 			return View(mealCreateVM);
@@ -87,7 +87,7 @@ namespace TrainingPlanApp.Web.Controllers
 		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ManageIngredients(MealManageIngredientsVM mealManageIngredientsVM)
 		{
-			return View(await mealRepository.AddIngredientToMealSequence(mealManageIngredientsVM));
+			return View(await mealRepository.AddIngredientToMeal(mealManageIngredientsVM));
 		}
 
 		// GET: Meals/Edit

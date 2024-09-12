@@ -5,12 +5,25 @@ namespace TrainingPlanApp.Web.Contracts
 {
 	public interface IMealRepository : IGenericRepository<Meal>
 	{
-		Task CreateNewMeal(MealCreateVM mealCreateVM);
+		// Creates new database entity in Meal table
+		Task CreateMeal(MealCreateVM mealCreateVM);
+
+		// Edits Name, Recipe of meal
 		Task EditMeal(MealCreateVM mealCreateVM);
+
+		// Gets the Meal IndexVM - mainly counts the calories and macros of the meals
 		Task<List<MealIndexVM>> GetMealIndexVM();
+
+		// Gets the MealDetailsVM
 		Task<MealDetailsVM> GetMealDetailsVM(Meal meal);
+
+		// Gets MealManageIngredientsVM
         Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id, bool redirectToAdmin);
-		Task<MealManageIngredientsVM> AddIngredientToMealSequence(MealManageIngredientsVM mealManageIngredientsVM);
+
+		// Adds Ingredient to Meal
+		Task<MealManageIngredientsVM> AddIngredientToMeal(MealManageIngredientsVM mealManageIngredientsVM);
+
+		// Removes Ingredient from Meal
 		Task RemoveIngredientFromMeal(int mealId, int index);
 	}
 }

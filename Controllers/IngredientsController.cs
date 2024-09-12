@@ -47,7 +47,7 @@ namespace TrainingPlanApp.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await ingredientRepository.CreateNewIngredient(ingredientVM);
+                await ingredientRepository.CreateIngredient(ingredientVM);
                 return RedirectToAction(nameof(Index));
             }
             return View(ingredientVM);

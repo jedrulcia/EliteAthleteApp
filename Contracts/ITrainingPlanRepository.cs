@@ -5,17 +5,37 @@ namespace TrainingPlanApp.Web.Contracts
 {
     public interface ITrainingPlanRepository : IGenericRepository<TrainingPlan>
     {
+		// Creates new database entity in TrainingPlan table
         Task CreateTrainingPlan(TrainingPlanCreateVM model);
-		Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id, bool redirectToAdmin);
-		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanSequence(TrainingPlanManageExercisesVM trainingPlanCreateVM);
+
+        // Edits Name, Description, StartDate of Training Plan
+        Task EditTrainingPlan(TrainingPlanCreateVM model);
+
+        // Gets TrainingPlanManageExercisesVM
+        Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id, bool redirectToAdmin);
+
+		// Adds Exercise to Training Plan
+		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanManageExercisesVM trainingPlanCreateVM);
+
+		// Removes Exercise from Training Plan
 		Task RemoveExerciseFromTrainingPlan(int id, int index);
-		Task UpdateBasicTrainingPlanDetails(TrainingPlanCreateVM model);
+
+		// Changes the status of Training Plan (Active/Not Active)
 		Task ChangeTrainingPlanStatus(int trainingPlanId, bool status);
+
+		// Gets list of specific User Training Plans
 		Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string userId);
+
+		// Gets list of specific User active Training Plans
 		Task<List<TrainingPlanActiveVM>> GetUserActiveTrainingPlans(string userId);
-		Task<TrainingPlanExerciseDetailsVM> GetTrainingPlanExerciseDetailsVM(int? id, string UserId);
-		Task<List<TrainingPlanAdminVM>> GetAllTrainingPlansToVM();
-		Task<TrainingPlanCreateVM> GetTrainingPlanCreateVMForEditingView(int? id, bool redirectToAdmin);
-		Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin);
+
+        // Gets the list of all Training Plans
+        Task<List<TrainingPlanAdminVM>> GetTrainingPlanIndexAdminVM();
+
+        // Gets TrainingPlanDetailsVM
+        Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin);
+
+        // Gets TrainingPlanExerciseDetailsVM
+        Task<TrainingPlanExerciseDetailsVM> GetTrainingPlanExerciseDetailsVM(int? id, string UserId);
 	}
 }

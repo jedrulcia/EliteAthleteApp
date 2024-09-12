@@ -2,11 +2,22 @@
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<T> GetAsync(int? id);
-        Task<List<T>> GetAllAsync();
+        // Adds the entity to database
         Task<T> AddAsync(T entity);
-        Task<bool> Exists(int id);
+
+        // Deletes the entity from database
         Task DeleteAsync(int id);
+
+        // Checks if entity exists in the database
+        Task<bool> Exists(int id);
+
+        // Updates the entity in database
         Task UpdateAsync(T entity);
+
+        // Gets the entity from database
+        Task<T> GetAsync(int? id);
+
+        // Gets all entities from database
+        Task<List<T>> GetAllAsync();
     }
 }
