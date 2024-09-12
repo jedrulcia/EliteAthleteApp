@@ -60,8 +60,6 @@ namespace TrainingPlanApp.Web.Controllers
 		}
 
         // POST: Diets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DietCreateVM model)
@@ -85,13 +83,9 @@ namespace TrainingPlanApp.Web.Controllers
         public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
         {
             await dietRepository.ChangeDietStatus(id, status);
-            /*            if (userId == null)
-                        {
-                            return RedirectToAction(nameof(IndexAdmin));
-                        }
-                        return RedirectToAction(nameof(Index), new { id = userId });*/
             return RedirectToAction(nameof(Index));
         }
+
         // GET: Diets/Edit
         public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
         {
@@ -110,8 +104,6 @@ namespace TrainingPlanApp.Web.Controllers
         }
 
         // POST: Diets/Edit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(DietCreateVM dietCreateVM)

@@ -28,7 +28,7 @@ namespace TrainingPlanApp.Web.Controllers
             return View(userListVM);
         }
 
-        // GET: UsersController/Details/5
+        // GET: UsersController/Details
         public ActionResult Details(int id)
         {
             return View();
@@ -55,37 +55,16 @@ namespace TrainingPlanApp.Web.Controllers
             }
         }
 
-        // GET: UsersController/Edit/5
+        // GET: UsersController/Edit
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: UsersController/Edit/5
+        // POST: UsersController/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsersController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UsersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {

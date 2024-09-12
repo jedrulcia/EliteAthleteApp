@@ -39,8 +39,6 @@ namespace TrainingPlanApp.Web.Controllers
         }
 
         // POST: Ingredients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IngredientVM ingredientVM)
@@ -66,8 +64,6 @@ namespace TrainingPlanApp.Web.Controllers
         }
 
         // POST: Ingredients/Edit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, IngredientVM ingredientVM)

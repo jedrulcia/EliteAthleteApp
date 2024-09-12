@@ -90,8 +90,6 @@ namespace TrainingPlanApp.Web.Controllers
         }
 
         // POST: TrainingPlans/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
@@ -156,8 +154,6 @@ namespace TrainingPlanApp.Web.Controllers
         }
 
         // POST: TrainingPlans/Edit
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
