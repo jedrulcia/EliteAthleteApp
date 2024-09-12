@@ -1,15 +1,15 @@
 ﻿@model DietCreateVM
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create new diet </h1>
+<h1>Edit diet </h1>
 
 <hr />
 <div class="row">
     <div class="col-md-12">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserId" />
             <div class="form-group col-md-12">
@@ -21,41 +21,6 @@
                 <label asp-for="StartDate" class="control-label"></label>
                 <input asp-for="StartDate" class="form-control" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <label asp-for="BreakfastId" class="control-label"></label>
-                <select asp-for="BreakfastId" asp-items="Model?.Meals" class="form-select">
-                    <option>Select exercise</option>
-                </select>
-                <span asp-validation-for="BreakfastId" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <label asp-for="SecondBreakfastId" class="control-label"></label>
-                <select asp-for="SecondBreakfastId" asp-items="Model?.Meals" class="form-select">
-                    <option>Select exercise</option>
-                </select>
-                <span asp-validation-for="SecondBreakfastId" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <label asp-for="LunchId" class="control-label"></label>
-                <select asp-for="LunchId" asp-items="Model?.Meals" class="form-select">
-                    <option>Select exercise</option>
-                </select>
-                <span asp-validation-for="LunchId" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <label asp-for="SnackId" class="control-label"></label>
-                <select asp-for="SnackId" asp-items="Model?.Meals" class="form-select">
-                    <option>Select exercise</option>
-                </select>
-                <span asp-validation-for="SnackId" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-12">
-                <label asp-for="DinnerId" class="control-label"></label>
-                <select asp-for="DinnerId" asp-items="Model?.Meals" class="form-select">
-                    <option>Select exercise</option>
-                </select>
-                <span asp-validation-for="DinnerId" class="text-danger"></span>
             </div>
             <div class="form-group col-md-12">
                 <label asp-for="Description" class="control-label"></label>

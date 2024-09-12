@@ -17,8 +17,10 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task CreateDiet(DietCreateVM dietCreateVM)
 		{
 			var diet = mapper.Map<Diet>(dietCreateVM);
-			diet.IsActive = true;
-			await AddAsync(diet);
+			diet.IsActive = true; 
+            diet.MealIds = Enumerable.Repeat<int?>(null, 35).ToList();
+            Console.WriteLine($"list length: {diet.MealIds.Count}");
+            await AddAsync(diet);
 		}
         public async Task ChangeDietStatus(int dietId, bool status)
         {
@@ -37,7 +39,10 @@ namespace TrainingPlanApp.Web.Repositories
 
         public async Task UpdateDiet(DietCreateVM dietCreateVM)
         {
-            var diet = mapper.Map<Diet>(dietCreateVM);
+            var diet = await GetAsync(dietCreateVM.Id);
+            diet.Name = dietCreateVM.Name;
+            diet.StartDate = dietCreateVM.StartDate;
+            diet.Description = dietCreateVM.Description;
             diet.IsActive = true;
             await UpdateAsync(diet);
         }

@@ -65,7 +65,6 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			var model = new DietCreateVM
 			{
-				Meals = new SelectList(context.Meals.OrderBy(e => e.Name), "Id", "Name"),
 				UserId = userId
 			};
 			return View(model);
@@ -90,7 +89,6 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
-            model.Meals = new SelectList(context.Meals, "Id", "Name");
             return View(model);
         }
 
@@ -119,7 +117,6 @@ namespace TrainingPlanApp.Web.Controllers
             }
             var dietCreateVM = mapper.Map<DietCreateVM>(diet);
             dietCreateVM.RedirectToAdmin = redirectToAdmin;
-            dietCreateVM.Meals = new SelectList(context.Meals, "Id", "Name");
             return View(dietCreateVM);
         }
 
@@ -128,13 +125,13 @@ namespace TrainingPlanApp.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(DietCreateVM model)
+        public async Task<IActionResult> Edit(DietCreateVM dietCreateVM)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    dietRepository.UpdateDiet(model);
+                    await dietRepository.UpdateDiet(dietCreateVM);
                     return RedirectToAction(nameof(Index));
                     /*return RedirectToAction(nameof(Index), new { id = model.UserId });*/
                 }
@@ -144,8 +141,7 @@ namespace TrainingPlanApp.Web.Controllers
                 ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
             }
 
-            model.Meals = new SelectList(context.Meals, "Id", "Name");
-            return View(model);
+            return View(dietCreateVM);
         }
 
         // POST: Diets/Delete
