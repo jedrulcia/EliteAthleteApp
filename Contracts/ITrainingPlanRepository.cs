@@ -11,7 +11,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task RemoveExerciseFromTrainingPlan(int id, int index);
 		Task UpdateBasicTrainingPlanDetails(TrainingPlanCreateVM model);
 		Task ChangeTrainingPlanStatus(int trainingPlanId, bool status);
-		Task<List<TrainingPlanVM>> GetUserTrainingPlans(string userId);
+		Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string userId);
 		Task<List<TrainingPlanActiveVM>> GetUserActiveTrainingPlans(string userId);
 		Task<TrainingPlanExerciseDetailsVM> GetTrainingPlanExerciseDetailsVM(int? id, string UserId);
 		Task<List<TrainingPlanAdminVM>> GetAllTrainingPlansToVM();

@@ -33,9 +33,9 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(meal);
 		}
 
-		public async Task<List<MealVM>> GetMealIndexVM()
+		public async Task<List<MealIndexVM>> GetMealIndexVM()
         {
-            var mealsVM = mapper.Map<List<MealVM>>(await GetAllAsync());
+            var mealsVM = mapper.Map<List<MealIndexVM>>(await GetAllAsync());
             for (int i = 0; i < mealsVM.Count; i++)
 			{
 				mealsVM[i].Proteins = 0;

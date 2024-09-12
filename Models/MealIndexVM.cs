@@ -2,7 +2,7 @@
 
 namespace TrainingPlanApp.Web.Models
 {
-	public class MealVM
+	public class MealIndexVM
     {
         public int Id { get; set; }
         [Display(Name = "Name")]

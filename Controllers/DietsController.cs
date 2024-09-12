@@ -33,7 +33,7 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: Diets
         public async Task<IActionResult> Index()
         {
-            var dietsVM = mapper.Map<List<DietVM>>(await dietRepository.GetAllAsync());            
+            var dietsVM = mapper.Map<List<DietIndexVM>>(await dietRepository.GetAllAsync());     
             return View(dietsVM);
         }
 
@@ -45,7 +45,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
 			}
-			var dietVM = mapper.Map<DietVM>(diet);
+			var dietVM = mapper.Map<DietIndexVM>(diet);
             return View(dietVM);
 		}
         public async Task<IActionResult> MealDetails(int? mealId, int? dietId)

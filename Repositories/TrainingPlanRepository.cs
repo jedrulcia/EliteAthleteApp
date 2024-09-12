@@ -130,7 +130,7 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(trainingPlan);
 		}
 
-		public async Task<List<TrainingPlanVM>> GetUserTrainingPlans(string? userId)
+		public async Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string? userId)
         {
             if (userId == null)
             {
@@ -140,7 +140,7 @@ namespace TrainingPlanApp.Web.Repositories
             var trainingPlans = await context.TrainingPlans
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
-            return mapper.Map<List<TrainingPlanVM>>(trainingPlans);
+            return mapper.Map<List<TrainingPlanIndexVM>>(trainingPlans);
         }
 
         public async Task<List<TrainingPlanAdminVM>> GetAllTrainingPlansToVM()

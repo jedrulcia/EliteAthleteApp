@@ -12,7 +12,7 @@ namespace TrainingPlanApp.Web.Models
 		[Display(Name = "Description")]
 		public string? Description { get; set; }
 
-		public List<TrainingPlanVM>? ActiveTrainingPlans { get; set; }
+		public List<TrainingPlanIndexVM>? ActiveTrainingPlans { get; set; }
 		public List<ExerciseVM?>? Exercises { get; set; }
 		public List<int?>? ExerciseIds { get; set; }
 
