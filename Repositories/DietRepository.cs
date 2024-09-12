@@ -18,7 +18,7 @@ namespace TrainingPlanApp.Web.Repositories
         public async Task CreateDiet(DietCreateVM dietCreateVM)
 		{
 			var diet = mapper.Map<Diet>(dietCreateVM);
-			diet.IsActive = true; 
+			diet.IsActive = false; 
             diet.MealIds = Enumerable.Repeat<int?>(null, 35).ToList();
             Console.WriteLine($"list length: {diet.MealIds.Count}");
             await AddAsync(diet);
@@ -31,7 +31,6 @@ namespace TrainingPlanApp.Web.Repositories
             diet.Name = dietCreateVM.Name;
             diet.StartDate = dietCreateVM.StartDate;
             diet.Description = dietCreateVM.Description;
-            diet.IsActive = true;
             await UpdateAsync(diet);
         }
 
