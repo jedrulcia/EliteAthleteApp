@@ -62,7 +62,7 @@ namespace TrainingPlanApp.Web.Repositories
         public async Task<MealDetailsVM> GetMealDetailsVM(Meal meal)
         {
 			var mealDetailsVM = mapper.Map<MealDetailsVM>(meal);
-			mealDetailsVM = await GetTheMacrosOfSingleMeal(mealDetailsVM);
+			mealDetailsVM = await GetMacrosOfMeal(mealDetailsVM);
 			mealDetailsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealDetailsVM.IngredientIds);
 			return mealDetailsVM;
         }
@@ -74,8 +74,8 @@ namespace TrainingPlanApp.Web.Repositories
 			mealManageIngredientsVM.AvailableIngredients = new SelectList(context.Ingredients.OrderBy(e => e.Name), "Id", "Name");
 			mealManageIngredientsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealManageIngredientsVM.IngredientIds);
 			mealManageIngredientsVM.RedirectToAdmin = redirectToAdmin;
-			mealManageIngredientsVM = await GetTheMacrosOfSingleMeal(mealManageIngredientsVM);
-			mealManageIngredientsVM = await CountTheMacrosOfIngredients(mealManageIngredientsVM);
+			mealManageIngredientsVM = await GetMacrosOfMeal(mealManageIngredientsVM);
+			mealManageIngredientsVM = await CountMacrosOfIngredients(mealManageIngredientsVM);
 			return mealManageIngredientsVM;
 		}
 
@@ -103,29 +103,41 @@ namespace TrainingPlanApp.Web.Repositories
 			meal.IngredientIds.RemoveAt(index);
 			meal.IngredientQuantities.RemoveAt(index);
 			await UpdateAsync(meal);
-		}
+        }
 
-		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+        // Gets the list of specific meals
+        public async Task<List<MealIndexVM?>?> GetListOfMeals(List<int?>? mealIds)
+        {
+            List<MealIndexVM> meals = new List<MealIndexVM>();
+            foreach (int id in mealIds)
+            {
+                var mealIndexVM = mapper.Map<MealIndexVM>(await GetAsync(id));
+                meals.Add(mealIndexVM);
+            }
+            return meals;
+        }
 
-		// Counts the macros of single meal
-		private async Task<T> GetTheMacrosOfSingleMeal<T>(T mealVM) where T : IMealMacrosRepository
-		{
-			mealVM.Proteins = 0;
-			mealVM.Carbohydrates = 0;
+        // Counts the macros of single meal
+        public async Task<T> GetMacrosOfMeal<T>(T mealVM) where T : IMacroRepository
+        {
+            mealVM.Proteins = 0;
+            mealVM.Carbohydrates = 0;
             mealVM.Fats = 0;
             for (int i = 0; i < mealVM.IngredientIds.Count; i++)
-			{
-				IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealVM.IngredientIds[i], mealVM.IngredientQuantities[i]);
-				mealVM.Proteins += ingredientVM.Proteins;
-				mealVM.Carbohydrates += ingredientVM.Carbohydrates;
-				mealVM.Fats += ingredientVM.Fats;
-			}
-			mealVM.Kcal = Convert.ToInt16(mealVM.Proteins * 4 + mealVM.Carbohydrates * 4 + mealVM.Fats * 9);
-			return mealVM;
-		}
+            {
+                IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealVM.IngredientIds[i], mealVM.IngredientQuantities[i]);
+                mealVM.Proteins += ingredientVM.Proteins;
+                mealVM.Carbohydrates += ingredientVM.Carbohydrates;
+                mealVM.Fats += ingredientVM.Fats;
+            }
+            mealVM.Kcal = Convert.ToInt16(mealVM.Proteins * 4 + mealVM.Carbohydrates * 4 + mealVM.Fats * 9);
+            return mealVM;
+        }
 
-		// Counts the macros of list of ingredients
-		private async Task<MealManageIngredientsVM> CountTheMacrosOfIngredients(MealManageIngredientsVM mealManageIngredientsVM)
+        // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+
+        // Counts the macros of list of ingredients
+		private async Task<MealManageIngredientsVM> CountMacrosOfIngredients(MealManageIngredientsVM mealManageIngredientsVM)
 		{
 			mealManageIngredientsVM = AddListsToMealManageIngredientsVM(mealManageIngredientsVM);
 			for (int i = 0; i < mealManageIngredientsVM.IngredientIds.Count; i++)

@@ -1,6 +1,6 @@
 ﻿namespace TrainingPlanApp.Web.Contracts
 {
-    public interface IMealMacrosRepository
+    public interface IMacroRepository
     {
         decimal Proteins { get; set; }
         decimal Carbohydrates { get; set; }

@@ -31,8 +31,8 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<Meal, MealManageIngredientsVM>().ReverseMap();
 			CreateMap<Meal, MealDetailsVM>().ReverseMap();
 
-			// Diet module mapping
-			CreateMap<Diet, DietIndexVM>().ReverseMap();
+            // Diet module mapping
+            CreateMap<Diet, DietIndexVM>().ReverseMap();
 			CreateMap<Diet, DietCreateVM>().ReverseMap();
 		}
 	}

@@ -25,5 +25,11 @@ namespace TrainingPlanApp.Web.Contracts
 
 		// Removes Ingredient from Meal
 		Task RemoveIngredientFromMeal(int mealId, int index);
-	}
+
+        // Gets the list of specific meals
+        Task<List<MealIndexVM?>?> GetListOfMeals(List<int?>? mealIds);
+
+		// Counts the macros of single meal
+		Task<T> GetMacrosOfMeal<T>(T mealVM) where T : IMacroRepository;
+    }
 }

@@ -19,14 +19,12 @@ namespace TrainingPlanApp.Web.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IDietRepository dietRepository;
-		private readonly IMealRepository mealRepository;
 		private readonly IMapper mapper;
 
         public DietsController(ApplicationDbContext context, IDietRepository dietRepository, IMealRepository mealRepository, IMapper mapper)
         {
             this.context = context;
             this.dietRepository = dietRepository;
-			this.mealRepository = mealRepository;
 			this.mapper = mapper;
         }
 
@@ -84,7 +82,24 @@ namespace TrainingPlanApp.Web.Controllers
         {
             await dietRepository.ChangeDietStatus(id, status);
             return RedirectToAction(nameof(Index));
+        }      
+        
+        // GET: Diets/ManageIngredients
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> ManageMeals(int? id, bool redirectToAdmin)
+        {
+            var dietManageMealsVM = await dietRepository.GetDietManageMealsVM(id, redirectToAdmin);
+            return View(dietManageMealsVM);
         }
+
+/*        // POST: Diets/ManageIngredients
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> ManageMeals(DietManageMealsVM dietManageMealsVM)
+        {
+            return View(await dietRepository.AddMealToDiet(dietManageMealsVM));
+        }*/
 
         // GET: Diets/Edit
         public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)

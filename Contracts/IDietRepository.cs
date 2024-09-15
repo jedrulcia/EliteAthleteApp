@@ -14,6 +14,7 @@ namespace TrainingPlanApp.Web.Contracts
         // Changes status of diet (Active/Not Active)
         Task ChangeDietStatus(int dietId, bool status);
 
-
+        // Gets DietManageMealsVM
+        Task<DietManageMealsVM> GetDietManageMealsVM(int? id, bool redirectToAdmin);
     }
 }

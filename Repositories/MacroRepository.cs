@@ -2,7 +2,7 @@
 
 namespace TrainingPlanApp.Web.Repositories
 {
-    public class MealMacrosRepository : IMealMacrosRepository
+    public class MacroRepository : IMacroRepository
     {
         public decimal Proteins { get; set; }
         public decimal Carbohydrates { get; set; }

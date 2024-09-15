@@ -69,7 +69,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealCreateVM);
 		}
 
-		// GET: TrainingPlans/ManageIngredients
+		// GET: Meals/ManageIngredients
 		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ManageIngredients(int? id, bool redirectToAdmin)
 		{
@@ -77,7 +77,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealManageIngredientsVM);
 		}
 
-		// POST: TrainingPlans/ManageIngredients
+		// POST: Meals/ManageIngredients
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator)]
