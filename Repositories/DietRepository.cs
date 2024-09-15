@@ -63,7 +63,7 @@ namespace TrainingPlanApp.Web.Repositories
             dietManageMealsVM.AvailableMeals = new SelectList(context.Meals.OrderBy(e => e.Name), "Id", "Name");
             dietManageMealsVM.Meals = await mealRepository.GetListOfMeals(dietManageMealsVM.MealIds);
             dietManageMealsVM.RedirectToAdmin = redirectToAdmin;
-            dietManageMealsVM = await GetMacrosOfDiet(dietManageMealsVM);
+/*            dietManageMealsVM = await GetMacrosOfDiet(dietManageMealsVM);*/
             /*dietManageMealsVM = await CountMacrosOfMeals(dietManageMealsVM);*/
             return dietManageMealsVM;
         }

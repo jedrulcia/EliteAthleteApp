@@ -108,11 +108,18 @@ namespace TrainingPlanApp.Web.Repositories
         // Gets the list of specific meals
         public async Task<List<MealIndexVM?>?> GetListOfMeals(List<int?>? mealIds)
         {
-            List<MealIndexVM> meals = new List<MealIndexVM>();
-            foreach (int id in mealIds)
+            List<MealIndexVM?> meals = new List<MealIndexVM>();
+            foreach (int? id in mealIds)
             {
-                var mealIndexVM = mapper.Map<MealIndexVM>(await GetAsync(id));
-                meals.Add(mealIndexVM);
+				if (id != null)
+				{
+					var mealIndexVM = mapper.Map<MealIndexVM>(await GetAsync(id));
+					meals.Add(mealIndexVM);
+				}
+				else
+				{
+					meals.Add(null);
+				}
             }
             return meals;
         }

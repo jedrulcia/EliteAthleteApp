@@ -27,5 +27,6 @@ namespace TrainingPlanApp.Web.Data
 		public DbSet<Diet> Diets { get; set; }
 		public DbSet<Ingredient> Ingredients { get; set; }
 		public DbSet<Meal> Meals { get; set; }
+	    public DbSet<TrainingPlanApp.Web.Models.DietIndexVM> DietIndexVM { get; set; } = default!;
 	}
 }

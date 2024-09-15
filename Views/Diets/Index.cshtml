@@ -66,6 +66,7 @@
 							<input name="userId" value="@item.UserId" type="hidden" />
 							<button type="submit" class="btn btn-danger btn-sm">Deactivate Diet</button>
 						</form>
+						<a asp-action="ManageMeals" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-circle-info">&nbsp;</i>Manage Meals</a>
 						<a asp-action="Details" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
 						<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
 						<button data-id="@item.Id" data-userid="@item.UserId" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
