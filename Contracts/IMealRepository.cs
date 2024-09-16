@@ -28,8 +28,5 @@ namespace TrainingPlanApp.Web.Contracts
 
         // Gets the list of specific meals
         Task<List<MealIndexVM?>?> GetListOfMeals(List<int?>? mealIds);
-
-		// Counts the macros of single meal
-		Task<T> GetMacrosOfMeal<T>(T mealVM) where T : IMacroRepository;
     }
 }

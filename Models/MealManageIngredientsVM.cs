@@ -4,7 +4,7 @@ using TrainingPlanApp.Web.Contracts;
 
 namespace TrainingPlanApp.Web.Models
 {
-	public class MealManageIngredientsVM : IMacroRepository
+	public class MealManageIngredientsVM
 	{
 		public int? Id { get; set; }
 

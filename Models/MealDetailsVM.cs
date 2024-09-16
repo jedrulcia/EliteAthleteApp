@@ -3,7 +3,7 @@ using TrainingPlanApp.Web.Contracts;
 
 namespace TrainingPlanApp.Web.Models
 {
-    public class MealDetailsVM : IMacroRepository
+    public class MealDetailsVM
     {
         public int Id { get; set; }
         [Display(Name = "Name")]
