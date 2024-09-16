@@ -5,22 +5,25 @@ namespace TrainingPlanApp.Web.Models
 {
     public class MealDetailsVM
     {
+        // IDs
         public int Id { get; set; }
+
+        // STRINGS etc.
         [Display(Name = "Name")]
         public string? Name { get; set; }
+
         [Display(Name = "Recipe")]
         public string? Recipe { get; set; }
-        [Display(Name = "Amount of kcal")]
+
+        // MACROS
         public int? Kcal { get; set; }
-        [Display(Name = "Amount of proteins")]
         public decimal Proteins { get; set; }
-        [Display(Name = "Amount of fats")]
-        public decimal Fats { get; set; }
-        [Display(Name = "Amount of carbs")]
         public decimal Carbohydrates { get; set; }
+        public decimal Fats { get; set; }
+
+        // LISTS
         public List<int?>? IngredientIds { get; set; }
         public List<int>? IngredientQuantities { get; set; }
-        [Display(Name = "Ingredient")]
         public List<IngredientVM?>? Ingredients { get; set; }
     }
 }

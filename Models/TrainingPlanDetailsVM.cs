@@ -4,26 +4,28 @@ namespace TrainingPlanApp.Web.Models
 {
 	public class TrainingPlanDetailsVM
 	{
+		// IDs
 		public int? Id { get; set; }
+
 		[Display(Name = "Athlete")]
 		public string? UserId { get; set; }
+
+		// STRINGS etc.
 		[Display(Name = "Training Plan")]
 		public string? Name { get; set; }
+
 		[Display(Name = "Description")]
 		public string? Description { get; set; }
 
+		// LISTS
 		public List<ExerciseVM?>? Exercises { get; set; }
 		public List<int?>? ExerciseIds { get; set; }
-
-		[Display(Name = "Weight")]
 		public List<int?>? Weight { get; set; }
-		[Display(Name = "Sets")]
 		public List<int?>? Sets { get; set; }
-		[Display(Name = "Repeats")]
 		public List<int?>? Repeats { get; set; }
-		[Display(Name = "Number of the exercise")]
 		public List<string?>? Index { get; set; }
 
+		// OTHER
 		public bool RedirectToAdmin { get; set; }
 	}
 }
