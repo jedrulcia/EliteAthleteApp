@@ -63,9 +63,9 @@ namespace TrainingPlanApp.Web.Repositories
             dietManageMealsVM.AvailableMeals = new SelectList(context.Meals.OrderBy(e => e.Name), "Id", "Name");
             dietManageMealsVM.Meals = await mealRepository.GetListOfMeals(dietManageMealsVM.MealIds);
             dietManageMealsVM.RedirectToAdmin = redirectToAdmin;
-/*            dietManageMealsVM = await GetMacrosOfDiet(dietManageMealsVM);*/
-            /*dietManageMealsVM = await CountMacrosOfMeals(dietManageMealsVM);*/
-            return dietManageMealsVM;
+			/*dietManageMealsVM = await CountMacrosOfMeals(dietManageMealsVM);*/
+			/*dietManageMealsVM = await GetMacrosOfDiets(dietManageMealsVM);*/
+			return dietManageMealsVM;
         }
 
 /*        // Adds Meal to Diet
@@ -87,7 +87,7 @@ namespace TrainingPlanApp.Web.Repositories
 
         // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
-        private async Task<DietManageMealsVM> GetMacrosOfDiet(DietManageMealsVM dietManageMealsVM)
+        private async Task<DietManageMealsVM> GetMacrosOfDiets(DietManageMealsVM dietManageMealsVM)
         {
             dietManageMealsVM.Proteins = 0;
             dietManageMealsVM.Carbohydrates = 0;
@@ -106,19 +106,5 @@ namespace TrainingPlanApp.Web.Repositories
             dietManageMealsVM.Kcal = Convert.ToInt16(dietManageMealsVM.Proteins * 4 + dietManageMealsVM.Carbohydrates * 4 + dietManageMealsVM.Fats * 9);
             return dietManageMealsVM;
         }
-/*        // TO DO: CountMacrosOfMeals
-        private async Task<MealManageIngredientsVM> CountMacrosOfIngredients(MealManageIngredientsVM mealManageIngredientsVM)
-        {
-            mealManageIngredientsVM = AddListsToMealManageIngredientsVM(mealManageIngredientsVM);
-            for (int i = 0; i < mealManageIngredientsVM.IngredientIds.Count; i++)
-            {
-                IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealManageIngredientsVM.IngredientIds[i], mealManageIngredientsVM.IngredientQuantities[i]);
-                mealManageIngredientsVM.IngredientProteins.Add(ingredientVM.Proteins);
-                mealManageIngredientsVM.IngredientCarbohydrates.Add(ingredientVM.Carbohydrates);
-                mealManageIngredientsVM.IngredientFats.Add(ingredientVM.Fats);
-                mealManageIngredientsVM.IngredientKcal.Add(ingredientVM.Kcal);
-            }
-            return mealManageIngredientsVM;
-        }*/
     }
 }

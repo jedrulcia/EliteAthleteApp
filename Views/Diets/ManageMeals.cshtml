@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "ManageMeals";
-    var mealsPerDay = 5; // Liczba posiłków na dzień (śniadanie, II śniadanie, lunch, przekąska, kolacja)
 }
 
 <h1>ManageMeals</h1>
@@ -11,7 +10,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th></th> <!-- Nagłówek dla posiłków -->
+            <th></th>
             <th>Monday</th>
             <th>Tuesday</th>
             <th>Wednesday</th>
@@ -22,7 +21,7 @@
         </tr>
     </thead>
     <tbody>
-        @for (int i = 0; i < mealsPerDay; i++)
+        @for (int i = 0; i < 5; i++)
         {
             <tr>
                 <td>
@@ -48,17 +47,17 @@
                     }
                 </td>
 
-                @for (int day = 0; day < 7; day++)
+                @for (int j = 0; j < 7; j++)
                 {
-                    var mealIndex = day + (i * 7); // Indeks posiłku w liście
+                    var mealIndex = j + (i * 7);
                     <td>
-                        @if (Model.MealIds != null && mealIndex < Model.MealIds.Count && Model.MealIds[mealIndex] != null)
+                        @if (mealIndex < Model.MealIds.Count && Model.MealIds[mealIndex] != null)
                         {
                             <text>@Model.Meals[mealIndex].Name</text>
                         }
                         else
                         {
-                            <text>-</text> <!-- Puste pole, jeśli brak posiłku -->
+                            <text>-</text>
                         }
                     </td>
                 }
@@ -68,6 +67,5 @@
 </table>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
