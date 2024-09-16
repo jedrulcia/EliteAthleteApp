@@ -22,13 +22,15 @@ namespace TrainingPlanApp.Web.Models
         [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
 
-
         // OTHER
         [Display(Name = "Status")]
         public bool? IsActive { get; set; }
 
         public bool? RedirectToAdmin { get; set; }
 
+        // FORMS
+        public SelectList? AvailableMeals { get; set; }
+        public int? NewMealId { get; set; }
 
         // MACROS
         public int? Kcal { get; set; }
@@ -46,6 +48,5 @@ namespace TrainingPlanApp.Web.Models
         public List<MealIndexVM?>? Meals { get; set; }
         [Display(Name = "Meal Quantity")]
         public List<int>? MealQuantities { get; set; }
-        public SelectList? AvailableMeals { get; set; }
     }
 }
