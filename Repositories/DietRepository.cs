@@ -57,7 +57,7 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Gets DietManageMealsVM
-        public async Task<DietManageMealsVM> GetDietManageMealsVM(int? id, bool redirectToAdmin)
+        public async Task<DietManageMealsVM> GetDietManageMealsVM(int? id, bool? redirectToAdmin)
         {
             var dietManageMealsVM = mapper.Map<DietManageMealsVM>(await GetAsync(id));
             dietManageMealsVM.AvailableMeals = new SelectList(context.Meals.OrderBy(e => e.Name), "Id", "Name");
@@ -68,22 +68,21 @@ namespace TrainingPlanApp.Web.Repositories
 			return dietManageMealsVM;
         }
 
-/*        // Adds Meal to Diet
-        public async Task<DietManageMealsVM> AddMealToDiet(DietManageMealsVM dietManageMealsVM)
+        // Adds Meal to Diet
+        public async Task<DietManageMealsVM> AddMealToDiet(DietManageMealsVM dietManageMealsVM, int index)
         {
-            var newIngredient = await ingredientRepository.GetAsync(dietManageMealsVM.NewIngredientId);
-            if (newIngredient == null)
+            var newMeal = await mealRepository.GetAsync(dietManageMealsVM.NewMealId);
+            if (newMeal == null)
             {
-                dietManageMealsVM.AvailableIngredients = new SelectList(context.Ingredients, "Id", "Name");
+                dietManageMealsVM.AvailableMeals = new SelectList(context.Meals, "Id", "Name");
                 return dietManageMealsVM;
             }
 
-            var meal = await GetAsync(dietManageMealsVM.Id);
-
-            meal = AddIngredientToMeal(meal, dietManageMealsVM);
-            await UpdateAsync(meal);
+            var diet = await GetAsync(dietManageMealsVM.Id);
+            diet.MealIds[index] = dietManageMealsVM.NewMealId;
+            await UpdateAsync(diet);
             return await GetDietManageMealsVM(dietManageMealsVM.Id, dietManageMealsVM.RedirectToAdmin);
-        }*/
+        }
 
         // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 

@@ -92,14 +92,14 @@ namespace TrainingPlanApp.Web.Controllers
             return View(dietManageMealsVM);
         }
 
-/*        // POST: Diets/ManageIngredients
+        // POST: Diets/ManageIngredients
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> ManageMeals(DietManageMealsVM dietManageMealsVM)
+        public async Task<IActionResult> ManageMeals(DietManageMealsVM dietManageMealsVM, int index)
         {
-            return View(await dietRepository.AddMealToDiet(dietManageMealsVM));
-        }*/
+            return View(await dietRepository.AddMealToDiet(dietManageMealsVM, index));
+        }
 
         // GET: Diets/Edit
         public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)

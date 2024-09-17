@@ -15,6 +15,10 @@ namespace TrainingPlanApp.Web.Contracts
         Task ChangeDietStatus(int dietId, bool status);
 
         // Gets DietManageMealsVM
-        Task<DietManageMealsVM> GetDietManageMealsVM(int? id, bool redirectToAdmin);
-    }
+        Task<DietManageMealsVM> GetDietManageMealsVM(int? id, bool? redirectToAdmin);
+
+        // Adds Meal to Diet
+        Task<DietManageMealsVM> AddMealToDiet(DietManageMealsVM dietManageMealsVM, int index);
+
+	}
 }

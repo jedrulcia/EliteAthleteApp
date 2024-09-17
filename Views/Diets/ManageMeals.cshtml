@@ -49,22 +49,25 @@
 
 					@for (int j = 0; j < 7; j++)
 					{
-						var mealIndex = j + (i * 7);
+						var index = j + (i * 7);
 						<td>
-							@if (mealIndex < Model.MealIds.Count && Model.MealIds[mealIndex] != null)
+							@if (index < Model.MealIds.Count && Model.MealIds[index] != null)
 							{
-								<text>@Model.Meals[mealIndex].Name</text>
-								<button data-dietid="@Model.Id" data-index="@mealIndex" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i></button>
+								<text>@Model.Meals[index].Name</text>
+								<button data-dietid="@Model.Id" data-index="@index" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i></button>
 							}
 							else
 							{
+								<form asp-action="ManageMeals">
 								<div style="display: flex; align-items: center;">
 									<select asp-for="NewMealId" asp-items="Model?.AvailableMeals" class="form-select" style="margin-right: 10px;">
 										<option>Select Meal</option>
 									</select>
-									<span asp-validation-for="NewMealId" class="text-danger"></span>
+										<span asp-validation-for="NewMealId" class="text-danger"></span>
+										<input type="hidden" name="index" value="@index" />
 									<input type="submit" value="Add" class="btn btn-primary" />
 								</div>
+								</form>
 
 							}
 						</td>
