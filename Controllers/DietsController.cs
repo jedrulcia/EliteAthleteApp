@@ -138,10 +138,20 @@ namespace TrainingPlanApp.Web.Controllers
             }
 
             return View(dietCreateVM);
-        }
+		}
 
-        // POST: Diets/Delete
-        [HttpPost, ActionName("Delete")]
+		// POST: Diets/ManageMeals/RemoveMeal
+		[HttpPost, ActionName("RemoveMeal")]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> RemoveMeal(int dietId, int index)
+		{
+			await dietRepository.RemoveMealFromDiet(dietId, index);
+			return RedirectToAction(nameof(ManageMeals), new { id = dietId });
+		}
+
+		// POST: Diets/Delete
+		[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

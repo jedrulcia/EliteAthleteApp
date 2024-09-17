@@ -20,5 +20,8 @@ namespace TrainingPlanApp.Web.Contracts
         // Adds Meal to Diet
         Task<DietManageMealsVM> AddMealToDiet(DietManageMealsVM dietManageMealsVM, int index);
 
+        // Removes Meal From Diet
+        Task RemoveMealFromDiet(int id, int index);
+
 	}
 }

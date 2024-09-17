@@ -82,11 +82,19 @@ namespace TrainingPlanApp.Web.Repositories
             diet.MealIds[index] = dietManageMealsVM.NewMealId;
             await UpdateAsync(diet);
             return await GetDietManageMealsVM(dietManageMealsVM.Id, dietManageMealsVM.RedirectToAdmin);
-        }
+		}
 
-        // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+        // Removes Meal from Diet
+		public async Task RemoveMealFromDiet(int dietId, int index)
+		{
+			var diet = await GetAsync(dietId);
+            diet.MealIds[index] = null;
+			await UpdateAsync(diet);
+		}
 
-        private async Task<DietManageMealsVM> GetMacrosOfDiets(DietManageMealsVM dietManageMealsVM)
+		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+
+		private async Task<DietManageMealsVM> GetMacrosOfDiets(DietManageMealsVM dietManageMealsVM)
         {
             dietManageMealsVM.Proteins = 0;
             dietManageMealsVM.Carbohydrates = 0;
@@ -105,5 +113,5 @@ namespace TrainingPlanApp.Web.Repositories
             dietManageMealsVM.Kcal = Convert.ToInt16(dietManageMealsVM.Proteins * 4 + dietManageMealsVM.Carbohydrates * 4 + dietManageMealsVM.Fats * 9);
             return dietManageMealsVM;
         }
-    }
+	}
 }
