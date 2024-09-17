@@ -28,4 +28,8 @@
     <PackageReference Include="Selenium.WebDriver" Version="4.23.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

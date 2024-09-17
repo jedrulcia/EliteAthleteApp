@@ -101,8 +101,12 @@ namespace TrainingPlanApp.Web.Controllers
 		// POST: Meals/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(MealCreateVM mealCreateVM)
+		public async Task<IActionResult> Edit(int id, MealCreateVM mealCreateVM)
 		{
+			if (id != mealCreateVM.Id)
+			{
+				return NotFound();
+			}
 			if (ModelState.IsValid)
 			{
 				try
@@ -111,7 +115,7 @@ namespace TrainingPlanApp.Web.Controllers
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!await mealRepository.Exists(mealCreateVM.Id))
+					if (!await mealRepository.Exists(id))
 					{
 						return NotFound();
 					}
