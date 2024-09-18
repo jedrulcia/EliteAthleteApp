@@ -27,7 +27,8 @@ namespace TrainingPlanApp.Web.Repositories
             var diet = mapper.Map<Diet>(dietCreateVM);
             diet.IsActive = false;
             diet.MealIds = Enumerable.Repeat<int?>(null, 35).ToList();
-            Console.WriteLine($"list length: {diet.MealIds.Count}");
+			diet.MealQuantities = Enumerable.Repeat<int>(100, 35).ToList();
+			Console.WriteLine($"list length: {diet.MealIds.Count}");
             await AddAsync(diet);
         }
 
@@ -63,7 +64,7 @@ namespace TrainingPlanApp.Web.Repositories
             dietManageMealsVM.AvailableMeals = new SelectList(context.Meals.OrderBy(e => e.Name), "Id", "Name");
             dietManageMealsVM.Meals = await mealRepository.GetListOfMeals(dietManageMealsVM.MealIds);
             dietManageMealsVM.RedirectToAdmin = redirectToAdmin;
-			/*dietManageMealsVM = await CountMacrosOfMeals(dietManageMealsVM);*/
+			dietManageMealsVM = await GetMacrosOfMeals(dietManageMealsVM);
 			/*dietManageMealsVM = await GetMacrosOfDiets(dietManageMealsVM);*/
 			return dietManageMealsVM;
         }
@@ -94,7 +95,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
-		private async Task<DietManageMealsVM> GetMacrosOfDiets(DietManageMealsVM dietManageMealsVM)
+/*		private async Task<DietManageMealsVM> GetMacrosOfDiets(DietManageMealsVM dietManageMealsVM)
         {
             dietManageMealsVM.Proteins = 0;
             dietManageMealsVM.Carbohydrates = 0;
@@ -112,6 +113,32 @@ namespace TrainingPlanApp.Web.Repositories
             }
             dietManageMealsVM.Kcal = Convert.ToInt16(dietManageMealsVM.Proteins * 4 + dietManageMealsVM.Carbohydrates * 4 + dietManageMealsVM.Fats * 9);
             return dietManageMealsVM;
+        }*/
+
+        private async Task<DietManageMealsVM> GetMacrosOfMeals(DietManageMealsVM dietManageMealsVM)
+        {
+            dietManageMealsVM.MealKcal = Enumerable.Repeat<int>(0, 35).ToList();
+			dietManageMealsVM.MealProteins = Enumerable.Repeat<decimal>(0, 35).ToList();
+			dietManageMealsVM.MealCarbohydrates = Enumerable.Repeat<decimal>(0, 35).ToList();
+			dietManageMealsVM.MealFats = Enumerable.Repeat<decimal>(0, 35).ToList();
+			for (int i = 0; i < dietManageMealsVM.Meals.Count; i++)
+            {
+                if (dietManageMealsVM.Meals[i] != null)
+				{
+                    dietManageMealsVM.MealProteins[i] = 0;
+                    dietManageMealsVM.MealCarbohydrates[i] = 0;
+                    dietManageMealsVM.MealFats[i] = 0;
+                    for (int j = 0; j < dietManageMealsVM.Meals[i].IngredientIds.Count; j++)
+                    {
+						IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(dietManageMealsVM.Meals[i].IngredientIds[j], dietManageMealsVM.Meals[i].IngredientQuantities[j]);
+                        dietManageMealsVM.MealProteins[i] += ingredientVM.Proteins;
+						dietManageMealsVM.MealCarbohydrates[i] += ingredientVM.Carbohydrates;
+						dietManageMealsVM.MealFats[i] += ingredientVM.Fats;
+					}
+                    dietManageMealsVM.MealKcal[i] = Convert.ToInt32(dietManageMealsVM.MealProteins[i] * 4 + dietManageMealsVM.MealCarbohydrates[i] * 4 + dietManageMealsVM.MealFats[i] * 9);
+				}
+            }
+			return dietManageMealsVM;
         }
 	}
 }
