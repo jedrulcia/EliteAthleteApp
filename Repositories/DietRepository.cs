@@ -27,7 +27,7 @@ namespace TrainingPlanApp.Web.Repositories
             var diet = mapper.Map<Diet>(dietCreateVM);
             diet.IsActive = false;
             diet.MealIds = Enumerable.Repeat<int?>(null, 35).ToList();
-			diet.MealQuantities = Enumerable.Repeat<int>(100, 35).ToList();
+			diet.MealQuantities = Enumerable.Repeat<int?>(100, 35).ToList();
 			Console.WriteLine($"list length: {diet.MealIds.Count}");
             await AddAsync(diet);
         }
@@ -83,9 +83,18 @@ namespace TrainingPlanApp.Web.Repositories
             diet.MealIds[index] = dietManageMealsVM.NewMealId;
             await UpdateAsync(diet);
             return await GetDietManageMealsVM(dietManageMealsVM.Id, dietManageMealsVM.RedirectToAdmin);
+		}        
+
+        // Adds Quantity to Meal from Diet
+		public async Task<DietManageMealsVM> AddQuantityToMeal(DietManageMealsVM dietManageMealsVM, int index)
+		{
+			var diet = await GetAsync(dietManageMealsVM.Id);
+			diet.MealQuantities[index] = dietManageMealsVM.NewMealQuantity;
+			await UpdateAsync(diet);
+			return await GetDietManageMealsVM(dietManageMealsVM.Id, dietManageMealsVM.RedirectToAdmin);
 		}
 
-        // Removes Meal from Diet
+		// Removes Meal from Diet
 		public async Task RemoveMealFromDiet(int dietId, int index)
 		{
 			var diet = await GetAsync(dietId);
@@ -135,9 +144,19 @@ namespace TrainingPlanApp.Web.Repositories
 						dietManageMealsVM.MealCarbohydrates[i] += ingredientVM.Carbohydrates;
 						dietManageMealsVM.MealFats[i] += ingredientVM.Fats;
 					}
+                    dietManageMealsVM = await MultiplyMealByQuantity(dietManageMealsVM, i);
                     dietManageMealsVM.MealKcal[i] = Convert.ToInt32(dietManageMealsVM.MealProteins[i] * 4 + dietManageMealsVM.MealCarbohydrates[i] * 4 + dietManageMealsVM.MealFats[i] * 9);
 				}
             }
+			return dietManageMealsVM;
+        }
+
+        private async Task<DietManageMealsVM> MultiplyMealByQuantity(DietManageMealsVM dietManageMealsVM, int index)
+		{
+			decimal mealMultiplier = dietManageMealsVM.MealQuantities[index] / (decimal)100.00;
+			dietManageMealsVM.MealProteins[index] = Math.Round(dietManageMealsVM.MealProteins[index] * mealMultiplier, 1);
+			dietManageMealsVM.MealCarbohydrates[index] = Math.Round(dietManageMealsVM.MealCarbohydrates[index] * mealMultiplier, 1);
+			dietManageMealsVM.MealFats[index] = Math.Round(dietManageMealsVM.MealFats[index] * mealMultiplier, 1);
 			return dietManageMealsVM;
         }
 	}

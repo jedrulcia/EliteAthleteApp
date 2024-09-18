@@ -49,7 +49,7 @@
 
 					@for (int j = 0; j < 7; j++)
 					{
-						var index = j + (i * 7);
+						var index = i + (j * 5);
 						<td>
 							@if (index < Model.MealIds.Count && Model.MealIds[index] != null)
 							{
@@ -57,6 +57,15 @@
 								<button data-dietid="@Model.Id" data-index="@index" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i></button>
 								<p>Kcal: @Model.MealKcal[index]</p>
 								<p>P: @Model.MealProteins[index] C: @Model.MealCarbohydrates[index] F: @Model.MealFats[index]</p>
+								<form asp-action="ManageMeals">
+									<div style="display: flex; align-items: center;">
+										<input asp-for="NewMealQuantity" class="form-control" style="margin-right: 10px;" placeholder="Enter Quantity"
+											   value="@Model.MealQuantities[index]" />
+										<span asp-validation-for="NewMealQuantity" class="text-danger"></span>
+										<input type="hidden" name="index" value="@index" />
+										<input type="submit" value="Add" class="btn btn-primary" />
+									</div>
+								</form>
 							}
 							else
 							{

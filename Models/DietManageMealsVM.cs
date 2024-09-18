@@ -31,6 +31,7 @@ namespace TrainingPlanApp.Web.Models
         // FORMS
         public SelectList? AvailableMeals { get; set; }
         public int? NewMealId { get; set; }
+        public int? NewMealQuantity { get; set; }
 
         // MACROS
         public int? Kcal { get; set; }

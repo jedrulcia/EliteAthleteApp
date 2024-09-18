@@ -98,11 +98,19 @@ namespace TrainingPlanApp.Web.Controllers
         [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> ManageMeals(DietManageMealsVM dietManageMealsVM, int index)
         {
-            return View(await dietRepository.AddMealToDiet(dietManageMealsVM, index));
+            if (dietManageMealsVM.NewMealId == null)
+			{
+				return View(await dietRepository.AddQuantityToMeal(dietManageMealsVM, index));
+			}
+            else
+			{
+				return View(await dietRepository.AddMealToDiet(dietManageMealsVM, index));
+			}
         }
 
-        // GET: Diets/Edit
-        public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
+
+		// GET: Diets/Edit
+		public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
         {
             if (id == null)
             {
