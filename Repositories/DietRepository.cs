@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
@@ -65,8 +66,8 @@ namespace TrainingPlanApp.Web.Repositories
             dietManageMealsVM.Meals = await mealRepository.GetListOfMeals(dietManageMealsVM.MealIds);
             dietManageMealsVM.RedirectToAdmin = redirectToAdmin;
 			dietManageMealsVM = await GetMacrosOfMeals(dietManageMealsVM);
-			/*dietManageMealsVM = await GetMacrosOfDiets(dietManageMealsVM);*/
-			return dietManageMealsVM;
+            dietManageMealsVM = await GetMacrosOfDays(dietManageMealsVM);
+            return dietManageMealsVM;
         }
 
         // Adds Meal to Diet
@@ -81,6 +82,7 @@ namespace TrainingPlanApp.Web.Repositories
 
             var diet = await GetAsync(dietManageMealsVM.Id);
             diet.MealIds[index] = dietManageMealsVM.NewMealId;
+            diet.MealQuantities[index] = 100;
             await UpdateAsync(diet);
             return await GetDietManageMealsVM(dietManageMealsVM.Id, dietManageMealsVM.RedirectToAdmin);
 		}        
@@ -102,28 +104,31 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(diet);
 		}
 
-		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+        // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
-/*		private async Task<DietManageMealsVM> GetMacrosOfDiets(DietManageMealsVM dietManageMealsVM)
-        {
-            dietManageMealsVM.Proteins = 0;
-            dietManageMealsVM.Carbohydrates = 0;
-            dietManageMealsVM.Fats = 0;
-            for (int i = 0; i < dietManageMealsVM.MealIds.Count; i++)
+        // Counts total macros of days in diet
+        private async Task<DietManageMealsVM> GetMacrosOfDays(DietManageMealsVM dietManageMealsVM)
+		{
+			dietManageMealsVM.DayKcal = Enumerable.Repeat<int>(0, 7).ToList();
+			dietManageMealsVM.DayProteins = Enumerable.Repeat<decimal>(0, 7).ToList();
+			dietManageMealsVM.DayCarbohydrates = Enumerable.Repeat<decimal>(0, 7).ToList();
+			dietManageMealsVM.DayFats = Enumerable.Repeat<decimal>(0, 7).ToList();
+            int dayIndex = 0;
+			for (int i = 0; i < dietManageMealsVM.MealIds.Count; i += 5)
             {
-                MealIndexVM mealIndexVM = mapper.Map<MealIndexVM>(await mealRepository.GetAsync(dietManageMealsVM.MealIds[i]));
-                for (int j = 0; j < mealIndexVM.IngredientIds.Count; j++)
+                for (int j = i; j < i + 5; j++)
                 {
-                    IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealIndexVM.IngredientIds[i], mealIndexVM.IngredientQuantities[i]);
-                    dietManageMealsVM.Proteins += ingredientVM.Proteins;
-                    dietManageMealsVM.Carbohydrates += ingredientVM.Carbohydrates;
-                    dietManageMealsVM.Fats += ingredientVM.Fats;
-                }
+                    dietManageMealsVM.DayKcal[dayIndex] += dietManageMealsVM.MealKcal[j];
+					dietManageMealsVM.DayProteins[dayIndex] += dietManageMealsVM.MealProteins[j];
+					dietManageMealsVM.DayCarbohydrates[dayIndex] += dietManageMealsVM.MealCarbohydrates[j];
+					dietManageMealsVM.DayFats[dayIndex] += dietManageMealsVM.MealFats[j];
+				}
+                dayIndex++;
             }
-            dietManageMealsVM.Kcal = Convert.ToInt16(dietManageMealsVM.Proteins * 4 + dietManageMealsVM.Carbohydrates * 4 + dietManageMealsVM.Fats * 9);
             return dietManageMealsVM;
-        }*/
+        }
 
+        // Counts macros of meals
         private async Task<DietManageMealsVM> GetMacrosOfMeals(DietManageMealsVM dietManageMealsVM)
         {
             dietManageMealsVM.MealKcal = Enumerable.Repeat<int>(0, 35).ToList();
@@ -151,6 +156,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return dietManageMealsVM;
         }
 
+        // Multiplies the meal by the chosen percent
         private async Task<DietManageMealsVM> MultiplyMealByQuantity(DietManageMealsVM dietManageMealsVM, int index)
 		{
 			decimal mealMultiplier = dietManageMealsVM.MealQuantities[index] / (decimal)100.00;

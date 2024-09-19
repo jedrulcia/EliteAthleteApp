@@ -85,6 +85,16 @@
 					}
 				</tr>
 			}
+			<tr>
+				<td><strong>Total per day</strong></td>
+				@for (int j = 0; j < 7; j++)
+				{
+					<td>
+						<p>Kcal: @Model.DayKcal[j]</p>
+						<p>P: @Model.DayProteins[j] C: @Model.DayCarbohydrates[j] F: @Model.DayFats[j]</p>
+					</td>
+				}
+			</tr>
 		</tbody>
 	</table>
 

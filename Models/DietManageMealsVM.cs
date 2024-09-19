@@ -43,10 +43,10 @@ namespace TrainingPlanApp.Web.Models
         public List<decimal>? MealProteins { get; set; }
         public List<decimal>? MealCarbohydrates { get; set; }
         public List<decimal>? MealFats { get; set; }
-        public List <int?>? DayKcal { get; set; }
-        public List <decimal?>? DayProteins { get; set; }
-        public List<decimal?>? DayCarbohydrates { get; set; }
-        public List<decimal?>? DayFats { get; set; }
+        public List <int>? DayKcal { get; set; }
+        public List <decimal>? DayProteins { get; set; }
+        public List<decimal>? DayCarbohydrates { get; set; }
+        public List<decimal>? DayFats { get; set; }
 
 		// LISTS
 		public List<int?>? MealIds { get; set; }
