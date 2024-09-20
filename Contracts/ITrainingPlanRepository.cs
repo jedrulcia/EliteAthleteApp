@@ -26,12 +26,6 @@ namespace TrainingPlanApp.Web.Contracts
 		// Gets list of specific User Training Plans
 		Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string userId);
 
-		// Gets list of specific User active Training Plans
-		Task<List<TrainingPlanActiveVM>> GetUserActiveTrainingPlans(string userId);
-
-        // Gets the list of all Training Plans
-        Task<List<TrainingPlanAdminVM>> GetTrainingPlanIndexAdminVM();
-
         // Gets TrainingPlanDetailsVM
         Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin);
 

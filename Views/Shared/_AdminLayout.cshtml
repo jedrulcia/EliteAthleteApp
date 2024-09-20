@@ -168,6 +168,12 @@
 									<span>Training Plans</span>
 								</a>
 							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Diets" asp-action="Index">
+									<i class="fa-solid fa-list"></i>
+									<span>Diets</span>
+								</a>
+							</li>
 						}
 						@if (User.IsInRole("Administrator"))
 						{
@@ -184,12 +190,6 @@
 								</a>
 							</li>
 							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="TrainingPlans" asp-action="IndexAdmin">
-									<i class="fa-solid fa-list"></i>
-									<span>Training Plans</span>
-								</a>
-							</li>
-							<li class="sidebar-item">
 								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Ingredients" asp-action="Index">
 									<i class="fa-solid fa-apple-whole"></i>
 									<span>Ingredients</span>
@@ -199,12 +199,6 @@
 								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Meals" asp-action="Index">
 									<i class="fa-solid fa-utensils"></i>
 									<span>Meals</span>
-								</a>
-							</li>
-							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Diets" asp-action="Index">
-									<i class="fa-regular fa-calendar-days"></i>
-									<span>Diets</span>
 								</a>
 							</li>
 						}

@@ -101,6 +101,7 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var diet = await GetAsync(dietId);
             diet.MealIds[index] = null;
+            diet.MealQuantities[index] = 100;
 			await UpdateAsync(diet);
 		}
 

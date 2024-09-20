@@ -2,7 +2,7 @@
 
 namespace TrainingPlanApp.Web.Models
 {
-    public class UserListVM
+    public class UserVM
     {
         // IDs
         public string Id { get; set; }

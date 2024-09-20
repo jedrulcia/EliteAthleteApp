@@ -110,53 +110,13 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
         // Gets list of specific User Training Plans
-        public async Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string? userId)
+        public async Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string userId)
         {
-            if (userId == null)
-            {
-                var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
-                userId = user.Id;
-            }
             var trainingPlans = await context.TrainingPlans
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
             return mapper.Map<List<TrainingPlanIndexVM>>(trainingPlans);
         }
-
-        // Gets list of specific User active Training Plans
-        public async Task<List<TrainingPlanActiveVM>> GetUserActiveTrainingPlans(string userId)
-        {
-            if (userId == null)
-            {
-                var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
-                userId = user.Id;
-            }
-            var trainingPlans = await context.TrainingPlans
-                .Where(x => x.UserId == userId)
-                .Where(x => x.IsActive == true)
-                .ToListAsync();
-
-            var trainingPlanActiveVM = mapper.Map<List<TrainingPlanActiveVM>>(trainingPlans);
-            for (int i = 0; i < trainingPlanActiveVM.Count; i++)
-            {
-                trainingPlanActiveVM[i].Exercises = await exerciseRepository.GetListOfExercises(trainingPlanActiveVM[i].ExerciseIds);
-            }
-            return trainingPlanActiveVM;
-        }
-
-        // Gets the list of all Training Plans
-        public async Task<List<TrainingPlanAdminVM>> GetTrainingPlanIndexAdminVM()
-        {
-            var trainingPlans = await context.TrainingPlans.ToListAsync();
-            var trainingPlansVM = mapper.Map<List<TrainingPlanAdminVM>>(trainingPlans);
-            foreach (var trainingPlan in trainingPlansVM)
-            {
-                var user = await userManager.FindByIdAsync(trainingPlan.UserId);
-                trainingPlan.FirstName = user.FirstName;
-                trainingPlan.LastName = user.LastName;
-            }
-            return trainingPlansVM;
-		}
 
         // Gets TrainingPlanDetailsVM
         public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin)

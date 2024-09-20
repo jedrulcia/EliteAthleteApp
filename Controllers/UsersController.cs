@@ -24,7 +24,7 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: UsersController
         public ActionResult Index()
         {
-            var userListVM = mapper.Map<List<UserListVM>>(userManager.Users.ToList());
+            var userListVM = mapper.Map<List<UserVM>>(userManager.Users.ToList());
             return View(userListVM);
         }
 
