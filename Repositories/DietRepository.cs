@@ -29,7 +29,6 @@ namespace TrainingPlanApp.Web.Repositories
             diet.IsActive = false;
             diet.MealIds = Enumerable.Repeat<int?>(null, 35).ToList();
 			diet.MealQuantities = Enumerable.Repeat<int?>(100, 35).ToList();
-			Console.WriteLine($"list length: {diet.MealIds.Count}");
             await AddAsync(diet);
         }
 
@@ -145,7 +144,7 @@ namespace TrainingPlanApp.Web.Repositories
                     dietManageMealsVM.MealFats[i] = 0;
                     for (int j = 0; j < dietManageMealsVM.Meals[i].IngredientIds.Count; j++)
                     {
-						IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(dietManageMealsVM.Meals[i].IngredientIds[j], dietManageMealsVM.Meals[i].IngredientQuantities[j]);
+						var ingredientVM = await ingredientRepository.GetMacrosOfIngredient(dietManageMealsVM.Meals[i].IngredientIds[j], dietManageMealsVM.Meals[i].IngredientQuantities[j]);
                         dietManageMealsVM.MealProteins[i] += ingredientVM.Proteins;
 						dietManageMealsVM.MealCarbohydrates[i] += ingredientVM.Carbohydrates;
 						dietManageMealsVM.MealFats[i] += ingredientVM.Fats;

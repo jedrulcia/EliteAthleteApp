@@ -24,15 +24,18 @@ namespace TrainingPlanApp.Web.Controllers
 		private readonly ITrainingPlanRepository trainingPlanRepository;
 		private readonly IMapper mapper;
 		private readonly IExerciseRepository exerciseRepository;
+		private readonly UserManager<User> userManager;
 		private readonly ApplicationDbContext context;
 
 		public TrainingPlansController(ApplicationDbContext context,
 			ITrainingPlanRepository trainingPlanRepository,
 			IMapper mapper,
-			IExerciseRepository exerciseRepository)
+			IExerciseRepository exerciseRepository,
+			UserManager<User> userManager)
 		{
 			this.mapper = mapper;
 			this.exerciseRepository = exerciseRepository;
+			this.userManager = userManager;
 			this.trainingPlanRepository = trainingPlanRepository;
 			this.context = context;
 		}
@@ -42,6 +45,7 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			var trainingPlanIndexVM = await trainingPlanRepository.GetUserTrainingPlans(userId); 
 			ViewBag.UserId = userId;
+			ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
 			return View(trainingPlanIndexVM);
 		}
 

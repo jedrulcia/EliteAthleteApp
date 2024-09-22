@@ -29,6 +29,6 @@ namespace TrainingPlanApp.Web.Models
         [Display(Name = "Status")]
         public bool? IsActive { get; set; }
 
-        public UserVM UserVM { get; set; }
+        public UserVM? User { get; set; }
 	}
 }

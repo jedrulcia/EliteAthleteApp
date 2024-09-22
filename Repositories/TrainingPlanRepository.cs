@@ -115,7 +115,8 @@ namespace TrainingPlanApp.Web.Repositories
             var trainingPlans = await context.TrainingPlans
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
-            return mapper.Map<List<TrainingPlanIndexVM>>(trainingPlans);
+            var trainingPlansVM = mapper.Map<List<TrainingPlanIndexVM>>(trainingPlans);
+            return trainingPlansVM;
         }
 
         // Gets TrainingPlanDetailsVM

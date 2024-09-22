@@ -56,7 +56,7 @@ namespace TrainingPlanApp.Web.Repositories
         // Counts the macros of specific ingredient
         public async Task<IngredientVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity)
         {
-            IngredientVM? ingredientVM = mapper.Map<IngredientVM>(await GetAsync(id));
+            var ingredientVM = mapper.Map<IngredientVM>(await GetAsync(id));
 
             decimal ingredientMultiplier = ingredientQuantity / (decimal)100.00;
             ingredientVM.Proteins = Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1);
