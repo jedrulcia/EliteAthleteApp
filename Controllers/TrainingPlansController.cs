@@ -25,24 +25,32 @@ namespace TrainingPlanApp.Web.Controllers
 		private readonly IMapper mapper;
 		private readonly IExerciseRepository exerciseRepository;
 		private readonly UserManager<User> userManager;
-		private readonly ApplicationDbContext context;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ApplicationDbContext context;
 
-		public TrainingPlansController(ApplicationDbContext context,
+        public TrainingPlansController(ApplicationDbContext context,
 			ITrainingPlanRepository trainingPlanRepository,
 			IMapper mapper,
 			IExerciseRepository exerciseRepository,
-			UserManager<User> userManager)
+			UserManager<User> userManager,
+			IHttpContextAccessor httpContextAccessor)
 		{
 			this.mapper = mapper;
 			this.exerciseRepository = exerciseRepository;
 			this.userManager = userManager;
-			this.trainingPlanRepository = trainingPlanRepository;
+            this.httpContextAccessor = httpContextAccessor;
+            this.trainingPlanRepository = trainingPlanRepository;
 			this.context = context;
 		}
 
 		// GET: TrainingPlans
 		public async Task<IActionResult> Index(string userId)
 		{
+			if (userId == null)
+			{
+                var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+				userId = user.Id;
+            }
 			var trainingPlanIndexVM = await trainingPlanRepository.GetUserTrainingPlans(userId); 
 			ViewBag.UserId = userId;
 			ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
