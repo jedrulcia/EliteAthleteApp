@@ -49,23 +49,15 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(trainingPlanIndexVM);
 		}
 
-		// GET: TrainingPlans/ExerciseDetails
-		public async Task<IActionResult> ExerciseDetails(int? id, string? userId)
-		{
-			var trainingPlanExerciseDetailsVM = await trainingPlanRepository.GetTrainingPlanExerciseDetailsVM(id, userId);
-			return View(trainingPlanExerciseDetailsVM);
-		}
-
 		// GET: TrainingPlans/Details
-		public async Task<IActionResult> Details(int? id, bool redirectToAdmin)
+		public async Task<IActionResult> Details(int? id)
 		{
 			var trainingPlan = await trainingPlanRepository.GetAsync(id);
 			if (trainingPlan == null)
 			{
 				return NotFound();
 			}
-
-			var trainingPlanDetailsVM = await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan, redirectToAdmin);
+			var trainingPlanDetailsVM = await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan);
 			return View(trainingPlanDetailsVM);
 		}
 
@@ -91,7 +83,7 @@ namespace TrainingPlanApp.Web.Controllers
 				if (ModelState.IsValid)
 				{
 					await trainingPlanRepository.CreateTrainingPlan(model);
-					return RedirectToAction(nameof(Index), new { id = model.UserId });
+					return RedirectToAction(nameof(Index), new { userId = model.UserId });
 				}
 			}
 			catch (Exception ex)
@@ -103,9 +95,9 @@ namespace TrainingPlanApp.Web.Controllers
 
 		// GET: TrainingPlans/ManageExercises
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ManageExercises(int? id, bool redirectToAdmin)
+		public async Task<IActionResult> ManageExercises(int? id)
 		{
-			var trainingPlanManageExercisesVM = await trainingPlanRepository.GetTrainingPlanManageExercisesVM(id, redirectToAdmin);
+			var trainingPlanManageExercisesVM = await trainingPlanRepository.GetTrainingPlanManageExercisesVM(id);
 			return View(trainingPlanManageExercisesVM);
 		}
 
@@ -124,19 +116,18 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
 		{
 			await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
-			return RedirectToAction(nameof(Index), new { id = userId });
+			return RedirectToAction(nameof(Index), new { userId = userId });
 		}
 
 		// GET: TrainingPlans/Edit
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
+		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id == null)
 			{
 				return NotFound();
 			}
 			var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await trainingPlanRepository.GetAsync(id));
-			trainingPlanCreateVM.RedirectToAdmin = redirectToAdmin;
 			return View(trainingPlanCreateVM);
 		}
 
@@ -151,7 +142,7 @@ namespace TrainingPlanApp.Web.Controllers
 				if (ModelState.IsValid)
 				{
 					await trainingPlanRepository.EditTrainingPlan(model);
-					return RedirectToAction(nameof(Index), new { id = model.UserId });
+					return RedirectToAction(nameof(Index), new { userId = model.UserId });
 				}
 			}
 			catch (Exception ex)
@@ -169,17 +160,17 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> DeleteConfirmed(int id, string userId)
 		{
 			await trainingPlanRepository.DeleteAsync(id);
-			return RedirectToAction(nameof(Index), new { id = userId });
+			return RedirectToAction(nameof(Index), new { userId = userId });
 		}
 
 		// POST: TrainingPlans/ManageExercises/RemoveExercise
 		[HttpPost, ActionName("RemoveExercise")]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> RemoveExercise(int trainingPlanId, int index)
+		public async Task<IActionResult> RemoveExercise(int id, int index)
 		{
-			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(trainingPlanId, index);
-			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanId });
+			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(id, index);
+			return RedirectToAction(nameof(ManageExercises), new { id = id });
 		}
 	}
 }

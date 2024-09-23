@@ -77,7 +77,7 @@
 						</dd>
 						<dd class="col-sm-12">
 							@{
-							var mainVideoUrl = Model.Exercises[i].VideoLink;
+								var mainVideoUrl = Model.Exercises[i].VideoLink;
 								var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
 								var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
 							}
@@ -91,12 +91,5 @@
 </table>
 
 <div>
-	@if (Model.RedirectToAdmin)
-	{
-		<a asp-action="IndexAdmin" class="btn btn-secondary">Back to List</a>
-	}
-	else
-	{
-		<a asp-action="Index" class="btn btn-secondary" asp-route-id="@Model.UserId">Back to List</a>
-	}
+	<a asp-action="Index" class="btn btn-secondary" asp-route-userId="@Model.UserId">Back to List</a>
 </div>

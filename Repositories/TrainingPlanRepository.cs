@@ -53,12 +53,11 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Gets TrainingPlanManageExercisesVM
-        public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id, bool redirectToAdmin)
+        public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id)
 		{
 			var trainingPlanAddExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(id));
 			trainingPlanAddExercisesVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
 			trainingPlanAddExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanAddExercisesVM.ExerciseIds);
-			trainingPlanAddExercisesVM.RedirectToAdmin = redirectToAdmin;
 			return trainingPlanAddExercisesVM;
 		}
 
@@ -115,30 +114,17 @@ namespace TrainingPlanApp.Web.Repositories
             var trainingPlans = await context.TrainingPlans
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
-            var trainingPlansVM = mapper.Map<List<TrainingPlanIndexVM>>(trainingPlans);
+			var trainingPlansVM = mapper.Map<List<TrainingPlanIndexVM>>(trainingPlans);
             return trainingPlansVM;
         }
 
         // Gets TrainingPlanDetailsVM
-        public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin)
+        public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan)
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
 			trainingPlanDetailsVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
-			trainingPlanDetailsVM.RedirectToAdmin = redirectToAdmin;
 			return trainingPlanDetailsVM;
 		}
-
-        // Gets TrainingPlanExerciseDetailsVM
-        public async Task<TrainingPlanExerciseDetailsVM> GetTrainingPlanExerciseDetailsVM(int? id, string userId)
-		{
-			var exercise = await exerciseRepository.GetAsync(id);
-			var trainingPlanExerciseDetailsVM = new TrainingPlanExerciseDetailsVM
-			{
-				Exercise = mapper.Map<ExerciseVM>(exercise),
-				UserId = userId
-			};
-			return trainingPlanExerciseDetailsVM;
-        }
 
         // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 

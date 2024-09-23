@@ -38,15 +38,7 @@
 				<span asp-validation-for="NewExerciseIndex" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				@if (Model.RedirectToAdmin)
-				{
-					<a asp-action="IndexAdmin" class="btn btn-dark">Back to List</a>
-				}
-				else if (!Model.RedirectToAdmin)
-				{
-					<a asp-action="Index" class="btn btn-dark">Back to List</a>
-				}
-				&nbsp;
+				<a asp-action="Index" class="btn btn-dark" asp-route-userId="@Model?.UserId">Back to List</a>&nbsp;
 				<input type="submit" value="Add" class="btn btn-primary" />
 			</div>
 		</form>
@@ -96,7 +88,7 @@
 					@Html.DisplayFor(modelItem => Model.Weight[i])
 				</td>
 				<td class="text-end">
-					<button data-trainingplanid="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+					<button data-id="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
 				</td>
 			</tr>
 		}
@@ -104,7 +96,7 @@
 </table>
 
 <form id="deleteForm" asp-action="RemoveExercise">
-	<input type="hidden" id="trainingPlanId" name="trainingPlanId" />
+	<input type="hidden" id="id" name="id" />
 	<input type="hidden" id="index" name="index" />
 </form>
 
@@ -125,9 +117,9 @@
 				).then((confirm) => {
 					if (confirm) {
 						var btn = $(this);
-						var trainingPlanId = btn.data("trainingplanid");
+						var id = btn.data("id");
 						var index = btn.data("index");
-						$('#trainingPlanId').val(trainingPlanId);
+						$('#id').val(id);
 						$('#index').val(index);
 						$('#deleteForm').submit();
 					}

@@ -35,9 +35,7 @@
 					@Html.DisplayFor(modelItem => item.Email)
 				</td>
 				<td class="text-end">
-					<a asp-action="Create" class="btn btn-primary" asp-controller="TrainingPlans" asp-route-userId="@item.Id"><i class="fa-solid fa-plus"></i> Add new training plan</a>
 					<a asp-action="Index" class="btn btn-secondary" asp-controller="TrainingPlans" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> View training plans</a>
-					<a asp-action="Create" class="btn btn-primary" asp-controller="Diets" asp-route-userId="@item.Id"><i class="fa-solid fa-plus"></i> Add new diet</a>
 					<a asp-action="Index" class="btn btn-secondary" asp-controller="Diets" asp-route-id="@item.Id"><i class="fa-solid fa-list"></i> View diets</a>
 				</td>
 			</tr>

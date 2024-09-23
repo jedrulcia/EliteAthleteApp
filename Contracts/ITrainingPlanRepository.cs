@@ -12,7 +12,7 @@ namespace TrainingPlanApp.Web.Contracts
         Task EditTrainingPlan(TrainingPlanCreateVM model);
 
         // Gets TrainingPlanManageExercisesVM
-        Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id, bool redirectToAdmin);
+        Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id);
 
 		// Adds Exercise to Training Plan
 		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanManageExercisesVM trainingPlanCreateVM);
@@ -27,9 +27,6 @@ namespace TrainingPlanApp.Web.Contracts
 		Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string userId);
 
         // Gets TrainingPlanDetailsVM
-        Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan, bool redirectToAdmin);
-
-        // Gets TrainingPlanExerciseDetailsVM
-        Task<TrainingPlanExerciseDetailsVM> GetTrainingPlanExerciseDetailsVM(int? id, string UserId);
+        Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan);
 	}
 }

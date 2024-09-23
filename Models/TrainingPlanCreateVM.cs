@@ -24,8 +24,5 @@ namespace TrainingPlanApp.Web.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
-
-        //OTHER
-		public bool RedirectToAdmin { get; set; }
 	}
 }

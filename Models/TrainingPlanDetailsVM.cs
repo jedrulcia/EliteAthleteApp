@@ -24,8 +24,5 @@ namespace TrainingPlanApp.Web.Models
 		public List<int?>? Sets { get; set; }
 		public List<int?>? Repeats { get; set; }
 		public List<string?>? Index { get; set; }
-
-		// OTHER
-		public bool RedirectToAdmin { get; set; }
 	}
 }

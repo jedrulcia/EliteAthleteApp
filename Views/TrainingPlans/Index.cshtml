@@ -4,14 +4,13 @@
 @{
 	ViewData["Title"] = "Index";
 	var userId = ViewBag.UserId;
-	var userVM = ViewBag.UserVM;
 }
 
-<h1>@userVM.FirstName @userVM.LastName Training Plans</h1>
+<h1>Training Plans</h1>
 @if (User.IsInRole(Roles.Administrator))
 {
 	<p>
-		<a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>Create New</a>
+		<a asp-action="Create" asp-route-userId="@userId" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>Create New</a>
 	</p>
 }
 <table class="table">
