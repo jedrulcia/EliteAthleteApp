@@ -18,6 +18,9 @@ namespace TrainingPlanApp.Web.Contracts
 		// Creates new database entity in exercise table
 		Task CreateExercise(ExerciseCreateVM exerciseCreateVM);
 
+        // Gets Exercise Create VM for editing
+        Task<ExerciseCreateVM> GetExerciseCreateVMForEditing(int id);
+
         // Edits Name, VideoLink, Description of exercise
         Task EditExercise(ExerciseCreateVM exerciseCreateVM);
 

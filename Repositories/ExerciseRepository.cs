@@ -67,8 +67,16 @@ namespace TrainingPlanApp.Web.Repositories
 			await AddAsync(exercise);
 		}
 
-		// Edits Name, VideoLink, Description of exercise
-		public async Task EditExercise(ExerciseCreateVM exerciseCreateVM)
+        // Gets Exercise Create VM for editing
+        public async Task<ExerciseCreateVM> GetExerciseCreateVMForEditing(int id)
+        {
+			var exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
+			exerciseCreateVM.AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name");
+			return exerciseCreateVM;
+        }
+
+        // Edits Name, VideoLink, Description of exercise
+        public async Task EditExercise(ExerciseCreateVM exerciseCreateVM)
 		{
 			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
 			await UpdateAsync(exercise);
@@ -86,5 +94,5 @@ namespace TrainingPlanApp.Web.Repositories
 			return exercises;
 		}
 
-	}
+    }
 }

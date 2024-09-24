@@ -57,19 +57,15 @@ namespace TrainingPlanApp.Web.Controllers
 				await exerciseRepository.CreateExercise(exerciseCreateVM);
                 return RedirectToAction(nameof(Index));
             }
+			exerciseCreateVM.AvailableCategories = (await exerciseRepository.GetExerciseCreateVM()).AvailableCategories;
 			return View(exerciseCreateVM);
 		}
 
 		// GET: Exercises/Edit
-		public async Task<IActionResult> Edit(int? id)
+		public async Task<IActionResult> Edit(int id)
 		{
-			var exercise = await exerciseRepository.GetAsync(id);
-			if (exercise == null)
-			{
-				return NotFound();
-			}
-			var exerciseVM = mapper.Map<ExerciseIndexVM>(exercise);
-			return View(exerciseVM);
+            var exerciseCreateVM = await exerciseRepository.GetExerciseCreateVMForEditing(id);
+			return View(exerciseCreateVM);
 		}
 
 		// POST: Exercises/Edit
@@ -100,7 +96,8 @@ namespace TrainingPlanApp.Web.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
-			return View(exerciseCreateVM);
+			exerciseCreateVM.AvailableCategories = (await exerciseRepository.GetExerciseCreateVM()).AvailableCategories;
+            return View(exerciseCreateVM);
 		}
 
 		// POST: Exercises/Delete
