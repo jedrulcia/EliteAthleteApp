@@ -73,7 +73,7 @@ namespace TrainingPlanApp.Web.Controllers
 		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ManageIngredients(int? id, bool redirectToAdmin)
 		{
-			var mealManageIngredientsVM = await mealRepository.GetMealManageIngredientsVM(id, redirectToAdmin);
+			var mealManageIngredientsVM = await mealRepository.GetMealManageIngredientsVM(id);
 			return View(mealManageIngredientsVM);
 		}
 

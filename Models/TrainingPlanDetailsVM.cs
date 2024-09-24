@@ -18,7 +18,7 @@ namespace TrainingPlanApp.Web.Models
 		public string? Description { get; set; }
 
 		// LISTS
-		public List<ExerciseVM?>? Exercises { get; set; }
+		public List<ExerciseIndexVM?>? Exercises { get; set; }
 		public List<int?>? ExerciseIds { get; set; }
 		public List<int?>? Weight { get; set; }
 		public List<int?>? Sets { get; set; }

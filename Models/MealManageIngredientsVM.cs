@@ -33,8 +33,5 @@ namespace TrainingPlanApp.Web.Models
         public List<decimal>? IngredientFats { get; set; }
         public List<int?>? IngredientIds { get; set; }
         public List<IngredientVM?>? Ingredients { get; set; }
-
-        // OTHER
-        public bool RedirectToAdmin { get; set; }
     }
 }

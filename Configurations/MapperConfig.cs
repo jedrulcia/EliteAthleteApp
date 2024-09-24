@@ -12,7 +12,9 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<User, UserVM>().ReverseMap();
 
 			// Exercise module mapping
-			CreateMap<Exercise, ExerciseVM>().ReverseMap();
+			CreateMap<Exercise, ExerciseIndexVM>().ReverseMap();
+
+			CreateMap<ExerciseCategory, ExerciseCategoryVM>().ReverseMap();
 
 			// Training Plan module mapping
             CreateMap<TrainingPlan, TrainingPlanIndexVM>().ReverseMap();

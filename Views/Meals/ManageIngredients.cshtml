@@ -23,15 +23,7 @@
 				<span asp-validation-for="NewIngredientQuantity" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				@if (Model.RedirectToAdmin)
-				{
-					<a asp-action="IndexAdmin" class="btn btn-dark">Back to List</a>
-				}
-				else if (!Model.RedirectToAdmin)
-				{
-					<a asp-action="Index" class="btn btn-dark">Back to List</a>
-				}
-				&nbsp;
+					<a asp-action="Index" class="btn btn-dark">Back to List</a>&nbsp;
 				<input type="submit" value="Add" class="btn btn-primary" />
 			</div>
 		</form>

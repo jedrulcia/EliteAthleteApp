@@ -18,7 +18,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task<MealDetailsVM> GetMealDetailsVM(Meal meal);
 
 		// Gets MealManageIngredientsVM
-        Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id, bool redirectToAdmin);
+        Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id);
 
 		// Adds Ingredient to Meal
 		Task<MealManageIngredientsVM> AddIngredientToMeal(MealManageIngredientsVM mealManageIngredientsVM);

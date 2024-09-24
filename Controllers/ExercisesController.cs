@@ -29,7 +29,7 @@ namespace TrainingPlanApp.Web.Controllers
 		// GET: Exercises
 		public async Task<IActionResult> Index()
 		{
-			var exercisesVM = mapper.Map<List<ExerciseVM>>(await exerciseRepository.GetAllAsync());
+			var exercisesVM = await exerciseRepository.GetExerciseIndexVM();
 			return View(exercisesVM);
 		}
 
@@ -41,7 +41,7 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-			var exerciseVM = mapper.Map<ExerciseVM>(exercise);
+			var exerciseVM = mapper.Map<ExerciseIndexVM>(exercise);
 			return View(exerciseVM);
 		}
 
@@ -54,7 +54,7 @@ namespace TrainingPlanApp.Web.Controllers
 		// POST: Exercises/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(ExerciseVM exerciseVM)
+		public async Task<IActionResult> Create(ExerciseIndexVM exerciseVM)
 		{
 			if (ModelState.IsValid)
             {
@@ -72,14 +72,14 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-			var exerciseVM = mapper.Map<ExerciseVM>(exercise);
+			var exerciseVM = mapper.Map<ExerciseIndexVM>(exercise);
 			return View(exerciseVM);
 		}
 
 		// POST: Exercises/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, ExerciseVM exerciseVM)
+		public async Task<IActionResult> Edit(int id, ExerciseIndexVM exerciseVM)
 		{
 			if (id != exerciseVM.Id)
 			{

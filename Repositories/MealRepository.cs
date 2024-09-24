@@ -68,12 +68,11 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Gets MealManageIngredientsVM
-        public async Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id, bool redirectToAdmin)
+        public async Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id)
 		{
 			var mealManageIngredientsVM = mapper.Map<MealManageIngredientsVM>(await GetAsync(id));
 			mealManageIngredientsVM.AvailableIngredients = new SelectList(context.Ingredients.OrderBy(e => e.Name), "Id", "Name");
 			mealManageIngredientsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealManageIngredientsVM.IngredientIds);
-			mealManageIngredientsVM.RedirectToAdmin = redirectToAdmin;
 			mealManageIngredientsVM = await CountMacrosForMealManageIngredientVM(mealManageIngredientsVM);/*
 			mealManageIngredientsVM = await GetMacrosOfMeal(mealManageIngredientsVM);*/
 			return mealManageIngredientsVM;
@@ -93,7 +92,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			meal = AddIngredientToMeal(meal, mealManageIngredientsVM);
 			await UpdateAsync(meal);
-			return await GetMealManageIngredientsVM(mealManageIngredientsVM.Id, mealManageIngredientsVM.RedirectToAdmin);
+			return await GetMealManageIngredientsVM(mealManageIngredientsVM.Id);
 		}
 
         // Removes Ingredient from Meal

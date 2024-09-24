@@ -1,80 +1,87 @@
-﻿@model IEnumerable<ExerciseVM>
+﻿@model IEnumerable<ExerciseIndexVM>
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h1>Exercises</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>Create New</a>
+	<a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoLink)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-                <td>
-                    <a href="@item.VideoLink" target="_blank" rel="noopener noreferrer">@item.VideoLink</a>
-                </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-                <td class="text-end">
-                    <a asp-action="Details" class="btn btn-info btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
-                    <a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
-                    <button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.VideoLink)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ExerciseCategory.Name)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					<a href="@item.VideoLink" target="_blank" rel="noopener noreferrer">@item.VideoLink</a>
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ExerciseCategory.Name)
+				</td>
+				<td class="text-end">
+					<a asp-action="Details" class="btn btn-info btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
+					<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
+					<button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
 <form id="deleteForm" asp-action="Delete">
-    <input type="hidden" id="exerciseId" name="Id" />
+	<input type="hidden" id="exerciseId" name="Id" />
 </form>
 
 @section Scripts
-                    {
-    <script>
-        $(function () {
-            $('.table').DataTable();
+{
+	<script>
+		$(function () {
+			$('.table').DataTable();
 
-            $('.deleteBtn').click(function (e) {
-                swal(
-                    {
-                        title: "Are you sure?",
-                        text: "Are you sure you want to delete this record?",
-                        icon: "warning",
-                        buttons: true,
-                        dangerMode: true
-                    }
-                ).then((confirm) => {
-                    if (confirm) {
-                        var btn = $(this);
-                        var id = btn.data("id");
-                        $('#exerciseId').val(id);
-                        $('#deleteForm').submit();
-                    }
-                }
-                );
-            });
-        });
-    </script>
+			$('.deleteBtn').click(function (e) {
+				swal(
+					{
+						title: "Are you sure?",
+						text: "Are you sure you want to delete this record?",
+						icon: "warning",
+						buttons: true,
+						dangerMode: true
+					}
+				).then((confirm) => {
+					if (confirm) {
+						var btn = $(this);
+						var id = btn.data("id");
+						$('#exerciseId').val(id);
+						$('#deleteForm').submit();
+					}
+				}
+				);
+			});
+		});
+	</script>
 }
