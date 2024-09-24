@@ -18,6 +18,8 @@ namespace TrainingPlanApp.Web.Data
 			builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+			builder.ApplyConfiguration(new ExerciseUnitSeedConfiguration());
+			builder.ApplyConfiguration(new ExerciseCategorySeedConfiguration());
 
             base.OnModelCreating(builder);
         }
