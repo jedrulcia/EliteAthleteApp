@@ -15,11 +15,12 @@ using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.TrainingPlan;
 using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-	public class TrainingPlansController : Controller
+    public class TrainingPlansController : Controller
 	{
 		private readonly ITrainingPlanRepository trainingPlanRepository;
 		private readonly IMapper mapper;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Exercise;
 
 namespace TrainingPlanApp.Web.Contracts
 {
@@ -9,11 +9,17 @@ namespace TrainingPlanApp.Web.Contracts
         // Gets Exercise Index VM
         Task<List<ExerciseIndexVM>> GetExerciseIndexVM();
 
-        // Creates new database entity in exercise table
-        Task CreateExercise(ExerciseIndexVM exercise);
+        // Gets Exercise Details VM
+        Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id);
+
+        // Gets Exercise Create VM
+        Task<ExerciseCreateVM> GetExerciseCreateVM();
+
+		// Creates new database entity in exercise table
+		Task CreateExercise(ExerciseCreateVM exerciseCreateVM);
 
         // Edits Name, VideoLink, Description of exercise
-        Task EditExercise(ExerciseIndexVM exerciseVM);
+        Task EditExercise(ExerciseCreateVM exerciseCreateVM);
 
         // Gets list of IDs of specific exercises
         Task<List<ExerciseIndexVM>> GetListOfExercises(List<int?> exercisesIds);

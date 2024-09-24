@@ -10,12 +10,12 @@ using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Meal;
 using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-	[Authorize(Roles = Roles.Administrator)]
+    [Authorize(Roles = Roles.Administrator)]
 	public class MealsController : Controller
 	{
 		private readonly ApplicationDbContext context;

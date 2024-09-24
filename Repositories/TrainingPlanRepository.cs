@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Repositories
 {

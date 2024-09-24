@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using TrainingPlanApp.Web.Models.Meal;
 
-namespace TrainingPlanApp.Web.Models
+namespace TrainingPlanApp.Web.Models.Diet
 {
     public class DietManageMealsVM
     {
@@ -43,13 +44,13 @@ namespace TrainingPlanApp.Web.Models
         public List<decimal>? MealProteins { get; set; }
         public List<decimal>? MealCarbohydrates { get; set; }
         public List<decimal>? MealFats { get; set; }
-        public List <int>? DayKcal { get; set; }
-        public List <decimal>? DayProteins { get; set; }
+        public List<int>? DayKcal { get; set; }
+        public List<decimal>? DayProteins { get; set; }
         public List<decimal>? DayCarbohydrates { get; set; }
         public List<decimal>? DayFats { get; set; }
 
-		// LISTS
-		public List<int?>? MealIds { get; set; }
+        // LISTS
+        public List<int?>? MealIds { get; set; }
         public List<MealIndexVM?>? Meals { get; set; }
         [Display(Name = "Meal Quantity")]
         public List<int> MealQuantities { get; set; }

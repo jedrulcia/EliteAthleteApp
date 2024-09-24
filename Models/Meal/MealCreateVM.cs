@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using TrainingPlanApp.Web.Data;
 
-namespace TrainingPlanApp.Web.Models
+namespace TrainingPlanApp.Web.Models.Meal
 {
     public class MealCreateVM
     {

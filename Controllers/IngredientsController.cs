@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Ingredient;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-	[Authorize(Roles = Roles.Administrator)]
+    [Authorize(Roles = Roles.Administrator)]
 	public class IngredientsController : Controller
     {
         private readonly ApplicationDbContext _context;

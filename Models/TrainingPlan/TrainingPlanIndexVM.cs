@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TrainingPlanApp.Web.Controllers;
 using TrainingPlanApp.Web.Data;
 
-namespace TrainingPlanApp.Web.Models
+namespace TrainingPlanApp.Web.Models.TrainingPlan
 {
-    public class DietIndexVM
+    public class TrainingPlanIndexVM
     {
         // IDs
         public int? Id { get; set; }
@@ -26,5 +28,7 @@ namespace TrainingPlanApp.Web.Models
         // OTHER
         [Display(Name = "Status")]
         public bool? IsActive { get; set; }
+
+        public UserVM? User { get; set; }
     }
 }

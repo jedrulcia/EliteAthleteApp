@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Diet;
+using TrainingPlanApp.Web.Models.Exercise;
+using TrainingPlanApp.Web.Models.Ingredient;
+using TrainingPlanApp.Web.Models.Meal;
+using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Configurations
 {
-	public class MapperConfig : Profile
+    public class MapperConfig : Profile
 	{
 		public MapperConfig()
 		{
@@ -13,6 +18,8 @@ namespace TrainingPlanApp.Web.Configurations
 
 			// Exercise module mapping
 			CreateMap<Exercise, ExerciseIndexVM>().ReverseMap();
+			CreateMap<Exercise, ExerciseDetailsVM>().ReverseMap();
+			CreateMap<Exercise, ExerciseCreateVM>().ReverseMap();
 
 			CreateMap<ExerciseCategory, ExerciseCategoryVM>().ReverseMap();
 

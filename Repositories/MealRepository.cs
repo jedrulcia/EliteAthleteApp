@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Ingredient;
+using TrainingPlanApp.Web.Models.Meal;
 
 namespace TrainingPlanApp.Web.Repositories
 {
-	public class MealRepository : GenericRepository<Meal>, IMealRepository
+    public class MealRepository : GenericRepository<Meal>, IMealRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;

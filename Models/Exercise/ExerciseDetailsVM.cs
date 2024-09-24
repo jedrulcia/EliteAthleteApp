@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Data;
 
-namespace TrainingPlanApp.Web.Models
+namespace TrainingPlanApp.Web.Models.Exercise
 {
-    public class ExerciseIndexVM
+    public class ExerciseDetailsVM
     {
         // IDs
         public int Id { get; set; }
 
-		// STRINGS etc.
-		[Display(Name = "Name")]
+        // STRINGS etc.
+        [Display(Name = "Name")]
         [Required]
         public string Name { get; set; }
 

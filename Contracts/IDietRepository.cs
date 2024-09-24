@@ -1,9 +1,9 @@
 ﻿using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Diet;
 
 namespace TrainingPlanApp.Web.Contracts
 {
-	public interface IDietRepository : IGenericRepository<Diet>
+    public interface IDietRepository : IGenericRepository<Diet>
 	{
 		// Creates new database entity in diet table
 		Task CreateDiet(DietCreateVM dietCreateVM);

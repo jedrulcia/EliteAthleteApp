@@ -1,19 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Data;
 
-namespace TrainingPlanApp.Web.Models
+namespace TrainingPlanApp.Web.Models.Diet
 {
-    public class TrainingPlanCreateVM
+    public class DietCreateVM
     {
         // IDs
         public int? Id { get; set; }
-
         [Display(Name = "Athlete")]
         public string? UserId { get; set; }
 
         // STRINGS etc.
-        [Display(Name = "Training Plan name")]
+        [Display(Name = "Diet name")]
         [Required]
         public string? Name { get; set; }
 
@@ -24,5 +22,8 @@ namespace TrainingPlanApp.Web.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
-	}
+
+        // OTHER
+        public bool RedirectToAdmin { get; set; }
+    }
 }

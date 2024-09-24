@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Diet;
 using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers

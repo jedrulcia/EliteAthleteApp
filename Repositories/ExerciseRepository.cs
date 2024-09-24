@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Exercise;
 
 namespace TrainingPlanApp.Web.Repositories
 {
-	public class ExerciseRepository : GenericRepository<Exercise>, IExerciseRepository
+    public class ExerciseRepository : GenericRepository<Exercise>, IExerciseRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
@@ -23,7 +24,7 @@ namespace TrainingPlanApp.Web.Repositories
 			var exercises = await GetAllAsync();
 			var exercisesIndexVM = mapper.Map<List<ExerciseIndexVM>>(exercises);
 
-			for(int i = 0; i < exercises.Count; i++)
+			for (int i = 0; i < exercises.Count; i++)
 			{
 				int? id = exercises[i].ExerciseCategoryId;
 				if (id != null)
@@ -32,21 +33,44 @@ namespace TrainingPlanApp.Web.Repositories
 					exercisesIndexVM[i].ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
 				}
 			}
-
 			return exercisesIndexVM;
 		}
 
-		// Creates new database entity in exercise table
-		public async Task CreateExercise(ExerciseIndexVM exerciseVM)
+		// Gets Exercise Details VM
+		public async Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id)
 		{
-			var exercise = mapper.Map<Exercise>(exerciseVM);
+			var exercise = await GetAsync(id);
+			var exerciseDetailsVM = mapper.Map<ExerciseDetailsVM>(exercise);
+
+			if (exercise.ExerciseCategoryId != null)
+			{
+				var category = await context.Set<ExerciseCategory>().FindAsync(exercise.ExerciseCategoryId);
+				exerciseDetailsVM.ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
+			}
+			return exerciseDetailsVM;
+		}
+
+		// Gets Exercise Create VM
+		public async Task<ExerciseCreateVM> GetExerciseCreateVM()
+		{
+			var exerciseCreateVM = new ExerciseCreateVM
+			{
+				AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name")
+			};
+			return exerciseCreateVM;
+		}
+
+		// Creates new database entity in exercise table
+		public async Task CreateExercise(ExerciseCreateVM exerciseCreateVM)
+		{
+			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
 			await AddAsync(exercise);
 		}
 
 		// Edits Name, VideoLink, Description of exercise
-		public async Task EditExercise(ExerciseIndexVM exerciseVM)
+		public async Task EditExercise(ExerciseCreateVM exerciseCreateVM)
 		{
-			var exercise = mapper.Map<Exercise>(exerciseVM);
+			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
 			await UpdateAsync(exercise);
 		}
 

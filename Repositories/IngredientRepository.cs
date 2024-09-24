@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.Ingredient;
 
 namespace TrainingPlanApp.Web.Repositories
 {

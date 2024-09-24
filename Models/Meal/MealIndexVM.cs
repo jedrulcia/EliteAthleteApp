@@ -1,19 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Contracts;
 
-namespace TrainingPlanApp.Web.Models
+namespace TrainingPlanApp.Web.Models.Meal
 {
-    public class MealDetailsVM
+    public class MealIndexVM
     {
         // IDs
         public int Id { get; set; }
 
-        // STRINGS etc.
+        //STRINGS etc.
         [Display(Name = "Name")]
         public string? Name { get; set; }
-
-        [Display(Name = "Recipe")]
-        public string? Recipe { get; set; }
 
         // MACROS
         public int? Kcal { get; set; }
@@ -24,6 +20,5 @@ namespace TrainingPlanApp.Web.Models
         // LISTS
         public List<int?>? IngredientIds { get; set; }
         public List<int>? IngredientQuantities { get; set; }
-        public List<IngredientVM?>? Ingredients { get; set; }
     }
 }

@@ -1,11 +1,14 @@
-﻿@model ExerciseIndexVM
+﻿@using TrainingPlanApp.Web.Models.Exercise
+@using TrainingPlanApp.Web.Constants
+
+@model ExerciseDetailsVM
 
 @{
     ViewData["Title"] = "Details";
 }
 
 <h1>@Model.Name </h1>
-
+<h1>@Model.ExerciseCategory.Name</h1>
 <div>
     <hr />
     <dl class="row">
@@ -18,12 +21,10 @@
             <iframe width="840" height="472" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </dd>
         <div class="col-sm-5 d-flex flex-column">
-            <!-- Description label -->
             <div class="mb-2" style="font-weight: bold; font-size: 1.2em;">
                 @Html.DisplayNameFor(model => model.Description)
             </div>
 
-            <!-- Description text -->
             <div>
                 @Html.DisplayFor(model => model.Description)
             </div>
