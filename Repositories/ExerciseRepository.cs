@@ -23,13 +23,13 @@ namespace TrainingPlanApp.Web.Repositories
 			var exercises = await GetAllAsync();
 			var exercisesIndexVM = mapper.Map<List<ExerciseIndexVM>>(exercises);
 
-			foreach (var exerciseIndexVM in exercisesIndexVM)
+			for(int i = 0; i < exercises.Count; i++)
 			{
-				int? id = exerciseIndexVM.ExerciseCategoryId;
+				int? id = exercises[i].ExerciseCategoryId;
 				if (id != null)
 				{
 					var category = await context.Set<ExerciseCategory>().FindAsync(id);
-					exerciseIndexVM.ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
+					exercisesIndexVM[i].ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
 				}
 			}
 

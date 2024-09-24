@@ -7,7 +7,6 @@ namespace TrainingPlanApp.Web.Models
     {
         // IDs
         public int Id { get; set; }
-		public int? ExerciseCategoryId { get; set; }
 
 		// STRINGS etc.
 		[Display(Name = "Name")]
