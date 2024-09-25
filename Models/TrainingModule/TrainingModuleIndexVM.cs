@@ -15,7 +15,7 @@ namespace TrainingPlanApp.Web.Models.TrainingModule
 
         // LISTS
         public List<TrainingPlanIndexVM?>? TrainingPlans { get; set; }
-        public List<int?>? TrainingPlanIds { get; set; }
+        public List<int> TrainingPlanIds { get; set; }
 
         // OTHER
         public bool? IsActive { get; set; }

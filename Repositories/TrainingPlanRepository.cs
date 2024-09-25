@@ -21,7 +21,11 @@ namespace TrainingPlanApp.Web.Repositories
         private readonly UserManager<User> userManager;
         private readonly IHttpContextAccessor httpContextAccessor;
 
-        public TrainingPlanRepository(ApplicationDbContext context, IMapper mapper, IExerciseRepository exerciseRepository, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
+        public TrainingPlanRepository(ApplicationDbContext context, 
+            IMapper mapper, 
+            IExerciseRepository exerciseRepository, 
+            UserManager<User> userManager, 
+            IHttpContextAccessor httpContextAccessor) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
@@ -30,11 +34,23 @@ namespace TrainingPlanApp.Web.Repositories
             this.httpContextAccessor = httpContextAccessor;
         }
 
+        // Gets list of specific User Training Plans
+        public async Task<List<TrainingPlanIndexVM>> GetModuleTrainingPlans(List<int> trainingPlanIds)
+        {
+            List<TrainingPlanIndexVM> trainingPlanIndexVM = new List<TrainingPlanIndexVM>();
+            foreach (int id in trainingPlanIds)
+            {
+                var trainingPlanVM = mapper.Map<TrainingPlanIndexVM>(await GetAsync(id));
+                trainingPlanIndexVM.Add(trainingPlanVM);
+            }
+            return trainingPlanIndexVM;
+        }
+
         // Creates new database entity in TrainingPlan table
         public async Task<int> CreateTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
-			trainingPlan.IsCompleted = true;
+			trainingPlan.IsCompleted = false;
             trainingPlan.ExerciseIds = new List<int?>();
             trainingPlan.Weight = new List<int?>();
             trainingPlan.Sets = new List<int?>();
@@ -116,18 +132,6 @@ namespace TrainingPlanApp.Web.Repositories
 			}
 			await UpdateAsync(trainingPlan);
 		}
-
-        // Gets list of specific User Training Plans
-        public async Task<List<TrainingPlanIndexVM>> GetModuleTrainingPlans(List<int?>? trainingPlanIds)
-        {
-            List<TrainingPlanIndexVM> trainingPlanIndexVM = new List<TrainingPlanIndexVM>();
-            foreach (int id in trainingPlanIds)
-            {
-                var trainingPlanVM = mapper.Map<TrainingPlanIndexVM>(await GetAsync(id));
-                trainingPlanIndexVM.Add(trainingPlanVM);
-            }
-            return trainingPlanIndexVM;
-        }
 
         // Gets TrainingPlanDetailsVM
         public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan)

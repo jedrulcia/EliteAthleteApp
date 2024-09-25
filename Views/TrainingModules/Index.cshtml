@@ -49,7 +49,7 @@
                     @Html.DisplayFor(modelItem => item.TrainingPlanIds.Count)
                 </td>
                 <td>
-                    <a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-trainingPlanIds="@item.TrainingPlanIds" asp-route-userId="@item.UserId"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
+                    <a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
                     <a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
                     <button data-id="@item.Id" data-userid="@item.UserId" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
             </td>

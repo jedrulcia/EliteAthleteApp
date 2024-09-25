@@ -24,7 +24,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task ChangeTrainingPlanStatus(int trainingPlanId, bool status);
 
 		// Gets list of specific User Training Plans
-		Task<List<TrainingPlanIndexVM>> GetModuleTrainingPlans(List<int?>? trainingPlanIds);
+		Task<List<TrainingPlanIndexVM>> GetModuleTrainingPlans(List<int> trainingPlanIds);
 
         // Gets TrainingPlanDetailsVM
         Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan);

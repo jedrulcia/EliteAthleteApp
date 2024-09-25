@@ -15,6 +15,7 @@ using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
+using TrainingPlanApp.Web.Models.TrainingModule;
 using TrainingPlanApp.Web.Models.TrainingPlan;
 using TrainingPlanApp.Web.Repositories;
 
@@ -27,6 +28,7 @@ namespace TrainingPlanApp.Web.Controllers
 		private readonly IExerciseRepository exerciseRepository;
 		private readonly UserManager<User> userManager;
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ITrainingModuleRepository trainingModuleRepository;
         private readonly ApplicationDbContext context;
 
         public TrainingPlansController(ApplicationDbContext context,
@@ -34,20 +36,23 @@ namespace TrainingPlanApp.Web.Controllers
 			IMapper mapper,
 			IExerciseRepository exerciseRepository,
 			UserManager<User> userManager,
-			IHttpContextAccessor httpContextAccessor)
+			IHttpContextAccessor httpContextAccessor,
+			ITrainingModuleRepository trainingModuleRepository)
 		{
 			this.mapper = mapper;
 			this.exerciseRepository = exerciseRepository;
 			this.userManager = userManager;
             this.httpContextAccessor = httpContextAccessor;
+            this.trainingModuleRepository = trainingModuleRepository;
             this.trainingPlanRepository = trainingPlanRepository;
 			this.context = context;
 		}
 
 		// GET: TrainingPlans
-		public async Task<IActionResult> Index(string userId, List<int?>? trainingPlanIds)
-		{
-			if (userId == null)
+		public async Task<IActionResult> Index(string userId, int trainingModuleId)
+        {
+            List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
+            if (userId == null)
 			{
                 var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 				userId = user.Id;
