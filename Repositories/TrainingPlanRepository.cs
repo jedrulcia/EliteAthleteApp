@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Identity.Client;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
+using TrainingPlanApp.Web.Models.Exercise;
 using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Repositories
@@ -29,16 +31,23 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Creates new database entity in TrainingPlan table
-        public async Task CreateTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
+        public async Task<int> CreateTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
-			trainingPlan.IsActive = true;
+			trainingPlan.IsCompleted = true;
             trainingPlan.ExerciseIds = new List<int?>();
             trainingPlan.Weight = new List<int?>();
             trainingPlan.Sets = new List<int?>();
-            trainingPlan.Repeats = new List<int?>();
+            trainingPlan.UnitAmount = new List<int?>();
             trainingPlan.Index = new List<string?>();
-            await AddAsync(trainingPlan);
+            trainingPlan.ExerciseUnitIds = new List<int?>();
+            trainingPlan.UnitAmount = new List<int?>();
+            trainingPlan.Units = new List<string?>();
+            trainingPlan.BreakTime = new List<int?>();
+            trainingPlan.Notes = new List<string?>();
+            await context.AddAsync(trainingPlan);
+            await context.SaveChangesAsync();
+            return trainingPlan.Id;
         }
 
         // Edits Name, Description, StartDate of Training Plan
@@ -47,8 +56,8 @@ namespace TrainingPlanApp.Web.Repositories
             var trainingPlan = await GetAsync(trainingPlanCreateVM.Id);
             trainingPlan.Name = trainingPlanCreateVM.Name;
             trainingPlan.Description = trainingPlanCreateVM.Description;
-            trainingPlan.StartDate = trainingPlanCreateVM.StartDate;
-            trainingPlan.IsActive = true;
+            trainingPlan.Date = trainingPlanCreateVM.Date;
+            trainingPlan.IsCompleted = true;
             await UpdateAsync(trainingPlan);
         }
 
@@ -88,7 +97,7 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.ExerciseIds.RemoveAt(index);
 			trainingPlan.Weight.RemoveAt(index);
 			trainingPlan.Sets.RemoveAt(index);
-			trainingPlan.Repeats.RemoveAt(index);
+			trainingPlan.UnitAmount.RemoveAt(index);
 			trainingPlan.Index.RemoveAt(index);
 			await UpdateAsync(trainingPlan);
 		}
@@ -99,23 +108,25 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingPlan = await GetAsync(trainingPlanId);
 			if (status)
 			{
-				trainingPlan.IsActive = true;
+				trainingPlan.IsCompleted = true;
 			}
 			else
 			{
-				trainingPlan.IsActive = false;
+				trainingPlan.IsCompleted = false;
 			}
 			await UpdateAsync(trainingPlan);
 		}
 
         // Gets list of specific User Training Plans
-        public async Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string userId)
+        public async Task<List<TrainingPlanIndexVM>> GetModuleTrainingPlans(List<int?>? trainingPlanIds)
         {
-            var trainingPlans = await context.TrainingPlans
-                .Where(x => x.UserId == userId)
-                .ToListAsync();
-			var trainingPlansVM = mapper.Map<List<TrainingPlanIndexVM>>(trainingPlans);
-            return trainingPlansVM;
+            List<TrainingPlanIndexVM> trainingPlanIndexVM = new List<TrainingPlanIndexVM>();
+            foreach (int id in trainingPlanIds)
+            {
+                var trainingPlanVM = mapper.Map<TrainingPlanIndexVM>(await GetAsync(id));
+                trainingPlanIndexVM.Add(trainingPlanVM);
+            }
+            return trainingPlanIndexVM;
         }
 
         // Gets TrainingPlanDetailsVM
@@ -134,7 +145,7 @@ namespace TrainingPlanApp.Web.Repositories
             trainingPlan.ExerciseIds.Add(trainingPlanAddExercisesVM.NewExerciseId);
             trainingPlan.Weight.Add(trainingPlanAddExercisesVM.NewExerciseWeight);
             trainingPlan.Sets.Add(trainingPlanAddExercisesVM.NewExerciseSets);
-            trainingPlan.Repeats.Add(trainingPlanAddExercisesVM.NewExerciseRepeats);
+            trainingPlan.UnitAmount.Add(trainingPlanAddExercisesVM.NewExerciseRepeats);
             trainingPlan.Index.Add(trainingPlanAddExercisesVM.NewExerciseIndex);
             return trainingPlan;
         }

@@ -23,6 +23,6 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
         [Display(Name = "Start date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
-        public DateTime? StartDate { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

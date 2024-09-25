@@ -27,7 +27,7 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 
         // OTHER
         [Display(Name = "Status")]
-        public bool? IsActive { get; set; }
+        public bool? IsCompleted { get; set; }
 
         public UserVM? User { get; set; }
     }

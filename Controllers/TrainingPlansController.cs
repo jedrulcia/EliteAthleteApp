@@ -45,14 +45,14 @@ namespace TrainingPlanApp.Web.Controllers
 		}
 
 		// GET: TrainingPlans
-		public async Task<IActionResult> Index(string userId, int trainingModuleId)
+		public async Task<IActionResult> Index(string userId, List<int?>? trainingPlanIds)
 		{
 			if (userId == null)
 			{
                 var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 				userId = user.Id;
             }
-			var trainingPlanIndexVM = await trainingPlanRepository.GetUserTrainingPlans(userId); 
+			var trainingPlanIndexVM = await trainingPlanRepository.GetModuleTrainingPlans(trainingPlanIds); 
 			ViewBag.UserId = userId;
 			ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
 			return View(trainingPlanIndexVM);

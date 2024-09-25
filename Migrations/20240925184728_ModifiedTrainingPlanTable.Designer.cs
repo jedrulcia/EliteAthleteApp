@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240925184728_ModifiedTrainingPlanTable")]
+    partial class ModifiedTrainingPlanTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -412,11 +415,11 @@ namespace TrainingPlanApp.Web.Migrations
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("BreakTime")
                         .HasColumnType("nvarchar(max)");
@@ -543,7 +546,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4fe6c7d4-08a8-40b9-b753-be4aa7177a64",
+                            ConcurrencyStamp = "511c3ee8-2eb4-48f6-ac3c-2bb2eeaa575c",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -551,9 +554,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKWtC/NJfsQAn+8OuZQZ7eUSdrrTxnl0yItoSI/nZzUZ+Zt+gX083RMoh9onmOTznA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG9QCp6d0IBJoQo4fzHSunmXBeZaNAkYrdtFbcylcMxgVu1ZQ8lEwGf5NArc/vKvyQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "610870e6-5a75-4eb9-92f2-ea87b1969cfa",
+                            SecurityStamp = "47a78f99-08e5-410f-a407-8f334a1fe583",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -561,7 +564,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "29774240-2b2a-4da0-9eba-2381c84f8892",
+                            ConcurrencyStamp = "f85b67c4-6135-4770-b795-1dbb9dd70ac3",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -569,9 +572,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJCWcBRi0MNKCS6x7vqzilp9yRNkqQ5meGqi6xxdGKp/KXN5HIh2sZYWJ78r7HOYGQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENceE+wPDhZkS7/HJXQSIxkkYz70T3Qb/CGoPIbgMQpxRpqnOh5Q93RkFALcxbdpjg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "51c3f206-8a17-4d38-9d42-83b64e437e31",
+                            SecurityStamp = "e6d51822-fdfe-4ade-8cd0-b3f1fbca0af1",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });

@@ -49,7 +49,7 @@ namespace TrainingPlanApp.Web.Controllers
             var trainingModuleIndexVM = await trainingModuleRepository.GetUserTrainingModuleIndexVM(userId);
             ViewBag.UserId = userId;
             ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
-            return View();
+            return View(trainingModuleIndexVM);
         }
 
         // GET: TrainingModules/Create

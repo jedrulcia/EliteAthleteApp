@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models.TrainingModule;
+using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Repositories
 {
@@ -33,6 +36,22 @@ namespace TrainingPlanApp.Web.Repositories
         {
             var trainingModule = mapper.Map<TrainingModule>(trainingModuleCreateVM);
             trainingModule.TrainingPlanIds = new List<int>();
+
+            List<DateTime> days = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
+
+            foreach (var day in days)
+            {
+                TrainingPlanCreateVM trainingPlanCreateVM = new TrainingPlanCreateVM
+                {
+                    UserId = trainingModuleCreateVM.UserId,
+                    Date = day,
+                    Name = ($"{day.DayOfWeek.ToString()} {day.ToString("dd MMMM", CultureInfo.InvariantCulture)}"),
+                    Description = null
+                };
+                int id = await trainingPlanRepository.CreateTrainingPlan(trainingPlanCreateVM);
+                trainingModule.TrainingPlanIds.Add(id);
+            }
+
             await AddAsync(trainingModule);
         }
 
@@ -40,9 +59,27 @@ namespace TrainingPlanApp.Web.Repositories
         public async Task EditTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM)
         {
             var trainingModule = await GetAsync(trainingModuleCreateVM.Id);
+            List<DateTime> daysBefore = GetDaysBetween(trainingModule.StartDate, trainingModule.EndDate);
+            List<DateTime> daysAfter = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
+
             trainingModule.Name = trainingModuleCreateVM.Name;
             trainingModule.StartDate = trainingModuleCreateVM.StartDate;
             trainingModule.EndDate = trainingModuleCreateVM.EndDate;
+/*            foreach (var day in days)
+            {
+
+                TrainingPlanCreateVM trainingPlanCreateVM = new TrainingPlanCreateVM
+                {
+                    UserId = trainingModuleCreateVM.UserId,
+                    Date = day,
+                    Name = ($"{day.DayOfWeek.ToString()} {day.ToString("dd MMMM", CultureInfo.InvariantCulture)}"),
+                    Description = null
+                };
+                int id = await trainingPlanRepository.CreateTrainingPlan(trainingPlanCreateVM);
+                trainingModule.TrainingPlanIds.Add(id);
+            }*/
+
+
             await UpdateAsync(trainingModule);
         }
 
@@ -56,5 +93,26 @@ namespace TrainingPlanApp.Web.Repositories
             }
             await DeleteAsync(id);
         }
+
+        // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+
+        public static List<DateTime> GetDaysBetween(DateTime? startDate, DateTime? endDate)
+        {
+            DateTime start = startDate.Value;
+            DateTime end = endDate.Value;
+
+            if (start > end)
+            {
+                throw new ArgumentException("StartDate must be earlier than or equal to EndDate.");
+            }
+
+            List<DateTime> days = new List<DateTime>();
+            for (DateTime date = start; date <= end; date = date.AddDays(1))
+            {
+                days.Add(date);
+            }
+            return days;
+        }
+
     }
 }

@@ -6,7 +6,7 @@ namespace TrainingPlanApp.Web.Contracts
     public interface ITrainingPlanRepository : IGenericRepository<TrainingPlan>
     {
 		// Creates new database entity in TrainingPlan table
-        Task CreateTrainingPlan(TrainingPlanCreateVM model);
+        Task<int> CreateTrainingPlan(TrainingPlanCreateVM model);
 
         // Edits Name, Description, StartDate of Training Plan
         Task EditTrainingPlan(TrainingPlanCreateVM model);
@@ -24,7 +24,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task ChangeTrainingPlanStatus(int trainingPlanId, bool status);
 
 		// Gets list of specific User Training Plans
-		Task<List<TrainingPlanIndexVM>> GetUserTrainingPlans(string userId);
+		Task<List<TrainingPlanIndexVM>> GetModuleTrainingPlans(List<int?>? trainingPlanIds);
 
         // Gets TrainingPlanDetailsVM
         Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan);
