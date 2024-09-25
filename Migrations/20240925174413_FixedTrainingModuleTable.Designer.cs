@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240925174413_FixedTrainingModuleTable")]
+    partial class FixedTrainingModuleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,7 +222,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Diets", (string)null);
+                    b.ToTable("Diets");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Exercise", b =>
@@ -244,7 +247,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises", (string)null);
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.ExerciseCategory", b =>
@@ -261,7 +264,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExerciseCategories", (string)null);
+                    b.ToTable("ExerciseCategories");
 
                     b.HasData(
                         new
@@ -310,7 +313,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExerciseUnit", (string)null);
+                    b.ToTable("ExerciseUnit");
 
                     b.HasData(
                         new
@@ -352,7 +355,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredients", (string)null);
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Meal", b =>
@@ -377,7 +380,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals", (string)null);
+                    b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingModule", b =>
@@ -388,15 +391,9 @@ namespace TrainingPlanApp.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("TrainingPlanIds")
                         .HasColumnType("nvarchar(max)");
@@ -407,7 +404,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingModules", (string)null);
+                    b.ToTable("TrainingModules");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
@@ -450,7 +447,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingPlans", (string)null);
+                    b.ToTable("TrainingPlans");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.User", b =>
@@ -531,7 +528,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b52113c7-502f-42ca-97c5-ff056a2fb88e",
+                            ConcurrencyStamp = "f9395f7b-b128-46ef-a618-ab75c0a51b6c",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -539,9 +536,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ995f78cZhyJWBA4aJ4cLFLwIIL/UmYOMyUFskDdLVX8W6OW9cCqMRhXvqmv2lZaw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGwonWn+mzFTJVxihm8ItC1DlzvhAfvctbiHT+ixQTTZAZNIDjZdMHI241E+3vg3Kw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d1b9f9b0-a080-4abe-a49d-9f6c04f067b1",
+                            SecurityStamp = "03068e9c-db7d-4e25-a143-60b9c5614792",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -549,7 +546,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5ac426c5-6c91-458a-9cf8-0c4691778740",
+                            ConcurrencyStamp = "0046fc74-84af-4dc1-b83b-f72767d1cf88",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -557,9 +554,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPXMlH8aa2h3W6Arq+o06keZAlIiauVrzo3Bh40OaEFxgZj2VsY9qVb0qujEWoMLqA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF4OzfQ/QCo9OzlvedC7RdR95BfTNDFzQTblA4vhvSl57JaWsKRblw35ssfVnNreEg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6cb60de0-b3c3-4433-9fcb-85177d6a0493",
+                            SecurityStamp = "4bcd6e35-daae-46ea-98fb-bc8ec7b1b1f4",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });

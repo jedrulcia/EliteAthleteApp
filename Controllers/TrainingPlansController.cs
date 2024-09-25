@@ -45,7 +45,7 @@ namespace TrainingPlanApp.Web.Controllers
 		}
 
 		// GET: TrainingPlans
-		public async Task<IActionResult> Index(string userId)
+		public async Task<IActionResult> Index(string userId, int trainingModuleId)
 		{
 			if (userId == null)
 			{
@@ -74,11 +74,11 @@ namespace TrainingPlanApp.Web.Controllers
 		[Authorize(Roles = Roles.Administrator)]
 		public IActionResult Create(string? userId)
 		{
-			var model = new TrainingPlanCreateVM
+			var trainingPlanCreateVM = new TrainingPlanCreateVM
 			{
 				UserId = userId
 			};
-			return View(model);
+			return View(trainingPlanCreateVM);
 		}
 
 		// POST: TrainingPlans/Create
@@ -144,14 +144,14 @@ namespace TrainingPlanApp.Web.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> Edit(TrainingPlanCreateVM model)
+		public async Task<IActionResult> Edit(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
 			try
 			{
 				if (ModelState.IsValid)
 				{
-					await trainingPlanRepository.EditTrainingPlan(model);
-					return RedirectToAction(nameof(Index), new { userId = model.UserId });
+					await trainingPlanRepository.EditTrainingPlan(trainingPlanCreateVM);
+					return RedirectToAction(nameof(Index), new { userId = trainingPlanCreateVM.UserId });
 				}
 			}
 			catch (Exception ex)
@@ -159,7 +159,7 @@ namespace TrainingPlanApp.Web.Controllers
 				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
 			}
 
-			return View(model);
+			return View(trainingPlanCreateVM);
 		}
 
 		// POST: TrainingPlans/Delete

@@ -29,9 +29,9 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Creates new database entity in TrainingPlan table
-        public async Task CreateTrainingPlan(TrainingPlanCreateVM model)
+        public async Task CreateTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
-			var trainingPlan = mapper.Map<TrainingPlan>(model);
+			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
 			trainingPlan.IsActive = true;
             trainingPlan.ExerciseIds = new List<int?>();
             trainingPlan.Weight = new List<int?>();
@@ -42,12 +42,12 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Edits Name, Description, StartDate of Training Plan
-        public async Task EditTrainingPlan(TrainingPlanCreateVM model)
+        public async Task EditTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
         {
-            var trainingPlan = await GetAsync(model.Id);
-            trainingPlan.Name = model.Name;
-            trainingPlan.Description = model.Description;
-            trainingPlan.StartDate = model.StartDate;
+            var trainingPlan = await GetAsync(trainingPlanCreateVM.Id);
+            trainingPlan.Name = trainingPlanCreateVM.Name;
+            trainingPlan.Description = trainingPlanCreateVM.Description;
+            trainingPlan.StartDate = trainingPlanCreateVM.StartDate;
             trainingPlan.IsActive = true;
             await UpdateAsync(trainingPlan);
         }

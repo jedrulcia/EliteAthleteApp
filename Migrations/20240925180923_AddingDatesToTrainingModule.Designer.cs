@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240925180923_AddingDatesToTrainingModule")]
+    partial class AddingDatesToTrainingModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,7 +222,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Diets", (string)null);
+                    b.ToTable("Diets");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Exercise", b =>
@@ -244,7 +247,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exercises", (string)null);
+                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.ExerciseCategory", b =>
@@ -261,7 +264,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExerciseCategories", (string)null);
+                    b.ToTable("ExerciseCategories");
 
                     b.HasData(
                         new
@@ -310,7 +313,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExerciseUnit", (string)null);
+                    b.ToTable("ExerciseUnit");
 
                     b.HasData(
                         new
@@ -352,7 +355,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredients", (string)null);
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Meal", b =>
@@ -377,7 +380,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals", (string)null);
+                    b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingModule", b =>
@@ -407,7 +410,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingModules", (string)null);
+                    b.ToTable("TrainingModules");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingPlan", b =>
@@ -450,7 +453,7 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingPlans", (string)null);
+                    b.ToTable("TrainingPlans");
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.User", b =>

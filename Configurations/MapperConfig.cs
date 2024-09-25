@@ -5,6 +5,7 @@ using TrainingPlanApp.Web.Models.Diet;
 using TrainingPlanApp.Web.Models.Exercise;
 using TrainingPlanApp.Web.Models.Ingredient;
 using TrainingPlanApp.Web.Models.Meal;
+using TrainingPlanApp.Web.Models.TrainingModule;
 using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Configurations
@@ -22,6 +23,10 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<Exercise, ExerciseCreateVM>().ReverseMap();
 
 			CreateMap<ExerciseCategory, ExerciseCategoryVM>().ReverseMap();
+
+			// Training Module module mapping
+			CreateMap<TrainingModule, TrainingModuleIndexVM>().ReverseMap();
+			CreateMap<TrainingModule, TrainingModuleCreateVM>().ReverseMap();
 
 			// Training Plan module mapping
             CreateMap<TrainingPlan, TrainingPlanIndexVM>().ReverseMap();
