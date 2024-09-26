@@ -101,5 +101,15 @@ namespace TrainingPlanApp.Web.Controllers
 			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(id, index);
 			return RedirectToAction(nameof(ManageExercises), new { id = id });
 		}
+
+		// POST: TrainingPlans/ManageExercises/CopyTrainingPlan
+		[HttpPost, ActionName("CopyTrainingPlan")]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> CopyTrainingPlan(int copyFromId, int copyToId, int trainingModuleId)
+		{
+			await trainingPlanRepository.CopyTrainingPlanToAnother(copyFromId, copyToId);
+			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });
+		}
 	}
 }

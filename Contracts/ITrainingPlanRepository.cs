@@ -25,5 +25,9 @@ namespace TrainingPlanApp.Web.Contracts
 
 		// Changes the status of Training Plan (Active/Not Active)
 		Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, bool status);
+
+
+		// Copies Training Plan to another Training Plan in the module
+		Task CopyTrainingPlanToAnother(int copyFromId, int copyToId);
 	}
 }

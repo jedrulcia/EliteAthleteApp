@@ -111,7 +111,8 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(trainingPlan);
 
 			trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(trainingPlanManageExercisesVM.Id));
-			trainingPlanManageExercisesVM.AvailableExercises = new SelectList(context.Exercises, "Id", "Name");
+			trainingPlanManageExercisesVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
+			trainingPlanManageExercisesVM.AvailableExerciseUnitTypes = new SelectList(context.ExerciseUnitTypes.OrderBy(e => e.Name), "Id", "Name");
 			trainingPlanManageExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanManageExercisesVM.ExerciseIds);
 			return trainingPlanManageExercisesVM;
 		}
@@ -151,7 +152,26 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(trainingPlan);
 		}
 
-        // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+		// Copies Training Plan to another Training Plan in the module
+		public async Task CopyTrainingPlanToAnother(int copyFromId, int copyToId)
+		{
+			var copyFromTrainingPlan = await GetAsync(copyFromId);
+			var copyToTrainingPlan = await GetAsync(copyToId);
 
-    }
+			copyToTrainingPlan.IsEmpty = copyFromTrainingPlan.IsEmpty;
+			copyToTrainingPlan.ExerciseIds = copyFromTrainingPlan.ExerciseIds;
+			copyToTrainingPlan.Weight = copyFromTrainingPlan.Weight;
+			copyToTrainingPlan.Sets = copyFromTrainingPlan.Sets;
+			copyToTrainingPlan.Index = copyFromTrainingPlan.Index;
+			copyToTrainingPlan.ExerciseUnitTypeIds = copyFromTrainingPlan.ExerciseUnitTypeIds;
+			copyToTrainingPlan.UnitAmounts = copyFromTrainingPlan.UnitAmounts;
+			copyToTrainingPlan.Units = copyFromTrainingPlan.Units;
+			copyToTrainingPlan.BreakTimes = copyFromTrainingPlan.BreakTimes;
+			copyToTrainingPlan.Notes = copyFromTrainingPlan.Notes;
+			await UpdateAsync(copyToTrainingPlan);
+		}
+
+		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
+
+	}
 }
