@@ -20,6 +20,13 @@
 				</select>
 				<span asp-validation-for="NewExerciseId" class="text-danger"></span>
 			</div>
+			<div class="form-group col-md-4">
+				<label asp-for="NewExerciseUnitTypeId" class="control-label"></label>
+				<select asp-for="NewExerciseUnitTypeId" asp-items="Model?.AvailableExerciseUnitTypes" class="form-select">
+					<option>Select exercise</option>
+				</select>
+				<span asp-validation-for="NewExerciseUnitTypeId" class="text-danger"></span>
+			</div>
 			<div class="form-group col-md-12">
 				<label asp-for="NewExerciseWeight" class="control-label"></label>
 				<input asp-for="NewExerciseWeight" class="form-control" />
@@ -39,6 +46,21 @@
 				<label asp-for="NewExerciseIndex" class="control-label"></label>
 				<input asp-for="NewExerciseIndex" class="form-control" />
 				<span asp-validation-for="NewExerciseIndex" class="text-danger"></span>
+			</div>
+			<div class="form-group col-md-12">
+				<label asp-for="NewExerciseUnit" class="control-label"></label>
+				<input asp-for="NewExerciseUnit" class="form-control" />
+				<span asp-validation-for="NewExerciseUnit" class="text-danger"></span>
+			</div>
+			<div class="form-group col-md-12">
+				<label asp-for="NewExerciseBreakTime" class="control-label"></label>
+				<input asp-for="NewExerciseBreakTime" class="form-control" />
+				<span asp-validation-for="NewExerciseBreakTime" class="text-danger"></span>
+			</div>
+			<div class="form-group col-md-12">
+				<label asp-for="NewExerciseNote" class="control-label"></label>
+				<input asp-for="NewExerciseNote" class="form-control" />
+				<span asp-validation-for="NewExerciseNote" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<a asp-action="Index" class="btn btn-dark" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;

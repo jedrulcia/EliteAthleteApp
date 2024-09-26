@@ -34,12 +34,12 @@
 						<td>
 							@if (item.IsCompleted == true)
 							{
-							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
+							<a asp-action="Details" asp-route-id="@item.Id">
 								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i></a>
 							}
 							else
 							{
-							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
+							<a asp-action="Details" asp-route-id="@item.Id">
 								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i></a>
 							}
 						</td>
@@ -92,17 +92,17 @@
 					<td>
 						@if (item.IsEmpty)
 						{
-							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
+							<a asp-action="Details" asp-route-id="@item.Id">
 								<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i></a>
 						}
 						else if (item.IsCompleted == true)
 						{
-							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
+							<a asp-action="Details" asp-route-id="@item.Id">
 								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i></a>
 						}
 						else
 						{
-							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
+							<a asp-action="Details" asp-route-id="@item.Id">
 								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i></a>
 						}
 					</td>

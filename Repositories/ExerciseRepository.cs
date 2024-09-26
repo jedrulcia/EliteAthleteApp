@@ -97,10 +97,17 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task<List<ExerciseUnitTypeVM>> GetListOfExerciseUnitTypes(List<int?> exerciseUnitTypesIds)
 		{
 			List<ExerciseUnitTypeVM> exerciseUnitTypesVM = new List<ExerciseUnitTypeVM>();
-			foreach (int id in exerciseUnitTypesIds)
+			foreach (int? id in exerciseUnitTypesIds)
 			{
-				var exerciseUnitTypeVM = mapper.Map<ExerciseUnitTypeVM>(await context.Set<ExerciseUnitType>().FindAsync(id));
-				exerciseUnitTypesVM.Add(exerciseUnitTypeVM);
+				if (id != null)
+				{
+					var exerciseUnitTypeVM = mapper.Map<ExerciseUnitTypeVM>(await context.Set<ExerciseUnitType>().FindAsync(id));
+					exerciseUnitTypesVM.Add(exerciseUnitTypeVM);
+				}
+				else
+				{
+					exerciseUnitTypesVM.Add(null);
+				}
 			}
 			return exerciseUnitTypesVM;
 		}
