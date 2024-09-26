@@ -51,6 +51,7 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
 			trainingPlan.IsCompleted = false;
+            trainingPlan.IsEmpty = true;
             trainingPlan.ExerciseIds = new List<int?>();
             trainingPlan.Weight = new List<int?>();
             trainingPlan.Sets = new List<int?>();
@@ -64,17 +65,6 @@ namespace TrainingPlanApp.Web.Repositories
             await context.AddAsync(trainingPlan);
             await context.SaveChangesAsync();
             return trainingPlan.Id;
-        }
-
-        // Edits Name, Description, StartDate of Training Plan
-        public async Task EditTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
-        {
-            var trainingPlan = await GetAsync(trainingPlanCreateVM.Id);
-            trainingPlan.Name = trainingPlanCreateVM.Name;
-            trainingPlan.Description = trainingPlanCreateVM.Description;
-            trainingPlan.Date = trainingPlanCreateVM.Date;
-            trainingPlan.IsCompleted = true;
-            await UpdateAsync(trainingPlan);
         }
 
         // Gets TrainingPlanManageExercisesVM
@@ -98,6 +88,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			var trainingPlan = await GetAsync(trainingPlanAddExercisesVM.Id);
 			trainingPlan = AddExerciseAtributesToTrainingPlan(trainingPlan, trainingPlanAddExercisesVM);
+            trainingPlan.IsEmpty = false;
 			await UpdateAsync(trainingPlan);
 
 			trainingPlanAddExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(trainingPlanAddExercisesVM.Id));
@@ -115,6 +106,10 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.Sets.RemoveAt(index);
 			trainingPlan.UnitAmount.RemoveAt(index);
 			trainingPlan.Index.RemoveAt(index);
+            if (trainingPlan.ExerciseIds.Count == 0)
+            {
+                trainingPlan.IsEmpty = true;
+            }
 			await UpdateAsync(trainingPlan);
 		}
 

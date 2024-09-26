@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240926184112_ChangingTPandTMtables")]
+    partial class ChangingTPandTMtables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -439,9 +442,6 @@ namespace TrainingPlanApp.Web.Migrations
                     b.Property<bool?>("IsCompleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsEmpty")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -546,7 +546,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e5555cf0-b080-4bbc-992e-10d4ba917db5",
+                            ConcurrencyStamp = "5fef669e-1d0c-4e51-a6fd-2d9902dd1b84",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -554,9 +554,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDCUrgrs6E7xNHIeqwaXpm+5uZsDltUk7REYBucRtwf/KAg/vzl/PbhiUZgjufFfzA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBu8Gp7eFEUjhnJMcbKn9fpd8k6nVfqAorMqO6MXlNLdujtNwRBj788DSN2JDOjlVw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e82ea751-d88f-4759-b5d7-5cb0ca21b0a6",
+                            SecurityStamp = "5b59f3fc-12fb-4770-8744-1601c5ec8e71",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -564,7 +564,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1da9ec75-3c0a-49aa-a5c7-70180c68b655",
+                            ConcurrencyStamp = "5cc3b387-236a-4dd0-94cb-31489b7e9586",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -572,9 +572,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPDmKSKDEMVb9kJN1N8dsXeE5zUuqEN6Xf/KSbChA0dPH4cQaoCH39IGfe6TzRAnRA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEvhe/Xiw6VXFO4rvQvTOg+N9N8wGtby4I2b8BVyWN1f19JlKh7tJU9pE30Dv8QQ2w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cf71ae87-5aac-470c-b602-147ad357fcaf",
+                            SecurityStamp = "d2cc315c-7d2e-46c6-be3d-11146d0058dd",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });

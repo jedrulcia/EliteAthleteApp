@@ -9,9 +9,9 @@ namespace TrainingPlanApp.Web.Data
         [ForeignKey("UserId")]
         public string? UserId { get; set; }
         public string? Name { get; set; }
-        public string? Description { get; set; }
         public DateTime? Date { get; set; }
         public bool? IsCompleted { get; set; }
+        public bool IsEmpty { get; set; }
         public List<int?>? ExerciseIds { get; set; }
         public List<int?>? Weight {  get; set; }
         public List<int?>? Sets { get; set; }

@@ -8,9 +8,6 @@ namespace TrainingPlanApp.Web.Contracts
 		// Creates new database entity in TrainingPlan table
         Task<int> CreateTrainingPlan(TrainingPlanCreateVM model);
 
-        // Edits Name, Description, StartDate of Training Plan
-        Task EditTrainingPlan(TrainingPlanCreateVM model);
-
         // Gets TrainingPlanManageExercisesVM
         Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id);
 

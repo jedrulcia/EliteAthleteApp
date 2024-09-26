@@ -75,38 +75,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(trainingPlanDetailsVM);
 		}
 
-		// GET: TrainingPlans/Create
-		[Authorize(Roles = Roles.Administrator)]
-		public IActionResult Create(string? userId)
-		{
-			var trainingPlanCreateVM = new TrainingPlanCreateVM
-			{
-				UserId = userId
-			};
-			return View(trainingPlanCreateVM);
-		}
-
-		// POST: TrainingPlans/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> Create(TrainingPlanCreateVM model)
-		{
-			try
-			{
-				if (ModelState.IsValid)
-				{
-					await trainingPlanRepository.CreateTrainingPlan(model);
-					return RedirectToAction(nameof(Index), new { userId = model.UserId });
-				}
-			}
-			catch (Exception ex)
-			{
-				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-			}
-			return View(model);
-		}
-
 		// GET: TrainingPlans/ManageExercises
 		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ManageExercises(int? id)
@@ -128,50 +96,6 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
 		{
 			await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
-			return RedirectToAction(nameof(Index), new { userId = userId });
-		}
-
-		// GET: TrainingPlans/Edit
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
-			var trainingPlanCreateVM = mapper.Map<TrainingPlanCreateVM>(await trainingPlanRepository.GetAsync(id));
-			return View(trainingPlanCreateVM);
-		}
-
-		// POST: TrainingPlans/Edit
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> Edit(TrainingPlanCreateVM trainingPlanCreateVM)
-		{
-			try
-			{
-				if (ModelState.IsValid)
-				{
-					await trainingPlanRepository.EditTrainingPlan(trainingPlanCreateVM);
-					return RedirectToAction(nameof(Index), new { userId = trainingPlanCreateVM.UserId });
-				}
-			}
-			catch (Exception ex)
-			{
-				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-			}
-
-			return View(trainingPlanCreateVM);
-		}
-
-		// POST: TrainingPlans/Delete
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> DeleteConfirmed(int id, string userId)
-		{
-			await trainingPlanRepository.DeleteAsync(id);
 			return RedirectToAction(nameof(Index), new { userId = userId });
 		}
 
