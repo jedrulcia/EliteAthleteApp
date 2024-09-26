@@ -37,26 +37,28 @@ namespace TrainingPlanApp.Web.Repositories
             var trainingModule = mapper.Map<TrainingModule>(trainingModuleCreateVM);
             trainingModule.TrainingPlanIds = new List<int>();
 
-            List<DateTime> days = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
+			List<DateTime> days = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
+			await context.AddAsync(trainingModule);
+            await context.SaveChangesAsync();
 
-            foreach (var day in days)
+			foreach (var day in days)
             {
                 TrainingPlanCreateVM trainingPlanCreateVM = new TrainingPlanCreateVM
                 {
                     UserId = trainingModuleCreateVM.UserId,
                     Date = day,
                     Name = ($"{day.DayOfWeek.ToString()} {day.ToString("dd MMMM", CultureInfo.InvariantCulture)}"),
-                    Description = null
+                    TrainingModuleId = trainingModule.Id
                 };
                 int id = await trainingPlanRepository.CreateTrainingPlan(trainingPlanCreateVM);
                 trainingModule.TrainingPlanIds.Add(id);
             }
+            await UpdateAsync(trainingModule);
 
-            await AddAsync(trainingModule);
         }
 
-        // EDITS TRAINING MODULE
-        public async Task EditTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM)
+		// EDITS TRAINING MODULE - ALLOWS ONLY EXTENDING THE MODULE
+		public async Task EditTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM)
         {
             var trainingModule = await GetAsync(trainingModuleCreateVM.Id);
             List<DateTime> daysBefore = GetDaysBetween(trainingModule.StartDate, trainingModule.EndDate);
@@ -96,6 +98,7 @@ namespace TrainingPlanApp.Web.Repositories
 
         // METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
+        // GETS A LIST OF DAYS BETWEEN STARTING AND ENDING DATE
         public static List<DateTime> GetDaysBetween(DateTime? startDate, DateTime? endDate)
         {
             DateTime start = startDate.Value;

@@ -19,5 +19,6 @@ namespace TrainingPlanApp.Web.Models.TrainingModule
 
         // OTHER
         public bool? IsActive { get; set; }
+        public UserVM? UserVM { get; set; }
     }
 }

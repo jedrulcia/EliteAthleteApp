@@ -5,7 +5,6 @@
 
 @{
 	ViewData["Title"] = "Index";
-	var userId = ViewBag.UserId;
 }
 
 @if (User.IsInRole(Roles.User))
@@ -35,11 +34,13 @@
 						<td>
 							@if (item.IsCompleted == true)
 							{
-								<span class="badge bg-success">@Html.DisplayFor(modelItem => item.Name)</span>
+							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
+								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i></a>
 							}
 							else
 							{
-								<span class="badge bg-danger">@Html.DisplayFor(modelItem => item.Name)</span>
+							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
+								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i></a>
 							}
 						</td>
 						<td class="text-end">
@@ -47,15 +48,16 @@
 								<input name="Id" value="@item.Id" type="hidden" />
 								<input name="status" value="true" type="hidden" />
 								<input name="userId" value="@item.UserId" type="hidden" />
+								<input name="trainingModuleId" value="@item.TrainingModuleId" type="hidden" />
 								<button type="submit" class="btn btn-success btn-sm"><i class="fa-solid fa-check">&nbsp;</i></button>
 							</form>
 							<form asp-action="ChangeStatus" class="d-inline">
 								<input name="Id" value="@item.Id" type="hidden" />
 								<input name="status" value="false" type="hidden" />
 								<input name="userId" value="@item.UserId" type="hidden" />
+								<input name="trainingModuleId" value="@item.TrainingModuleId" type="hidden" />
 								<button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-x">&nbsp;</i></button>
 							</form>
-							<a asp-action="Details" class="btn btn-secondary btn-sm w-100" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
 						</td>
 					</tr>
 				}
@@ -67,7 +69,7 @@
 
 @if (User.IsInRole(Roles.Administrator))
 {
-	<h1>Training Plans Admin</h1>
+	<h1>Training Plans</h1>
 	<table class="table">
 		<thead>
 			<tr>
@@ -96,20 +98,17 @@
 						else if (item.IsCompleted == true)
 						{
 							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
-								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
-							</a>
+								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i></a>
 						}
 						else
 						{
 							<a asp-action="Details" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
-								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
-							</a>
+								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i></a>
 						}
 					</td>
-					<td class="text-end">
-						<a asp-action="ManageExercises" class="btn btn-secondary btn-sm" asp-route-id="@item.Id" asp-route-redirectToAdmin="false">
-							<i class="fa-regular fa-pen-to-square">&nbsp;</i>Exercises
-						</a>
+					<td>
+						<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId">
+							<i class="text-end btn btn-secondary btn-sm"> Exercises</i></a>
 					</td>
 				</tr>
 			}

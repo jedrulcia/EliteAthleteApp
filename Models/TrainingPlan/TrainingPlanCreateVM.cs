@@ -8,6 +8,7 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
     {
         // IDs
         public int? Id { get; set; }
+        public int? TrainingModuleId {  get; set; }
 
         [Display(Name = "Athlete")]
         public string? UserId { get; set; }
@@ -16,9 +17,6 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
         [Display(Name = "Training Plan name")]
         [Required]
         public string? Name { get; set; }
-
-        [Display(Name = "Description")]
-        public string? Description { get; set; }
 
         [Display(Name = "Start date")]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]

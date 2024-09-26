@@ -31,9 +31,9 @@
 				<span asp-validation-for="NewExerciseSets" class="text-danger"></span>
 			</div>
 			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseRepeats" class="control-label"></label>
-				<input asp-for="NewExerciseRepeats" class="form-control" />
-				<span asp-validation-for="NewExerciseRepeats" class="text-danger"></span>
+				<label asp-for="NewExerciseUnitAmount" class="control-label"></label>
+				<input asp-for="NewExerciseUnitAmount" class="form-control" />
+				<span asp-validation-for="NewExerciseUnitAmount" class="text-danger"></span>
 			</div>
 			<div class="form-group col-md-12">
 				<label asp-for="NewExerciseIndex" class="control-label"></label>
@@ -41,7 +41,7 @@
 				<span asp-validation-for="NewExerciseIndex" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<a asp-action="Index" class="btn btn-dark" asp-route-userId="@Model?.UserId">Back to List</a>&nbsp;
+				<a asp-action="Index" class="btn btn-dark" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
 				<input type="submit" value="Add" class="btn btn-primary" />
 			</div>
 		</form>
@@ -63,9 +63,6 @@
 				@Html.DisplayNameFor(model => model.Sets)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Repeats)
-			</th>
-			<th>
 				@Html.DisplayNameFor(model => model.Weight)
 			</th>
 			<th></th>
@@ -83,9 +80,6 @@
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => Model.Sets[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.Repeats[i])
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => Model.Weight[i])

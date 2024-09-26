@@ -18,7 +18,7 @@ namespace TrainingPlanApp.Web.Data
 			builder.ApplyConfiguration(new RoleSeedConfiguration());
             builder.ApplyConfiguration(new UserSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
-			builder.ApplyConfiguration(new ExerciseUnitSeedConfiguration());
+			builder.ApplyConfiguration(new ExerciseUnitTypeSeedConfiguration());
 			builder.ApplyConfiguration(new ExerciseCategorySeedConfiguration());
 
             base.OnModelCreating(builder);
@@ -26,6 +26,7 @@ namespace TrainingPlanApp.Web.Data
 
         public DbSet<Exercise> Exercises {  get; set; }
         public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
+		public DbSet<ExerciseUnitType> ExerciseUnitTypes {  get; set; }
         public DbSet<TrainingPlan> TrainingPlans { get; set; }
 		public DbSet<Diet> Diets { get; set; }
 		public DbSet<Ingredient> Ingredients { get; set; }

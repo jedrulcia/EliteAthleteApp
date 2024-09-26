@@ -49,17 +49,10 @@ namespace TrainingPlanApp.Web.Controllers
 		}
 
 		// GET: TrainingPlans
-		public async Task<IActionResult> Index(string userId, int trainingModuleId)
+		public async Task<IActionResult> Index(int trainingModuleId)
         {
             List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-            if (userId == null)
-			{
-                var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-				userId = user.Id;
-            }
-			var trainingPlanIndexVM = await trainingPlanRepository.GetModuleTrainingPlans(trainingPlanIds); 
-			ViewBag.UserId = userId;
-			ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
+			var trainingPlanIndexVM = await trainingPlanRepository.GetTrainingPlanIndexVM(trainingPlanIds);
 			return View(trainingPlanIndexVM);
 		}
 
@@ -92,11 +85,11 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(await trainingPlanRepository.AddExerciseToTrainingPlan(trainingPlanAddExercisesVM));
 		}
 
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
+		// POST: TrainingPlans/Index/ChangeStatus
+		public async Task<IActionResult> ChangeStatus(int id, bool status, int trainingModuleId)
 		{
-			await trainingPlanRepository.ChangeTrainingPlanStatus(id, status);
-			return RedirectToAction(nameof(Index), new { userId = userId });
+			await trainingPlanRepository.ChangeTrainingPlanCompletionStatus(id, status);
+			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });
 		}
 
 		// POST: TrainingPlans/ManageExercises/RemoveExercise

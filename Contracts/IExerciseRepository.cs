@@ -24,8 +24,11 @@ namespace TrainingPlanApp.Web.Contracts
         // Edits Name, VideoLink, Description of exercise
         Task EditExercise(ExerciseCreateVM exerciseCreateVM);
 
-        // Gets list of IDs of specific exercises
+        // Gets list of specific exercises
         Task<List<ExerciseIndexVM>> GetListOfExercises(List<int?> exercisesIds);
+
+		// Gets list of unit types
+		Task<List<ExerciseUnitTypeVM>> GetListOfExerciseUnitTypes(List<int?> exerciseUnitTypesIds);
 
 	}
 }

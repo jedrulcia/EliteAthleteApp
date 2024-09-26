@@ -11,7 +11,7 @@ namespace TrainingPlanApp.Web.Contracts
         // CREATES TRAINING MODULE
         Task CreateTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM);
 
-        // EDITS TRAINING MODULE
+        // EDITS TRAINING MODULE - ALLOWS ONLY EXTENDING THE MODULE
         Task EditTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM);
 
         // DELETES TRAINING MODULE AND ALL TRAINING PLANS ATTACHED TO IT
