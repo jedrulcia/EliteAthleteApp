@@ -41,10 +41,10 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			this.mapper = mapper;
 			this.exerciseRepository = exerciseRepository;
+			this.trainingPlanRepository = trainingPlanRepository;
+			this.trainingModuleRepository = trainingModuleRepository;
 			this.userManager = userManager;
             this.httpContextAccessor = httpContextAccessor;
-            this.trainingModuleRepository = trainingModuleRepository;
-            this.trainingPlanRepository = trainingPlanRepository;
 			this.context = context;
 		}
 
@@ -52,8 +52,7 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> Index(int trainingModuleId)
         {
             List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-			var trainingPlanIndexVM = await trainingPlanRepository.GetTrainingPlanIndexVM(trainingPlanIds);
-			return View(trainingPlanIndexVM);
+			return View(await trainingPlanRepository.GetTrainingPlanIndexVM(trainingPlanIds));
 		}
 
 		// GET: TrainingPlans/Details
@@ -64,16 +63,14 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-			var trainingPlanDetailsVM = await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan);
-			return View(trainingPlanDetailsVM);
+			return View(await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan));
 		}
 
 		// GET: TrainingPlans/ManageExercises
 		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ManageExercises(int? id)
 		{
-			var trainingPlanManageExercisesVM = await trainingPlanRepository.GetTrainingPlanManageExercisesVM(id);
-			return View(trainingPlanManageExercisesVM);
+			return View(await trainingPlanRepository.GetTrainingPlanManageExercisesVM(id));
 		}
 
 		// POST: TrainingPlans/ManageExercises

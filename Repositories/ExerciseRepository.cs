@@ -18,7 +18,7 @@ namespace TrainingPlanApp.Web.Repositories
 			this.mapper = mapper;
 		}
 
-		// Gets Exercise Index VM
+		// GETS EXERCISE INDEX VIEW MODEL LIST.
 		public async Task<List<ExerciseIndexVM>> GetExerciseIndexVM()
 		{
 			var exercises = await GetAllAsync();
@@ -36,7 +36,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return exercisesIndexVM;
 		}
 
-		// Gets Exercise Details VM
+		// GETS EXERCISE DETAILS VIEW MODEL FOR THE SPECIFIED EXERCISE ID.
 		public async Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id)
 		{
 			var exercise = await GetAsync(id);
@@ -50,7 +50,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return exerciseDetailsVM;
 		}
 
-		// Gets Exercise Create VM
+		// GETS EXERCISE CREATE VIEW MODEL FOR NEW EXERCISE CREATION.
 		public async Task<ExerciseCreateVM> GetExerciseCreateVM()
 		{
 			var exerciseCreateVM = new ExerciseCreateVM
@@ -60,29 +60,29 @@ namespace TrainingPlanApp.Web.Repositories
 			return exerciseCreateVM;
 		}
 
-		// Creates new database entity in exercise table
+		// GETS EXERCISE CREATE VIEW MODEL FOR EDITING AN EXISTING EXERCISE.
+		public async Task<ExerciseCreateVM> GetExerciseEditVM(int id)
+		{
+			var exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
+			exerciseCreateVM.AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name");
+			return exerciseCreateVM;
+		}
+
+		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		public async Task CreateExercise(ExerciseCreateVM exerciseCreateVM)
 		{
 			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
 			await AddAsync(exercise);
 		}
 
-        // Gets Exercise Create VM for editing
-        public async Task<ExerciseCreateVM> GetExerciseCreateVMForEditing(int id)
-        {
-			var exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
-			exerciseCreateVM.AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name");
-			return exerciseCreateVM;
-        }
-
-        // Edits Name, VideoLink, Description of exercise
-        public async Task EditExercise(ExerciseCreateVM exerciseCreateVM)
+		// EDITS THE NAME, VIDEO LINK, AND DESCRIPTION OF THE SPECIFIED EXERCISE.
+		public async Task EditExercise(ExerciseCreateVM exerciseCreateVM)
 		{
 			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
 			await UpdateAsync(exercise);
 		}
 
-		// Gets list of IDs of specific exercises
+		// GETS A LIST OF SPECIFIC EXERCISES BASED ON PROVIDED EXERCISE IDs.
 		public async Task<List<ExerciseIndexVM>> GetListOfExercises(List<int?> exercisesIds)
 		{
 			List<ExerciseIndexVM> exercises = new List<ExerciseIndexVM>();
@@ -94,6 +94,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return exercises;
 		}
 
+		// GETS A LIST OF EXERCISE UNIT TYPES BASED ON PROVIDED UNIT TYPE IDs.
 		public async Task<List<ExerciseUnitTypeVM>> GetListOfExerciseUnitTypes(List<int?> exerciseUnitTypesIds)
 		{
 			List<ExerciseUnitTypeVM> exerciseUnitTypesVM = new List<ExerciseUnitTypeVM>();

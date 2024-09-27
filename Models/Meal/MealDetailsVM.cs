@@ -8,22 +8,22 @@ namespace TrainingPlanApp.Web.Models.Meal
     {
         // IDs
         public int Id { get; set; }
+		public List<int?>? IngredientIds { get; set; }
 
-        // STRINGS etc.
-        [Display(Name = "Name")]
+		// STRINGS etc.
+		[Display(Name = "Name")]
         public string? Name { get; set; }
 
         [Display(Name = "Recipe")]
         public string? Recipe { get; set; }
 
-        // MACROS
-        public int? Kcal { get; set; }
+		// MACROS
+		public int? Kcal { get; set; }
         public decimal Proteins { get; set; }
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
 
         // LISTS
-        public List<int?>? IngredientIds { get; set; }
         public List<int>? IngredientQuantities { get; set; }
         public List<IngredientVM?>? Ingredients { get; set; }
     }

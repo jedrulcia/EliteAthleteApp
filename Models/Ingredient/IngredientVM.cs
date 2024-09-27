@@ -19,7 +19,7 @@ namespace TrainingPlanApp.Web.Models.Ingredient
         public int? Kcal { get; set; }
 
         [Required]
-        [Display(Name = "Protein in 100g")]
+        [Display(Name = "Proteins in 100g")]
         public decimal Proteins { get; set; }
 
         [Required]

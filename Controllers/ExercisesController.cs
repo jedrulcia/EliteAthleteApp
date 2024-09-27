@@ -30,15 +30,13 @@ namespace TrainingPlanApp.Web.Controllers
 		// GET: Exercises
 		public async Task<IActionResult> Index()
 		{
-			var exercisesVM = await exerciseRepository.GetExerciseIndexVM();
-			return View(exercisesVM);
+			return View(await exerciseRepository.GetExerciseIndexVM());
 		}
 
 		// GET: Exercises/Details
 		public async Task<IActionResult> Details(int id)
 		{
-			var exerciseDetailsVM = await exerciseRepository.GetExerciseDetailsVM(id);
-			return View(exerciseDetailsVM);
+			return View(await exerciseRepository.GetExerciseDetailsVM(id));
 		}
 
 		// GET: Exercises/Create
@@ -64,8 +62,7 @@ namespace TrainingPlanApp.Web.Controllers
 		// GET: Exercises/Edit
 		public async Task<IActionResult> Edit(int id)
 		{
-            var exerciseCreateVM = await exerciseRepository.GetExerciseCreateVMForEditing(id);
-			return View(exerciseCreateVM);
+			return View(await exerciseRepository.GetExerciseEditVM(id));
 		}
 
 		// POST: Exercises/Edit

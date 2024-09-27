@@ -17,110 +17,105 @@ using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-    public class TrainingModulesController : Controller
-    {
-        private readonly ApplicationDbContext context;
-        private readonly UserManager<User> userManager;
-        private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly ITrainingModuleRepository trainingModuleRepository;
-        private readonly IMapper mapper;
+	public class TrainingModulesController : Controller
+	{
+		private readonly ApplicationDbContext context;
+		private readonly UserManager<User> userManager;
+		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly ITrainingModuleRepository trainingModuleRepository;
+		private readonly IMapper mapper;
 
-        public TrainingModulesController(ApplicationDbContext context,
-            UserManager<User> userManager,
-            IHttpContextAccessor httpContextAccessor,
-            ITrainingModuleRepository trainingModuleRepository,
-            IMapper mapper)
-        {
-            this.context = context;
-            this.userManager = userManager;
-            this.httpContextAccessor = httpContextAccessor;
-            this.trainingModuleRepository = trainingModuleRepository;
-            this.mapper = mapper;
-        }
+		public TrainingModulesController(ApplicationDbContext context,
+			UserManager<User> userManager,
+			IHttpContextAccessor httpContextAccessor,
+			ITrainingModuleRepository trainingModuleRepository,
+			IMapper mapper)
+		{
+			this.context = context;
+			this.userManager = userManager;
+			this.httpContextAccessor = httpContextAccessor;
+			this.trainingModuleRepository = trainingModuleRepository;
+			this.mapper = mapper;
+		}
 
-        // GET: TrainingModules
-        public async Task<IActionResult> Index(string userId)
-        {
-            if (userId == null)
-            {
-                var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-                userId = user.Id;
-            }
-            var trainingModuleIndexVM = await trainingModuleRepository.GetUserTrainingModuleIndexVM(userId);
-            ViewBag.UserId = userId;
-            ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
-            return View(trainingModuleIndexVM);
-        }
+		// GET: TrainingModules
+		public async Task<IActionResult> Index(string userId)
+		{
+			if (userId == null)
+			{
+				var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+				userId = user.Id;
+			}
+			var trainingModuleIndexVM = await trainingModuleRepository.GetUserTrainingModuleIndexVM(userId);
+			ViewBag.UserId = userId;
+			ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
+			return View(trainingModuleIndexVM);
+		}
 
-        // GET: TrainingModules/Create
-        public IActionResult Create(string? userId)
-        {
-            var trainingModuleCreateVM = new TrainingModuleCreateVM
-            {
-                UserId = userId
-            };
-            return View(trainingModuleCreateVM);
-        }
+		// GET: TrainingModules/Create
+		public IActionResult Create(string? userId)
+		{
+			return View(new TrainingModuleCreateVM { UserId = userId });
+		}
 
-        // POST: TrainingModules/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TrainingModuleCreateVM trainingModuleCreateVM)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await trainingModuleRepository.CreateTrainingModule(trainingModuleCreateVM);
-                    return RedirectToAction(nameof(Index));
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-            }
-            return View(trainingModuleCreateVM);
-        }
+		// POST: TrainingModules/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(TrainingModuleCreateVM trainingModuleCreateVM)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					await trainingModuleRepository.CreateTrainingModule(trainingModuleCreateVM);
+					return RedirectToAction(nameof(Index));
+				}
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
+			}
+			return View(trainingModuleCreateVM);
+		}
 
-        // GET: TrainingModules/Edit
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var trainingModuleCreateVM = mapper.Map<TrainingModuleCreateVM>(await trainingModuleRepository.GetAsync(id));
-            return View(trainingModuleCreateVM);
-        }
+		// GET: TrainingModules/Edit
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			return View(mapper.Map<TrainingModuleCreateVM>(await trainingModuleRepository.GetAsync(id)));
+		}
 
-        // POST: TrainingModules/Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(TrainingModuleCreateVM trainingModuleCreateVM)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await trainingModuleRepository.EditTrainingModule(trainingModuleCreateVM);
-                    return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-            }
-            return View(trainingModuleCreateVM);
-        }
+		// POST: TrainingModules/Edit
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(TrainingModuleCreateVM trainingModuleCreateVM)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					await trainingModuleRepository.EditTrainingModule(trainingModuleCreateVM);
+					return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
+				}
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
+			}
+			return View(trainingModuleCreateVM);
+		}
 
-        // POST: TrainingModules/Delete
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, string userId)
-        {
-            await trainingModuleRepository.DeleteTrainingModule(id);
-            return RedirectToAction(nameof(Index), new { userId = userId });
-        }
+		// POST: TrainingModules/Delete
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id, string userId)
+		{
+			await trainingModuleRepository.DeleteTrainingModule(id);
+			return RedirectToAction(nameof(Index), new { userId = userId });
+		}
 
-    }
+	}
 }

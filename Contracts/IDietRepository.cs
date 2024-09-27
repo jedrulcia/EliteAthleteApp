@@ -3,27 +3,27 @@ using TrainingPlanApp.Web.Models.Diet;
 
 namespace TrainingPlanApp.Web.Contracts
 {
-    public interface IDietRepository : IGenericRepository<Diet>
+	public interface IDietRepository : IGenericRepository<Diet>
 	{
-		// Creates new database entity in diet table
+		// CREATES A NEW DATABASE ENTITY IN THE DIET TABLE.
 		Task CreateDiet(DietCreateVM dietCreateVM);
 
-        // Edits the Name, Description, StartDate of diet
-        Task EditDiet(DietCreateVM dietCreateVM);
+		// EDITS THE NAME, DESCRIPTION, AND START DATE OF THE DIET.
+		Task EditDiet(DietCreateVM dietCreateVM);
 
-        // Changes status of diet (Active/Not Active)
-        Task ChangeDietStatus(int dietId, bool status);
+		// CHANGES THE STATUS OF THE DIET (ACTIVE/NOT ACTIVE).
+		Task ChangeDietStatus(int dietId, bool status);
 
-        // Gets DietManageMealsVM
-        Task<DietManageMealsVM> GetDietManageMealsVM(int? id, bool? redirectToAdmin);
+		// GETS DIETMANAGEMEALSVIEWMODEL FOR THE SPECIFIED DIET ID.
+		Task<DietManageMealsVM> GetDietManageMealsVM(int? id);
 
-        // Adds Meal to Diet
-        Task<DietManageMealsVM> AddMealToDiet(DietManageMealsVM dietManageMealsVM, int index);
+		// ADDS A MEAL TO THE SPECIFIED DIET.
+		Task<DietManageMealsVM> AddMealToDiet(DietManageMealsVM dietManageMealsVM, int index);
 
-        // Removes Meal From Diet
-        Task RemoveMealFromDiet(int id, int index);
+		// REMOVES A MEAL FROM THE SPECIFIED DIET.
+		Task RemoveMealFromDiet(int id, int index);
 
-        // Adds Quantity to Meal from Diet
-        Task<DietManageMealsVM> AddQuantityToMeal(DietManageMealsVM dietManageMealsVM, int index);
+		// ADDS QUANTITY TO A MEAL WITHIN THE DIET.
+		Task<DietManageMealsVM> AddQuantityToMeal(DietManageMealsVM dietManageMealsVM, int index);
 	}
 }

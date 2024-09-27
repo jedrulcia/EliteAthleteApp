@@ -5,7 +5,8 @@ using TrainingPlanApp.Web.Constants;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
-    public class RoleSeedConfiguration : IEntityTypeConfiguration<IdentityRole>
+    // SEED CONFIGURATION FOR INITIAL USER ROLES IN THE DATABASE, INCLUDING ADMIN AND USER ROLES.
+	public class RoleSeedConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {

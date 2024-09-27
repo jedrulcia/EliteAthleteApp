@@ -21,7 +21,7 @@ namespace TrainingPlanApp.Web.Models.Exercise
         public string? Description { get; set; }
 
         // OTHER
-        [Display(Name = "Category")]
+        [Display(Name = "Exercise Category")]
         public ExerciseCategoryVM? ExerciseCategory { get; set; }
     }
 }

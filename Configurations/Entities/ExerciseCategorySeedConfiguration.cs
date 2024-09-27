@@ -4,6 +4,7 @@ using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
+	// SEED CONFIGURATION FOR INITIAL EXERCISE CATEGORIES IN THE DATABASE.
 	public class ExerciseCategorySeedConfiguration : IEntityTypeConfiguration<ExerciseCategory>
 	{
 		public void Configure(EntityTypeBuilder<ExerciseCategory> builder)

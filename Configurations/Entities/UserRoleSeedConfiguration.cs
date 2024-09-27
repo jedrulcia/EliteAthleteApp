@@ -4,9 +4,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
-    public class UserRoleSeedConfiguration : IEntityTypeConfiguration<IdentityUserRole<string>>
+    // SEED CONFIGURATION FOR INITIAL USER-ROLE ASSOCIATIONS IN THE DATABASE.
+	public class UserRoleSeedConfiguration : IEntityTypeConfiguration<IdentityUserRole<string>>
     {
-        public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
+		public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
         {
             builder.HasData(
                 new IdentityUserRole<string>

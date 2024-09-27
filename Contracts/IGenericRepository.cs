@@ -1,23 +1,23 @@
 ﻿namespace TrainingPlanApp.Web.Contracts
 {
-    public interface IGenericRepository<T> where T : class
-    {
-        // Adds the entity to database
-        Task<T> AddAsync(T entity);
+	public interface IGenericRepository<T> where T : class
+	{
+		// ADDS THE ENTITY TO THE DATABASE ASYNCHRONOUSLY.
+		Task<T> AddAsync(T entity);
 
-        // Deletes the entity from database
-        Task DeleteAsync(int id);
+		// DELETES THE ENTITY FROM THE DATABASE ASYNCHRONOUSLY BASED ON THE SPECIFIED ID.
+		Task DeleteAsync(int id);
 
-        // Checks if entity exists in the database
-        Task<bool> Exists(int id);
+		// CHECKS IF THE ENTITY EXISTS IN THE DATABASE BY ID.
+		Task<bool> Exists(int id);
 
-        // Updates the entity in database
-        Task UpdateAsync(T entity);
+		// UPDATES THE ENTITY IN THE DATABASE ASYNCHRONOUSLY.
+		Task UpdateAsync(T entity);
 
-        // Gets the entity from database
-        Task<T> GetAsync(int? id);
+		// GETS THE ENTITY FROM THE DATABASE BY ID ASYNCHRONOUSLY.
+		Task<T> GetAsync(int? id);
 
-        // Gets all entities from database
-        Task<List<T>> GetAllAsync();
-    }
+		// GETS ALL ENTITIES FROM THE DATABASE ASYNCHRONOUSLY.
+		Task<List<T>> GetAllAsync();
+	}
 }

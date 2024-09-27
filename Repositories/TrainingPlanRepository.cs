@@ -34,8 +34,8 @@ namespace TrainingPlanApp.Web.Repositories
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        // Gets list of specific Module Training Plans
-        public async Task<List<TrainingPlanIndexVM>> GetTrainingPlanIndexVM(List<int> trainingPlanIds)
+		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
+		public async Task<IEnumerable<TrainingPlanIndexVM>> GetTrainingPlanIndexVM(IEnumerable<int> trainingPlanIds)
         {
             List<TrainingPlanIndexVM> trainingPlanIndexVM = new List<TrainingPlanIndexVM>();
             foreach (int id in trainingPlanIds)
@@ -46,7 +46,7 @@ namespace TrainingPlanApp.Web.Repositories
             return trainingPlanIndexVM;
 		}
 
-		// Gets TrainingPlanDetailsVM
+		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
 		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan)
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
@@ -55,7 +55,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return trainingPlanDetailsVM;
 		}
 
-		// Gets TrainingPlanManageExercisesVM
+		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
 		public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id)
 		{
 			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(id));
@@ -65,7 +65,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return trainingPlanManageExercisesVM;
 		}
 
-		// Creates new database entity in TrainingPlan table
+		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		public async Task<int> CreateTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
@@ -86,8 +86,8 @@ namespace TrainingPlanApp.Web.Repositories
             return trainingPlan.Id;
         }
 
-        // Adds Exercise to Training Plan
-        public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanManageExercisesVM trainingPlanManageExercisesVM)
+		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
+		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanManageExercisesVM trainingPlanManageExercisesVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanManageExercisesVM.NewExerciseId);
 			if (exercise == null)
@@ -117,8 +117,8 @@ namespace TrainingPlanApp.Web.Repositories
 			return trainingPlanManageExercisesVM;
 		}
 
-        // Removes Exercise from Training Plan
-        public async Task RemoveExerciseFromTrainingPlan(int id, int index)
+		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
+		public async Task RemoveExerciseFromTrainingPlan(int id, int index)
 		{
 			var trainingPlan = await GetAsync(id);
 			trainingPlan.Index.RemoveAt(index);
@@ -137,8 +137,8 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(trainingPlan);
 		}
 
-        // Changes the status of Training Plan (Active/Not Active)
-        public async Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, bool status)
+		// CHANGES THE STATUS OF THE TRAINING PLAN (ACTIVE/NOT ACTIVE).
+		public async Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, bool status)
 		{
 			var trainingPlan = await GetAsync(trainingPlanId);
 			if (status)
@@ -152,7 +152,7 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(trainingPlan);
 		}
 
-		// Copies Training Plan to another Training Plan in the module
+		// COPIES A TRAINING PLAN TO ANOTHER TRAINING PLAN WITHIN THE SAME MODULE.
 		public async Task CopyTrainingPlanToAnother(int copyFromId, int copyToId)
 		{
 			var copyFromTrainingPlan = await GetAsync(copyFromId);

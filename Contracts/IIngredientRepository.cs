@@ -3,21 +3,21 @@ using TrainingPlanApp.Web.Models.Ingredient;
 
 namespace TrainingPlanApp.Web.Contracts
 {
-    public interface IIngredientRepository : IGenericRepository<Ingredient>
-    {
-        // Creates new database entity in ingredient table
-        Task CreateIngredient(IngredientVM ingredientVM);
+	public interface IIngredientRepository : IGenericRepository<Ingredient>
+	{
+		// CREATES A NEW DATABASE ENTITY IN THE INGREDIENT TABLE.
+		Task CreateIngredient(IngredientVM ingredientVM);
 
-        // Edits Name, Proteins, Carbohydrates, Fats of ingredient
-        Task EditIngredient(IngredientVM ingredientVM);
+		// EDITS THE NAME AND MACROS OF THE SPECIFIED INGREDIENT.
+		Task EditIngredient(IngredientVM ingredientVM);
 
-        // Gets the list of all ingredients with counted calories
-        Task<List<IngredientVM>> GetIngredientVM();
+		// GETS THE LIST OF ALL INGREDIENTS WITH COUNTED CALORIES.
+		Task<List<IngredientVM>> GetIngredientVM();
 
-        // Gets the list of specific ingredients
-        Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds);
+		// GETS A LIST OF SPECIFIC INGREDIENTS BASED ON PROVIDED INGREDIENT IDs.
+		Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds);
 
-        // Counts the macros of specific ingredient
-        Task<IngredientVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity);
+		// COUNTS THE MACROS (NUTRIENTS) OF THE SPECIFIED INGREDIENT BASED ON QUANTITY.
+		Task<IngredientVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity);
 	}
 }

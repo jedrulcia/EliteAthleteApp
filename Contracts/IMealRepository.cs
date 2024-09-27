@@ -3,30 +3,30 @@ using TrainingPlanApp.Web.Models.Meal;
 
 namespace TrainingPlanApp.Web.Contracts
 {
-    public interface IMealRepository : IGenericRepository<Meal>
+	public interface IMealRepository : IGenericRepository<Meal>
 	{
-		// Creates new database entity in Meal table
+		// CREATES A NEW DATABASE ENTITY IN THE MEAL TABLE.
 		Task CreateMeal(MealCreateVM mealCreateVM);
 
-		// Edits Name, Recipe of meal
+		// EDITS THE NAME AND RECIPE OF THE SPECIFIED MEAL.
 		Task EditMeal(MealCreateVM mealCreateVM);
 
-		// Gets the Meal IndexVM - mainly counts the calories and macros of the meals
+		// GETS THE MEAL INDEX VIEW MODEL, MAINLY COUNTING CALORIES AND MACROS OF MEALS.
 		Task<List<MealIndexVM>> GetMealIndexVM();
 
-		// Gets the MealDetailsVM
+		// GETS THE MEAL DETAILS VIEW MODEL FOR THE SPECIFIED MEAL.
 		Task<MealDetailsVM> GetMealDetailsVM(Meal meal);
 
-		// Gets MealManageIngredientsVM
-        Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id);
+		// GETS MEAL MANAGE INGREDIENTS VIEW MODEL FOR THE SPECIFIED MEAL ID.
+		Task<MealManageIngredientsVM> GetMealManageIngredientsVM(int? id);
 
-		// Adds Ingredient to Meal
+		// ADDS AN INGREDIENT TO THE SPECIFIED MEAL.
 		Task<MealManageIngredientsVM> AddIngredientToMeal(MealManageIngredientsVM mealManageIngredientsVM);
 
-		// Removes Ingredient from Meal
+		// REMOVES AN INGREDIENT FROM THE SPECIFIED MEAL BASED ON MEAL ID AND INDEX.
 		Task RemoveIngredientFromMeal(int mealId, int index);
 
-        // Gets the list of specific meals
-        Task<List<MealIndexVM?>?> GetListOfMeals(List<int?>? mealIds);
-    }
+		// GETS A LIST OF SPECIFIC MEALS BASED ON PROVIDED MEAL IDs.
+		Task<List<MealIndexVM?>?> GetListOfMeals(List<int?>? mealIds);
+	}
 }

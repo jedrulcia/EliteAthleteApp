@@ -15,137 +15,128 @@ using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-    public class DietsController : Controller
-    {
-        private readonly ApplicationDbContext context;
-        private readonly IDietRepository dietRepository;
+	public class DietsController : Controller
+	{
+		private readonly ApplicationDbContext context;
+		private readonly IDietRepository dietRepository;
 		private readonly IMapper mapper;
 
-        public DietsController(ApplicationDbContext context, IDietRepository dietRepository, IMealRepository mealRepository, IMapper mapper)
-        {
-            this.context = context;
-            this.dietRepository = dietRepository;
+		public DietsController(ApplicationDbContext context, IDietRepository dietRepository, IMealRepository mealRepository, IMapper mapper)
+		{
+			this.context = context;
+			this.dietRepository = dietRepository;
 			this.mapper = mapper;
-        }
+		}
 
-        // GET: Diets
-        public async Task<IActionResult> Index()
-        {
-            var dietsVM = mapper.Map<List<DietIndexVM>>(await dietRepository.GetAllAsync());     
-            return View(dietsVM);
-        }
+		// GET: Diets
+		public async Task<IActionResult> Index()
+		{
+			var dietIndexVM = mapper.Map<List<DietIndexVM>>(await dietRepository.GetAllAsync());
+			return View(dietIndexVM);
+		}
 
-        // GET: Diets/Details
-        public async Task<IActionResult> Details(int? id)
+		// GET: Diets/Details
+		public async Task<IActionResult> Details(int? id)
 		{
 			var diet = (await dietRepository.GetAsync(id));
-			if (diet == null)
-            {
-                return NotFound();
-			}
-			var dietVM = mapper.Map<DietIndexVM>(diet);
-            return View(dietVM);
+			if (diet == null) return NotFound();
+			return View(mapper.Map<DietIndexVM>(diet));
 		}
 
 		// GET: Diets/Create
 		public IActionResult Create(string? userId)
 		{
-			var model = new DietCreateVM
+			return View(new DietCreateVM { UserId = userId });
+		}
+
+		// POST: Diets/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(DietCreateVM model)
+		{
+			try
 			{
-				UserId = userId
-			};
+				if (ModelState.IsValid)
+				{
+					await dietRepository.CreateDiet(model);
+					return RedirectToAction(nameof(Index), new { id = model.UserId });
+				}
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
+			}
 			return View(model);
 		}
 
-        // POST: Diets/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(DietCreateVM model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await dietRepository.CreateDiet(model);
-                    return RedirectToAction(nameof(Index), new { id = model.UserId });
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-            }
-            return View(model);
-        }
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
+		{
+			await dietRepository.ChangeDietStatus(id, status);
+			return RedirectToAction(nameof(Index));
+		}
 
-        [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> ChangeStatus(int id, bool status, string userId)
-        {
-            await dietRepository.ChangeDietStatus(id, status);
-            return RedirectToAction(nameof(Index));
-        }      
-        
-        // GET: Diets/ManageIngredients
-        [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> ManageMeals(int? id, bool redirectToAdmin)
-        {
-            var dietManageMealsVM = await dietRepository.GetDietManageMealsVM(id, redirectToAdmin);
-            return View(dietManageMealsVM);
-        }
+		// GET: Diets/ManageIngredients
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> ManageMeals(int? id)
+		{
+			var dietManageMealsVM = await dietRepository.GetDietManageMealsVM(id);
+			return View(dietManageMealsVM);
+		}
 
-        // POST: Diets/ManageIngredients
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> ManageMeals(DietManageMealsVM dietManageMealsVM, int index)
-        {
-            if (dietManageMealsVM.NewMealId == null)
+		// POST: Diets/ManageIngredients
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> ManageMeals(DietManageMealsVM dietManageMealsVM, int index)
+		{
+			if (dietManageMealsVM.NewMealId == null)
 			{
 				return View(await dietRepository.AddQuantityToMeal(dietManageMealsVM, index));
 			}
-            else
+			else
 			{
 				return View(await dietRepository.AddMealToDiet(dietManageMealsVM, index));
 			}
-        }
+		}
 
 
 		// GET: Diets/Edit
-		public async Task<IActionResult> Edit(int? id, bool redirectToAdmin)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var diet = await context.Diets.FindAsync(id);
-            if (diet == null)
-            {
-                return NotFound();
-            }
-            var dietCreateVM = mapper.Map<DietCreateVM>(diet);
-            dietCreateVM.RedirectToAdmin = redirectToAdmin;
-            return View(dietCreateVM);
-        }
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			var diet = await context.Diets.FindAsync(id);
+			if (diet == null)
+			{
+				return NotFound();
+			}
+			var dietCreateVM = mapper.Map<DietCreateVM>(diet);
+			return View(dietCreateVM);
+		}
 
-        // POST: Diets/Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(DietCreateVM dietCreateVM)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    await dietRepository.EditDiet(dietCreateVM);
-                    return RedirectToAction(nameof(Index));
-                    /*return RedirectToAction(nameof(Index), new { id = model.UserId });*/
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-            }
+		// POST: Diets/Edit
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(DietCreateVM dietCreateVM)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					await dietRepository.EditDiet(dietCreateVM);
+					return RedirectToAction(nameof(Index));
+					/*return RedirectToAction(nameof(Index), new { id = model.UserId });*/
+				}
+			}
+			catch (Exception ex)
+			{
+				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
+			}
 
-            return View(dietCreateVM);
+			return View(dietCreateVM);
 		}
 
 		// POST: Diets/ManageMeals/RemoveMeal
@@ -160,11 +151,11 @@ namespace TrainingPlanApp.Web.Controllers
 
 		// POST: Diets/Delete
 		[HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await dietRepository.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
-    }
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			await dietRepository.DeleteAsync(id);
+			return RedirectToAction(nameof(Index));
+		}
+	}
 }

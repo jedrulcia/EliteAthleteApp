@@ -6,9 +6,10 @@ namespace TrainingPlanApp.Web.Models.Meal
     {
         // IDs
         public int Id { get; set; }
+		public List<int?>? IngredientIds { get; set; }
 
-        //STRINGS etc.
-        [Display(Name = "Name")]
+		//STRINGS etc.
+		[Display(Name = "Name")]
         public string? Name { get; set; }
 
         // MACROS
@@ -18,7 +19,6 @@ namespace TrainingPlanApp.Web.Models.Meal
         public decimal Fats { get; set; }
 
         // LISTS
-        public List<int?>? IngredientIds { get; set; }
         public List<int>? IngredientQuantities { get; set; }
     }
 }

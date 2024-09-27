@@ -4,31 +4,30 @@ using TrainingPlanApp.Web.Models.Exercise;
 
 namespace TrainingPlanApp.Web.Contracts
 {
-    public interface IExerciseRepository : IGenericRepository<Exercise>
-    {
-        // Gets Exercise Index VM
-        Task<List<ExerciseIndexVM>> GetExerciseIndexVM();
+	public interface IExerciseRepository : IGenericRepository<Exercise>
+	{
+		// GETS EXERCISE INDEX VIEW MODEL LIST.
+		Task<List<ExerciseIndexVM>> GetExerciseIndexVM();
 
-        // Gets Exercise Details VM
-        Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id);
+		// GETS EXERCISE DETAILS VIEW MODEL FOR THE SPECIFIED EXERCISE ID.
+		Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id);
 
-        // Gets Exercise Create VM
-        Task<ExerciseCreateVM> GetExerciseCreateVM();
+		// GETS EXERCISE CREATE VIEW MODEL FOR NEW EXERCISE CREATION.
+		Task<ExerciseCreateVM> GetExerciseCreateVM();
 
-		// Creates new database entity in exercise table
+		// GETS EXERCISE CREATE VIEW MODEL FOR EDITING AN EXISTING EXERCISE.
+		Task<ExerciseCreateVM> GetExerciseEditVM(int id);
+
+		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		Task CreateExercise(ExerciseCreateVM exerciseCreateVM);
 
-        // Gets Exercise Create VM for editing
-        Task<ExerciseCreateVM> GetExerciseCreateVMForEditing(int id);
+		// EDITS THE NAME, VIDEO LINK, AND DESCRIPTION OF THE SPECIFIED EXERCISE.
+		Task EditExercise(ExerciseCreateVM exerciseCreateVM);
 
-        // Edits Name, VideoLink, Description of exercise
-        Task EditExercise(ExerciseCreateVM exerciseCreateVM);
+		// GETS A LIST OF SPECIFIC EXERCISES BASED ON PROVIDED EXERCISE IDs.
+		Task<List<ExerciseIndexVM>> GetListOfExercises(List<int?> exercisesIds);
 
-        // Gets list of specific exercises
-        Task<List<ExerciseIndexVM>> GetListOfExercises(List<int?> exercisesIds);
-
-		// Gets list of unit types
+		// GETS A LIST OF EXERCISE UNIT TYPES BASED ON PROVIDED UNIT TYPE IDs.
 		Task<List<ExerciseUnitTypeVM>> GetListOfExerciseUnitTypes(List<int?> exerciseUnitTypesIds);
-
 	}
 }

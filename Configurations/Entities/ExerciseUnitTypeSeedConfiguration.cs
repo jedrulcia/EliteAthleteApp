@@ -4,6 +4,7 @@ using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
+	// SEED CONFIGURATION FOR INITIAL EXERCISE UNIT TYPES IN THE DATABASE. 
 	public class ExerciseUnitTypeSeedConfiguration : IEntityTypeConfiguration<ExerciseUnitType>
 	{
 		public void Configure(EntityTypeBuilder<ExerciseUnitType> builder)

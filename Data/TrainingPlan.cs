@@ -5,14 +5,17 @@ namespace TrainingPlanApp.Web.Data
 {
 	public class TrainingPlan
     {
+        // IDs
         public int Id { get; set; }
         [ForeignKey("UserId")]
         public string? UserId { get; set; }
         public int? TrainingModuleId {  get; set; }
+
+        // STRINGS etc.
         public string? Name { get; set; }
         public DateTime? Date { get; set; }
-        public bool? IsCompleted { get; set; }
-        public bool IsEmpty { get; set; }
+
+        // LISTS
         public List<int?>? ExerciseIds { get; set; }
         public List<int?>? Weight {  get; set; }
         public List<int?>? Sets { get; set; }
@@ -22,5 +25,9 @@ namespace TrainingPlanApp.Web.Data
         public List<string?>? Units { get; set; }
         public List<int?>? BreakTimes { get; set; }
         public List<string?>? Notes { get; set; }
-    }
+
+        // OTHER
+		public bool? IsCompleted { get; set; }
+		public bool IsEmpty { get; set; }
+	}
 }

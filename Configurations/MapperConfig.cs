@@ -10,14 +10,14 @@ using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Configurations
 {
-    public class MapperConfig : Profile
+	public class MapperConfig : Profile
 	{
 		public MapperConfig()
 		{
-			// User module mapping
+			// USER MODULE MAPPING
 			CreateMap<User, UserVM>().ReverseMap();
 
-			// Exercise module mapping
+			// EXERCISE MODULE MAPPING
 			CreateMap<Exercise, ExerciseIndexVM>().ReverseMap();
 			CreateMap<Exercise, ExerciseDetailsVM>().ReverseMap();
 			CreateMap<Exercise, ExerciseCreateVM>().ReverseMap();
@@ -25,27 +25,27 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<ExerciseCategory, ExerciseCategoryVM>().ReverseMap();
 			CreateMap<ExerciseUnitType, ExerciseUnitTypeVM>().ReverseMap();
 
-			// Training Module module mapping
+			// TRAINING MODULE MODULE MAPPING
 			CreateMap<TrainingModule, TrainingModuleIndexVM>().ReverseMap();
 			CreateMap<TrainingModule, TrainingModuleCreateVM>().ReverseMap();
 
-			// Training Plan module mapping
+			// TRAINING PLAN MODULE MAPPING
             CreateMap<TrainingPlan, TrainingPlanIndexVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanCreateVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanManageExercisesVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanDetailsVM>().ReverseMap();
 
-			// Ingredient module mapping
-            CreateMap<Ingredient, IngredientVM>().ReverseMap();
+			// INGREDIENT MODULE MAPPING
+			CreateMap<Ingredient, IngredientVM>().ReverseMap();
 
-			// Meal module mapping
-            CreateMap<Meal, MealIndexVM>().ReverseMap();
+			// MEAL MODULE MAPPING
+			CreateMap<Meal, MealIndexVM>().ReverseMap();
 			CreateMap<Meal, MealCreateVM>().ReverseMap();
 			CreateMap<Meal, MealManageIngredientsVM>().ReverseMap();
 			CreateMap<Meal, MealDetailsVM>().ReverseMap();
 
-            // Diet module mapping
-            CreateMap<Diet, DietIndexVM>().ReverseMap();
+			// DIET MODULE MAPPING
+			CreateMap<Diet, DietIndexVM>().ReverseMap();
 			CreateMap<Diet, DietCreateVM>().ReverseMap();
 			CreateMap<Diet, DietManageMealsVM>().ReverseMap();
 		}

@@ -58,12 +58,11 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Gets DietManageMealsVM
-        public async Task<DietManageMealsVM> GetDietManageMealsVM(int? id, bool? redirectToAdmin)
+        public async Task<DietManageMealsVM> GetDietManageMealsVM(int? id)
         {
             var dietManageMealsVM = mapper.Map<DietManageMealsVM>(await GetAsync(id));
             dietManageMealsVM.AvailableMeals = new SelectList(context.Meals.OrderBy(e => e.Name), "Id", "Name");
             dietManageMealsVM.Meals = await mealRepository.GetListOfMeals(dietManageMealsVM.MealIds);
-            dietManageMealsVM.RedirectToAdmin = redirectToAdmin;
 			dietManageMealsVM = await GetMacrosOfMeals(dietManageMealsVM);
             dietManageMealsVM = await GetMacrosOfDays(dietManageMealsVM);
             return dietManageMealsVM;
@@ -83,7 +82,7 @@ namespace TrainingPlanApp.Web.Repositories
             diet.MealIds[index] = dietManageMealsVM.NewMealId;
             diet.MealQuantities[index] = 100;
             await UpdateAsync(diet);
-            return await GetDietManageMealsVM(dietManageMealsVM.Id, dietManageMealsVM.RedirectToAdmin);
+            return await GetDietManageMealsVM(dietManageMealsVM.Id);
 		}        
 
         // Adds Quantity to Meal from Diet
@@ -92,7 +91,7 @@ namespace TrainingPlanApp.Web.Repositories
 			var diet = await GetAsync(dietManageMealsVM.Id);
 			diet.MealQuantities[index] = dietManageMealsVM.NewMealQuantity;
 			await UpdateAsync(diet);
-			return await GetDietManageMealsVM(dietManageMealsVM.Id, dietManageMealsVM.RedirectToAdmin);
+			return await GetDietManageMealsVM(dietManageMealsVM.Id);
 		}
 
 		// Removes Meal from Diet

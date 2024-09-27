@@ -16,7 +16,7 @@ namespace TrainingPlanApp.Web.Models.Meal
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
 
-        // FORMS DATA
+        // FORM
         public SelectList? AvailableIngredients { get; set; }
 
         [Display(Name = "Ingredient")]

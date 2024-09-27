@@ -14,14 +14,11 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 
         // FORMS
         public SelectList? AvailableExercises { get; set; }
-
 		[Display(Name = "Exercise")]
 		public int? NewExerciseId { get; set; }
-
 		public SelectList? AvailableExerciseUnitTypes { get; set; }
         [Display(Name = "Exercise Unit")]
         public int? NewExerciseUnitTypeId { get; set; }
-
         public int? NewExerciseWeight { get; set; }
         public int? NewExerciseSets { get; set; }
         public int? NewExerciseUnitAmount { get; set; }

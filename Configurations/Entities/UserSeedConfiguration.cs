@@ -6,8 +6,9 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
     public class UserSeedConfiguration : IEntityTypeConfiguration<User>
-    {
-        public void Configure(EntityTypeBuilder<User> builder)
+	{
+		// SEED CONFIGURATION FOR INITIAL USER ACCOUNTS IN THE DATABASE, INCLUDING ADMIN AND REGULAR USER.
+		public void Configure(EntityTypeBuilder<User> builder)
         {
             var hasher = new PasswordHasher<User>();
             builder.HasData(

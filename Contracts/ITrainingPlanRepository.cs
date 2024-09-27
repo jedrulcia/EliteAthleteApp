@@ -3,31 +3,30 @@ using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Contracts
 {
-    public interface ITrainingPlanRepository : IGenericRepository<TrainingPlan>
+	public interface ITrainingPlanRepository : IGenericRepository<TrainingPlan>
 	{
-		// Gets list of specific User Training Plans
-		Task<List<TrainingPlanIndexVM>> GetTrainingPlanIndexVM(List<int> trainingPlanIds);
+		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
+		Task<IEnumerable<TrainingPlanIndexVM>> GetTrainingPlanIndexVM(IEnumerable<int> trainingPlanIds);
 
-		// Gets TrainingPlanDetailsVM
+		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
 		Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan);
 
-		// Gets TrainingPlanManageExercisesVM
+		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
 		Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id);
 
-		// Creates new database entity in TrainingPlan table
+		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		Task<int> CreateTrainingPlan(TrainingPlanCreateVM model);
 
-		// Adds Exercise to Training Plan
+		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
 		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanManageExercisesVM trainingPlanCreateVM);
 
-		// Removes Exercise from Training Plan
+		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
 		Task RemoveExerciseFromTrainingPlan(int id, int index);
 
-		// Changes the status of Training Plan (Active/Not Active)
+		// CHANGES THE STATUS OF THE TRAINING PLAN (ACTIVE/NOT ACTIVE).
 		Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, bool status);
 
-
-		// Copies Training Plan to another Training Plan in the module
+		// COPIES A TRAINING PLAN TO ANOTHER TRAINING PLAN WITHIN THE SAME MODULE.
 		Task CopyTrainingPlanToAnother(int copyFromId, int copyToId);
 	}
 }

@@ -71,7 +71,7 @@ namespace TrainingPlanApp.Web.Controllers
 
 		// GET: Meals/ManageIngredients
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ManageIngredients(int? id, bool redirectToAdmin)
+		public async Task<IActionResult> ManageIngredients(int? id)
 		{
 			var mealManageIngredientsVM = await mealRepository.GetMealManageIngredientsVM(id);
 			return View(mealManageIngredientsVM);

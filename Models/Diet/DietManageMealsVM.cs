@@ -8,12 +8,11 @@ namespace TrainingPlanApp.Web.Models.Diet
     {
         // IDs
         public int? Id { get; set; }
-
-        [Display(Name = "Athlete")]
         public string? UserId { get; set; }
+		public List<int?>? MealIds { get; set; }
 
-        // STRINGS etc.
-        [Display(Name = "Training Plan")]
+		// STRINGS etc.
+		[Display(Name = "Training Plan")]
         [Required]
         public string? Name { get; set; }
 
@@ -27,9 +26,7 @@ namespace TrainingPlanApp.Web.Models.Diet
         [Display(Name = "Status")]
         public bool? IsActive { get; set; }
 
-        public bool? RedirectToAdmin { get; set; }
-
-        // FORMS
+        // FORM
         public SelectList? AvailableMeals { get; set; }
         public int? NewMealId { get; set; }
         public int? NewMealQuantity { get; set; }
@@ -44,14 +41,15 @@ namespace TrainingPlanApp.Web.Models.Diet
         public List<decimal>? MealProteins { get; set; }
         public List<decimal>? MealCarbohydrates { get; set; }
         public List<decimal>? MealFats { get; set; }
+
         public List<int>? DayKcal { get; set; }
         public List<decimal>? DayProteins { get; set; }
         public List<decimal>? DayCarbohydrates { get; set; }
         public List<decimal>? DayFats { get; set; }
 
-        // LISTS
-        public List<int?>? MealIds { get; set; }
-        public List<MealIndexVM?>? Meals { get; set; }
+		// OTHER LISTS
+		[Display(Name = "Meal")]
+		public List<MealIndexVM?>? Meals { get; set; }
         [Display(Name = "Meal Quantity")]
         public List<int> MealQuantities { get; set; }
     }

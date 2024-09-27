@@ -7,11 +7,10 @@ namespace TrainingPlanApp.Web.Models.Diet
     {
         // IDs
         public int? Id { get; set; }
-        [Display(Name = "Athlete")]
         public string? UserId { get; set; }
 
         // STRINGS etc.
-        [Display(Name = "Diet name")]
+        [Display(Name = "Diet Name")]
         [Required]
         public string? Name { get; set; }
 
@@ -22,8 +21,5 @@ namespace TrainingPlanApp.Web.Models.Diet
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
-
-        // OTHER
-        public bool RedirectToAdmin { get; set; }
     }
 }
