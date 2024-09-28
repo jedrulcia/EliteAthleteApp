@@ -30,6 +30,8 @@ namespace TrainingPlanApp.Web.Data
         public DbSet<TrainingPlan> TrainingPlans { get; set; }
 		public DbSet<Diet> Diets { get; set; }
 		public DbSet<Ingredient> Ingredients { get; set; }
+		public DbSet<IngredientCategory> IngredientCategories { get; set; }
+		public DbSet<IngredientUnitType> IngredientUnitTypes { get; set; }
 		public DbSet<Meal> Meals { get; set; }
 		public DbSet<TrainingModule> TrainingModules { get; set; }
     }

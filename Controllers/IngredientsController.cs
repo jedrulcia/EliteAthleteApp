@@ -17,13 +17,13 @@ namespace TrainingPlanApp.Web.Controllers
     [Authorize(Roles = Roles.Administrator)]
 	public class IngredientsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
         private readonly IIngredientRepository ingredientRepository;
         private readonly IMapper mapper;
 
         public IngredientsController(ApplicationDbContext context, IIngredientRepository ingredientRepository, IMapper mapper)
         {
-            _context = context;
+            this.context = context;
             this.ingredientRepository = ingredientRepository;
             this.mapper = mapper;
         }

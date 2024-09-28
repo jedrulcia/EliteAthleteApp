@@ -6,6 +6,7 @@ namespace TrainingPlanApp.Web.Data
 	{
 		// IDs
 		public int Id { get; set; }
+		public int? IngredientCategoryId { get; set; }
 
 		// STRINGS etc.
 		public string? Name { get; set; }
