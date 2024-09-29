@@ -11,9 +11,13 @@ namespace TrainingPlanApp.Web.Data
 		// STRINGS etc.
 		public string? Name { get; set; }
 
-		// NUMBERS
+
+		// MACROS
 		public decimal? Proteins { get; set; }
 		public decimal? Carbohydrates { get; set; }
 		public decimal? Fats { get; set; }
+
+		// NUMBERS
+		public int? SuggestedPortion {  get; set; }
 	}
 }

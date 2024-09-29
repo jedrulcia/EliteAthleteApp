@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240929062859_RemovedIngredientUnitTypes")]
+    partial class RemovedIngredientUnitTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -376,48 +379,6 @@ namespace TrainingPlanApp.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("IngredientCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Meats"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Dairy"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Vegetables"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Fruits"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Grains"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Seafood"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Fats and Oils"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Nuts and Seeds"
-                        });
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.Meal", b =>
@@ -614,7 +575,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c44f30ad-4abf-4ee6-bd8b-d0f17b7423bf",
+                            ConcurrencyStamp = "921b087f-0454-4dcd-9fb2-797425766cee",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -622,9 +583,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIBRR3ubcADtdC9ItWF/Q2ztRUc9zEHglD+aaSuK5K7S0cmlCkMTLqcgxpKSEgbqCw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIqZJNpRccUaOYdg7L0YTFji9pjGL0p0vbac2N/j5UWW+ulQznYeWdNT1casZKF1FA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "234634ae-73ab-4cd4-8a8b-23df5dbc1f89",
+                            SecurityStamp = "ded2b2fe-c802-482c-9321-19d39cf74704",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -632,7 +593,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ac9fba12-d418-4c51-9204-47679e113f37",
+                            ConcurrencyStamp = "c8de5f68-5f02-42eb-a764-023cb19ee766",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -640,9 +601,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKf7LGcCTJibpItDrVvL0Fc1K0FdmiFjWcWf/Pbn65wkd1PWkpbzYkf7tFo14ltk7g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENgvpMqNenJ3ePiQ326NFn2ZMLc3aUyk2QrmwkoRcp1VROqJrppAUEh9j9mlgyTSpA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "034287df-cbff-42ba-aa8d-38b259c62f35",
+                            SecurityStamp = "51284461-d303-4a2b-a215-143aa454372b",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });
