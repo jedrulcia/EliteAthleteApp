@@ -49,7 +49,7 @@ namespace TrainingPlanApp.Web.Repositories
 				mealsVM[i].Fats = 0;
 				for (int j = 0; j < mealsVM[i].IngredientIds.Count; j++)
                 {
-                    IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealsVM[i].IngredientIds[j], mealsVM[i].IngredientQuantities[j]);
+                    IngredientIndexVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealsVM[i].IngredientIds[j], mealsVM[i].IngredientQuantities[j]);
 					mealsVM[i].Proteins += ingredientVM.Proteins;
 					mealsVM[i].Carbohydrates += ingredientVM.Carbohydrates;
 					mealsVM[i].Fats += ingredientVM.Fats;
@@ -132,7 +132,7 @@ namespace TrainingPlanApp.Web.Repositories
 			mealManageIngredientsVM = AddListsToMealManageIngredientsVM(mealManageIngredientsVM);
 			for (int i = 0; i < mealManageIngredientsVM.IngredientIds.Count; i++)
 			{
-				IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealManageIngredientsVM.IngredientIds[i], mealManageIngredientsVM.IngredientQuantities[i]);
+				IngredientIndexVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealManageIngredientsVM.IngredientIds[i], mealManageIngredientsVM.IngredientQuantities[i]);
 				mealManageIngredientsVM.IngredientProteins.Add(ingredientVM.Proteins);
 				mealManageIngredientsVM.IngredientCarbohydrates.Add(ingredientVM.Carbohydrates);
 				mealManageIngredientsVM.IngredientFats.Add(ingredientVM.Fats);
@@ -153,7 +153,7 @@ namespace TrainingPlanApp.Web.Repositories
 			mealDetailsVM.Fats = 0;
 			for (int i = 0; i < mealDetailsVM.IngredientIds.Count; i++)
 			{
-				IngredientVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealDetailsVM.IngredientIds[i], mealDetailsVM.IngredientQuantities[i]);
+				IngredientIndexVM? ingredientVM = await ingredientRepository.GetMacrosOfIngredient(mealDetailsVM.IngredientIds[i], mealDetailsVM.IngredientQuantities[i]);
 				mealDetailsVM.Proteins += ingredientVM.Proteins;
 				mealDetailsVM.Carbohydrates += ingredientVM.Carbohydrates;
 				mealDetailsVM.Fats += ingredientVM.Fats;

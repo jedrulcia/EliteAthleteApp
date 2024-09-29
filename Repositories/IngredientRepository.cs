@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models.Ingredient;
@@ -17,32 +18,33 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
 		// GETS THE LIST OF ALL INGREDIENTS WITH COUNTED CALORIES.
-		public async Task<List<IngredientVM>> GetIngredientVM()
+		public async Task<List<IngredientIndexVM>> GetIngredientVM()
 		{
-			var ingredientVM = mapper.Map<List<IngredientVM>>(await GetAllAsync());
-			for (var i = 0; i < ingredientVM.Count; i++)
+			var ingredientIndexVM = mapper.Map<List<IngredientIndexVM>>(await GetAllAsync());
+			for (var i = 0; i < ingredientIndexVM.Count; i++)
 			{
-				ingredientVM[i].Kcal = Convert.ToInt16(ingredientVM[i].Proteins * 4 + ingredientVM[i].Carbohydrates * 4 + ingredientVM[i].Fats * 9);
+				ingredientIndexVM[i].Kcal = Convert.ToInt16(ingredientIndexVM[i].Proteins * 4 + ingredientIndexVM[i].Carbohydrates * 4 + ingredientIndexVM[i].Fats * 9);
+				ingredientIndexVM[i].IngredientCategory = mapper.Map<IngredientCategoryVM>(await context.Set<IngredientCategory>().FindAsync(ingredientIndexVM[i].IngredientCategoryId));
 			}
-			return ingredientVM;
+			return ingredientIndexVM;
 		}
 
 		// GETS A LIST OF SPECIFIC INGREDIENTS BASED ON PROVIDED INGREDIENT IDs.
-		public async Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds)
+		public async Task<List<IngredientIndexVM?>?> GetListOfIngredients(List<int?>? ingredientIds)
 		{
-			List<IngredientVM> ingredients = new List<IngredientVM>();
+			List<IngredientIndexVM> ingredients = new List<IngredientIndexVM>();
 			foreach (int id in ingredientIds)
 			{
-				var ingredientVM = mapper.Map<IngredientVM>(await GetAsync(id));
+				var ingredientVM = mapper.Map<IngredientIndexVM>(await GetAsync(id));
 				ingredients.Add(ingredientVM);
 			}
 			return ingredients;
 		}
 
 		// COUNTS THE MACROS (NUTRIENTS) OF THE SPECIFIED INGREDIENT BASED ON QUANTITY.
-		public async Task<IngredientVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity)
+		public async Task<IngredientIndexVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity)
 		{
-			var ingredientVM = mapper.Map<IngredientVM>(await GetAsync(id));
+			var ingredientVM = mapper.Map<IngredientIndexVM>(await GetAsync(id));
 
 			decimal ingredientMultiplier = ingredientQuantity / (decimal)100.00;
 			ingredientVM.Proteins = Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1);
@@ -54,17 +56,18 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CREATES A NEW DATABASE ENTITY IN THE INGREDIENT TABLE.
-		public async Task CreateIngredient(IngredientVM ingredientVM)
+		public async Task CreateIngredient(IngredientCreateVM ingredientCreateVM)
 		{
-			var ingredient = mapper.Map<Ingredient>(ingredientVM);
+			var ingredient = mapper.Map<Ingredient>(ingredientCreateVM);
 			await AddAsync(ingredient);
 		}
 
 		// EDITS THE NAME AND MACROS OF THE SPECIFIED INGREDIENT.
-		public async Task EditIngredient(IngredientVM ingredientVM)
+		public async Task EditIngredient(IngredientCreateVM ingredientCreateVM)
 		{
-			var ingredient = mapper.Map<Ingredient>(ingredientVM);
+			var ingredient = mapper.Map<Ingredient>(ingredientCreateVM);
 			await UpdateAsync(ingredient);
 		}
-    }
+
+	}
 }

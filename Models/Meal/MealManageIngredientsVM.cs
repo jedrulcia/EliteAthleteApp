@@ -33,6 +33,6 @@ namespace TrainingPlanApp.Web.Models.Meal
         public List<decimal>? IngredientCarbohydrates { get; set; }
         public List<decimal>? IngredientFats { get; set; }
         public List<int?>? IngredientIds { get; set; }
-        public List<IngredientVM?>? Ingredients { get; set; }
+        public List<IngredientIndexVM?>? Ingredients { get; set; }
     }
 }

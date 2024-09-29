@@ -8,7 +8,7 @@ namespace TrainingPlanApp.Web.Models.Exercise
         public int Id { get; set; }
 
         // STRINGS etc.
-        [Display(Name="Exercise")]
+        [Display(Name="Exercise Category")]
         [Required]
         public string Name { get; set; }
     }

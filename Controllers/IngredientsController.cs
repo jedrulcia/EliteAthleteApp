@@ -31,27 +31,28 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: Ingredients
         public async Task<IActionResult> Index()
         {
-            var ingredientVM = await ingredientRepository.GetIngredientVM();
-            return View(ingredientVM);
+            return View(await ingredientRepository.GetIngredientVM());
         }
 
         // GET: Ingredients/Create
-        public IActionResult Create()
-        {
-            return View();
+        public async Task<IActionResult> Create()
+		{
+			IngredientCreateVM ingredientCreateVM = new IngredientCreateVM{ AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name")	};
+			return View(ingredientCreateVM);
         }
 
         // POST: Ingredients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IngredientVM ingredientVM)
+        public async Task<IActionResult> Create(IngredientCreateVM ingredientCreateVM)
         {
             if (ModelState.IsValid)
             {
-                await ingredientRepository.CreateIngredient(ingredientVM);
+                await ingredientRepository.CreateIngredient(ingredientCreateVM);
                 return RedirectToAction(nameof(Index));
             }
-            return View(ingredientVM);
+            ingredientCreateVM.AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name");
+			return View(ingredientCreateVM);
         }
 
         // GET: Ingredients/Edit
@@ -62,16 +63,17 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 return NotFound();
             }
-            var ingredientVM = mapper.Map<IngredientVM>(ingredient);
-            return View(ingredientVM);
+            var ingredientCreateVM = mapper.Map<IngredientCreateVM>(ingredient);
+			ingredientCreateVM.AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name");
+			return View(ingredientCreateVM);
         }
 
         // POST: Ingredients/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, IngredientVM ingredientVM)
+        public async Task<IActionResult> Edit(int id, IngredientCreateVM ingredientCreateVM)
         {
-            if (id != ingredientVM.Id)
+            if (id != ingredientCreateVM.Id)
             {
                 return NotFound();
             }
@@ -79,7 +81,7 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 try
                 {
-                    await ingredientRepository.EditIngredient(ingredientVM);
+                    await ingredientRepository.EditIngredient(ingredientCreateVM);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -93,8 +95,9 @@ namespace TrainingPlanApp.Web.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(ingredientVM);
+			}
+			ingredientCreateVM.AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name");
+			return View(ingredientCreateVM);
         }
 
         // POST: Ingredients/Delete

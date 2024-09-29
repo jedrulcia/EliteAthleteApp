@@ -25,6 +25,6 @@ namespace TrainingPlanApp.Web.Models.Meal
 
         // LISTS
         public List<int>? IngredientQuantities { get; set; }
-        public List<IngredientVM?>? Ingredients { get; set; }
+        public List<IngredientIndexVM?>? Ingredients { get; set; }
     }
 }

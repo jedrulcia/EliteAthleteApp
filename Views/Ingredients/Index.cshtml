@@ -1,7 +1,7 @@
 ﻿@using TrainingPlanApp.Web.Models.Ingredient
 @using TrainingPlanApp.Web.Constants
 
-@model IEnumerable<IngredientVM>
+@model IEnumerable<IngredientIndexVM>
 
 @{
 	ViewData["Title"] = "Index";
@@ -17,6 +17,9 @@
 		<tr>
 			<th>
 				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.IngredientCategory.Name)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Kcal)
@@ -39,6 +42,9 @@
 			<tr>
 				<td>
 					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IngredientCategory.Name)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Kcal)

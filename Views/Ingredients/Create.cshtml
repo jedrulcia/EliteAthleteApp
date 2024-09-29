@@ -1,7 +1,7 @@
 ﻿@using TrainingPlanApp.Web.Models.Ingredient
 @using TrainingPlanApp.Web.Constants
 
-@model IngredientVM
+@model IngredientCreateVM
 
 @{
     ViewData["Title"] = "Create";
@@ -21,6 +21,13 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="IngredientCategoryId" class="control-label"></label>
+                <select asp-for="IngredientCategoryId" asp-items="Model?.AvailableIngredientCategories" class="form-select">
+                    <option>Select Category</option>
+                </select>
+                <span asp-validation-for="IngredientCategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Proteins" class="control-label"></label>
                 <input asp-for="Proteins" class="form-control" />
                 <span asp-validation-for="Proteins" class="text-danger"></span>
@@ -34,6 +41,11 @@
                 <label asp-for="Fats" class="control-label"></label>
                 <input asp-for="Fats" class="form-control" />
                 <span asp-validation-for="Fats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SuggestedPortion" class="control-label"></label>
+                <input asp-for="SuggestedPortion" class="form-control" />
+                <span asp-validation-for="SuggestedPortion" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <a asp-action="Index" class="btn btn-dark">Back to List</a> &nbsp;
