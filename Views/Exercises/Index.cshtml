@@ -4,179 +4,254 @@
 @model ExerciseIndexVM
 
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
 <h1>My Exercises</h1>
 
 <p>
-	<button data-coachId="@Model.CoachId" class="btn btn-primary btn-sm createBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New</button>
+    <button data-coachId="@Model.CoachId" class="btn btn-primary btn-sm createBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New</button>
 </p>
 <table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.ExerciseVMs.First().Name)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ExerciseVMs.First().VideoLink)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ExerciseVMs.First().Description)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-
-		@foreach (var item in Model?.ExerciseVMs)
-		{
-			if (item != null) // Check if item is not null
-			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.Name)
-					</td>
-					<td>
-						<a href="@item.VideoLink" target="_blank" rel="noopener noreferrer">@item.VideoLink</a>
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.Description)
-					</td>
-					<td>
-						@Html.DisplayFor(modelItem => item.ExerciseCategory.Name)
-					</td>
-					<td class="text-end">
-						<a asp-action="Details" class="btn btn-info btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-circle-info">&nbsp;</i>Details</a>
-						<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
-						<button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-					</td>
-				</tr>
-			}
-		}
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	</tbody>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExerciseVMs.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExerciseVMs.First().VideoLink)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExerciseVMs.First().Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model?.ExerciseVMs)
+        {
+            if (item != null) // Check if item is not null
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a href="@item.VideoLink" target="_blank" rel="noopener noreferrer">@item.VideoLink</a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExerciseCategory.Name)
+                    </td>
+                    <td class="text-end">
+                        <a href="#" data-id="@item.Id" class="btn btn-secondary btn-sm editBtn"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
+                        <button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+                        <button data-id="@item.Id" class="btn btn-secondary btn-sm detailsBtn" type="button"><i class="fa-solid fa-info">&nbsp;</i>Details</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
 </table>
 
+<!-- Modal for Create Exercise -->
 <div class="modal fade" id="createExerciseModal" tabindex="-1" role="dialog" aria-labelledby="createExerciseModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="createExerciseModalLabel">Create New Exercise</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form id="createForm" asp-action="Create" method="post">
-					<input type="hidden" id="coachId" name="ExerciseCreateVM.CoachId" value="@Model.CoachId" />
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.Name" class="control-label"></label>
-						<input asp-for="ExerciseCreateVM.Name" class="form-control" />
-						<span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label>
-						<input asp-for="ExerciseCreateVM.VideoLink" class="form-control" />
-						<span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.Description" class="control-label"></label>
-						<input asp-for="ExerciseCreateVM.Description" class="form-control" />
-						<span asp-validation-for="ExerciseCreateVM.Description" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label>
-						<select asp-for="ExerciseCreateVM.ExerciseCategoryId" asp-items="@Model.ExerciseCreateVM.AvailableCategories" class="form-select">
-							<option>Select Category</option>
-						</select>
-						<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<button type="button" class="btn btn-dark" data-dismiss="modal">Close</button> &nbsp;
-						<button type="submit" class="btn btn-primary" id="submitCreateForm">Create</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createExerciseModalLabel">Create New Exercise</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createForm" asp-action="Create" method="post">
+                    <input type="hidden" id="coachId" name="ExerciseCreateVM.CoachId" value="@Model.CoachId" />
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.Name" class="control-label"></label>
+                        <input asp-for="ExerciseCreateVM.Name" class="form-control" />
+                        <span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label>
+                        <input asp-for="ExerciseCreateVM.VideoLink" class="form-control" />
+                        <span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.Description" class="control-label"></label>
+                        <input asp-for="ExerciseCreateVM.Description" class="form-control" />
+                        <span asp-validation-for="ExerciseCreateVM.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label>
+                        <select asp-for="ExerciseCreateVM.ExerciseCategoryId" asp-items="@Model.ExerciseCreateVM.AvailableCategories" class="form-select">
+                            <option>Select Category</option>
+                        </select>
+                        <span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button> &nbsp;
+                        <button type="submit" class="btn btn-primary" id="submitCreateForm">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
+<!-- Modal for Exercise Details -->
+<div class="modal fade" id="exerciseDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exerciseDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exerciseDetailsModalLabel">Exercise Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4 id="exerciseName"></h4>
+                <h5 id="exerciseCategory"></h5>
+                <hr />
+                <div>
+                    <iframe id="exerciseVideo" width="100%" height="472" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div id="exerciseDescription" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Modal for Edit Exercise -->
+<div class="modal fade" id="editExerciseModal" tabindex="-1" role="dialog" aria-labelledby="editExerciseModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editExerciseModalLabel">Edit Exercise</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" asp-action="Edit" method="post">
+                    <input type="hidden" id="editId" name="Id" />
+                    <input type="hidden" id="editCoachId" name="CoachId" />
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.Name" class="control-label"></label>
+                        <input id="editName" class="form-control" name="Name" />
+                        <span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label>
+                        <input id="editVideoLink" class="form-control" name="VideoLink" />
+                        <span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.Description" class="control-label"></label>
+                        <input id="editDescription" class="form-control" name="Description" />
+                        <span asp-validation-for="ExerciseCreateVM.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label>
+                        <select id="editExerciseCategoryId" name="ExerciseCategoryId" class="form-select">
+                            <option>Select Category</option>
+                            @foreach (var category in Model.ExerciseCreateVM.AvailableCategories)
+                            {
+                                <option value="@category.Value">@category.Text</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button> &nbsp;
+                        <button type="submit" class="btn btn-primary" id="submitEditForm">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- Modal for Exercise Delete -->
 <form id="deleteForm" asp-action="Delete">
-	<input type="hidden" id="exerciseId" name="Id" />
+    <input type="hidden" id="exerciseId" name="Id" />
 </form>
-
-
-
 
 @section Scripts
 {
-	<script>
-		$(function () {
-			$('.table').DataTable();
-			// Script to delete exercise
-			$('.deleteBtn').click(function (e) {
-				swal(
-					{
-						title: "Are you sure?",
-						text: "Are you sure you want to delete this record?",
-						icon: "warning",
-						buttons: true,
-						dangerMode: true
-					}
-				).then((confirm) => {
-					if (confirm) {
-						var btn = $(this);
-						var id = btn.data("id");
-						$('#exerciseId').val(id);
-						$('#deleteForm').submit();
-					}
-				}
-				);
-			});
-		});
-	</script>
-	<script>
-		$('#createForm').on('submit', function (e) {
-			e.preventDefault(); // Zapobiega domyślnemu przesyłaniu formularza
+    <script>
+        $(function () {
+            $('.table').DataTable();
 
-			// Pobierz dane z formularza
-			var formData = $(this).serialize();
+            // Script to delete exercise
+            $('.deleteBtn').click(function (e) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to delete this record?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#exerciseId').val(id);
+                        $('#deleteForm').submit();
+                    }
+                });
+            });
 
-			// Wyślij zapytanie AJAX
-			$.ajax({
-				url: '@Url.Action("Create", "Exercises")', // Akcja Create w kontrolerze
-				type: 'POST', // Metoda POST
-				data: formData,
-				success: function (response) {
-					if (response.success) {
-						// Jeśli utworzenie się powiodło, ukryj modal i odśwież stronę
-						$('#createExerciseModal').modal('hide');
-						location.reload(); // Przeładuj stronę, aby zobaczyć nowy rekord
-					} else {
-						// Jeśli są błędy walidacyjne, wyświetl je w modalnym formularzu
-						$('#createForm').html(response.html); // Zaktualizuj modal formularzem z błędami walidacji
-					}
-				},
-				error: function (xhr, status, error) {
-					// Obsłuż błędy serwera
-					alert("An error occurred while creating the exercise. Please try again.");
-				}
-			});
-		});
-	</script>
-	<script>
-		$(document).ready(function () {
-			// Otwieranie modala po kliknięciu przycisku "Create New"
-			$('.createBtn').click(function () {
-				$('#createExerciseModal').modal('show');
-			});
-		});
-	</script>
+            // Script to handle exercise details
+            $('.detailsBtn').click(function () {
+                var btn = $(this);
+                var name = btn.closest('tr').find('td').eq(0).text(); // Get exercise name
+                var category = btn.closest('tr').find('td').eq(3).text(); // Get exercise category
+                var videoLink = btn.closest('tr').find('td').eq(1).text(); // Get video link
+                var description = btn.closest('tr').find('td').eq(2).text(); // Get exercise description
+
+                // Set data in modal
+                $('#exerciseName').text(name);
+                $('#exerciseCategory').text(category);
+
+                // Set video link
+                var mainVideoId = videoLink.split("v=")[1];
+                var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
+                $('#exerciseVideo').attr('src', mainEmbedUrl);
+
+                // Set description
+                $('#exerciseDescription').text(description);
+
+                // Open modal
+                $('#exerciseDetailsModal').modal('show');
+            });
+
+            // Opening create modal
+            $('.createBtn').click(function () {
+                $('#createExerciseModal').modal('show');
+            });
+            $('.editBtn').click(function () {
+                var btn = $(this);
+                var id = btn.data("id"); // Get exercise id
+                var name = btn.closest('tr').find('td').eq(0).text(); // Get exercise name
+                var videoLink = btn.closest('tr').find('td').eq(1).text(); // Get video link
+                var description = btn.closest('tr').find('td').eq(2).text(); // Get exercise description
+                var categoryId = btn.closest('tr').find('td').eq(3).data("categoryId"); // Get category ID
+
+                // Set data in modal
+                $('#editId').val(id);
+                $('#editName').val(name);
+                $('#editVideoLink').val(videoLink);
+                $('#editDescription').val(description);
+                $('#editExerciseCategoryId').val(categoryId);
+
+                // Open modal
+                $('#editExerciseModal').modal('show');
+            });
+        });
+    </script>
 }
