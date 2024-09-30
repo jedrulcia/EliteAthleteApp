@@ -6,8 +6,9 @@ namespace TrainingPlanApp.Web.Models.Exercise
 	public class ExerciseCreateVM
 	{
 		// IDs
-		public int Id { get; set; }
+		public int? Id { get; set; }
 		public int? ExerciseCategoryId {  get; set; }
+		public string? CoachId { get; set; }
 
 		// STRINGS etc.
 		[Display(Name = "Exercise")]

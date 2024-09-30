@@ -6,6 +6,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
@@ -20,11 +22,13 @@ namespace TrainingPlanApp.Web.Controllers
 	{
 		private readonly IExerciseRepository exerciseRepository;
 		private readonly IMapper mapper;
+		private readonly ICompositeViewEngine viewEngine;
 
-		public ExercisesController(IExerciseRepository exerciseRepository, IMapper mapper)
+		public ExercisesController(IExerciseRepository exerciseRepository, IMapper mapper, ICompositeViewEngine viewEngine)
 		{
 			this.exerciseRepository = exerciseRepository;
 			this.mapper = mapper;
+			this.viewEngine = viewEngine;
 		}
 
 		// GET: Exercises
@@ -39,24 +43,24 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(await exerciseRepository.GetExerciseDetailsVM(id));
 		}
 
-		// GET: Exercises/Create
-		public async Task<IActionResult> Create()
-		{
-			return View(await exerciseRepository.GetExerciseCreateVM());
-		}
-
-		// POST: Exercises/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(ExerciseCreateVM exerciseCreateVM)
 		{
 			if (ModelState.IsValid)
-            {
+			{
 				await exerciseRepository.CreateExercise(exerciseCreateVM);
-                return RedirectToAction(nameof(Index));
-            }
+
+				// Zwróć sukces w formacie JSON
+				return Json(new { success = true });
+			}
+
+			// Jeśli ModelState jest niepoprawny, pobierz kategorie ponownie
 			exerciseCreateVM.AvailableCategories = (await exerciseRepository.GetExerciseCreateVM()).AvailableCategories;
-			return View(exerciseCreateVM);
+
+			// W przypadku błędów walidacyjnych, wygeneruj ponownie HTML formularza i przekaż go jako odpowiedź JSON
+			var html = await this.RenderViewAsync("PartialViewWithCreateForm", exerciseCreateVM, true); // Użyj tutaj np. PartialView do odświeżania formularza
+			return Json(new { success = false, html });
 		}
 
 		// GET: Exercises/Edit
@@ -82,13 +86,9 @@ namespace TrainingPlanApp.Web.Controllers
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!await exerciseRepository.Exists(exerciseCreateVM.Id))
+					if (exerciseCreateVM.Id == null)
 					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
+							return NotFound();
 					}
 				}
 				return RedirectToAction(nameof(Index));
@@ -104,6 +104,35 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			await exerciseRepository.DeleteAsync(id);
 			return RedirectToAction(nameof(Index));
+		}
+
+
+
+		public async Task<string> RenderViewAsync(string viewName, object model, bool partial = false)
+		{
+			if (string.IsNullOrEmpty(viewName))
+				viewName = ControllerContext.ActionDescriptor.ActionName;
+			ViewData.Model = model;
+
+			using (var writer = new StringWriter())
+			{
+				var viewResult = viewEngine.FindView(ControllerContext, viewName, !partial);
+
+				if (viewResult.View == null)
+					throw new ArgumentNullException($"{viewName} does not match any available view");
+
+				var viewContext = new ViewContext(
+					ControllerContext,
+					viewResult.View,
+					ViewData,
+					TempData,
+					writer,
+					new HtmlHelperOptions()
+				);
+
+				await viewResult.View.RenderAsync(viewContext);
+				return writer.GetStringBuilder().ToString();
+			}
 		}
 	}
 }

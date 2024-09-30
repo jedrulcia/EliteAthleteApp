@@ -7,7 +7,7 @@ namespace TrainingPlanApp.Web.Contracts
 	public interface IExerciseRepository : IGenericRepository<Exercise>
 	{
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
-		Task<List<ExerciseIndexVM>> GetExerciseIndexVM();
+		Task<ExerciseIndexVM> GetExerciseIndexVM();
 
 		// GETS EXERCISE DETAILS VIEW MODEL FOR THE SPECIFIED EXERCISE ID.
 		Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id);

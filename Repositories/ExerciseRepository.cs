@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
+using TrainingPlanApp.Web.Models;
 using TrainingPlanApp.Web.Models.Exercise;
 
 namespace TrainingPlanApp.Web.Repositories
@@ -11,18 +15,26 @@ namespace TrainingPlanApp.Web.Repositories
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
+		private readonly UserManager<User> userManager;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
-		public ExerciseRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+		public ExerciseRepository(ApplicationDbContext context, IMapper mapper, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
+			this.userManager = userManager;
+			this.httpContextAccessor = httpContextAccessor;
 		}
 
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
-		public async Task<List<ExerciseIndexVM>> GetExerciseIndexVM()
+		public async Task<ExerciseIndexVM> GetExerciseIndexVM()
 		{
-			var exercises = await GetAllAsync();
-			var exercisesIndexVM = mapper.Map<List<ExerciseIndexVM>>(exercises);
+			var coach = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var exercises = await context.Exercises
+				.Where(x => x.CoachId == coach.Id)
+				.ToListAsync();
+
+			var exerciseVMs = mapper.Map<List<ExerciseVM>>(exercises);
 
 			for (int i = 0; i < exercises.Count; i++)
 			{
@@ -30,10 +42,11 @@ namespace TrainingPlanApp.Web.Repositories
 				if (id != null)
 				{
 					var category = await context.Set<ExerciseCategory>().FindAsync(id);
-					exercisesIndexVM[i].ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
+					exerciseVMs[i].ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
 				}
 			}
-			return exercisesIndexVM;
+			var exerciseIndexVM = new ExerciseIndexVM { ExerciseVMs = exerciseVMs, CoachId = coach.Id, ExerciseCreateVM = new ExerciseCreateVM { CoachId = coach.Id, AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name") } };
+			return exerciseIndexVM;
 		}
 
 		// GETS EXERCISE DETAILS VIEW MODEL FOR THE SPECIFIED EXERCISE ID.
