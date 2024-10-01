@@ -7,8 +7,8 @@ namespace TrainingPlanApp.Web.Data
     {
         // IDs
         public int Id { get; set; }
-        [ForeignKey("UserId")]
-        public string? UserId { get; set; }
+        public string UserId { get; set; }
+        public string CoachId { get; set; }
         public int? TrainingModuleId {  get; set; }
 
         // STRINGS etc.

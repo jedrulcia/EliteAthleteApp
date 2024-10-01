@@ -22,12 +22,21 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// GETS TRAINING MODULE INDEX VIEW MODEL FOR A SPECIFIC USER.
-		public async Task<List<TrainingModuleIndexVM>> GetUserTrainingModuleIndexVM(string userId)
+		public async Task<TrainingModuleIndexVM> GetUserTrainingModuleIndexVM(string userId)
 		{
 			var trainingModules = await context.TrainingModules
 				.Where(x => x.UserId == userId)
 				.ToListAsync();
-			var trainingModuleIndexVM = mapper.Map<List<TrainingModuleIndexVM>>(trainingModules);
+			var trainingModuleVMs = mapper.Map<List<TrainingModuleVM>>(trainingModules);
+
+			var trainingModuleIndexVM = new TrainingModuleIndexVM
+			{
+				UserId = userId,
+				CoachId = trainingModuleVMs[0].CoachId,
+				TrainingModuleVMs = trainingModuleVMs,
+				TrainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId }
+            };
+
 			return trainingModuleIndexVM;
 		}
 
@@ -40,7 +49,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			await context.AddAsync(trainingModule);
 			await context.SaveChangesAsync();
-			await CreateNewDayInTrainingModule(days, trainingModuleCreateVM.UserId, trainingModule.Id);
+			await CreateNewDayInTrainingModule(days, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
 		// EDITS AN EXISTING TRAINING MODULE, ALLOWING ONLY EXTENSION OF DAYS AND NAME CHANGE.
@@ -61,7 +70,7 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingModule.StartDate = trainingModuleCreateVM.StartDate;
 			trainingModule.EndDate = trainingModuleCreateVM.EndDate;
 
-			await CreateNewDayInTrainingModule(newDays, trainingModuleCreateVM.UserId, trainingModule.Id);
+			await CreateNewDayInTrainingModule(newDays, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
 		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS.
@@ -120,7 +129,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CREATES NEW DAY IN TRAINING MODULE (TRAINING PLAN ENTITY)
-		private async Task CreateNewDayInTrainingModule(List<DateTime> days, string userId, int trainingModuleId)
+		private async Task CreateNewDayInTrainingModule(List<DateTime> days, string userId, string coachId, int trainingModuleId)
 		{
 			var trainingModule = await GetAsync(trainingModuleId);
 
@@ -131,7 +140,8 @@ namespace TrainingPlanApp.Web.Repositories
 					UserId = userId,
 					Date = day,
 					Name = ($"{day.DayOfWeek.ToString()} {day.ToString("dd MMMM", CultureInfo.InvariantCulture)}"),
-					TrainingModuleId = trainingModuleId
+					TrainingModuleId = trainingModuleId,
+					CoachId = coachId
 				};
 				int trainingPlanId = await trainingPlanRepository.CreateTrainingPlan(trainingPlanCreateVM);
 				trainingModule.TrainingPlanIds.Add(trainingPlanId);

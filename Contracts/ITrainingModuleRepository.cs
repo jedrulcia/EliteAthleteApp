@@ -6,7 +6,7 @@ namespace TrainingPlanApp.Web.Contracts
 	public interface ITrainingModuleRepository : IGenericRepository<TrainingModule>
 	{
 		// GETS TRAINING MODULE INDEX VIEW MODEL FOR A SPECIFIC USER.
-		Task<List<TrainingModuleIndexVM>> GetUserTrainingModuleIndexVM(string userId);
+		Task<TrainingModuleIndexVM> GetUserTrainingModuleIndexVM(string userId);
 
 		// CREATES A NEW TRAINING MODULE.
 		Task CreateTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM);

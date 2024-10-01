@@ -47,15 +47,7 @@ namespace TrainingPlanApp.Web.Controllers
 				userId = user.Id;
 			}
 			var trainingModuleIndexVM = await trainingModuleRepository.GetUserTrainingModuleIndexVM(userId);
-			ViewBag.UserId = userId;
-			ViewBag.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
 			return View(trainingModuleIndexVM);
-		}
-
-		// GET: TrainingModules/Create
-		public IActionResult Create(string? userId)
-		{
-			return View(new TrainingModuleCreateVM { UserId = userId });
 		}
 
 		// POST: TrainingModules/Create
@@ -76,16 +68,6 @@ namespace TrainingPlanApp.Web.Controllers
 				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
 			}
 			return View(trainingModuleCreateVM);
-		}
-
-		// GET: TrainingModules/Edit
-		public async Task<IActionResult> Edit(int? id)
-		{
-			if (id == null)
-			{
-				return NotFound();
-			}
-			return View(mapper.Map<TrainingModuleCreateVM>(await trainingModuleRepository.GetAsync(id)));
 		}
 
 		// POST: TrainingModules/Edit
