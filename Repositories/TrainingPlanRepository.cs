@@ -71,7 +71,7 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
 
 			trainingPlan.Index = new List<string?>();
-			trainingPlan.ExerciseIds = new List<int?>();
+			trainingPlan.ExerciseIds = new List<int?>(); 
 			trainingPlan.Weight = new List<int?>();
             trainingPlan.Sets = new List<int?>();
             trainingPlan.UnitAmounts = new List<int?>();
