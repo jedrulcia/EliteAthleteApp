@@ -5,59 +5,75 @@
 
 
 @{
-    ViewData["Title"] = "Index";
-    var userId = ViewBag.UserId;
+	ViewData["Title"] = "Index";
+	var errorMessage = TempData["ErrorMessage"] as string;
 }
 <h1>Training Modules</h1>
 
+
 @if (User.IsInRole(Roles.Administrator))
 {
-    <p>
+	<p>
 		<button class="btn btn-primary btn-sm createBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New</button>
-    </p>
+	</p>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
+	</div>
 }
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainingModuleVMs.First().Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainingModuleVMs.First().StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainingModuleVMs.First().EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TrainingModuleVMs.First().TrainingPlanIds)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.TrainingModuleVMs)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TrainingPlanIds.Count)
-                </td>
-                <td>
-                    <a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
-					<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().StartDate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().EndDate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().TrainingPlanIds)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.TrainingModuleVMs)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.StartDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.EndDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TrainingPlanIds.Count)
+				</td>
+				<td>
+					<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
+
+					<button data-trainingmoduleid="@item.Id"
+							data-name="@item.Name"
+							data-startdate="@item.StartDate"
+							data-enddate="@item.EndDate"
+							class="btn btn-secondary btn-sm editBtn" type="button">
+						<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
+					</button>
+
 					<button data-trainingmoduleid="@item.Id" data-name="@item.Name" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-            </td>
-        </tr>
-}
-    </tbody>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
 
 
@@ -113,8 +129,8 @@
 			<div class="modal-body">
 				<form id="editForm" asp-action="Edit" method="post">
 					<input type="hidden" id="trainingModuleId" name="TrainingModuleCreateVM.Id" />
-					<input type="hidden" id="coachId" name="TrainingModuleCreateVM.CoachId" />
-					<input type="hidden" id="userId" name="TrainingModuleCreateVM.UserId" />
+					<input type="hidden" name="TrainingModuleCreateVM.CoachId" value="@Model.CoachId" />
+					<input type="hidden" name="TrainingModuleCreateVM.UserId" value="@Model.UserId" />
 					<div class="form-group">
 						<label asp-for="TrainingModuleCreateVM.Name" class="control-label"></label>
 						<input id="name" class="form-control" name="TrainingModuleCreateVM.Name" />
@@ -122,12 +138,12 @@
 					</div>
 					<div class="form-group">
 						<label asp-for="TrainingModuleCreateVM.StartDate" class="control-label"></label>
-						<input id="description" class="form-control" name="TrainingModuleCreateVM.StartDate" />
+						<input asp-for="TrainingModuleCreateVM.StartDate" class="form-control" />
 						<span asp-validation-for="TrainingModuleCreateVM.StartDate" class="text-danger"></span>
 					</div>
 					<div class="form-group">
 						<label asp-for="TrainingModuleCreateVM.EndDate" class="control-label"></label>
-						<input id="description" class="form-control" name="TrainingModuleCreateVM.EndDate" />
+						<input asp-for="TrainingModuleCreateVM.EndDate"  class="form-control" />
 						<span asp-validation-for="TrainingModuleCreateVM.EndDate" class="text-danger"></span>
 					</div>
 					<div class="form-group">
@@ -181,28 +197,23 @@
 				$('#createTrainingModuleModal').modal('show');
 			});
 
-			// SCRIPT TO HANDLE EDITING EXERCISE
+			// SCRIPT TO HANDLE EDITING TRAINING MODULE
 			$(document).on('click', '.editBtn', function () {
 				var btn = $(this);
 				var trainingModuleId = btn.data("trainingmoduleid");
-				var coachId = btn.data("coachid");
-				var userId = btn.data("userid");
 				var name = btn.data("name");
 				var startDate = btn.data("startdate");
 				var endDate = btn.data("enddate");
 
 				$('#trainingModuleId').val(trainingModuleId);
-				$('#coachId').val(coachId);
-				$('#userId').val(userId);
 				$('#name').val(name);
 				$('#startDate').val(startDate);
 				$('#endDate').val(endDate);
 
-				console.log("Opening edit modal");
 				$('#editTrainingModuleModal').modal('show');
 			});
 
-			// SCRIPT TO HANDLE DELETING EXERCISE
+			// SCRIPT TO HANDLE DELETING TRAINING MODULE
 			$(document).on('click', '.deleteBtn', function () {
 				var btn = $(this);
 				var trainingModuleId = btn.data("trainingmoduleid");
@@ -214,10 +225,11 @@
 				$('#deleteTrainingModuleModal').modal('show');
 			});
 
-			// SCRIPT TO HANDLE DELETE CONFIRMATION
+			// SCRIPT TO HANDLE DELETING TRAINING MODULE
 			$(document).on('click', '#confirmDeleteBtn', function () {
 				$('#deleteForm').submit();
 			});
+
 		});
 	</script>
 }

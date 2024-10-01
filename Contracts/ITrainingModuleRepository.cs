@@ -16,5 +16,8 @@ namespace TrainingPlanApp.Web.Contracts
 
 		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS.
 		Task DeleteTrainingModule(int id);
+
+		// CHECKS IF NEW DATES ARE NOT NULL
+		Task<TrainingModuleCreateVM> CheckTheDates(TrainingModuleCreateVM trainingModuleCreateVM);
 	}
 }

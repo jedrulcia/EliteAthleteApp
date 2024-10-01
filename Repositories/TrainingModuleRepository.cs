@@ -148,5 +148,25 @@ namespace TrainingPlanApp.Web.Repositories
 			}
 			await UpdateAsync(trainingModule);
 		}
+
+		// ARCHIVE
+
+		
+		// CHECKS IF NEW DATES ARE NOT NULL
+		public async Task<TrainingModuleCreateVM> CheckTheDates(TrainingModuleCreateVM trainingModuleCreateVM)
+		{
+			var trainingModule = await GetAsync(trainingModuleCreateVM.Id);
+
+			if (trainingModuleCreateVM.StartDate == null)
+			{
+				trainingModuleCreateVM.StartDate = trainingModule.StartDate;
+			}
+			if (trainingModuleCreateVM.EndDate == null)
+			{
+				trainingModuleCreateVM.EndDate = trainingModule.EndDate;
+			}
+			return trainingModuleCreateVM;
+		}
+
 	}
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
@@ -55,19 +56,14 @@ namespace TrainingPlanApp.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
-			try
+			if (ModelState.IsValid)
 			{
-				if (ModelState.IsValid)
-				{
-					await trainingModuleRepository.CreateTrainingModule(trainingModuleCreateVM);
-					return RedirectToAction(nameof(Index));
-				}
+				await trainingModuleRepository.CreateTrainingModule(trainingModuleCreateVM);
+				return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 			}
-			catch (Exception ex)
-			{
-				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-			}
-			return View(trainingModuleCreateVM);
+
+			TempData["ErrorMessage"] = $"Error while creating the training module. Please try again.";
+			return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 		}
 
 		// POST: TrainingModules/Edit
@@ -75,19 +71,14 @@ namespace TrainingPlanApp.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
-			try
+			if (ModelState.IsValid)
 			{
-				if (ModelState.IsValid)
-				{
-					await trainingModuleRepository.EditTrainingModule(trainingModuleCreateVM);
-					return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
-				}
+				await trainingModuleRepository.EditTrainingModule(trainingModuleCreateVM);
+				return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 			}
-			catch (Exception ex)
-			{
-				ModelState.AddModelError(string.Empty, "An error has occurred. Please try again later");
-			}
-			return View(trainingModuleCreateVM);
+
+			TempData["ErrorMessage"] = $"Error while editing the training module. Please try again.";
+			return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 		}
 
 		// POST: TrainingModules/Delete

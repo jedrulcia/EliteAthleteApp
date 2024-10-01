@@ -25,5 +25,5 @@ namespace TrainingPlanApp.Web.Models.TrainingModule
 		[DataType(DataType.Date)]
 		[Required]
 		public DateTime EndDate { get; set; }
-    }
+	}
 }
