@@ -30,9 +30,7 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task<ExerciseIndexVM> GetExerciseIndexVM()
 		{
 			var coach = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			var exercises = await context.Exercises
-				.Where(x => x.CoachId == coach.Id)
-				.ToListAsync();
+			var exercises = await GetAllAsync();
 
 			var exerciseVMs = mapper.Map<List<ExerciseVM>>(exercises);
 
@@ -45,7 +43,17 @@ namespace TrainingPlanApp.Web.Repositories
 					exerciseVMs[i].ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
 				}
 			}
-			var exerciseIndexVM = new ExerciseIndexVM { ExerciseVMs = exerciseVMs, CoachId = coach.Id, ExerciseCreateVM = new ExerciseCreateVM { CoachId = coach.Id, AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name") } };
+
+			var exerciseIndexVM = new ExerciseIndexVM
+			{
+				ExerciseVMs = exerciseVMs,
+				CoachId = coach.Id,
+				ExerciseCreateVM = new ExerciseCreateVM
+				{
+					CoachId = coach.Id,
+					AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name")
+				}
+			};
 			return exerciseIndexVM;
 		}
 
@@ -124,6 +132,14 @@ namespace TrainingPlanApp.Web.Repositories
 				}
 			}
 			return exerciseUnitTypesVM;
+		}
+
+		public string GetErrorMessageFields(ExerciseCreateVM exerciseCreateVM)
+		{
+			string result = "";
+			if (exerciseCreateVM.Name == null) result += "Name ";
+			if (exerciseCreateVM.VideoLink == null) result += "Video ";
+			return result;
 		}
 	}
 }

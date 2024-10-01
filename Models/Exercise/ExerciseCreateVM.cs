@@ -7,6 +7,7 @@ namespace TrainingPlanApp.Web.Models.Exercise
 	{
 		// IDs
 		public int? Id { get; set; }
+		[Display(Name = "Category")]
 		public int? ExerciseCategoryId {  get; set; }
 		public string? CoachId { get; set; }
 
@@ -16,7 +17,6 @@ namespace TrainingPlanApp.Web.Models.Exercise
 		public string Name { get; set; }
 
 		[Display(Name = "Video")]
-		[Required]
 		public string? VideoLink { get; set; }
 
 		[Display(Name = "Description")]
@@ -25,5 +25,8 @@ namespace TrainingPlanApp.Web.Models.Exercise
 		// FORM
 		[Display(Name = "Categories")]
 		public SelectList? AvailableCategories { get; set; }
+
+		// OTHER 
+		public bool SetAsPublic { get; set; }
 	}
 }

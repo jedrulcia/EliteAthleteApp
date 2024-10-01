@@ -6,6 +6,7 @@ namespace TrainingPlanApp.Web.Models.Exercise
 	{
 		// IDs
 		public int Id { get; set; }
+		public string? CoachId {  get; set; }
 
 		// STRINGS etc.
 		[Display(Name = "Name")]
@@ -22,5 +23,6 @@ namespace TrainingPlanApp.Web.Models.Exercise
 		// OTHER
 		[Display(Name = "Exercise Category")]
 		public ExerciseCategoryVM? ExerciseCategory { get; set; }
+		public bool? SetAsPublic { get; set; }
 	}
 }

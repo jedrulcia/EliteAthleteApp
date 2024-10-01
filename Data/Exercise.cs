@@ -11,5 +11,8 @@
 		public string? Name { get; set; }
 		public string? VideoLink { get; set; }
         public string? Description { get; set; }
+
+		// OTHER 
+		public bool SetAsPublic { get; set; }
 	}
 }

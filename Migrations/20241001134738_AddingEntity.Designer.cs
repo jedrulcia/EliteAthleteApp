@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241001134738_AddingEntity")]
+    partial class AddingEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,9 +244,6 @@ namespace TrainingPlanApp.Web.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("SetAsPublic")
-                        .HasColumnType("bit");
 
                     b.Property<string>("VideoLink")
                         .HasColumnType("nvarchar(max)");
@@ -625,7 +625,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "71843537-0f29-4875-b36e-ae7f2373b13a",
+                            ConcurrencyStamp = "968d1d39-ffe9-438a-a313-fe868a7fd78c",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -633,9 +633,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEi7OKNcJv1elOc3+ZqEAgriWW6lZzc24D4sGm0Xg3/CA0Va5AI/p36uXiqtai3YFw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHoSZm//WQdVrKKliTP0/LXgSrjDnm5Y3cQ/qHGWwvdcAo7QzOveKc2HJzqXeAt/nA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1ade28ca-c08e-4cce-a580-e9b964373105",
+                            SecurityStamp = "2652afd8-21e6-4009-9223-fa204436f10a",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -643,7 +643,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0ecda7ea-fd38-441b-b922-f00b288a86f8",
+                            ConcurrencyStamp = "ff8ce08f-eca8-4241-873d-c733f829a657",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -651,9 +651,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG/KOntuIz0X17cAWdmxVDGRj/PHvevGvAtzYEATnhlLOlSl2NAzsqvESuuNK6mHoA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIdsMmrGtwwCl9AWt/yysWRynU4P+suiDvMbjdWm5OLxCPEgMXdAkrOfcCfJ/UliTA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d7285dcb-6322-43a4-8c0d-72c5b7a598ff",
+                            SecurityStamp = "8f77cbac-0391-4d1e-8ea5-4f80305981a4",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });

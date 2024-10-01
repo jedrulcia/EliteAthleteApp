@@ -29,5 +29,8 @@ namespace TrainingPlanApp.Web.Contracts
 
 		// GETS A LIST OF EXERCISE UNIT TYPES BASED ON PROVIDED UNIT TYPE IDs.
 		Task<List<ExerciseUnitTypeVM>> GetListOfExerciseUnitTypes(List<int?> exerciseUnitTypesIds);
+
+		// GETS A LIST OF FIELDS IMPROPERLY FILLED WHILE CREATING OR EDITING THE EXERCISE
+		string GetErrorMessageFields(ExerciseCreateVM exerciseCreateVM);
 	}
 }

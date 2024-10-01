@@ -15,7 +15,8 @@ namespace TrainingPlanApp.Web.Configurations.Entities
 				new ExerciseCategory { Id = 3, Name = "Mobility" },
 				new ExerciseCategory { Id = 4, Name = "Stretching" },
 				new ExerciseCategory { Id = 5, Name = "Plyometrics" },
-				new ExerciseCategory { Id = 6, Name = "Dynamics" }
+				new ExerciseCategory { Id = 6, Name = "Dynamics" },
+				new ExerciseCategory { Id = 7, Name = " " }
 				);
 		}
 	}
