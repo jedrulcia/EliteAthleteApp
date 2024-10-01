@@ -57,38 +57,6 @@ namespace TrainingPlanApp.Web.Repositories
 			return exerciseIndexVM;
 		}
 
-		// GETS EXERCISE DETAILS VIEW MODEL FOR THE SPECIFIED EXERCISE ID.
-		public async Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id)
-		{
-			var exercise = await GetAsync(id);
-			var exerciseDetailsVM = mapper.Map<ExerciseDetailsVM>(exercise);
-
-			if (exercise.ExerciseCategoryId != null)
-			{
-				var category = await context.Set<ExerciseCategory>().FindAsync(exercise.ExerciseCategoryId);
-				exerciseDetailsVM.ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
-			}
-			return exerciseDetailsVM;
-		}
-
-		// GETS EXERCISE CREATE VIEW MODEL FOR NEW EXERCISE CREATION.
-		public async Task<ExerciseCreateVM> GetExerciseCreateVM()
-		{
-			var exerciseCreateVM = new ExerciseCreateVM
-			{
-				AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name")
-			};
-			return exerciseCreateVM;
-		}
-
-		// GETS EXERCISE CREATE VIEW MODEL FOR EDITING AN EXISTING EXERCISE.
-		public async Task<ExerciseCreateVM> GetExerciseEditVM(int id)
-		{
-			var exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
-			exerciseCreateVM.AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name");
-			return exerciseCreateVM;
-		}
-
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		public async Task CreateExercise(ExerciseCreateVM exerciseCreateVM)
 		{
@@ -134,12 +102,33 @@ namespace TrainingPlanApp.Web.Repositories
 			return exerciseUnitTypesVM;
 		}
 
+
+		// ARCHIVE
+
 		public string GetErrorMessageFields(ExerciseCreateVM exerciseCreateVM)
 		{
 			string result = "";
 			if (exerciseCreateVM.Name == null) result += "Name ";
 			if (exerciseCreateVM.VideoLink == null) result += "Video ";
 			return result;
+		}
+
+		// GETS EXERCISE CREATE VIEW MODEL FOR NEW EXERCISE CREATION.
+		public async Task<ExerciseCreateVM> GetExerciseCreateVM()
+		{
+			var exerciseCreateVM = new ExerciseCreateVM
+			{
+				AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name")
+			};
+			return exerciseCreateVM;
+		}
+
+		// GETS EXERCISE CREATE VIEW MODEL FOR EDITING AN EXISTING EXERCISE.
+		public async Task<ExerciseCreateVM> GetExerciseEditVM(int id)
+		{
+			var exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
+			exerciseCreateVM.AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name");
+			return exerciseCreateVM;
 		}
 	}
 }

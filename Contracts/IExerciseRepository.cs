@@ -9,9 +9,6 @@ namespace TrainingPlanApp.Web.Contracts
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
 		Task<ExerciseIndexVM> GetExerciseIndexVM();
 
-		// GETS EXERCISE DETAILS VIEW MODEL FOR THE SPECIFIED EXERCISE ID.
-		Task<ExerciseDetailsVM> GetExerciseDetailsVM(int id);
-
 		// GETS EXERCISE CREATE VIEW MODEL FOR NEW EXERCISE CREATION.
 		Task<ExerciseCreateVM> GetExerciseCreateVM();
 
