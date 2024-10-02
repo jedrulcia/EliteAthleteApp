@@ -35,7 +35,7 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
-		public async Task<IEnumerable<TrainingPlanIndexVM>> GetTrainingPlanIndexVM(IEnumerable<int> trainingPlanIds)
+		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVM(List<int> trainingPlanIds)
         {
             List<TrainingPlanIndexVM> trainingPlanIndexVM = new List<TrainingPlanIndexVM>();
             foreach (int id in trainingPlanIds)

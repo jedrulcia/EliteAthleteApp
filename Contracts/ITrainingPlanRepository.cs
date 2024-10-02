@@ -6,7 +6,7 @@ namespace TrainingPlanApp.Web.Contracts
 	public interface ITrainingPlanRepository : IGenericRepository<TrainingPlan>
 	{
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
-		Task<IEnumerable<TrainingPlanIndexVM>> GetTrainingPlanIndexVM(IEnumerable<int> trainingPlanIds);
+		Task<TrainingPlanIndexVM> GetTrainingPlanIndexVM(List<int> trainingPlanIds);
 
 		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
 		Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan);

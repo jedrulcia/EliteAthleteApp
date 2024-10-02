@@ -1,7 +1,7 @@
 ﻿@using TrainingPlanApp.Web.Models.TrainingPlan
 @using TrainingPlanApp.Web.Constants
 
-@model IEnumerable<TrainingPlanIndexVM>?
+@model TrainingPlanIndexVM
 
 @{
 	ViewData["Title"] = "Index";
@@ -14,16 +14,16 @@
 		<thead>
 			<tr>
 				<th>
-					@Html.DisplayNameFor(model => model.Date)
+					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.Name)
+					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
 				</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var item in Model)
+			@foreach (var item in Model.TrainingPlanVMs)
 			{
 				if (!item.IsEmpty)
 				{
@@ -74,16 +74,16 @@
 		<thead>
 			<tr>
 				<th>
-					@Html.DisplayNameFor(model => model.Date)
+					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.Name)
+					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
 				</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var item in Model)
+			@foreach (var item in Model.TrainingPlanVMs)
 			{
 				<tr>
 					<td>
@@ -139,7 +139,7 @@
 				var dropdown = `<select id="copyToSelect" class="form-control">`;
 
 				// Sort the list by date and generate options with different background colors based on item.IsEmpty
-		@foreach (var item in Model.OrderBy(m => m.Date))
+		@foreach (var item in Model.TrainingPlanVMs.OrderBy(m => m.Date))
 		{
 			// Set background color to gray if IsEmpty, red otherwise, and make text color white
 			var backgroundColor = item.IsEmpty ? "background-color: gray;" : "background-color: red;";
