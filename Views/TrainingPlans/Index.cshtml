@@ -34,13 +34,15 @@
 						<td>
 							@if (item.IsCompleted == true)
 							{
-							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i></a>
+								<a asp-action="Details" asp-route-id="@item.Id">
+									<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+								</a>
 							}
 							else
 							{
-							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i></a>
+								<a asp-action="Details" asp-route-id="@item.Id">
+									<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+								</a>
 							}
 						</td>
 						<td class="text-end">
@@ -93,24 +95,30 @@
 						@if (item.IsEmpty)
 						{
 							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i></a>
+								<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>
+							</a>
 						}
 						else if (item.IsCompleted == true)
 						{
 							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i></a>
+								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+							</a>
 						}
 						else
 						{
 							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i></a>
+								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+							</a>
 						}
 					</td>
 					<td>
 						<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId">
 							<i class="text-end btn btn-secondary btn-sm"> Exercises</i>
 						</a>
-						<button data-copyFromId="@item.Id" data-copyToId="" data-trainingModuleId="@item.TrainingModuleId" class="btn btn-danger btn-sm copyBtn" type="button"><i>Copy</i></button>
+						<button data-copyfromid="@item.Id"
+								class="btn btn-secondary btn-sm copyBtn">
+							<i class="fa-solid fa-copy">&nbsp;</i>Copy
+						</button>
 					</td>
 				</tr>
 			}
@@ -119,69 +127,61 @@
 
 }
 
-<form id="copyForm" asp-action="CopyTrainingPlan">
-	<input type="hidden" id="copyFromId" name="copyFromId" />
-	<input type="hidden" id="copyToId" name="copyToId" />
-	<input type="hidden" id="trainingModuleId" name="trainingModuleId" />
-</form>
+<!-- MODAL FOR COPY TRAINING PLAN -->
+<div class="modal fade" id="copyTrainingPlanModal" tabindex="-1" role="dialog" aria-labelledby="copyTrainingPlanModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="copyTrainingPlanModalLabel">Copy Training Plan</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="copyForm" asp-action="CopyTrainingPlan" method="post">
+					<input type="hidden" name="copyFromId" id="copyFromId" />
+					<input type="hidden" name="trainingModuleId" value="@Model.TrainingModuleId" />
+					<div class="form-group">
+						<label for="copyToSelect">Select Plan to Copy to</label>
+						<select id="copyToSelect" name="copyToId" class="form-control">
+							@foreach (var item in Model.TrainingPlanVMs.OrderBy(m => m.Date))
+							{
+								var backgroundColor = item.IsEmpty ? "background-color: gray;" : "background-color: red;";
+								var textColor = "color: white;";
+								<option value="@item.Id" style="@backgroundColor @textColor">@item.Name</option>
+							}
+						</select>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary">Copy</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 
 @section Scripts
 {
 	<script>
 		$(function () {
-			$('.copyBtn').click(function (e) {
-				// Get the triggering element and the data from the item being copied
+			// DATATABLE INITIALIZE
+			$('.table').DataTable();
+
+			// SCRIPT TO HANDLE COPYING TRAINING PLANS
+			$(document).on('click', '.copyBtn', function () {
 				var btn = $(this);
 				var copyFromId = btn.data("copyfromid");
-				var trainingModuleId = btn.data("trainingmoduleid");
 
-				// Create dropdown on the server side
-				var dropdown = `<select id="copyToSelect" class="form-control">`;
+				$('#copyFromId').val(copyFromId);
 
-				// Sort the list by date and generate options with different background colors based on item.IsEmpty
-		@foreach (var item in Model.TrainingPlanVMs.OrderBy(m => m.Date))
-		{
-			// Set background color to gray if IsEmpty, red otherwise, and make text color white
-			var backgroundColor = item.IsEmpty ? "background-color: gray;" : "background-color: red;";
-			var textColor = "color: white;";
+				$('#copyTrainingPlanModal').modal('show');
+			});
 
-			<text>
-						dropdown += `<option value="@item.Id" style="@backgroundColor @textColor">@item.Name</option>`;
-			</text>
-		}
-					dropdown += `</select>`;
 
-				// Display a modal with dynamically generated dropdown
-				swal({
-					title: "Select a plan to copy to",
-					content: {
-						element: "div",
-						attributes: {
-							innerHTML: dropdown
-						}
-					},
-					buttons: true,
-					dangerMode: true
-				}).then((confirm) => {
-					if (confirm) {
-						// Get the selected value from the dropdown
-						var copyToId = $('#copyToSelect').val();
-
-						// Set values in hidden form fields
-						$('#copyFromId').val(copyFromId);
-						$('#copyToId').val(copyToId);
-						$('#trainingModuleId').val(trainingModuleId);
-
-						// Highlight selected option
-						$('#copyToSelect option:selected').css({
-							'background-color': $('#copyToSelect option:selected').css('background-color'),
-							'color': 'white'
-						});
-
-						// Submit the form
-						$('#copyForm').submit();
-					}
-				});
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
 			});
 		});
 	</script>

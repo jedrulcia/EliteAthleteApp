@@ -10,6 +10,7 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 
 		[Display(Name = "Athlete")]
 		public string? UserId { get; set; }
+		public string? CoachId {  get; set; }
 
 		// STRINGS etc.
 		[Display(Name = "Training Plan")]

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Identity.Client;
+using OpenQA.Selenium.DevTools.V125.Page;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models.Exercise;
@@ -37,12 +38,22 @@ namespace TrainingPlanApp.Web.Repositories
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
 		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVM(List<int> trainingPlanIds)
         {
-            List<TrainingPlanIndexVM> trainingPlanIndexVM = new List<TrainingPlanIndexVM>();
+            List<TrainingPlanVM> trainingPlanVMs = new List<TrainingPlanVM>();
+
+
             foreach (int id in trainingPlanIds)
             {
-                var trainingPlanVM = mapper.Map<TrainingPlanIndexVM>(await GetAsync(id));
-                trainingPlanIndexVM.Add(trainingPlanVM);
+                var trainingPlanVM = mapper.Map<TrainingPlanVM>(await GetAsync(id));
+                trainingPlanVMs.Add(trainingPlanVM);
             }
+
+			var trainingPlanIndexVM = new TrainingPlanIndexVM
+			{
+				UserId = trainingPlanVMs[0].UserId,
+				CoachId = trainingPlanVMs[0].CoachId,
+				TrainingModuleId = trainingPlanVMs[0].TrainingModuleId,
+				TrainingPlanVMs = trainingPlanVMs
+			};
             return trainingPlanIndexVM;
 		}
 

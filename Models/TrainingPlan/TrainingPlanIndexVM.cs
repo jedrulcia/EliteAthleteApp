@@ -12,6 +12,5 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
         public string? CoachId { get; set; }
         public int? TrainingModuleId { get; set; }
         public List<TrainingPlanVM> TrainingPlanVMs { get; set; }
-        public TrainingPlanDetailsVM TrainingPlanDetailsVM { get; set; }
     }
 }
