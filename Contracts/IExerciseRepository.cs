@@ -22,10 +22,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task EditExercise(ExerciseCreateVM exerciseCreateVM);
 
 		// GETS A LIST OF SPECIFIC EXERCISES BASED ON PROVIDED EXERCISE IDs.
-		Task<List<ExerciseIndexVM>> GetListOfExercises(List<int?> exercisesIds);
-
-		// GETS A LIST OF EXERCISE UNIT TYPES BASED ON PROVIDED UNIT TYPE IDs.
-		Task<List<ExerciseUnitTypeVM>> GetListOfExerciseUnitTypes(List<int?> exerciseUnitTypesIds);
+		Task<List<ExerciseVM>> GetListOfExercises(List<int?> exercisesIds);
 
 		// GETS A LIST OF FIELDS IMPROPERLY FILLED WHILE CREATING OR EDITING THE EXERCISE
 		string GetErrorMessageFields(ExerciseCreateVM exerciseCreateVM);

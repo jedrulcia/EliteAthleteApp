@@ -11,33 +11,31 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
         public int? Id { get; set; }
 		public int? TrainingModuleId { get; set; }
 		public string? UserId { get; set; }
+		public string? CoachId { get; set; }
 
-        // FORMS
-        public SelectList? AvailableExercises { get; set; }
+		// FORMS
+		public string? NewExerciseIndex { get; set; }
+		public SelectList? AvailableExercises { get; set; }
 		[Display(Name = "Exercise")]
 		public int? NewExerciseId { get; set; }
-		public SelectList? AvailableExerciseUnitTypes { get; set; }
-        [Display(Name = "Exercise Unit")]
-        public int? NewExerciseUnitTypeId { get; set; }
-        public int? NewExerciseWeight { get; set; }
-        public int? NewExerciseSets { get; set; }
-        public int? NewExerciseUnitAmount { get; set; }
-        public string? NewExerciseIndex { get; set; }
-        public string? NewExerciseUnit { get; set; }
-        public int? NewExerciseBreakTime {  get; set; }
+		public float? NewExerciseWeight { get; set; }
+		public int? NewExerciseSets { get; set; }
+		public string? NewExerciseRestTime {  get; set; }
         public string? NewExerciseNote { get; set; }
+		public string? NewExerciseRepeats { get; set; }
+		public string? NewExerciseUnitType { get; set; }
 
-        // LISTS
-        public List<ExerciseIndexVM?>? Exercises { get; set; }
-        public List<ExerciseUnitType?>? ExerciseUnitTypes { get; set; }
-		public List<string?>? Index { get; set; }
+		// LISTS
+		public List<string?>? Indices { get; set; }
+		public List<ExerciseVM?>? Exercises { get; set; }
 		public List<int?>? ExerciseIds { get; set; }
-		public List<int?>? Weight { get; set; }
+		// indices are used to get the order of exercises
+		public List<float?>? Weights { get; set; }
         public List<int?>? Sets { get; set; }
-		public List<int?>? UnitAmounts { get; set; }
-		public List<string?>? Units { get; set; }
-		public List<int?>? ExerciseUnitTypeIds { get; set; }
-		public List<int?>? BreakTimes { get; set; }
+		public List<string?>? RestTimes { get; set; }
 		public List<string?>? Notes { get; set; }
+		// repeats can be (example): 10reps/30sec/5km, unit types can be (example): reps/time/distance - these two fields are related
+		public List<string?>? Repeats { get; set; }
+		public List<string?>? UnitTypes { get; set; }
 	}
 }

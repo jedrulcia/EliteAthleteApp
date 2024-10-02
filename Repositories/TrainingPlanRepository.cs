@@ -62,7 +62,6 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
 			trainingPlanDetailsVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
-			trainingPlanDetailsVM.ExerciseUnitTypes = await exerciseRepository.GetListOfExerciseUnitTypes(trainingPlanDetailsVM.ExerciseUnitTypeIds);
 			return trainingPlanDetailsVM;
 		}
 
@@ -71,7 +70,6 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(id));
 			trainingPlanManageExercisesVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
-			trainingPlanManageExercisesVM.AvailableExerciseUnitTypes = new SelectList(context.ExerciseUnitTypes.OrderBy(e => e.Name), "Id", "Name");
 			trainingPlanManageExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanManageExercisesVM.ExerciseIds);
 			return trainingPlanManageExercisesVM;
 		}
@@ -81,15 +79,14 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
 
-			trainingPlan.Index = new List<string?>();
-			trainingPlan.ExerciseIds = new List<int?>(); 
-			trainingPlan.Weight = new List<int?>();
+			trainingPlan.ExerciseIds = new List<int?>();
+			trainingPlan.Indices = new List<string?>();
+			trainingPlan.Weights = new List<float?>();
             trainingPlan.Sets = new List<int?>();
-            trainingPlan.UnitAmounts = new List<int?>();
-			trainingPlan.Units = new List<string?>();
-			trainingPlan.ExerciseUnitTypeIds = new List<int?>();
-            trainingPlan.BreakTimes = new List<int?>();
-            trainingPlan.Notes = new List<string?>();
+			trainingPlan.RestTimes = new List<string?>();
+			trainingPlan.Notes = new List<string?>();
+			trainingPlan.Repeats = new List<string?>();
+			trainingPlan.UnitTypes = new List<string?>();
 			trainingPlan.IsCompleted = false;
 			trainingPlan.IsEmpty = true;
 			await context.AddAsync(trainingPlan);
@@ -104,26 +101,23 @@ namespace TrainingPlanApp.Web.Repositories
 			if (exercise == null)
 			{
 				trainingPlanManageExercisesVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
-				trainingPlanManageExercisesVM.AvailableExerciseUnitTypes = new SelectList(context.ExerciseUnitTypes.OrderBy(e => e.Name), "Id", "Name");
 				return trainingPlanManageExercisesVM;
 			}
 
 			var trainingPlan = await GetAsync(trainingPlanManageExercisesVM.Id);
-			trainingPlan.Index.Add(trainingPlanManageExercisesVM.NewExerciseIndex);
+			trainingPlan.Indices.Add(trainingPlanManageExercisesVM.NewExerciseIndex);
 			trainingPlan.ExerciseIds.Add(trainingPlanManageExercisesVM.NewExerciseId);
-			trainingPlan.Weight.Add(trainingPlanManageExercisesVM.NewExerciseWeight);
+			trainingPlan.Weights.Add(trainingPlanManageExercisesVM.NewExerciseWeight);
 			trainingPlan.Sets.Add(trainingPlanManageExercisesVM.NewExerciseSets);
-			trainingPlan.UnitAmounts.Add(trainingPlanManageExercisesVM.NewExerciseUnitAmount);
-			trainingPlan.Units.Add(trainingPlanManageExercisesVM.NewExerciseUnit);
-			trainingPlan.ExerciseUnitTypeIds.Add(trainingPlanManageExercisesVM.NewExerciseUnitTypeId);
-			trainingPlan.BreakTimes.Add(trainingPlanManageExercisesVM.NewExerciseBreakTime);
+			trainingPlan.RestTimes.Add(trainingPlanManageExercisesVM.NewExerciseRestTime);
 			trainingPlan.Notes.Add(trainingPlanManageExercisesVM.NewExerciseNote);
+			trainingPlan.Repeats.Add(trainingPlanManageExercisesVM.NewExerciseRepeats);
+			trainingPlan.UnitTypes.Add(trainingPlanManageExercisesVM.NewExerciseUnitType);
 			trainingPlan.IsEmpty = false;
 			await UpdateAsync(trainingPlan);
 
 			trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(trainingPlanManageExercisesVM.Id));
 			trainingPlanManageExercisesVM.AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name");
-			trainingPlanManageExercisesVM.AvailableExerciseUnitTypes = new SelectList(context.ExerciseUnitTypes.OrderBy(e => e.Name), "Id", "Name");
 			trainingPlanManageExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanManageExercisesVM.ExerciseIds);
 			return trainingPlanManageExercisesVM;
 		}
@@ -132,15 +126,14 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task RemoveExerciseFromTrainingPlan(int id, int index)
 		{
 			var trainingPlan = await GetAsync(id);
-			trainingPlan.Index.RemoveAt(index);
 			trainingPlan.ExerciseIds.RemoveAt(index);
-			trainingPlan.Weight.RemoveAt(index);
+			trainingPlan.Indices.RemoveAt(index);
+			trainingPlan.Weights.RemoveAt(index);
 			trainingPlan.Sets.RemoveAt(index);
-			trainingPlan.UnitAmounts.RemoveAt(index);
-			trainingPlan.Units.RemoveAt(index);
-			trainingPlan.ExerciseUnitTypeIds.RemoveAt(index);
-			trainingPlan.BreakTimes.RemoveAt(index);
+			trainingPlan.RestTimes.RemoveAt(index);
 			trainingPlan.Notes.RemoveAt(index);
+			trainingPlan.Repeats.RemoveAt(index);
+			trainingPlan.UnitTypes.RemoveAt(index);
 			if (trainingPlan.ExerciseIds.Count == 0)
             {
                 trainingPlan.IsEmpty = true;
@@ -171,14 +164,13 @@ namespace TrainingPlanApp.Web.Repositories
 
 			copyToTrainingPlan.IsEmpty = copyFromTrainingPlan.IsEmpty;
 			copyToTrainingPlan.ExerciseIds = copyFromTrainingPlan.ExerciseIds;
-			copyToTrainingPlan.Weight = copyFromTrainingPlan.Weight;
+			copyToTrainingPlan.Indices = copyFromTrainingPlan.Indices;
+			copyToTrainingPlan.Weights = copyFromTrainingPlan.Weights;
 			copyToTrainingPlan.Sets = copyFromTrainingPlan.Sets;
-			copyToTrainingPlan.Index = copyFromTrainingPlan.Index;
-			copyToTrainingPlan.ExerciseUnitTypeIds = copyFromTrainingPlan.ExerciseUnitTypeIds;
-			copyToTrainingPlan.UnitAmounts = copyFromTrainingPlan.UnitAmounts;
-			copyToTrainingPlan.Units = copyFromTrainingPlan.Units;
-			copyToTrainingPlan.BreakTimes = copyFromTrainingPlan.BreakTimes;
+			copyToTrainingPlan.RestTimes = copyFromTrainingPlan.RestTimes;
 			copyToTrainingPlan.Notes = copyFromTrainingPlan.Notes;
+			copyToTrainingPlan.Repeats = copyFromTrainingPlan.Repeats;
+			copyToTrainingPlan.UnitTypes = copyFromTrainingPlan.UnitTypes;
 			await UpdateAsync(copyToTrainingPlan);
 		}
 

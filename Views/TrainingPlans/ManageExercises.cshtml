@@ -9,7 +9,75 @@
 
 <h1>Manage Exercises</h1>
 
-<div class="row">
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Indices)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Exercises)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Weights)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Sets)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.RestTimes)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Notes)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Repeats)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.UnitTypes)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@for (int i = 0; i < Model.Exercises.Count; i++)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Indices[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Exercises[i].Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Weights[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Sets[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.RestTimes[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Notes[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Repeats[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.UnitTypes[i])
+				</td>
+				<td class="text-end">
+					<button data-id="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+
+
+@* <div class="row">
 	<div class="col-md-12">
 		<form asp-action="ManageExercises">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -68,51 +136,7 @@
 			</div>
 		</form>
 	</div>
-</div>
-
-
-
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Index)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Exercises)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Sets)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Weight)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@for (int i = 0; i < Model.Exercises.Count; i++)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => Model.Index[i])
-				</td>@* 
-				<td>
-					@Html.DisplayFor(modelItem => Model.Exercises[i].Name)
-				</td> *@
-				<td>
-					@Html.DisplayFor(modelItem => Model.Sets[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.Weight[i])
-				</td>
-				<td class="text-end">
-					<button data-id="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+</div> *@
 
 <form id="deleteForm" asp-action="RemoveExercise">
 	<input type="hidden" id="id" name="id" />

@@ -72,36 +72,16 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// GETS A LIST OF SPECIFIC EXERCISES BASED ON PROVIDED EXERCISE IDs.
-		public async Task<List<ExerciseIndexVM>> GetListOfExercises(List<int?> exercisesIds)
+		public async Task<List<ExerciseVM>> GetListOfExercises(List<int?> exercisesIds)
 		{
-			List<ExerciseIndexVM> exercises = new List<ExerciseIndexVM>();
+			List<ExerciseVM> exercises = new List<ExerciseVM>();
 			foreach (int id in exercisesIds)
 			{
-				var exerciseVM = mapper.Map<ExerciseIndexVM>(await GetAsync(id));
+				var exerciseVM = mapper.Map<ExerciseVM>(await GetAsync(id));
 				exercises.Add(exerciseVM);
 			}
 			return exercises;
 		}
-
-		// GETS A LIST OF EXERCISE UNIT TYPES BASED ON PROVIDED UNIT TYPE IDs.
-		public async Task<List<ExerciseUnitTypeVM>> GetListOfExerciseUnitTypes(List<int?> exerciseUnitTypesIds)
-		{
-			List<ExerciseUnitTypeVM> exerciseUnitTypesVM = new List<ExerciseUnitTypeVM>();
-			foreach (int? id in exerciseUnitTypesIds)
-			{
-				if (id != null)
-				{
-					var exerciseUnitTypeVM = mapper.Map<ExerciseUnitTypeVM>(await context.Set<ExerciseUnitType>().FindAsync(id));
-					exerciseUnitTypesVM.Add(exerciseUnitTypeVM);
-				}
-				else
-				{
-					exerciseUnitTypesVM.Add(null);
-				}
-			}
-			return exerciseUnitTypesVM;
-		}
-
 
 		// ARCHIVE
 
