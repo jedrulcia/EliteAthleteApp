@@ -25,16 +25,15 @@
 				@Html.DisplayNameFor(model => model.Sets)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.RestTimes)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Notes)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Repeats)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.UnitTypes)
+				@Html.DisplayNameFor(model => model.RestTimes)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Notes)
 			</th>
 			<th></th>
 		</tr>
@@ -56,19 +55,19 @@
 					@Html.DisplayFor(modelItem => Model.Sets[i])
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => Model.RestTimes[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.Notes[i])
+					@Html.DisplayFor(modelItem => Model.UnitTypes[i]):
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => Model.Repeats[i])
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => Model.UnitTypes[i])
+					@Html.DisplayFor(modelItem => Model.RestTimes[i])
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => Model.Notes[i])
 				</td>
 				<td class="text-end">
-					<button data-id="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+					<button data-trainingplanid="@Model.Id" data-index="@i" data-name="@Model.Exercises[i].Name" class="btn btn-danger btn-sm removeBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Remove</button>
 				</td>
 			</tr>
 		}
@@ -138,36 +137,61 @@
 	</div>
 </div> *@
 
-<form id="deleteForm" asp-action="RemoveExercise">
-	<input type="hidden" id="id" name="id" />
-	<input type="hidden" id="index" name="index" />
-</form>
+
+<!-- MODAL FOR EXERCISE REMOVE -->
+<div class="modal fade" id="removeExerciseModal" tabindex="-1" role="dialog" aria-labelledby="removeExerciseModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="removeExerciseModalLabel">Remove Training Module</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="removeForm" asp-action="RemoveExercise">
+					<input type="hidden" name="id" id="trainingPlanId"  />
+					<input type="hidden" name="index" id="index" />
+					<p>Are you sure you want to remove this training module?</p>
+					<h5 id="exerciseNameToRemove"></h5>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" id="confirmRemoveBtn">Remove</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 @section Scripts
 {
 	<script>
 		$(function () {
+			// DATATABLE INITIALIZE
+			$('.table').DataTable();
 
-			$('.deleteBtn').click(function (e) {
-				swal(
-					{
-						title: "Are you sure?",
-						text: "Are you sure you want to delete this record?",
-						icon: "warning",
-						buttons: true,
-						dangerMode: true
-					}
-				).then((confirm) => {
-					if (confirm) {
-						var btn = $(this);
-						var id = btn.data("id");
-						var index = btn.data("index");
-						$('#id').val(id);
-						$('#index').val(index);
-						$('#deleteForm').submit();
-					}
-				}
-				);
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
+			});
+
+			// SCRIPT TO HANDLE REMOVING EXERCISE FROM TRAINING PLAN
+			$(document).on('click', '.removeBtn', function () {
+				var btn = $(this);
+				var trainingPlanId = btn.data("trainingplanid");
+				var index = btn.data("index");
+				var name = btn.data("name");
+
+				$('#trainingPlanId').val(trainingPlanId);
+				$('#index').val(index);
+				$('#exerciseNameToRemove').text(name);
+
+				$('#removeExerciseModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE REMOVING EXERCISE FROM TRAINING PLAN
+			$(document).on('click', '#confirmRemoveBtn', function () {
+				$('#removeForm').submit();
 			});
 		});
 	</script>
