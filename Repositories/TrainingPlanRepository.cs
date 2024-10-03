@@ -14,38 +14,37 @@ using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Repositories
 {
-    public class TrainingPlanRepository : GenericRepository<TrainingPlan>, ITrainingPlanRepository
-    {
-        private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
-        private readonly IExerciseRepository exerciseRepository;
-        private readonly UserManager<User> userManager;
-        private readonly IHttpContextAccessor httpContextAccessor;
+	public class TrainingPlanRepository : GenericRepository<TrainingPlan>, ITrainingPlanRepository
+	{
+		private readonly ApplicationDbContext context;
+		private readonly IMapper mapper;
+		private readonly IExerciseRepository exerciseRepository;
+		private readonly UserManager<User> userManager;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
-        public TrainingPlanRepository(ApplicationDbContext context, 
-            IMapper mapper, 
-            IExerciseRepository exerciseRepository, 
-            UserManager<User> userManager, 
-            IHttpContextAccessor httpContextAccessor) : base(context)
-        {
-            this.context = context;
-            this.mapper = mapper;
-            this.exerciseRepository = exerciseRepository;
-            this.userManager = userManager;
-            this.httpContextAccessor = httpContextAccessor;
-        }
+		public TrainingPlanRepository(ApplicationDbContext context,
+			IMapper mapper,
+			IExerciseRepository exerciseRepository,
+			UserManager<User> userManager,
+			IHttpContextAccessor httpContextAccessor) : base(context)
+		{
+			this.context = context;
+			this.mapper = mapper;
+			this.exerciseRepository = exerciseRepository;
+			this.userManager = userManager;
+			this.httpContextAccessor = httpContextAccessor;
+		}
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
 		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVM(List<int> trainingPlanIds)
-        {
-            List<TrainingPlanVM> trainingPlanVMs = new List<TrainingPlanVM>();
+		{
+			List<TrainingPlanVM> trainingPlanVMs = new List<TrainingPlanVM>();
 
-
-            foreach (int id in trainingPlanIds)
-            {
-                var trainingPlanVM = mapper.Map<TrainingPlanVM>(await GetAsync(id));
-                trainingPlanVMs.Add(trainingPlanVM);
-            }
+			foreach (int id in trainingPlanIds)
+			{
+				var trainingPlan = await GetAsync(id);
+				trainingPlanVMs.Add(mapper.Map<TrainingPlanVM>(trainingPlan));
+			}
 
 			var trainingPlanIndexVM = new TrainingPlanIndexVM
 			{
@@ -54,14 +53,15 @@ namespace TrainingPlanApp.Web.Repositories
 				TrainingModuleId = trainingPlanVMs[0].TrainingModuleId,
 				TrainingPlanVMs = trainingPlanVMs
 			};
-            return trainingPlanIndexVM;
+			return trainingPlanIndexVM;
 		}
 
 		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
 		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan)
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
-			trainingPlanDetailsVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
+			trainingPlanDetailsVM.ExerciseVMs = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
+			trainingPlanDetailsVM = sortListsForSingleTrainingPlanDetails(trainingPlanDetailsVM);
 			return trainingPlanDetailsVM;
 		}
 
@@ -81,7 +81,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			trainingPlan.ExerciseIds = new List<int?>();
 			trainingPlan.Indices = new List<string?>();
-            trainingPlan.Sets = new List<int?>();
+			trainingPlan.Sets = new List<int?>();
 			trainingPlan.Units = new List<string?>();
 			trainingPlan.Weights = new List<string?>();
 			trainingPlan.RestTimes = new List<string?>();
@@ -89,9 +89,9 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.IsCompleted = false;
 			trainingPlan.IsEmpty = true;
 			await context.AddAsync(trainingPlan);
-            await context.SaveChangesAsync();
-            return trainingPlan.Id;
-        }
+			await context.SaveChangesAsync();
+			return trainingPlan.Id;
+		}
 
 		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
 		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanManageExercisesVM trainingPlanManageExercisesVM)
@@ -132,9 +132,9 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.RestTimes.RemoveAt(index);
 			trainingPlan.Notes.RemoveAt(index);
 			if (trainingPlan.ExerciseIds.Count == 0)
-            {
-                trainingPlan.IsEmpty = true;
-            }
+			{
+				trainingPlan.IsEmpty = true;
+			}
 			await UpdateAsync(trainingPlan);
 		}
 
@@ -172,5 +172,83 @@ namespace TrainingPlanApp.Web.Repositories
 
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
+		static int ExtractNumber(string str)
+		{
+			var numberString = new string(str.TakeWhile(char.IsDigit).ToArray());
+			return int.TryParse(numberString, out var number) ? number : 0;
+		}
+
+		static string ExtractLetters(string str)
+		{
+			var letterString = new string(str.SkipWhile(char.IsDigit).ToArray());
+			return letterString;
+		}
+		static TrainingPlanDetailsVM sortListsForSingleTrainingPlanDetails(TrainingPlanDetailsVM trainingPlanDetailsVM)
+		{
+			var sortedIndices = trainingPlanDetailsVM.Indices
+				.Select((value, index) => new { Index = index, Value = value })
+				.Select(x => new { x.Index, NumberPart = ExtractNumber(x.Value), LetterPart = ExtractLetters(x.Value) })
+				.OrderBy(x => x.NumberPart)
+				.ThenBy(x => x.LetterPart)
+				.ToList();
+
+			// Tworzenie nowych list w posortowanej kolejności
+			var sortedIndicesList = sortedIndices.Select(x => trainingPlanDetailsVM.Indices[x.Index]).ToList();
+			var sortedExercises = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseVMs[x.Index]).ToList();
+			var sortedExerciseIds = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseIds[x.Index]).ToList();
+			var sortedSets = sortedIndices.Select(x => trainingPlanDetailsVM.Sets[x.Index]).ToList();
+			var sortedUnits = sortedIndices.Select(x => trainingPlanDetailsVM.Units[x.Index]).ToList();
+			var sortedWeights = sortedIndices.Select(x => trainingPlanDetailsVM.Weights[x.Index]).ToList();
+			var sortedRestTimes = sortedIndices.Select(x => trainingPlanDetailsVM.RestTimes[x.Index]).ToList();
+			var sortedNotes = sortedIndices.Select(x => trainingPlanDetailsVM.Notes[x.Index]).ToList();
+
+			// Aktualizacja oryginalnych list
+			trainingPlanDetailsVM.Indices = sortedIndicesList;
+			trainingPlanDetailsVM.ExerciseVMs = sortedExercises;
+			trainingPlanDetailsVM.ExerciseIds = sortedExerciseIds;
+			trainingPlanDetailsVM.Sets = sortedSets;
+			trainingPlanDetailsVM.Units = sortedUnits;
+			trainingPlanDetailsVM.Weights = sortedWeights;
+			trainingPlanDetailsVM.RestTimes = sortedRestTimes;
+			trainingPlanDetailsVM.Notes = sortedNotes;
+
+			return trainingPlanDetailsVM;
+		}
+
+
+		static List<TrainingPlanDetailsVM> sortListsForMultipleTrainingPlanDetails(List<TrainingPlanDetailsVM> trainingPlanDetailsVMs)
+		{
+			foreach (var trainingPlanDetailsVM in trainingPlanDetailsVMs)
+			{
+				var sortedIndices = trainingPlanDetailsVM.Indices
+					.Select((value, index) => new { Index = index, Value = value })
+					.Select(x => new { x.Index, NumberPart = ExtractNumber(x.Value), LetterPart = ExtractLetters(x.Value) })
+					.OrderBy(x => x.NumberPart)
+					.ThenBy(x => x.LetterPart)
+					.ToList();
+
+				// Tworzenie nowych list w posortowanej kolejności
+				var sortedIndicesList = sortedIndices.Select(x => trainingPlanDetailsVM.Indices[x.Index]).ToList();
+				var sortedExercises = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseVMs[x.Index]).ToList();
+				var sortedExerciseIds = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseIds[x.Index]).ToList();
+				var sortedSets = sortedIndices.Select(x => trainingPlanDetailsVM.Sets[x.Index]).ToList();
+				var sortedUnits = sortedIndices.Select(x => trainingPlanDetailsVM.Units[x.Index]).ToList();
+				var sortedWeights = sortedIndices.Select(x => trainingPlanDetailsVM.Weights[x.Index]).ToList();
+				var sortedRestTimes = sortedIndices.Select(x => trainingPlanDetailsVM.RestTimes[x.Index]).ToList();
+				var sortedNotes = sortedIndices.Select(x => trainingPlanDetailsVM.Notes[x.Index]).ToList();
+
+				// Aktualizacja oryginalnych list
+				trainingPlanDetailsVM.Indices = sortedIndicesList;
+				trainingPlanDetailsVM.ExerciseVMs = sortedExercises;
+				trainingPlanDetailsVM.ExerciseIds = sortedExerciseIds;
+				trainingPlanDetailsVM.Sets = sortedSets;
+				trainingPlanDetailsVM.Units = sortedUnits;
+				trainingPlanDetailsVM.Weights = sortedWeights;
+				trainingPlanDetailsVM.RestTimes = sortedRestTimes;
+				trainingPlanDetailsVM.Notes = sortedNotes;
+
+			}
+			return trainingPlanDetailsVMs;
+		}
 	}
 }

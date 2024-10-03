@@ -13,62 +13,68 @@
 	<p>
 		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>
 	</p>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model.TrainingPlanVMs)
-			{
-				if (!item.IsEmpty)
-				{
+	<div class="row">
+		<div class="col-md-4">
+			<table class="table">
+				<thead>
 					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Date)
-						</td>
-						<td>
-							@if (item.IsCompleted == true)
-							{
-								<a asp-action="Details" asp-route-id="@item.Id">
-									<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
-								</a>
-							}
-							else
-							{
-								<a asp-action="Details" asp-route-id="@item.Id">
-									<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
-								</a>
-							}
-						</td>
-						<td class="text-end">
-							<form asp-action="ChangeStatus" class="d-inline">
-								<input name="Id" value="@item.Id" type="hidden" />
-								<input name="status" value="true" type="hidden" />
-								<input name="userId" value="@item.UserId" type="hidden" />
-								<input name="trainingModuleId" value="@item.TrainingModuleId" type="hidden" />
-								<button type="submit" class="btn btn-success btn-sm"><i class="fa-solid fa-check">&nbsp;</i></button>
-							</form>
-							<form asp-action="ChangeStatus" class="d-inline">
-								<input name="Id" value="@item.Id" type="hidden" />
-								<input name="status" value="false" type="hidden" />
-								<input name="userId" value="@item.UserId" type="hidden" />
-								<input name="trainingModuleId" value="@item.TrainingModuleId" type="hidden" />
-								<button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-x">&nbsp;</i></button>
-							</form>
-						</td>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
+						</th>
+						<th></th>
 					</tr>
-				}
-			}
-		</tbody>
-	</table>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.TrainingPlanVMs)
+					{
+						if (!item.IsEmpty)
+						{
+							<tr>
+								<td>
+									@Html.DisplayFor(modelItem => item.Date)
+								</td>
+								<td>
+									<a class="training-plan-link" data-id="@item.Id">
+										@if (item.IsCompleted == true)
+										{
+											<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+										}
+										else
+										{
+											<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+										}
+									</a>
+								</td>
+								<td class="text-end">
+									<form asp-action="ChangeStatus" class="d-inline">
+										<input name="Id" value="@item.Id" type="hidden" />
+										<input name="status" value="true" type="hidden" />
+										<input name="userId" value="@item.UserId" type="hidden" />
+										<input name="trainingModuleId" value="@item.TrainingModuleId" type="hidden" />
+										<button type="submit" class="btn btn-success btn-sm"><i class="fa-solid fa-check">&nbsp;</i></button>
+									</form>
+									<form asp-action="ChangeStatus" class="d-inline">
+										<input name="Id" value="@item.Id" type="hidden" />
+										<input name="status" value="false" type="hidden" />
+										<input name="userId" value="@item.UserId" type="hidden" />
+										<input name="trainingModuleId" value="@item.TrainingModuleId" type="hidden" />
+										<button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-x">&nbsp;</i></button>
+									</form>
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-8" id="trainingPlanDetails">
+			<p>Select a training plan to see details.</p>
+		</div>
+	</div>
 
 }
 
@@ -78,58 +84,62 @@
 	<p>
 		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>
 	</p>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model.TrainingPlanVMs)
-			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.Date)
-					</td>
-					<td>
-						@if (item.IsEmpty)
-						{
-							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>
-							</a>
-						}
-						else if (item.IsCompleted == true)
-						{
-							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
-							</a>
-						}
-						else
-						{
-							<a asp-action="Details" asp-route-id="@item.Id">
-								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
-							</a>
-						}
-					</td>
-					<td>
-						<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId">
-							<i class="text-end btn btn-secondary btn-sm"> Exercises</i>
-						</a>
-						<button data-copyfromid="@item.Id"
-								class="btn btn-secondary btn-sm copyBtn">
-							<i class="fa-solid fa-copy">&nbsp;</i>Copy
-						</button>
-					</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+	<div class="row">
+		<div class="col-md-4">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.TrainingPlanVMs)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Date)
+							</td>
+							<td>
+								<a class="training-plan-link" data-id="@item.Id">
+									@if (item.IsEmpty)
+									{
+										<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>
+									}
+									else if (item.IsCompleted == true)
+									{
+										<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+									}
+									else
+									{
+										<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+									}
+								</a>
+							</td>
+							<td>
+								<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId">
+									<i class="text-end btn btn-secondary btn-sm"> Exercises</i>
+								</a>
+								<button data-copyfromid="@item.Id"
+										class="btn btn-secondary btn-sm copyBtn">
+									<i class="fa-solid fa-copy">&nbsp;</i>Copy
+								</button>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col-md-8" id="trainingPlanDetails">
+			<p>Select a training plan to see details.</p>
+		</div>
+	</div>
 
 }
 
@@ -167,6 +177,7 @@
 	</div>
 </div>
 
+
 @section Scripts
 {
 	<script>
@@ -184,10 +195,29 @@
 				$('#copyTrainingPlanModal').modal('show');
 			});
 
-
 			// SCRIPT TO HANDLE CLOSING MODALS
 			$(document).on('click', '.close', function () {
 				$(this).closest('.modal').modal('hide');
+			});
+			
+			
+			
+			// AJAX do ładowania szczegółów planu treningowego
+			$(document).on('click', '.training-plan-link', function (e) {
+				e.preventDefault(); // Zatrzymaj domyślne działanie linku
+
+				var id = $(this).data("id"); // Pobierz ID planu treningowego
+				$.ajax({
+					url: '@Url.Action("Details", "TrainingPlans")',
+					type: 'GET',
+					data: { id: id },
+					success: function (data) {
+						$('#trainingPlanDetails').html(data); // Załaduj dane do kontenera
+					},
+					error: function () {
+						alert("An error occurred while loading the training plan details.");
+					}
+				});
 			});
 		});
 	</script>

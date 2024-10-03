@@ -55,6 +55,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(await trainingPlanRepository.GetTrainingPlanIndexVM(trainingPlanIds));
 		}
 
+
 		// GET: TrainingPlans/Details
 		public async Task<IActionResult> Details(int? id)
 		{
@@ -63,7 +64,7 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-			return View(await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan));
+			return PartialView("Details", await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan));
 		}
 
 		// GET: TrainingPlans/ManageExercises

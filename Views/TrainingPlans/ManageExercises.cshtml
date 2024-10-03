@@ -17,19 +17,10 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Exercises)
-			</th>
-			<th>
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Weights)
-			</th>
-			<th>
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Notes)
-			</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -38,7 +29,7 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => Model.Indices[i]): @Html.DisplayFor(modelItem => Model.Exercises[i].Name)
+					<strong>@Html.DisplayFor(modelItem => Model.Indices[i]): @Html.DisplayFor(modelItem => Model.Exercises[i].Name)</strong>
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => Model.Sets[i])x @Html.DisplayFor(modelItem => Model.Units[i])
@@ -48,9 +39,6 @@
 				</td>
 				<td>
 					Rest: @Html.DisplayFor(modelItem => Model.RestTimes[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.Notes[i])
 				</td>
 				<td class="text-end">
 					<button data-trainingplanid="@Model.Id" data-index="@i" data-name="@Model.Exercises[i].Name" class="btn btn-danger btn-sm removeBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Remove</button>
@@ -112,7 +100,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="form-group col-md-6">
+						<div class="form-group col-md-12">
 							<label asp-for="NewExerciseNote" class="control-label"></label>
 							<input asp-for="NewExerciseNote" class="form-control" />
 							<span asp-validation-for="NewExerciseNote" class="text-danger"></span>

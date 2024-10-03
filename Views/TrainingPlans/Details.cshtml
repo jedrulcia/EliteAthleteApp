@@ -1,4 +1,4 @@
-﻿@* @using TrainingPlanApp.Web.Models.TrainingPlan
+﻿@using TrainingPlanApp.Web.Models.TrainingPlan
 @using TrainingPlanApp.Web.Constants
 
 @model TrainingPlanDetailsVM
@@ -7,82 +7,30 @@
 	ViewData["Title"] = "Details";
 }
 
-<h1>@Model.Name</h1>
-
-@for (int i = 0; i < Model.Exercises.Count; i++)
+@for (int i = 0; i < Model.ExerciseVMs.Count; i++)
 {
-	<dl class="row">
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Index)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Index[i])
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Exercises[i].Name)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Exercises[i].Name)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Weight)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Weight[i])
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Sets)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Sets[i])
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.UnitAmounts)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.UnitAmounts[i])
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Units)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Units[i])
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.ExerciseUnitTypes[i].Name)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.ExerciseUnitTypes[i].Name)
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.BreakTimes)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.BreakTimes[i])
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Notes)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Notes[i])
-		</dd>
-		<dt class="col-sm-2">
-			@Html.DisplayNameFor(model => model.Exercises[i].Description)
-		</dt>
-		<dd class="col-sm-10">
-			@Html.DisplayFor(model => model.Exercises[i].Description)
-		</dd>
-		<dd class="col-sm-12">
-			@{
-				var mainVideoUrl = Model.Exercises[i].VideoLink;
-				var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
-				var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
-			}
-			<iframe width="560" height="315" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-		</dd>
-	</dl>
+	<h1>@Html.DisplayFor(modelItem => Model.Indices[i]): @Html.DisplayFor(modelItem => Model.ExerciseVMs[i].Name) - @Html.DisplayFor(modelItem => Model.ExerciseVMs[i].ExerciseCategory.Name)</h1>
+	<dd class="col-sm-12">
+		@{
+			var mainVideoUrl = Model.ExerciseVMs[i].VideoLink;
+			var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
+			var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
+		}
+		<iframe width="840" height="472" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</dd>
+	<dd class="col-sm-12">
+		@Html.DisplayFor(modelItem => Model.ExerciseVMs[i].Description)
+	</dd>
+	<dd class="col-sm-12">
+		@Html.DisplayFor(modelItem => Model.Sets[i])x @Html.DisplayFor(modelItem => Model.Units[i])
+	</dd>
+	<dd class="col-sm-12">
+		Weight: @Html.DisplayFor(modelItem => Model.Weights[i])
+	</dd>
+	<dd class="col-sm-12">
+		Rest: @Html.DisplayFor(modelItem => Model.RestTimes[i])
+	</dd>
+	<dd class="col-sm-12">
+		Notes: @Html.DisplayFor(modelItem => Model.Notes[i])
+	</dd>
 }
-
-<div>
-	<a asp-action="Index" class="btn btn-secondary" asp-route-trainingModuleId="@Model.TrainingModuleId">Back to List</a>
-</div> *@
