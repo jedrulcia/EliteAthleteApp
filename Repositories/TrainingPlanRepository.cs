@@ -81,12 +81,11 @@ namespace TrainingPlanApp.Web.Repositories
 
 			trainingPlan.ExerciseIds = new List<int?>();
 			trainingPlan.Indices = new List<string?>();
-			trainingPlan.Weights = new List<float?>();
             trainingPlan.Sets = new List<int?>();
+			trainingPlan.Units = new List<string?>();
+			trainingPlan.Weights = new List<string?>();
 			trainingPlan.RestTimes = new List<string?>();
 			trainingPlan.Notes = new List<string?>();
-			trainingPlan.Repeats = new List<string?>();
-			trainingPlan.UnitTypes = new List<string?>();
 			trainingPlan.IsCompleted = false;
 			trainingPlan.IsEmpty = true;
 			await context.AddAsync(trainingPlan);
@@ -107,12 +106,11 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingPlan = await GetAsync(trainingPlanManageExercisesVM.Id);
 			trainingPlan.Indices.Add(trainingPlanManageExercisesVM.NewExerciseIndex);
 			trainingPlan.ExerciseIds.Add(trainingPlanManageExercisesVM.NewExerciseId);
-			trainingPlan.Weights.Add(trainingPlanManageExercisesVM.NewExerciseWeight);
 			trainingPlan.Sets.Add(trainingPlanManageExercisesVM.NewExerciseSets);
+			trainingPlan.Units.Add(trainingPlanManageExercisesVM.NewExerciseUnits);
+			trainingPlan.Weights.Add(trainingPlanManageExercisesVM.NewExerciseWeight);
 			trainingPlan.RestTimes.Add(trainingPlanManageExercisesVM.NewExerciseRestTime);
 			trainingPlan.Notes.Add(trainingPlanManageExercisesVM.NewExerciseNote);
-			trainingPlan.Repeats.Add(trainingPlanManageExercisesVM.NewExerciseRepeats);
-			trainingPlan.UnitTypes.Add(trainingPlanManageExercisesVM.NewExerciseUnitType);
 			trainingPlan.IsEmpty = false;
 			await UpdateAsync(trainingPlan);
 
@@ -128,12 +126,11 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingPlan = await GetAsync(id);
 			trainingPlan.ExerciseIds.RemoveAt(index);
 			trainingPlan.Indices.RemoveAt(index);
-			trainingPlan.Weights.RemoveAt(index);
 			trainingPlan.Sets.RemoveAt(index);
+			trainingPlan.Units.RemoveAt(index);
+			trainingPlan.Weights.RemoveAt(index);
 			trainingPlan.RestTimes.RemoveAt(index);
 			trainingPlan.Notes.RemoveAt(index);
-			trainingPlan.Repeats.RemoveAt(index);
-			trainingPlan.UnitTypes.RemoveAt(index);
 			if (trainingPlan.ExerciseIds.Count == 0)
             {
                 trainingPlan.IsEmpty = true;
@@ -165,12 +162,11 @@ namespace TrainingPlanApp.Web.Repositories
 			copyToTrainingPlan.IsEmpty = copyFromTrainingPlan.IsEmpty;
 			copyToTrainingPlan.ExerciseIds = copyFromTrainingPlan.ExerciseIds;
 			copyToTrainingPlan.Indices = copyFromTrainingPlan.Indices;
-			copyToTrainingPlan.Weights = copyFromTrainingPlan.Weights;
 			copyToTrainingPlan.Sets = copyFromTrainingPlan.Sets;
+			copyToTrainingPlan.Units = copyFromTrainingPlan.Units;
+			copyToTrainingPlan.Weights = copyFromTrainingPlan.Weights;
 			copyToTrainingPlan.RestTimes = copyFromTrainingPlan.RestTimes;
 			copyToTrainingPlan.Notes = copyFromTrainingPlan.Notes;
-			copyToTrainingPlan.Repeats = copyFromTrainingPlan.Repeats;
-			copyToTrainingPlan.UnitTypes = copyFromTrainingPlan.UnitTypes;
 			await UpdateAsync(copyToTrainingPlan);
 		}
 

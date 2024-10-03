@@ -10,6 +10,9 @@
 @if (User.IsInRole(Roles.User))
 {
 	<h1>Training Plans</h1>
+	<p>
+		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>
+	</p>
 	<table class="table">
 		<thead>
 			<tr>
@@ -72,6 +75,9 @@
 @if (User.IsInRole(Roles.Administrator))
 {
 	<h1>Training Plans</h1>
+	<p>
+		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>
+	</p>
 	<table class="table">
 		<thead>
 			<tr>

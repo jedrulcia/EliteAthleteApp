@@ -9,28 +9,23 @@
 
 <h1>Manage Exercises</h1>
 
+<p>
+	<a asp-action="Index" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
+	<button class="btn btn-primary btn-sm addBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Exercise</button>
+</p>
+
 <table class="table">
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.Indices)
+				@Html.DisplayNameFor(model => model.Exercises)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Exercises)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Weights)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Sets)
-			</th>
-			<th>
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Repeats)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.RestTimes)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Notes)
@@ -43,25 +38,16 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => Model.Indices[i])
+					@Html.DisplayFor(modelItem => Model.Indices[i]): @Html.DisplayFor(modelItem => Model.Exercises[i].Name)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => Model.Exercises[i].Name)
+					@Html.DisplayFor(modelItem => Model.Sets[i])x @Html.DisplayFor(modelItem => Model.Units[i])
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => Model.Weights[i])
+					Weight: @Html.DisplayFor(modelItem => Model.Weights[i])
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => Model.Sets[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.UnitTypes[i]):
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.Repeats[i])
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => Model.RestTimes[i])
+					Rest: @Html.DisplayFor(modelItem => Model.RestTimes[i])
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => Model.Notes[i])
@@ -74,69 +60,73 @@
 	</tbody>
 </table>
 
-
-
-@* <div class="row">
-	<div class="col-md-12">
-		<form asp-action="ManageExercises">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group col-md-4">
-				<label asp-for="NewExerciseId" class="control-label"></label>
-				<select asp-for="NewExerciseId" asp-items="Model?.AvailableExercises" class="form-select">
-					<option>Select exercise</option>
-				</select>
-				<span asp-validation-for="NewExerciseId" class="text-danger"></span>
+<!-- MODAL FOR ADDING EXERCISE -->
+<div class="modal fade" id="addExerciseModal" tabindex="-1" role="dialog" aria-labelledby="addExerciseModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addExerciseModalLabel">Add Exercise</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<div class="form-group col-md-4">
-				<label asp-for="NewExerciseUnitTypeId" class="control-label"></label>
-				<select asp-for="NewExerciseUnitTypeId" asp-items="Model?.AvailableExerciseUnitTypes" class="form-select">
-					<option>Select exercise</option>
-				</select>
-				<span asp-validation-for="NewExerciseUnitTypeId" class="text-danger"></span>
+			<div class="modal-body">
+				<form id="addForm" asp-action="ManageExercises" method="post">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label asp-for="NewExerciseIndex" class="control-label"></label>
+							<input asp-for="NewExerciseIndex" class="form-control" />
+							<span asp-validation-for="NewExerciseIndex" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label asp-for="NewExerciseId" class="control-label"></label>
+							<select asp-for="NewExerciseId" asp-items="Model?.AvailableExercises" class="form-select">
+								<option>Select exercise</option>
+							</select>
+							<span asp-validation-for="NewExerciseId" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label asp-for="NewExerciseSets" class="control-label"></label>
+							<input asp-for="NewExerciseSets" class="form-control" />
+							<span asp-validation-for="NewExerciseSets" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label asp-for="NewExerciseUnits" class="control-label"></label>
+							<input asp-for="NewExerciseUnits" class="form-control" />
+							<span asp-validation-for="NewExerciseUnits" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label asp-for="NewExerciseWeight" class="control-label"></label>
+							<input asp-for="NewExerciseWeight" class="form-control" />
+							<span asp-validation-for="NewExerciseWeight" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label asp-for="NewExerciseRestTime" class="control-label"></label>
+							<input asp-for="NewExerciseRestTime" class="form-control" />
+							<span asp-validation-for="NewExerciseRestTime" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label asp-for="NewExerciseNote" class="control-label"></label>
+							<input asp-for="NewExerciseNote" class="form-control" />
+							<span asp-validation-for="NewExerciseNote" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="confirmAddBtn">Add</button>
+					</div>
+				</form>
 			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseWeight" class="control-label"></label>
-				<input asp-for="NewExerciseWeight" class="form-control" />
-				<span asp-validation-for="NewExerciseWeight" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseSets" class="control-label"></label>
-				<input asp-for="NewExerciseSets" class="form-control" />
-				<span asp-validation-for="NewExerciseSets" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseUnitAmount" class="control-label"></label>
-				<input asp-for="NewExerciseUnitAmount" class="form-control" />
-				<span asp-validation-for="NewExerciseUnitAmount" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseIndex" class="control-label"></label>
-				<input asp-for="NewExerciseIndex" class="form-control" />
-				<span asp-validation-for="NewExerciseIndex" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseUnit" class="control-label"></label>
-				<input asp-for="NewExerciseUnit" class="form-control" />
-				<span asp-validation-for="NewExerciseUnit" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseBreakTime" class="control-label"></label>
-				<input asp-for="NewExerciseBreakTime" class="form-control" />
-				<span asp-validation-for="NewExerciseBreakTime" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewExerciseNote" class="control-label"></label>
-				<input asp-for="NewExerciseNote" class="form-control" />
-				<span asp-validation-for="NewExerciseNote" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<a asp-action="Index" class="btn btn-dark" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
-				<input type="submit" value="Add" class="btn btn-primary" />
-			</div>
-		</form>
+		</div>
 	</div>
-</div> *@
-
+</div>
+</div>
 
 <!-- MODAL FOR EXERCISE REMOVE -->
 <div class="modal fade" id="removeExerciseModal" tabindex="-1" role="dialog" aria-labelledby="removeExerciseModalLabel" aria-hidden="true">
@@ -150,7 +140,7 @@
 			</div>
 			<div class="modal-body">
 				<form id="removeForm" asp-action="RemoveExercise">
-					<input type="hidden" name="id" id="trainingPlanId"  />
+					<input type="hidden" name="id" id="trainingPlanId" />
 					<input type="hidden" name="index" id="index" />
 					<p>Are you sure you want to remove this training module?</p>
 					<h5 id="exerciseNameToRemove"></h5>
@@ -159,6 +149,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-danger" id="confirmRemoveBtn">Remove</button>
 			</div>
+
 		</div>
 	</div>
 </div>
@@ -193,6 +184,17 @@
 			$(document).on('click', '#confirmRemoveBtn', function () {
 				$('#removeForm').submit();
 			});
+
+			// SCRIPT TO HANDLE ADDING EXERCISES TO TRAINING PLAN
+			$(document).on('click', '.addBtn', function () {
+				$('#addExerciseModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE ADDING EXERCISE TO TRAINING PLAN
+			$(document).on('click', '#confirmAddBtn', function () {
+				$('#addForm').submit();
+			});
+
 		});
 	</script>
 }
