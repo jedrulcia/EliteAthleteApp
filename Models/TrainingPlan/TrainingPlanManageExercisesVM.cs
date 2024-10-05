@@ -10,6 +10,7 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
         // IDs
         public int? Id { get; set; }
 		public int? TrainingModuleId { get; set; }
+		public int? TrainingPlanId { get; set; }
 		public string? UserId { get; set; }
 		public string? CoachId { get; set; }
 

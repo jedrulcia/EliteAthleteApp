@@ -99,10 +99,10 @@ namespace TrainingPlanApp.Web.Repositories
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.NewExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+				return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.TrainingPlanId);
 			}
 
-			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.Id);
+			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 			trainingPlan.Indices.Add(trainingPlanAddExerciseVM.NewExerciseIndex);
 			trainingPlan.ExerciseIds.Add(trainingPlanAddExerciseVM.NewExerciseId);
 			trainingPlan.Sets.Add(trainingPlanAddExerciseVM.NewExerciseSets);
@@ -113,29 +113,29 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.IsEmpty = false;
 			await UpdateAsync(trainingPlan);
 
-			return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+			return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.TrainingPlanId);
 		}
 
 		// EDITS AN EXERCISE IN THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlan(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int index)
+		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlan(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.NewExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+				return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.TrainingPlanId);
 			}
 
-			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.Id);
-			trainingPlan.Indices[index] = trainingPlanAddExerciseVM.NewExerciseIndex;
-			trainingPlan.ExerciseIds[index] = trainingPlanAddExerciseVM.NewExerciseId;
-			trainingPlan.Sets[index] = trainingPlanAddExerciseVM.NewExerciseSets;
-			trainingPlan.Units[index] = trainingPlanAddExerciseVM.NewExerciseUnits;
-			trainingPlan.Weights[index] = trainingPlanAddExerciseVM.NewExerciseWeight;
-			trainingPlan.RestTimes[index] = trainingPlanAddExerciseVM.NewExerciseRestTime;
-			trainingPlan.Notes[index] = trainingPlanAddExerciseVM.NewExerciseNote;
+			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+			trainingPlan.Indices[index.Value] = trainingPlanAddExerciseVM.NewExerciseIndex;
+			trainingPlan.ExerciseIds[index.Value] = trainingPlanAddExerciseVM.NewExerciseId;
+			trainingPlan.Sets[index.Value] = trainingPlanAddExerciseVM.NewExerciseSets;
+			trainingPlan.Units[index.Value] = trainingPlanAddExerciseVM.NewExerciseUnits;
+			trainingPlan.Weights[index.Value] = trainingPlanAddExerciseVM.NewExerciseWeight;
+			trainingPlan.RestTimes[index.Value] = trainingPlanAddExerciseVM.NewExerciseRestTime;
+			trainingPlan.Notes[index.Value] = trainingPlanAddExerciseVM.NewExerciseNote;
 			await UpdateAsync(trainingPlan);
 
-			return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+			return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.TrainingPlanId);
 		}
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.

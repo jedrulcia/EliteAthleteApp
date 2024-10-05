@@ -21,7 +21,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanAddExerciseVM trainingPlanCreateVM);
 
 		// EDIT AN EXERCISE IN SPECIFIED TRAINING PLAN.
-		Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlan(TrainingPlanAddExerciseVM trainingPlanCreateVM, int index);
+		Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlan(TrainingPlanAddExerciseVM trainingPlanCreateVM, int? index);
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
 		Task RemoveExerciseFromTrainingPlan(int id, int index);

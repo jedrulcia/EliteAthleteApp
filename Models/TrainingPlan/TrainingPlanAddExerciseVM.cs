@@ -5,7 +5,7 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 {
 	public class TrainingPlanAddExerciseVM
 	{
-		public int? Id { get; set; }
+		public int? TrainingPlanId { get; set; }
 		// FORMS
 		// indices are used to get the order of exercises
 		public string? NewExerciseIndex { get; set; }

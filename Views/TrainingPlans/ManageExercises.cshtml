@@ -11,7 +11,7 @@
 
 <p>
 	<a asp-action="Index" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
-	<button class="btn btn-primary btn-sm addBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Exercise</button>
+	<button class="btn btn-primary btn-sm addBtn" data-trainingplanid="@Model.TrainingPlanId" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Exercise</button>
 </p>
 
 <table class="table">
@@ -42,8 +42,8 @@
 				</td>
 				<td class="text-end">
 					<button data-trainingplanid="@Model.Id"
-							data-index="@i"
-							data-iteration="@Model.Indices[i]"
+							data-iteration="@i"
+							data-index="@Model.Indices[i]"
 							data-exerciseid="@Model.ExerciseIds[i]"
 							data-sets="@Model.Sets[i]"
 							data-unit="@Model.Units[i]"
@@ -77,16 +77,11 @@
 			</div>
 			<div class="modal-body">
 				<form id="addForm" asp-action="ManageExercises" method="post">
-					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<input type="hidden" name="TrainingPlanAddExerciseVM.TrainingPlanId" id="trainingPlanId" />
 					<div class="row">
 						<div class="form-group col-md-6">
 							<label asp-for="TrainingPlanAddExerciseVM.NewExerciseIndex" class="control-label"></label>
 							<input asp-for="TrainingPlanAddExerciseVM.NewExerciseIndex" class="form-control" />
-							<span asp-validation-for="TrainingPlanAddExerciseVM.NewExerciseIndex" class="text-danger"></span>
-						</div>
-						<div class="form-group col-md-6">
-							<label asp-for="TrainingPlanAddExerciseVM.NewExerciseIndex" class="control-label"></label>
-							<input id="index" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseIndex" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.NewExerciseIndex" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
@@ -149,13 +144,12 @@
 			</div>
 			<div class="modal-body">
 				<form id="editForm" asp-action="ManageExercises" method="post">
-					<input type="hidden" name="trainingPlanId" id="trainingPlanId" />
-					<input type="hidden" name="index" id="index" />
-					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<input type="hidden" name="TrainingPlanAddExerciseVM.TrainingPlanId" id="trainingPlanId" />
+					<input type="hidden" name="index" id="iteration" />
 					<div class="row">
 						<div class="form-group col-md-6">
 							<label asp-for="TrainingPlanAddExerciseVM.NewExerciseIndex" class="control-label"></label>
-							<input id="iteration" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseIndex" />
+							<input id="index" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseIndex" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.NewExerciseIndex" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
@@ -261,27 +255,48 @@
 				$('#removeExerciseModal').modal('show');
 			});
 
-			// SCRIPT TO HANDLE EDITING EXERCISE TO TRAINING PLAN
-			$(document).on('click', '.editBtn', function () {
-				var btn = $(this);
-				var trainingPlanId = btn.data("trainingplanid");
-				var index = btn.data("index");
-				var name = btn.data("name");
-
-				$('#trainingPlanId').val(trainingPlanId);
-				$('#index').val(index);
-				$('#exerciseNameToRemove').text(name);
-
-				$('#removeExerciseModal').modal('show');
-			});
-
 			// SCRIPT TO HANDLE REMOVING EXERCISE FROM TRAINING PLAN
 			$(document).on('click', '#confirmRemoveBtn', function () {
 				$('#removeForm').submit();
 			});
 
+			// SCRIPT TO HANDLE EDITING EXERCISE TO TRAINING PLAN
+			$(document).on('click', '.editBtn', function () {
+				var btn = $(this);
+				var iteration = btn.data("iteration");
+				var trainingPlanId = btn.data("trainingplanid");
+				var index = btn.data("index");
+				var exerciseId = btn.data("exerciseid");
+				var sets = btn.data("sets");
+				var units = btn.data("units");
+				var weight = btn.data("weight");
+				var restTime = btn.data("resttime");
+				var note = btn.data("note");
+
+				$('#iteration').val(iteration);
+				$('#trainingPlanId').val(trainingPlanId);
+				$('#exerciseId').val(exerciseId);
+				$('#sets').val(sets);
+				$('#units').val(units);
+				$('#weight').val(weight);
+				$('#restTime').val(restTime);
+				$('#note').val(note);
+
+				$('#editExerciseModal').modal('show');
+			});
+			
+			// SCRIPT TO HANDLE EDITING EXERCISES TO TRAINING PLAN
+			$(document).on('click', '.editBtn', function () {
+				$('#editExerciseModal').modal('show');
+			});
+
 			// SCRIPT TO HANDLE ADDING EXERCISES TO TRAINING PLAN
 			$(document).on('click', '.addBtn', function () {
+				var btn = $(this);
+				var trainingPlanId = btn.data("trainingplanid");
+
+				$('#trainingPlanId').val(trainingPlanId);
+
 				$('#addExerciseModal').modal('show');
 			});
 
