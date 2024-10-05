@@ -16,7 +16,7 @@
 			var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
 			var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
 		}
-		<iframe width="840" height="472" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<iframe width="560" height="315" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	</dd>
 	<dd class="col-sm-12">
 		@Html.DisplayFor(modelItem => Model.ExerciseVMs[i].Description)

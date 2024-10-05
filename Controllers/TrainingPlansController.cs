@@ -76,11 +76,18 @@ namespace TrainingPlanApp.Web.Controllers
 
 		// POST: TrainingPlans/ManageExercises
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+		[ValidateAntiForgeryToken] 
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ManageExercises(TrainingPlanManageExercisesVM trainingPlanAddExercisesVM)
+		public async Task<IActionResult> ManageExercises(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
 		{
-			return View(await trainingPlanRepository.AddExerciseToTrainingPlan(trainingPlanAddExercisesVM));
+			if (index == null)
+			{
+				return View(await trainingPlanRepository.AddExerciseToTrainingPlan(trainingPlanAddExerciseVM));
+			}
+			else
+			{
+				return View(await trainingPlanRepository.EditExerciseInTrainingPlan(trainingPlanAddExerciseVM, index));
+			}
 		}
 
 		// POST: TrainingPlans/Index/ChangeStatus
