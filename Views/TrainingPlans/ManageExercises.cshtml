@@ -11,7 +11,7 @@
 
 <p>
 	<a asp-action="Index" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
-	<button class="btn btn-primary btn-sm addBtn" data-trainingplanid="@Model.TrainingPlanId" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Exercise</button>
+	<button class="btn btn-primary btn-sm addBtn" data-trainingplanid="@Model.Id" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Exercise</button>
 </p>
 
 <table class="table">
@@ -46,15 +46,15 @@
 							data-index="@Model.Indices[i]"
 							data-exerciseid="@Model.ExerciseIds[i]"
 							data-sets="@Model.Sets[i]"
-							data-unit="@Model.Units[i]"
+							data-units="@Model.Units[i]"
 							data-weight="@Model.Weights[i]"
 							data-resttime="@Model.RestTimes[i]"
 							data-note="@Model.Notes[i]"
 							class="btn btn-primary btn-sm editBtn" type="button">
 						<i class="fa-solid fa-pen">&nbsp;</i>Edit
 					</button>
-					<button data-trainingplanid="@Model.Id"
-							data-index="@i"
+					<button data-id="@Model.Id"
+							data-iteration="@i"
 							data-name="@Model.Exercises[i].Name"
 							class="btn btn-danger btn-sm removeBtn" type="button">
 						<i class="fa-solid fa-trash">&nbsp;</i>Remove
@@ -215,8 +215,8 @@
 			</div>
 			<div class="modal-body">
 				<form id="removeForm" asp-action="RemoveExercise">
-					<input type="hidden" name="id" id="trainingPlanId" />
-					<input type="hidden" name="index" id="index" />
+					<input type="hidden" name="id" id="id" />
+					<input type="hidden" name="i" id="i" />
 					<p>Are you sure you want to remove this training module?</p>
 					<h5 id="exerciseNameToRemove"></h5>
 				</form>
@@ -244,12 +244,12 @@
 			// SCRIPT TO HANDLE REMOVING EXERCISE FROM TRAINING PLAN
 			$(document).on('click', '.removeBtn', function () {
 				var btn = $(this);
-				var trainingPlanId = btn.data("trainingplanid");
-				var index = btn.data("index");
+				var id = btn.data("id");
+				var i = btn.data("i");
 				var name = btn.data("name");
 
-				$('#trainingPlanId').val(trainingPlanId);
-				$('#index').val(index);
+				$('#id').val(id);
+				$('#i').val(i);
 				$('#exerciseNameToRemove').text(name);
 
 				$('#removeExerciseModal').modal('show');
@@ -276,6 +276,7 @@
 				$('#iteration').val(iteration);
 				$('#trainingPlanId').val(trainingPlanId);
 				$('#exerciseId').val(exerciseId);
+				$('#index').val(index);
 				$('#sets').val(sets);
 				$('#units').val(units);
 				$('#weight').val(weight);

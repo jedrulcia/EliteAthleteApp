@@ -101,9 +101,9 @@ namespace TrainingPlanApp.Web.Controllers
 		[HttpPost, ActionName("RemoveExercise")]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> RemoveExercise(int id, int index)
+		public async Task<IActionResult> RemoveExercise(int id, int i)
 		{
-			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(id, index);
+			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(id, i);
 			return RedirectToAction(nameof(ManageExercises), new { id = id });
 		}
 
