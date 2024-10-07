@@ -56,7 +56,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(await trainingPlanRepository.GetTrainingPlanIndexVM(trainingPlanIds));
 		}
 
-
 		// GET: TrainingPlans/Details
 		public async Task<IActionResult> Details(int? id)
 		{
@@ -75,22 +74,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(await trainingPlanRepository.GetTrainingPlanManageExercisesVM(id));
 		}
 
-		// POST: TrainingPlans/ManageExercises
-		[HttpPost]
-		[ValidateAntiForgeryToken] 
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ManageExercises(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
-		{
-			if (index == null)
-			{
-				return View(await trainingPlanRepository.AddExerciseToTrainingPlan(trainingPlanAddExerciseVM));
-			}
-			else
-			{
-				return View(await trainingPlanRepository.EditExerciseInTrainingPlan(trainingPlanAddExerciseVM, index));
-			}
-		}
-
 		// POST: TrainingPlans/Index/ChangeStatus
 		public async Task<IActionResult> ChangeStatus(int id, bool status, int trainingModuleId)
 		{
@@ -104,6 +87,26 @@ namespace TrainingPlanApp.Web.Controllers
 			List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
 			byte[] pdf = await trainingPlanRepository.GetTrainingModulePDF(trainingPlanIds);
 			return File(pdf, "application/pdf", "PlanTreningowy.pdf");
+		}
+
+		// POST: TrainingPlans/ManageExercises/AddExercise
+		[HttpPost, ActionName("AddExercise")]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> AddExercise(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
+		{
+			await trainingPlanRepository.AddExerciseToTrainingPlan(trainingPlanAddExerciseVM);
+			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
+		}
+
+		// POST: TrainingPlans/ManageExercises/EditExercise
+		[HttpPost, ActionName("EditExercise")]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> EditExercises(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
+		{
+			await trainingPlanRepository.EditExerciseInTrainingPlan(trainingPlanAddExerciseVM, index);
+			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
 		}
 
 		// POST: TrainingPlans/ManageExercises/RemoveExercise

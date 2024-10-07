@@ -9,12 +9,6 @@ namespace TrainingPlanApp.Web.Contracts
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
 		Task<ExerciseIndexVM> GetExerciseIndexVM();
 
-		// GETS EXERCISE CREATE VIEW MODEL FOR NEW EXERCISE CREATION.
-		Task<ExerciseCreateVM> GetExerciseCreateVM();
-
-		// GETS EXERCISE CREATE VIEW MODEL FOR EDITING AN EXISTING EXERCISE.
-		Task<ExerciseCreateVM> GetExerciseEditVM(int id);
-
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		Task CreateExercise(ExerciseCreateVM exerciseCreateVM);
 
@@ -24,7 +18,15 @@ namespace TrainingPlanApp.Web.Contracts
 		// GETS A LIST OF SPECIFIC EXERCISES BASED ON PROVIDED EXERCISE IDs.
 		Task<List<ExerciseVM>> GetListOfExercises(List<int?> exercisesIds);
 
+		// ARCHIVE
+
 		// GETS A LIST OF FIELDS IMPROPERLY FILLED WHILE CREATING OR EDITING THE EXERCISE
 		string GetErrorMessageFields(ExerciseCreateVM exerciseCreateVM);
+
+		// GETS EXERCISE CREATE VIEW MODEL FOR NEW EXERCISE CREATION.
+		Task<ExerciseCreateVM> GetExerciseCreateVM();
+
+		// GETS EXERCISE CREATE VIEW MODEL FOR EDITING AN EXISTING EXERCISE.
+		Task<ExerciseCreateVM> GetExerciseEditVM(int id);
 	}
 }

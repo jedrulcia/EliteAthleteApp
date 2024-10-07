@@ -151,7 +151,6 @@ namespace TrainingPlanApp.Web.Repositories
 
 		// ARCHIVE
 
-		
 		// CHECKS IF NEW DATES ARE NOT NULL
 		public async Task<TrainingModuleCreateVM> CheckTheDates(TrainingModuleCreateVM trainingModuleCreateVM)
 		{

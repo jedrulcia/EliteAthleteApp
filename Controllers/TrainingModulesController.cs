@@ -26,7 +26,8 @@ namespace TrainingPlanApp.Web.Controllers
 		private readonly ITrainingModuleRepository trainingModuleRepository;
 		private readonly IMapper mapper;
 
-		public TrainingModulesController(ApplicationDbContext context,
+		public TrainingModulesController(
+			ApplicationDbContext context,
 			UserManager<User> userManager,
 			IHttpContextAccessor httpContextAccessor,
 			ITrainingModuleRepository trainingModuleRepository,
@@ -61,7 +62,6 @@ namespace TrainingPlanApp.Web.Controllers
 				await trainingModuleRepository.CreateTrainingModule(trainingModuleCreateVM);
 				return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 			}
-
 			TempData["ErrorMessage"] = $"Error while creating the training module. Please try again.";
 			return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 		}
@@ -76,7 +76,6 @@ namespace TrainingPlanApp.Web.Controllers
 				await trainingModuleRepository.EditTrainingModule(trainingModuleCreateVM);
 				return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 			}
-
 			TempData["ErrorMessage"] = $"Error while editing the training module. Please try again.";
 			return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 		}
@@ -89,6 +88,5 @@ namespace TrainingPlanApp.Web.Controllers
 			await trainingModuleRepository.DeleteTrainingModule(id);
 			return RedirectToAction(nameof(Index), new { userId = userId });
 		}
-
 	}
 }

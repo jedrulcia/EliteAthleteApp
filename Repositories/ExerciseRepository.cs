@@ -85,6 +85,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 		// ARCHIVE
 
+		// GETS THE ERROR MESSAGE DETAILS
 		public string GetErrorMessageFields(ExerciseCreateVM exerciseCreateVM)
 		{
 			string result = "";
