@@ -11,6 +11,10 @@ using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models.Exercise;
 using TrainingPlanApp.Web.Models.TrainingPlan;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TrainingPlanApp.Web.Repositories
 {
@@ -188,20 +192,90 @@ namespace TrainingPlanApp.Web.Repositories
 			await UpdateAsync(copyToTrainingPlan);
 		}
 
+		// GENERATES TRAINING MODULE IN PDF
+		public async Task<byte[]> GetTrainingModulePDF(List<int> trainingPlanIds)
+		{
+			List<TrainingPlanDetailsVM> trainingPlanVMs = new List<TrainingPlanDetailsVM>();
+
+			foreach (int id in trainingPlanIds)
+			{
+				var trainingPlan = await GetAsync(id);
+				trainingPlanVMs.Add(await GetTrainingPlanDetailsVM(trainingPlan));
+			}
+
+			PdfDocument document = new PdfDocument();
+			document.Info.Title = "Training Plan";
+			XFont font = new XFont("Verdana", 20, XFontStyleEx.Bold);
+
+			List<PdfPage> pageList = new List<PdfPage>();
+			pageList.Add(document.AddPage());
+			XGraphics gfx = XGraphics.FromPdfPage(pageList[0]);
+
+			int tableX = 50;
+			int tableY = 50;
+			int rowHeight = 15;
+			int columnWidth = 110;
+			int tableYOffset = 0;
+
+			foreach (var trainingPlanVM in trainingPlanVMs)
+			{
+				if (!trainingPlanVM.ExerciseVMs.IsNullOrEmpty())
+				{
+					if (tableY + trainingPlanVM.ExerciseVMs.Count * 15 > 842)
+					{
+						font = new XFont("Verdana", 8, XFontStyleEx.Bold);
+						gfx.DrawString($"str.{pageList.Count}", font, XBrushes.Black, new XRect(570, 830, 5, 5), XStringFormats.Center);
+						pageList.Add(document.AddPage());
+						tableY = 50;
+						gfx = XGraphics.FromPdfPage(pageList[pageList.Count-1]);
+					}
+
+					font = new XFont("Verdana", 20, XFontStyleEx.Bold);
+					gfx.DrawString($"{trainingPlanVM.Name}", font, XBrushes.Black, new XRect(tableX, tableY - 20, columnWidth, rowHeight), XStringFormats.CenterLeft);
+
+					for (int i = 0; i < trainingPlanVM.ExerciseVMs.Count; i++)
+					{
+						font = new XFont("Verdana", 12, XFontStyleEx.Regular);
+						gfx.DrawRectangle(XPens.Black, tableX + columnWidth * 0, tableY + rowHeight * i, columnWidth + 50, rowHeight);
+						gfx.DrawRectangle(XPens.Black, tableX + columnWidth * 1 + 50, tableY + rowHeight * i, columnWidth, rowHeight);
+						gfx.DrawRectangle(XPens.Black, tableX + columnWidth * 2 + 50, tableY + rowHeight * i, columnWidth, rowHeight);
+						gfx.DrawRectangle(XPens.Black, tableX + columnWidth * 3 + 50, tableY + rowHeight * i, columnWidth, rowHeight);
+
+						gfx.DrawString($"{trainingPlanVM.Indices[i]}: {trainingPlanVM.ExerciseVMs[i].Name}", font, XBrushes.Black, new XRect(tableX + columnWidth * 0, tableY + rowHeight * i, columnWidth + 50, rowHeight), XStringFormats.CenterLeft);
+						gfx.DrawString($"{trainingPlanVM.Sets[i]}x{trainingPlanVM.Units[i]}",				 font, XBrushes.Black, new XRect(tableX + columnWidth * 1 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
+						gfx.DrawString($"Weight: {trainingPlanVM.Weights[i]}",								 font, XBrushes.Black, new XRect(tableX + columnWidth * 2 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
+						gfx.DrawString($"Rest: {trainingPlanVM.RestTimes[i]}",								 font, XBrushes.Black, new XRect(tableX + columnWidth * 3 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
+						tableYOffset += 15;
+					}
+					tableY += tableYOffset + 30;
+					tableYOffset = 0;
+				}
+			}
+			font = new XFont("Verdana", 8, XFontStyleEx.Bold);
+			gfx.DrawString($"str.{pageList.Count}", font, XBrushes.Black, new XRect(570, 830, 5, 5), XStringFormats.Center);
+
+			using (MemoryStream stream = new MemoryStream())
+			{
+				document.Save(stream);
+
+				return stream.ToArray();
+			}
+		}
+
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
-		static int ExtractNumber(string str)
+		private int ExtractNumber(string str)
 		{
 			var numberString = new string(str.TakeWhile(char.IsDigit).ToArray());
 			return int.TryParse(numberString, out var number) ? number : 0;
 		}
 
-		static string ExtractLetters(string str)
+		private string ExtractLetters(string str)
 		{
 			var letterString = new string(str.SkipWhile(char.IsDigit).ToArray());
 			return letterString;
 		}
-		static TrainingPlanDetailsVM sortListsForSingleTrainingPlanDetails(TrainingPlanDetailsVM trainingPlanDetailsVM)
+		private TrainingPlanDetailsVM sortListsForSingleTrainingPlanDetails(TrainingPlanDetailsVM trainingPlanDetailsVM)
 		{
 			var sortedIndices = trainingPlanDetailsVM.Indices
 				.Select((value, index) => new { Index = index, Value = value })
@@ -210,7 +284,6 @@ namespace TrainingPlanApp.Web.Repositories
 				.ThenBy(x => x.LetterPart)
 				.ToList();
 
-			// Tworzenie nowych list w posortowanej kolejności
 			var sortedIndicesList = sortedIndices.Select(x => trainingPlanDetailsVM.Indices[x.Index]).ToList();
 			var sortedExercises = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseVMs[x.Index]).ToList();
 			var sortedExerciseIds = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseIds[x.Index]).ToList();
@@ -220,7 +293,6 @@ namespace TrainingPlanApp.Web.Repositories
 			var sortedRestTimes = sortedIndices.Select(x => trainingPlanDetailsVM.RestTimes[x.Index]).ToList();
 			var sortedNotes = sortedIndices.Select(x => trainingPlanDetailsVM.Notes[x.Index]).ToList();
 
-			// Aktualizacja oryginalnych list
 			trainingPlanDetailsVM.Indices = sortedIndicesList;
 			trainingPlanDetailsVM.ExerciseVMs = sortedExercises;
 			trainingPlanDetailsVM.ExerciseIds = sortedExerciseIds;
@@ -231,42 +303,6 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlanDetailsVM.Notes = sortedNotes;
 
 			return trainingPlanDetailsVM;
-		}
-
-
-		static List<TrainingPlanDetailsVM> sortListsForMultipleTrainingPlanDetails(List<TrainingPlanDetailsVM> trainingPlanDetailsVMs)
-		{
-			foreach (var trainingPlanDetailsVM in trainingPlanDetailsVMs)
-			{
-				var sortedIndices = trainingPlanDetailsVM.Indices
-					.Select((value, index) => new { Index = index, Value = value })
-					.Select(x => new { x.Index, NumberPart = ExtractNumber(x.Value), LetterPart = ExtractLetters(x.Value) })
-					.OrderBy(x => x.NumberPart)
-					.ThenBy(x => x.LetterPart)
-					.ToList();
-
-				// Tworzenie nowych list w posortowanej kolejności
-				var sortedIndicesList = sortedIndices.Select(x => trainingPlanDetailsVM.Indices[x.Index]).ToList();
-				var sortedExercises = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseVMs[x.Index]).ToList();
-				var sortedExerciseIds = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseIds[x.Index]).ToList();
-				var sortedSets = sortedIndices.Select(x => trainingPlanDetailsVM.Sets[x.Index]).ToList();
-				var sortedUnits = sortedIndices.Select(x => trainingPlanDetailsVM.Units[x.Index]).ToList();
-				var sortedWeights = sortedIndices.Select(x => trainingPlanDetailsVM.Weights[x.Index]).ToList();
-				var sortedRestTimes = sortedIndices.Select(x => trainingPlanDetailsVM.RestTimes[x.Index]).ToList();
-				var sortedNotes = sortedIndices.Select(x => trainingPlanDetailsVM.Notes[x.Index]).ToList();
-
-				// Aktualizacja oryginalnych list
-				trainingPlanDetailsVM.Indices = sortedIndicesList;
-				trainingPlanDetailsVM.ExerciseVMs = sortedExercises;
-				trainingPlanDetailsVM.ExerciseIds = sortedExerciseIds;
-				trainingPlanDetailsVM.Sets = sortedSets;
-				trainingPlanDetailsVM.Units = sortedUnits;
-				trainingPlanDetailsVM.Weights = sortedWeights;
-				trainingPlanDetailsVM.RestTimes = sortedRestTimes;
-				trainingPlanDetailsVM.Notes = sortedNotes;
-
-			}
-			return trainingPlanDetailsVMs;
 		}
 
 	}

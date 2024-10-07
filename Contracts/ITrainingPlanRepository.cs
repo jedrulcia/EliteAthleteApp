@@ -1,4 +1,5 @@
-﻿using TrainingPlanApp.Web.Data;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models.TrainingPlan;
 
 namespace TrainingPlanApp.Web.Contracts
@@ -31,5 +32,8 @@ namespace TrainingPlanApp.Web.Contracts
 
 		// COPIES A TRAINING PLAN TO ANOTHER TRAINING PLAN WITHIN THE SAME MODULE.
 		Task CopyTrainingPlanToAnother(int copyFromId, int copyToId);
+
+		// GENERATES TRAINING MODULE IN PDF
+		Task<byte[]> GetTrainingModulePDF(List<int> trainingPlanIds);
 	}
 }

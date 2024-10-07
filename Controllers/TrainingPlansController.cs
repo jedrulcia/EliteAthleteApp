@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using PdfSharp.Pdf.Advanced;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
@@ -95,6 +96,14 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			await trainingPlanRepository.ChangeTrainingPlanCompletionStatus(id, status);
 			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });
+		}
+
+		// POST: TrainingPlans/Index/PrintPDF
+		public async Task<IActionResult> PrintPDF(int trainingModuleId)
+		{
+			List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
+			byte[] pdf = await trainingPlanRepository.GetTrainingModulePDF(trainingPlanIds);
+			return File(pdf, "application/pdf", "PlanTreningowy.pdf");
 		}
 
 		// POST: TrainingPlans/ManageExercises/RemoveExercise

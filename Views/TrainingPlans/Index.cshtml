@@ -11,7 +11,8 @@
 {
 	<h1>Training Plans</h1>
 	<p>
-		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>
+		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>&nbsp;
+		<a asp-action="PrintPDF" class="btn btn-danger btn-sm text-white" asp-route-trainingModuleId="@Model.TrainingModuleId">Print PDF</a>
 	</p>
 	<div class="row">
 		<div class="col-md-6">
@@ -83,6 +84,7 @@
 	<h1>Training Plans</h1>
 	<p>
 		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>
+		<a asp-action="PrintPDF" class="btn btn-danger btn-sm text-white" asp-route-trainingModuleId="@Model.TrainingModuleId">Print PDF</a>
 	</p>
 	<div class="row">
 		<div class="col-md-6">
