@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TrainingPlanApp.Web.Models.Ingredient
 {
-	public class IngredientCreateVM
+	public class IngredientVM
 	{
 		// IDs
 		public int? Id { get; set; }
@@ -11,34 +10,31 @@ namespace TrainingPlanApp.Web.Models.Ingredient
 		public string? DieticianId { get; set; }
 
 		// STRINGS etc.
-		[Required]
 		[Display(Name = "Name")]
 		public string? Name { get; set; }
 
 		// MACROS
-		[Required]
+		[Display(Name = "Kcal in 100g")]
+		public int? Kcal { get; set; }
+
 		[Display(Name = "Proteins in 100g")]
-		public decimal? Proteins { get; set; }
+		public decimal Proteins { get; set; }
 
-		[Required]
 		[Display(Name = "Carbohydrates in 100g")]
-		public decimal? Carbohydrates { get; set; }
+		public decimal Carbohydrates { get; set; }
 
-		[Required]
 		[Display(Name = "Fats in 100g")]
-		public decimal? Fats { get; set; }
+		public decimal Fats { get; set; }
 
 		[Display(Name = "Fibre in 100g")]
-		public decimal? Fibres { get; set; }
+		public decimal Fibres { get; set; }
 
 		// NUMBERS
 		[Display(Name = "Suggested Portion (g)")]
 		public int? SuggestedPortion { get; set; }
 
-		// FORM
-		public SelectList? AvailableCategories { get; set; }
-		
 		// OTHER
-		public bool SetAsPublic { get; set; }
+		public IngredientCategoryVM? IngredientCategory { get; set; }
+		public bool? SetAsPublic {  get; set; }
 	}
 }

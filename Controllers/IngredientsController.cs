@@ -10,7 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
+using TrainingPlanApp.Web.Models.Exercise;
 using TrainingPlanApp.Web.Models.Ingredient;
+using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
@@ -31,14 +33,7 @@ namespace TrainingPlanApp.Web.Controllers
         // GET: Ingredients
         public async Task<IActionResult> Index()
         {
-            return View(await ingredientRepository.GetIngredientVM());
-        }
-
-        // GET: Ingredients/Create
-        public async Task<IActionResult> Create()
-		{
-			IngredientCreateVM ingredientCreateVM = new IngredientCreateVM{ AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name")	};
-			return View(ingredientCreateVM);
+            return View(await ingredientRepository.GetIngredientIndexVM());
         }
 
         // POST: Ingredients/Create
@@ -50,55 +45,36 @@ namespace TrainingPlanApp.Web.Controllers
             {
                 await ingredientRepository.CreateIngredient(ingredientCreateVM);
                 return RedirectToAction(nameof(Index));
-            }
-            ingredientCreateVM.AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name");
-			return View(ingredientCreateVM);
-        }
+			}
 
-        // GET: Ingredients/Edit
-        public async Task<IActionResult> Edit(int? id)
-        {
-            var ingredient = await ingredientRepository.GetAsync(id);
-            if (ingredient == null)
-            {
-                return NotFound();
-            }
-            var ingredientCreateVM = mapper.Map<IngredientCreateVM>(ingredient);
-			ingredientCreateVM.AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name");
-			return View(ingredientCreateVM);
-        }
+			TempData["ErrorMessage"] = $"Error while creating the ingredient. Please try again.";
+			return RedirectToAction(nameof(Index));
+		}
 
         // POST: Ingredients/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, IngredientCreateVM ingredientCreateVM)
+        public async Task<IActionResult> Edit(IngredientCreateVM ingredientCreateVM)
         {
-            if (id != ingredientCreateVM.Id)
-            {
-                return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await ingredientRepository.EditIngredient(ingredientCreateVM);
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (await ingredientRepository.Exists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					await ingredientRepository.EditIngredient(ingredientCreateVM);
+					return RedirectToAction(nameof(Index));
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (ingredientCreateVM.Id == null)
+					{
+						return NotFound();
+					}
+				}
 			}
-			ingredientCreateVM.AvailableIngredientCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name");
-			return View(ingredientCreateVM);
-        }
+
+			TempData["ErrorMessage"] = $"Error while editing the ingredient. Please try again.";
+			return RedirectToAction(nameof(Index));
+		}
 
         // POST: Ingredients/Delete
         [HttpPost, ActionName("Delete")]

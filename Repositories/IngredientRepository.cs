@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
@@ -10,22 +12,43 @@ namespace TrainingPlanApp.Web.Repositories
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+		private readonly UserManager<User> userManager;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
-        public IngredientRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+		public IngredientRepository(ApplicationDbContext context, IMapper mapper, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
-        }
+			this.userManager = userManager;
+			this.httpContextAccessor = httpContextAccessor;
+		}
 
 		// GETS THE LIST OF ALL INGREDIENTS WITH COUNTED CALORIES.
-		public async Task<List<IngredientIndexVM>> GetIngredientVM()
+		public async Task<IngredientIndexVM> GetIngredientIndexVM()
 		{
-			var ingredientIndexVM = mapper.Map<List<IngredientIndexVM>>(await GetAllAsync());
-			for (var i = 0; i < ingredientIndexVM.Count; i++)
+			var dietician = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var ingredients = await GetAllAsync();
+
+			var ingredientVMs = mapper.Map<List<IngredientVM>>(ingredients);
+
+			for (var i = 0; i < ingredients.Count; i++)
 			{
-				ingredientIndexVM[i].Kcal = Convert.ToInt16(ingredientIndexVM[i].Proteins * 4 + ingredientIndexVM[i].Carbohydrates * 4 + ingredientIndexVM[i].Fats * 9);
-				ingredientIndexVM[i].IngredientCategory = mapper.Map<IngredientCategoryVM>(await context.Set<IngredientCategory>().FindAsync(ingredientIndexVM[i].IngredientCategoryId));
+				ingredientVMs[i].Kcal = Convert.ToInt16(ingredientVMs[i].Proteins * 4 + ingredientVMs[i].Carbohydrates * 4 + ingredientVMs[i].Fats * 9);
+				ingredientVMs[i].IngredientCategory = mapper.Map<IngredientCategoryVM>(await context.Set<IngredientCategory>().FindAsync(ingredientVMs[i].IngredientCategoryId));
 			}
+
+
+			IngredientIndexVM ingredientIndexVM = new IngredientIndexVM
+			{
+				IngredientVMs = ingredientVMs,
+				DieticianId = dietician.Id,
+				IngredientCreateVM = new IngredientCreateVM
+				{
+					DieticianId = dietician.Id,
+					AvailableCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name")
+				}
+			};
+
 			return ingredientIndexVM;
 		}
 
@@ -42,9 +65,9 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// COUNTS THE MACROS (NUTRIENTS) OF THE SPECIFIED INGREDIENT BASED ON QUANTITY.
-		public async Task<IngredientIndexVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity)
+		public async Task<IngredientVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity)
 		{
-			var ingredientVM = mapper.Map<IngredientIndexVM>(await GetAsync(id));
+			var ingredientVM = mapper.Map<IngredientVM>(await GetAsync(id));
 
 			decimal ingredientMultiplier = ingredientQuantity / (decimal)100.00;
 			ingredientVM.Proteins = Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1);

@@ -15,6 +15,7 @@ namespace TrainingPlanApp.Web.Models.Meal
         public decimal Proteins { get; set; }
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
+        public decimal? Fibres {  get; set; }
 
         // FORM
         public SelectList? AvailableIngredients { get; set; }

@@ -6,13 +6,13 @@ namespace TrainingPlanApp.Web.Contracts
 	public interface IIngredientRepository : IGenericRepository<Ingredient>
 	{
 		// GETS THE LIST OF ALL INGREDIENTS WITH COUNTED CALORIES.
-		Task<List<IngredientIndexVM>> GetIngredientVM();
+		Task<IngredientIndexVM> GetIngredientIndexVM();
 
 		// GETS A LIST OF SPECIFIC INGREDIENTS BASED ON PROVIDED INGREDIENT IDs.
 		Task<List<IngredientIndexVM?>?> GetListOfIngredients(List<int?>? ingredientIds);
 
 		// COUNTS THE MACROS (NUTRIENTS) OF THE SPECIFIED INGREDIENT BASED ON QUANTITY.
-		Task<IngredientIndexVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity);
+		Task<IngredientVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity);
 
 		// CREATES A NEW DATABASE ENTITY IN THE INGREDIENT TABLE.
 		Task CreateIngredient(IngredientCreateVM ingredientVM);

@@ -144,9 +144,9 @@ namespace TrainingPlanApp.Web.Repositories
                     for (int j = 0; j < dietManageMealsVM.Meals[i].IngredientIds.Count; j++)
                     {
 						var ingredientVM = await ingredientRepository.GetMacrosOfIngredient(dietManageMealsVM.Meals[i].IngredientIds[j], dietManageMealsVM.Meals[i].IngredientQuantities[j]);
-                        dietManageMealsVM.MealProteins[i] += ingredientVM.Proteins;
+/*                        dietManageMealsVM.MealProteins[i] += ingredientVM.Proteins;
 						dietManageMealsVM.MealCarbohydrates[i] += ingredientVM.Carbohydrates;
-						dietManageMealsVM.MealFats[i] += ingredientVM.Fats;
+						dietManageMealsVM.MealFats[i] += ingredientVM.Fats;*/
 					}
                     dietManageMealsVM = await MultiplyMealByQuantity(dietManageMealsVM, i);
                     dietManageMealsVM.MealKcal[i] = Convert.ToInt32(dietManageMealsVM.MealProteins[i] * 4 + dietManageMealsVM.MealCarbohydrates[i] * 4 + dietManageMealsVM.MealFats[i] * 9);

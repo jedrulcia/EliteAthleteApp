@@ -16,7 +16,8 @@ namespace TrainingPlanApp.Web.Configurations.Entities
 				new IngredientCategory { Id = 5, Name = "Grains" },
 				new IngredientCategory { Id = 6, Name = "Seafood" },
 				new IngredientCategory { Id = 7, Name = "Fats and Oils" },
-				new IngredientCategory { Id = 8, Name = "Nuts and Seeds" }
+				new IngredientCategory { Id = 8, Name = "Nuts and Seeds" },
+				new IngredientCategory { Id = 9, Name = " " }
 			);
 		}
 	}

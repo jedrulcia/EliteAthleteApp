@@ -1,101 +1,399 @@
 ﻿@using TrainingPlanApp.Web.Models.Ingredient
 @using TrainingPlanApp.Web.Constants
 
-@model IEnumerable<IngredientIndexVM>
+@model IngredientIndexVM
 
 @{
 	ViewData["Title"] = "Index";
+	var errorMessage = TempData["ErrorMessage"] as string;
 }
 
-<h1>Ingredients</h1>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<h1>All Ingredients</h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Name)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().IngredientCategory.Name)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Kcal)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Proteins)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Carbohydrates)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Fats)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Fibres)
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.IngredientVMs)
+					{
+						if (item.DieticianId == null)
+						{
+							<tr>
+								<td>
+									@Html.DisplayFor(modelItem => item.Name)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.IngredientCategory.Name)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Kcal)
+								</td>
+								<td>
+									@item.Proteins.ToString("F1")
+								</td>
+								<td>
+									@item.Carbohydrates.ToString("F1")
+								</td>
+								<td>
+									@item.Fats.ToString("F1")
+								</td>
+								<td>
+									@item.Fibres.ToString("F1")
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<h1>My Ingredients <button data-createdieticianid="@Model.DieticianId" class="btn btn-primary btn-sm createBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New</button></h1>
+			@if (!string.IsNullOrEmpty(errorMessage))
+			{
+				<div class="alert alert-danger">
+					@errorMessage
+				</div>
+			}
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Name)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().IngredientCategory.Name)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Kcal)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Proteins)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Carbohydrates)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Fats)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.IngredientVMs.FirstOrDefault().Fibres)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.IngredientVMs)
+					{
+						if (item.DieticianId == Model.DieticianId)
+						{
+							<tr>
+								<td>
+									@Html.DisplayFor(modelItem => item.Name)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.IngredientCategory.Name)
+								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.Kcal)
+								</td>
+								<td>
+									@item.Proteins.ToString("F1")
+								</td>
+								<td>
+									@item.Carbohydrates.ToString("F1")
+								</td>
+								<td>
+									@item.Fats.ToString("F1")
+								</td>
+								<td>
+									@item.Fibres.ToString("F1")
+								</td>
+								<td>
+									<button data-editingredientid="@item.Id"
+											data-editdieticianid="@item.DieticianId"
+											data-editingredientcategoryid="@item.IngredientCategoryId"
+											data-editname="@item.Name"
+											data-editproteins="@item.Proteins"
+											data-editcarbohydrates="@item.Carbohydrates"
+											data-editfats="@item.Fats"
+											data-editfibres="@item.Fibres"
+											data-editsuggestedportion="@item.SuggestedPortion"
+											data-editsetaspublic="@item.SetAsPublic"
+											class="btn btn-primary btn-sm editBtn" type="button">
+										<i class="fa-solid fa-pen">&nbsp;</i>Edit
+									</button>
+									<button data-deleteingredientid="@item.Id"
+											data-deleteingredientname="@item.Name"
+											class="btn btn-danger btn-sm deleteBtn" type="button">
+										<i class="fa-solid fa-trash">&nbsp;</i>Delete
+									</button>
+								</td>
+							</tr>
+						}
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 
-<p>
-	<a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus">&nbsp;</i>Create New</a>
-</p>
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Name)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.IngredientCategory.Name)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Kcal)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Proteins)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Carbohydrates)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Fats)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.IngredientCategory.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Kcal)
-				</td>
-				<td>
-					@item.Proteins.ToString("F1")
-				</td>
-				<td>
-					@item.Carbohydrates.ToString("F1")
-				</td>
-				<td>
-					@item.Fats.ToString("F1")
-				</td>
-				<td class="text-end">
-					<a asp-action="Edit" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit</a>
-					<button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+<!-- MODAL FOR INGREDIENT CREATE -->
+<div class="modal fade" id="createIngredientModal" tabindex="-1" role="dialog" aria-labelledby="createIngredientModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="createIngredientModalLabel">Create New Ingredient</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="createForm" asp-action="Create" method="post">
+					<input type="hidden" name="IngredientCreateVM.DieticianId" value="@Model.DieticianId" />
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Name" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Name" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Name" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.IngredientCategoryId" class="control-label"></label>
+						<select asp-for="IngredientCreateVM.IngredientCategoryId" asp-items="@Model.IngredientCreateVM.AvailableCategories" class="form-select">
+						</select>
+						<span asp-validation-for="IngredientCreateVM.IngredientCategoryId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Proteins" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Proteins" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Proteins" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Carbohydrates" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Carbohydrates" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Carbohydrates" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Fats" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Fats" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Fats" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Fibres" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Fibres" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Fibres" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.SuggestedPortion" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.SuggestedPortion" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.SuggestedPortion" class="text-danger"></span>
+					</div>
+					<div class="form-group form-check">
+						<input type="checkbox" asp-for="IngredientCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+						<label class="form-check-label" asp-for="IngredientCreateVM.SetAsPublic">Set as public</label>
+						<span asp-validation-for="IngredientCreateVM.SetAsPublic" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" id="confirmCreateBtn">Create</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 
-<form id="deleteForm" asp-action="Delete">
-	<input type="hidden" id="ingredientId" name="Id" />
-</form>
+<!-- MODAL FOR INGREDIENT EDIT -->
+<div class="modal fade" id="editIngredientModal" tabindex="-1" role="dialog" aria-labelledby="editIngredientModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editIngredientModalLabel">Edit Ingredient</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="editForm" asp-action="Edit" method="post">
+					<input type="hidden" id="editIngredientId" name="IngredientCreateVM.Id" />
+					<input type="hidden" value="@Model.DieticianId" name="IngredientCreateVM.DieticianId" />
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Name" class="control-label"></label>
+						<input id="editName" class="form-control" name="IngredientCreateVM.Name" />
+						<span asp-validation-for="IngredientCreateVM.Name" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.IngredientCategoryId" class="control-label"></label>
+						<select id="editIngredientCategoryId" name="IngredientCreateVM.IngredientCategoryId" class="form-select">
+							@foreach (var category in Model.IngredientCreateVM.AvailableCategories)
+							{
+								<option value="@category.Value">@category.Text</option>
+							}
+						</select>
+						<span asp-validation-for="IngredientCreateVM.IngredientCategoryId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Proteins" class="control-label"></label>
+						<input id="editProteins" class="form-control" name="IngredientCreateVM.Proteins" />
+						<span asp-validation-for="IngredientCreateVM.Proteins" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Carbohydrates" class="control-label"></label>
+						<input id="editCarbohydrates" class="form-control" name="IngredientCreateVM.Carbohydrates" />
+						<span asp-validation-for="IngredientCreateVM.Carbohydrates" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Fats" class="control-label"></label>
+						<input id="editFats" class="form-control" name="IngredientCreateVM.Fats" />
+						<span asp-validation-for="IngredientCreateVM.Fats" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Fibres" class="control-label"></label>
+						<input id="editFibres" class="form-control" name="IngredientCreateVM.Fibres" />
+						<span asp-validation-for="IngredientCreateVM.Fibres" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.SuggestedPortion" class="control-label"></label>
+						<input id="editSuggestedPortion" class="form-control" name="IngredientCreateVM.SuggestedPortion" />
+						<span asp-validation-for="IngredientCreateVM.SuggestedPortion" class="text-danger"></span>
+					</div>
+					<div class="form-group form-check">
+						<input type="checkbox" asp-for="IngredientCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+						<label class="form-check-label" asp-for="IngredientCreateVM.SetAsPublic">Set as public</label>
+						<span asp-validation-for="IngredientCreateVM.SetAsPublic" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" id="confirmEditBtn">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR INGREDIENT DELETE -->
+<div class="modal fade" id="deleteIngredientModal" tabindex="-1" role="dialog" aria-labelledby="deleteIngredientModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteIngredientModalLabel">Delete</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="deleteForm" asp-action="Delete">
+					<input type="hidden" id="deleteIngredientId" name="Id" />
+					<p>Are you sure you want to delete this ingredient?</p>
+					<h5 id="deleteIngredientName"></h5>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 @section Scripts
 {
 	<script>
 		$(function () {
+			// DATATABLE INITIALIZE
 			$('.table').DataTable();
 
-			$('.deleteBtn').click(function (e) {
-				swal(
-					{
-						title: "Are you sure?",
-						text: "Are you sure you want to delete this record?",
-						icon: "warning",
-						buttons: true,
-						dangerMode: true
-					}
-				).then((confirm) => {
-					if (confirm) {
-						var btn = $(this);
-						var id = btn.data("id");
-						$('#ingredientId').val(id);
-						$('#deleteForm').submit();
-					}
-				}
-				);
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
 			});
+
+			// SCRIPT TO HANDLE CREATING INGREDIENTS
+			$(document).on('click', '.createBtn', function () {
+				var btn = $(this);
+				var createDieticianId = btn.data("createdieticianid");
+
+				$('#createDieticianId').val(createDieticianId);
+
+				$('#createIngredientModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE CREATING CONFIRMATION
+			$(document).on('click', '#confirmCreateBtn', function () {
+				$('#createForm').submit();
+			});
+
+			// SCRIPT TO HANDLE EDITING INGREDIENTS
+			$(document).on('click', '.editBtn', function () {
+				var btn = $(this);
+				var editIngredientId = btn.data("editingredientid");
+				var editDieticianId = btn.data("editdieticianid");
+				var editIngredientCategoryId = btn.data("editingredientcategoryid");
+				var editName = btn.data("editname");
+				var editProteins = btn.data("editproteins");
+				var editCarbohydrates = btn.data("editcarbohydrates");
+				var editFats = btn.data("editfats");
+				var editFibres = btn.data("editfibres");
+				var editSuggestedPortion = btn.data("editsuggestedportion");
+				var editSetAsPublic = btn.data("editsetaspublic");
+
+				$('#editIngredientId').val(editIngredientId);
+				$('#editDieticianId').val(editDieticianId);
+				$('#editIngredientCategoryId').val(editIngredientCategoryId);
+				$('#editName').val(editName);
+				$('#editProteins').val(editProteins);
+				$('#editCarbohydrates').val(editCarbohydrates);
+				$('#editFats').val(editFats);
+				$('#editFibres').val(editFibres);
+				$('#editSuggestedPortion').val(editSuggestedPortion);
+				$('#editSetAsPublic').val(editSetAsPublic);
+
+				$('#editIngredientModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE EDITING CONFIRMATION
+			$(document).on('click', '#confirmEditBtn', function () {
+				$('#editForm').submit();
+			});
+
+			// SCRIPT TO HANDLE DELETING INGREDIENT
+			$(document).on('click', '.deleteBtn', function () {
+				var btn = $(this);
+				var deleteIngredientId = btn.data("deleteingredientid");
+				var deleteIngredientName = btn.data("deleteingredientname");
+
+				$('#deleteIngredientId').val(deleteIngredientId);
+				$('#deleteIngredientName').text(deleteIngredientName);
+
+				$('#deleteIngredientModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE DELETE CONFIRMATION
+			$(document).on('click', '#confirmDeleteBtn', function () {
+				$('#deleteForm').submit();
+			});
+
 		});
 	</script>
 }
