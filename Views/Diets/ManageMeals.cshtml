@@ -55,8 +55,8 @@
 						var index = i + (j * 5);
 						<td>
 							@if (index < Model.MealIds.Count && Model.MealIds[index] != null)
-							{
-								<text>@Model.Meals[index].Name</text>
+							{@* 
+								<text>@Model.Meals[index].Name</text> *@
 								<button data-dietid="@Model.Id" data-index="@index" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i></button>
 								<p>Kcal: @Model.MealKcal[index]</p>
 								<p>P: @Model.MealProteins[index] C: @Model.MealCarbohydrates[index] F: @Model.MealFats[index]</p>

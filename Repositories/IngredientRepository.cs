@@ -73,6 +73,7 @@ namespace TrainingPlanApp.Web.Repositories
 			ingredientVM.Proteins = Math.Round(ingredientVM.Proteins * ingredientMultiplier, 1);
 			ingredientVM.Carbohydrates = Math.Round(ingredientVM.Carbohydrates * ingredientMultiplier, 1);
 			ingredientVM.Fats = Math.Round(ingredientVM.Fats * ingredientMultiplier, 1);
+			ingredientVM.Fibres = Math.Round(ingredientVM.Fibres * ingredientMultiplier, 1);
 			ingredientVM.Kcal = (Convert.ToInt16(ingredientVM.Proteins * 4 + ingredientVM.Carbohydrates * 4 + ingredientVM.Fats * 9));
 
 			return ingredientVM;

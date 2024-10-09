@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
@@ -12,13 +13,22 @@ namespace TrainingPlanApp.Web.Repositories
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
 		private readonly IIngredientRepository ingredientRepository;
+        private readonly UserManager<User> userManager;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-		public MealRepository(ApplicationDbContext context, IMapper mapper, IIngredientRepository ingredientRepository) : base(context)
+        public MealRepository(
+			ApplicationDbContext context, 
+			IMapper mapper, 
+			IIngredientRepository ingredientRepository, 
+			UserManager<User> userManager, 
+			IHttpContextAccessor httpContextAccessor) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.ingredientRepository = ingredientRepository;
-		}
+            this.userManager = userManager;
+            this.httpContextAccessor = httpContextAccessor;
+        }
 
         // Creates new database entity in Meal table
         public async Task CreateMeal(MealCreateVM mealCreateVM)
@@ -39,9 +49,11 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
         // Gets the Meal IndexVM - mainly counts the calories and macros of the meals
-        public async Task<List<MealIndexVM>> GetMealIndexVM()
+        public async Task<MealIndexVM> GetMealIndexVM()
         {
-            var mealsVM = mapper.Map<List<MealIndexVM>>(await GetAllAsync());
+
+
+            var mealsVM = mapper.Map<List<MealVM>>(await GetAllAsync());
             for (int i = 0; i < mealsVM.Count; i++)
 			{
 				mealsVM[i].Proteins = 0;
@@ -56,7 +68,17 @@ namespace TrainingPlanApp.Web.Repositories
 				}
 				mealsVM[i].Kcal = Convert.ToInt16(mealsVM[i].Proteins * 4 + mealsVM[i].Carbohydrates * 4 + mealsVM[i].Fats * 9);
 			}
-			return mealsVM;
+
+			var dietician = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+
+			var mealIndexVM = new MealIndexVM
+			{
+				MealVMs = mealsVM,
+				MealCreateVM = new MealCreateVM(),
+				DieticianId = dietician.Id
+			};
+
+			return mealIndexVM;
         }
 
         // Gets the MealDetailsVM

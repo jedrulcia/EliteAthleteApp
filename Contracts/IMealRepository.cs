@@ -12,7 +12,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task EditMeal(MealCreateVM mealCreateVM);
 
 		// GETS THE MEAL INDEX VIEW MODEL, MAINLY COUNTING CALORIES AND MACROS OF MEALS.
-		Task<List<MealIndexVM>> GetMealIndexVM();
+		Task<MealIndexVM> GetMealIndexVM();
 
 		// GETS THE MEAL DETAILS VIEW MODEL FOR THE SPECIFIED MEAL.
 		Task<MealDetailsVM> GetMealDetailsVM(Meal meal);

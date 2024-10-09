@@ -8,6 +8,7 @@ namespace TrainingPlanApp.Web.Models.Meal
     {
         // IDs
         public int? Id { get; set; }
+        public string? DieticianId { get; set; }
 
         // STRINGS etc.
         [Display(Name = "Name")]
