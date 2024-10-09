@@ -33,9 +33,11 @@ namespace TrainingPlanApp.Web.Repositories
         // Creates new database entity in Meal table
         public async Task CreateMeal(MealCreateVM mealCreateVM)
 		{
+			var dietician = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			var meal = mapper.Map<Meal>(mealCreateVM);
             meal.IngredientIds = new List<int?>();
             meal.IngredientQuantities = new List<int?>();
+			meal.DieticianId = dietician.Id;
             await AddAsync(meal);
 		}
 
@@ -51,8 +53,6 @@ namespace TrainingPlanApp.Web.Repositories
         // Gets the Meal IndexVM - mainly counts the calories and macros of the meals
         public async Task<MealIndexVM> GetMealIndexVM()
         {
-
-
             var mealsVM = mapper.Map<List<MealVM>>(await GetAllAsync());
             for (int i = 0; i < mealsVM.Count; i++)
 			{

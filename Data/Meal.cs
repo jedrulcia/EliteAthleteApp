@@ -15,5 +15,8 @@ namespace TrainingPlanApp.Web.Data
 
 		// NUMBERS
         public List<int?>? IngredientQuantities { get; set; }
+
+		// OTHER
+		public bool SetAsPublic {  get; set; }
 	}
 }

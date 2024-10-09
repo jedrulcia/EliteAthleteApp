@@ -11,8 +11,10 @@ namespace TrainingPlanApp.Web.Models.Meal
 		//STRINGS etc.
 		[Display(Name = "Name")]
 		public string? Name { get; set; }
+		public string? Recipe {  get; set; }
 
 		// MACROS
+		[Display(Name = "Kcal")]
 		public int? Kcal { get; set; }
 		public decimal Proteins { get; set; }
 		public decimal Carbohydrates { get; set; }

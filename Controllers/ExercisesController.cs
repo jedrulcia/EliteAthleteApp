@@ -49,7 +49,7 @@ namespace TrainingPlanApp.Web.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 
-			TempData["ErrorMessage"] = $"Error while editing the exercise. Please try again.";
+			TempData["ErrorMessage"] = $"Error while creating the exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 

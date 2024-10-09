@@ -12,10 +12,14 @@ namespace TrainingPlanApp.Web.Models.Meal
 
         // STRINGS etc.
         [Display(Name = "Name")]
+        [Required]
         public string? Name { get; set; }
 
         [Display(Name = "Recipe")]
         public string? Recipe { get; set; }
+
+        // OTHER 
+        public bool SetAsPublic { get; set; }
 
     }
 }

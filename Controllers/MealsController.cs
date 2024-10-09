@@ -50,12 +50,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealDetailsVM);
 		}
 
-		// GET: Meals/Create
-		public IActionResult Create()
-		{
-			return View();
-		}
-
 		// POST: Meals/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -66,36 +60,8 @@ namespace TrainingPlanApp.Web.Controllers
 				await mealRepository.CreateMeal(mealCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
-			return View(mealCreateVM);
-		}
-
-		// GET: Meals/ManageIngredients
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ManageIngredients(int? id)
-		{
-			var mealManageIngredientsVM = await mealRepository.GetMealManageIngredientsVM(id);
-			return View(mealManageIngredientsVM);
-		}
-
-		// POST: Meals/ManageIngredients
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ManageIngredients(MealManageIngredientsVM mealManageIngredientsVM)
-		{
-			return View(await mealRepository.AddIngredientToMeal(mealManageIngredientsVM));
-		}
-
-		// GET: Meals/Edit
-		public async Task<IActionResult> Edit(int? id)
-		{
-			var meal = await mealRepository.GetAsync(id);
-			if (meal == null)
-			{
-				return NotFound();
-			}
-			var mealCreateVM = mapper.Map<MealCreateVM>(meal);
-			return View(mealCreateVM);
+			TempData["ErrorMessage"] = $"Error while creating the meal. Please try again.";
+			return RedirectToAction(nameof(Index));
 		}
 
 		// POST: Meals/Edit
@@ -126,7 +92,25 @@ namespace TrainingPlanApp.Web.Controllers
 				}
 				return RedirectToAction(nameof(Index));
 			}
+			TempData["ErrorMessage"] = $"Error while editing the meal. Please try again.";
 			return View(mealCreateVM);
+		}
+
+		// GET: Meals/ManageIngredients
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> ManageIngredients(int? id)
+		{
+			var mealManageIngredientsVM = await mealRepository.GetMealManageIngredientsVM(id);
+			return View(mealManageIngredientsVM);
+		}
+
+		// POST: Meals/ManageIngredients
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator)]
+		public async Task<IActionResult> ManageIngredients(MealManageIngredientsVM mealManageIngredientsVM)
+		{
+			return View(await mealRepository.AddIngredientToMeal(mealManageIngredientsVM));
 		}
 
 		// POST: Meals/Delete
