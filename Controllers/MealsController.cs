@@ -57,10 +57,6 @@ namespace TrainingPlanApp.Web.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(int id, MealCreateVM mealCreateVM)
 		{
-			if (id != mealCreateVM.Id)
-			{
-				return NotFound();
-			}
 			if (ModelState.IsValid)
 			{
 				try
@@ -78,10 +74,10 @@ namespace TrainingPlanApp.Web.Controllers
 						throw;
 					}
 				}
-				return RedirectToAction(nameof(ManageIngredients));
+				return RedirectToAction(nameof(Index));
 			}
 			TempData["ErrorMessage"] = $"Error while editing the meal. Please try again.";
-			return RedirectToAction(nameof(ManageIngredients));
+			return RedirectToAction(nameof(Index));
 		}
 
 		// POST: Meals/Delete
