@@ -38,18 +38,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealsVM);
 		}
 
-		// GET: Meals/Details
-		public async Task<IActionResult> Details(int? id)
-		{
-			var meal = await mealRepository.GetAsync(id.Value);
-			if (meal == null)
-			{
-				return NotFound();
-			}
-			var mealDetailsVM = await mealRepository.GetMealDetailsVM(meal);
-			return View(mealDetailsVM);
-		}
-
 		// POST: Meals/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -90,10 +78,19 @@ namespace TrainingPlanApp.Web.Controllers
 						throw;
 					}
 				}
-				return RedirectToAction(nameof(Index));
+				return RedirectToAction(nameof(ManageIngredients));
 			}
 			TempData["ErrorMessage"] = $"Error while editing the meal. Please try again.";
-			return View(mealCreateVM);
+			return RedirectToAction(nameof(ManageIngredients));
+		}
+
+		// POST: Meals/Delete
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			await mealRepository.DeleteAsync(id);
+			return RedirectToAction(nameof(Index));
 		}
 
 		// GET: Meals/ManageIngredients
@@ -104,22 +101,14 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealManageIngredientsVM);
 		}
 
-		// POST: Meals/ManageIngredients
-		[HttpPost]
+		// POST: Meals/ManageIngredients/AddIngredient
+		[HttpPost, ActionName("AddIngredient")]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator)]
-		public async Task<IActionResult> ManageIngredients(MealManageIngredientsVM mealManageIngredientsVM)
+		public async Task<IActionResult> AddIngredient(MealManageIngredientsVM mealManageIngredientsVM)
 		{
-			return View(await mealRepository.AddIngredientToMeal(mealManageIngredientsVM));
-		}
-
-		// POST: Meals/Delete
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
-		{
-			await mealRepository.DeleteAsync(id);
-			return RedirectToAction(nameof(Index));
+			await mealRepository.AddIngredientToMeal(mealManageIngredientsVM);
+			return RedirectToAction(nameof(ManageIngredients), new { id = mealManageIngredientsVM.Id });
 		}
 
 		// POST: Meals/ManageIngredients/RemoveIngredient

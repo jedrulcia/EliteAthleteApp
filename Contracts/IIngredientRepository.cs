@@ -9,7 +9,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task<IngredientIndexVM> GetIngredientIndexVM();
 
 		// GETS A LIST OF SPECIFIC INGREDIENTS BASED ON PROVIDED INGREDIENT IDs.
-		Task<List<IngredientIndexVM?>?> GetListOfIngredients(List<int?>? ingredientIds);
+		Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds);
 
 		// COUNTS THE MACROS (NUTRIENTS) OF THE SPECIFIED INGREDIENT BASED ON QUANTITY.
 		Task<IngredientVM?> GetMacrosOfIngredient(int? id, int ingredientQuantity);

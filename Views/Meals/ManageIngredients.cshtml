@@ -5,34 +5,22 @@
 
 @{
 	ViewData["Title"] = "ManageIngredients";
+	var errorMessage = TempData["ErrorMessage"] as string;
 }
 
-<h1>Manage Ingredients</h1>
+<h1>Manage Exercises</h1>
 
-<div class="row">
-	<div class="col-md-12">
-		<form asp-action="ManageIngredients">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group col-md-4">
-				<label asp-for="NewIngredientId" class="control-label"></label>
-				<select asp-for="NewIngredientId" asp-items="Model?.AvailableIngredients" class="form-select">
-					<option>Select Ingredient</option>
-				</select>
-				<span asp-validation-for="NewIngredientId" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-12">
-				<label asp-for="NewIngredientQuantity" class="control-label"></label>
-				<input asp-for="NewIngredientQuantity" class="form-control" />
-				<span asp-validation-for="NewIngredientQuantity" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-					<a asp-action="Index" class="btn btn-dark">Back to List</a>&nbsp;
-				<input type="submit" value="Add" class="btn btn-primary" />
-			</div>
-		</form>
+<p>
+	<a asp-action="Index" class="btn btn-dark btn-sm">Back to List</a>&nbsp;
+	<button class="btn btn-primary btn-sm addBtn" data-addmealid="@Model.Id" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Ingredient</button>
+</p>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
 	</div>
-</div>
-
+}
 <table class="table">
 	<thead>
 		<tr>
@@ -43,45 +31,50 @@
 				@Html.DisplayNameFor(model => model.IngredientQuantities)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.IngredientKcal)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.IngredientProteins)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.IngredientCarbohydrates)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.IngredientFats)
 			</th>
-
+			<th>
+			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		@for (int i = 0; i < Model.IngredientIds.Count; i++)
 		{
-			<tr>@* 
+			<tr>
 				<td>
 					@Html.DisplayFor(modelItem => Model.Ingredients[i].Name)
-				</td> *@
+				</td>
 				<td>
 					@Html.DisplayFor(modelItem => Model.IngredientQuantities[i])
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => Model.IngredientKcal[i])
+					Kcal: @Html.DisplayFor(modelItem => Model.IngredientKcal[i])
 				</td>
 				<td>
-					@Model.IngredientProteins[i].ToString("F1")
+					Proteins: @Model.IngredientProteins[i].ToString("F1")
 				</td>
 				<td>
-					@Model.IngredientCarbohydrates[i].ToString("F1")
+					Carbs: @Model.IngredientCarbohydrates[i].ToString("F1")
 				</td>
 				<td>
-					@Model.IngredientFats[i].ToString("F1")
+					Fats: @Model.IngredientFats[i].ToString("F1")
+				</td>
+				<td>
+					Fibres: @Model.IngredientFibres[i].ToString("F1")
 				</td>
 				<td class="text-end">
-					<button data-mealid="@Model.Id" data-index="@i" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+					<button data-removemealid="@Model.Id"
+							data-removeindex="@i"
+							data-removename="@Model.Ingredients[i].Name"
+							class="btn btn-danger btn-sm removeBtn" type="button">
+						<i class="fa-solid fa-trash">&nbsp;</i>Remove
+					</button>
 				</td>
 			</tr>
 		}
@@ -93,62 +86,131 @@
 				<Strong></Strong>
 			</td>
 			<td>
-				<Strong>@Html.DisplayFor(model => model.Kcal)</Strong>
+				<Strong>Kcal: @Html.DisplayFor(model => model.Kcal)</Strong>
 			</td>
 			<td>
-				<Strong>@Model.Proteins.ToString("F1")</Strong>
+				<Strong>Proteins: @Model.Proteins.ToString("F1")</Strong>
 			</td>
 			<td>
-				<Strong>@Model.Carbohydrates.ToString("F1")</Strong>
+				<Strong>Carbs: @Model.Carbohydrates.ToString("F1")</Strong>
 			</td>
 			<td>
-				<Strong>@Model.Fats.ToString("F1")</Strong>
+				<Strong>Fats: @Model.Fats.ToString("F1")</Strong>
+			</td>
+			<td>
+				<Strong>Fibres: @Model.Fibres.ToString("F1")</Strong>
 			</td>
 			<td></td>
 		</tr>
 	</tbody>
 </table>
 
-<form id="deleteForm" asp-action="RemoveIngredient">
-	<input type="hidden" id="mealId" name="mealId" />
-	<input type="hidden" id="index" name="index" />
-</form>
+
+<!-- MODAL FOR ADDING INGREDIENT -->
+<div class="modal fade" id="addIngredientModal" tabindex="-1" role="dialog" aria-labelledby="addIngredientModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addIngredientModalLabel">Add Ingredient</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="addForm" asp-action="AddIngredient" method="post">
+					<input type="hidden" name="Id" id="addMealId" />
+					<div class="form-group">
+						<label asp-for="NewIngredientId" class="control-label"></label>
+						<select asp-for="NewIngredientId" asp-items="Model?.AvailableIngredients" class="form-select">
+							<option>Select exercise</option>
+						</select>
+						<span asp-validation-for="NewIngredientId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="NewIngredientQuantity" class="control-label"></label>
+						<input asp-for="NewIngredientQuantity" class="form-control" />
+						<span asp-validation-for="NewIngredientQuantity" class="text-danger"></span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="confirmAddBtn">Add</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
 
 
-@* <table class="table">
-	<thead>
-	</thead>
-	<tbody>
-		<tr>
-		</tr>
-	</tbody>
-</table>
- *@
+<!-- MODAL FOR INGREDIENT REMOVE -->
+<div class="modal fade" id="removeIngredientModal" tabindex="-1" role="dialog" aria-labelledby="removeIngredientModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="removeIngredientModalLabel">Remove Ingredient</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="removeForm" asp-action="RemoveIngredient">
+					<input type="hidden" name="mealId" id="removeMealId" />
+					<input type="hidden" name="index" id="removeIndex" />
+					<p>Are you sure you want to remove this ingredient?</p>
+					<h5 id="removeName"></h5>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" id="confirmRemoveBtn">Remove</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Scripts
 {
 	<script>
 		$(function () {
+			// DATATABLE INITIALIZE
+			$('.table').DataTable();
 
-			$('.deleteBtn').click(function (e) {
-				swal(
-					{
-						title: "Are you sure?",
-						text: "Are you sure you want to delete this record?",
-						icon: "warning",
-						buttons: true,
-						dangerMode: true
-					}
-				).then((confirm) => {
-					if (confirm) {
-						var btn = $(this);
-						var mealId = btn.data("mealid");
-						var index = btn.data("index");
-						$('#mealId').val(mealId);
-						$('#index').val(index);
-						$('#deleteForm').submit();
-					}
-				}
-				);
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
+			});
+
+			// SCRIPT TO HANDLE ADDING EXERCISES TO MEAL
+			$(document).on('click', '.addBtn', function () {
+				var btn = $(this);
+				var addMealId = btn.data("addmealid");
+
+				$('#addMealId').val(addMealId);
+
+				$('#addIngredientModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE ADDING MEAL TO MEAL
+			$(document).on('click', '#confirmAddBtn', function () {
+				$('#addForm').submit();
+			});
+
+			// SCRIPT TO HANDLE REMOVING INGREDIENT FROM MEAL
+			$(document).on('click', '.removeBtn', function () {
+				var btn = $(this);
+				var removeMealId = btn.data("removemealid");
+				var removeIndex = btn.data("removeindex");
+				var removeName = btn.data("removename");
+
+
+				$('#removeMealId').val(removeMealId);
+				$('#removeIndex').val(removeIndex);
+				$('#removeName').text(removeName);
+
+				$('#removeIngredientModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE REMOVING INGREDIENT FROM MEAL
+			$(document).on('click', '#confirmRemoveBtn', function () {
+				$('#removeForm').submit();
 			});
 		});
 	</script>

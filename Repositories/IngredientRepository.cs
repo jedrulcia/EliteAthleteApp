@@ -53,12 +53,12 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// GETS A LIST OF SPECIFIC INGREDIENTS BASED ON PROVIDED INGREDIENT IDs.
-		public async Task<List<IngredientIndexVM?>?> GetListOfIngredients(List<int?>? ingredientIds)
+		public async Task<List<IngredientVM?>?> GetListOfIngredients(List<int?>? ingredientIds)
 		{
-			List<IngredientIndexVM> ingredients = new List<IngredientIndexVM>();
+			List<IngredientVM> ingredients = new List<IngredientVM>();
 			foreach (int id in ingredientIds)
 			{
-				var ingredientVM = mapper.Map<IngredientIndexVM>(await GetAsync(id));
+				var ingredientVM = mapper.Map<IngredientVM>(await GetAsync(id));
 				ingredients.Add(ingredientVM);
 			}
 			return ingredients;
