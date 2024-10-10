@@ -367,47 +367,77 @@ namespace TrainingPlanApp.Web.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Meats"
+                            Name = " "
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Dairy"
+                            Name = "Meats"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Vegetables"
+                            Name = "Dairy"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Fruits"
+                            Name = "Vegetables"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Grains"
+                            Name = "Fruits"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Seafood"
+                            Name = "Grains"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Fats and Oils"
+                            Name = "Seafood"
                         },
                         new
                         {
                             Id = 8,
-                            Name = "Nuts and Seeds"
+                            Name = "Fats and Oils"
                         },
                         new
                         {
                             Id = 9,
-                            Name = " "
+                            Name = "Nuts and Seeds"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Herbs and Spices"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Legumes"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Baked Goods"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Pasta and Noodles"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Snacks"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Sweets"
                         });
                 });
 
@@ -428,6 +458,9 @@ namespace TrainingPlanApp.Web.Migrations
                     b.Property<string>("IngredientQuantities")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("MealCategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -440,6 +473,105 @@ namespace TrainingPlanApp.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Meals");
+                });
+
+            modelBuilder.Entity("TrainingPlanApp.Web.Data.MealCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MealCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = " "
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Vegetarian"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Vegan"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Gluten-Free"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Low-Calorie"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "High-Protein"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Low-Carb"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Paleo"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Ketogenic"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Dairy-Free"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Sugar-Free"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Raw"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "With Superfoods"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Diet-Friendly"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Functional"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Allergen-Free"
+                        });
                 });
 
             modelBuilder.Entity("TrainingPlanApp.Web.Data.TrainingModule", b =>
@@ -614,7 +746,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d5639099-1e69-40da-8b97-53a5b831157d",
+                            ConcurrencyStamp = "be70217d-cfde-4a71-90f6-5ca956ac4f52",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -622,9 +754,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBNbQtk/Dvw99VuRePOgdL8HZasgsOwKqE9ZZ+NLq+PVh1KDTlByGTWF4jCI9QkmjA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF1NJv3nftYVnf1Qlj1f/1X1xpDAG5orvPsqRojx42l9F6OAIaiVPSEavh3rvLbvwQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0999cac1-b9a3-4ccc-b6a3-43ce706acaca",
+                            SecurityStamp = "aad83215-6330-463d-95fc-74e62a0b75cb",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -632,7 +764,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6e874840-c5e8-49ed-8990-223806574af5",
+                            ConcurrencyStamp = "c9774661-2f07-4c2a-afda-20c94d6e4b46",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -640,9 +772,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC4stfe8dtlOqp/L7qJB0g3qLjktxKabShXL9HHGW5rbFbHoW086US5IVfZ6EpFh9w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEInMuggnweEQ4vQYNo1fVwQxToVsUnMoOij/duPq3f2VSleu0OaxdtGqV5EZ0KVkCQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "771fa703-1efe-4bdf-9e46-1be551e6c4e2",
+                            SecurityStamp = "baaa9148-e6af-4e91-8ebb-e95247d3d703",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         });

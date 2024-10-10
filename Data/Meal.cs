@@ -8,6 +8,7 @@ namespace TrainingPlanApp.Web.Data
         public int? Id { get; set; }
 		public List<int?>? IngredientIds { get; set; }
 		public string? DieticianId { get; set; }
+		public int? MealCategoryId { get; set; }
 
 		// STRINGS etc.
 		public string? Name { get; set; }

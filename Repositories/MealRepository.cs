@@ -48,6 +48,7 @@ namespace TrainingPlanApp.Web.Repositories
 			var meal = await GetAsync(mealCreateVM.Id);
 			meal.Name = mealCreateVM.Name;
 			meal.Recipe = mealCreateVM.Recipe;
+			meal.MealCategoryId = mealCreateVM.MealCategoryId;
 			await UpdateAsync(meal);
 		}
 
@@ -70,15 +71,21 @@ namespace TrainingPlanApp.Web.Repositories
 					mealVMs[i].Fibres += ingredientVM.Fibres;
 				}
 				mealVMs[i].Kcal = Convert.ToInt16(mealVMs[i].Proteins * 4 + mealVMs[i].Carbohydrates * 4 + mealVMs[i].Fats * 9);
+				mealVMs[i].MealCategory = mapper.Map<MealCategoryVM>(await context.Set<MealCategory>().FindAsync(mealVMs[i].MealCategoryId));
 			}
 
 			var dietician = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 
+
+
 			var mealIndexVM = new MealIndexVM
 			{
 				MealVMs = mealVMs,
-				MealCreateVM = new MealCreateVM(),
-				DieticianId = dietician.Id
+				DieticianId = dietician.Id,
+				MealCreateVM = new MealCreateVM
+				{
+					AvailableCategories = new SelectList(context.MealCategories.OrderBy(e => e.Name), "Id", "Name")
+				}
 			};
 
 			return mealIndexVM;
@@ -94,6 +101,7 @@ namespace TrainingPlanApp.Web.Repositories
 			mealManageIngredientsVM = await GetMacrosOfMeal(mealManageIngredientsVM);*/
 			var dietician = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			mealManageIngredientsVM.DieticianId = dietician.Id;
+			mealManageIngredientsVM.MealCategory = mapper.Map<MealCategoryVM>(await context.Set<MealCategory>().FindAsync(mealManageIngredientsVM.MealCategoryId));
 
 
 			mealManageIngredientsVM.IngredientCreateVM = new IngredientCreateVM
@@ -101,7 +109,11 @@ namespace TrainingPlanApp.Web.Repositories
 				DieticianId = dietician.Id,
 				AvailableCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name")
 			};
-			mealManageIngredientsVM.MealCreateVM = new MealCreateVM();
+			mealManageIngredientsVM.MealCreateVM = new MealCreateVM
+			{
+				DieticianId = dietician.Id,
+				AvailableCategories = new SelectList(context.MealCategories.OrderBy(e => e.Name), "Id", "Name")
+			};
 
 			return mealManageIngredientsVM;
 		}

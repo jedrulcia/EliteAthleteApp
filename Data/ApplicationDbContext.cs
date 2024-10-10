@@ -22,6 +22,7 @@ namespace TrainingPlanApp.Web.Data
 			builder.ApplyConfiguration(new ExerciseCategorySeedConfiguration());
 
 			builder.ApplyConfiguration(new IngredientCategorySeedConfiguration());
+			builder.ApplyConfiguration(new MealCategorySeedConfiguration());
 
             base.OnModelCreating(builder);
         }
@@ -33,6 +34,7 @@ namespace TrainingPlanApp.Web.Data
 		public DbSet<Ingredient> Ingredients { get; set; }
 		public DbSet<IngredientCategory> IngredientCategories { get; set; }
 		public DbSet<Meal> Meals { get; set; }
+		public DbSet<MealCategory> MealCategories {  get; set; }
 		public DbSet<TrainingModule> TrainingModules { get; set; }
     }
 }

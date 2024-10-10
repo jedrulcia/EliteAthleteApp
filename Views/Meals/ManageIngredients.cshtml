@@ -8,7 +8,7 @@
 	var errorMessage = TempData["ErrorMessage"] as string;
 }
 
-<h1>Edit @Model.Name</h1>
+<h1>Edit @Model.Name (@Model.MealCategory.Name)</h1>
 
 <p>
 	<a asp-action="Index" class="btn btn-dark btn-sm">Back to List</a>&nbsp;
@@ -17,6 +17,7 @@
 	<button data-editmealid="@Model.Id"
 			data-editmealname="@Model.Name"
 			data-editmealrecipe="@Model.Recipe"
+			data-editmealcategoryid="@Model.MealCategoryId"
 			class="btn btn-primary btn-sm editBtn" type="button">
 		<i class="fa-solid fa-pen">&nbsp;</i>Edit Meal
 	</button>
@@ -295,6 +296,21 @@
 						<input id="editMealRecipe" class="form-control" name="MealCreateVM.Recipe" />
 						<span asp-validation-for="MealCreateVM.Recipe" class="text-danger"></span>
 					</div>
+					<div class="form-group">
+						<label asp-for="MealCreateVM.MealCategoryId" class="control-label"></label>
+						<select id="editMealCategoryId" name="MealCreateVM.MealCategoryId" class="form-select">
+							@foreach (var category in Model.MealCreateVM.AvailableCategories)
+							{
+								<option value="@category.Value">@category.Text</option>
+							}
+						</select>
+						<span asp-validation-for="MealCreateVM.MealCategoryId" class="text-danger"></span>
+					</div>
+					<div class="form-group form-check">
+						<input type="checkbox" asp-for="MealCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+						<label class="form-check-label" asp-for="MealCreateVM.SetAsPublic">Set as public</label>
+						<span asp-validation-for="MealCreateVM.SetAsPublic" class="text-danger"></span>
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" id="confirmEditBtn">Edit</button>
 					</div>
@@ -374,11 +390,13 @@
 				var editMealId = btn.data("editmealid");
 				var editMealName = btn.data("editmealname");
 				var editMealRecipe = btn.data("editmealrecipe");
+				var editMealCategoryId = btn.data("editmealcategoryid");
 
 				$('#editMealId').val(editMealId);
 				$('#editMealId').val(editMealId);
 				$('#editMealName').val(editMealName);
 				$('#editMealRecipe').val(editMealRecipe);
+				$('#editMealCategoryId').val(editMealCategoryId);
 
 				$('#editMealModal').modal('show');
 			});
