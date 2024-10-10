@@ -39,16 +39,38 @@ namespace TrainingPlanApp.Web.Controllers
         // POST: Ingredients/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IngredientCreateVM ingredientCreateVM)
+        public async Task<IActionResult> Create(IngredientCreateVM ingredientCreateVM, int? id)
         {
             if (ModelState.IsValid)
             {
                 await ingredientRepository.CreateIngredient(ingredientCreateVM);
-                return RedirectToAction(nameof(Index));
+                if (ingredientCreateVM.Redirect == "Meals")
+                {
+                    return RedirectToAction("ManageIngredients", "Meals", new { id = id });
+                }
+                else if (ingredientCreateVM.Redirect == "Diets")
+                {
+					return RedirectToAction("Index", "Diets", new { id = id });
+				}
+				else
+				{
+					return RedirectToAction(nameof(Index));
+				}
 			}
 
 			TempData["ErrorMessage"] = $"Error while creating the ingredient. Please try again.";
-			return RedirectToAction(nameof(Index));
+			if (ingredientCreateVM.Redirect == "Meals")
+			{
+				return RedirectToAction("ManageIngredients", "Meals", new { id = id });
+			}
+			else if (ingredientCreateVM.Redirect == "Diets")
+			{
+				return RedirectToAction("Index", "Diets", new { id = id });
+			}
+			else
+			{
+				return RedirectToAction(nameof(Index));
+			}
 		}
 
         // POST: Ingredients/Edit

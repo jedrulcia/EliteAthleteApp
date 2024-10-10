@@ -40,5 +40,6 @@ namespace TrainingPlanApp.Web.Models.Ingredient
 		
 		// OTHER
 		public bool SetAsPublic { get; set; }
+		public string? Redirect {  get; set; }
 	}
 }

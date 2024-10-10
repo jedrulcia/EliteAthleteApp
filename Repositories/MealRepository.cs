@@ -91,6 +91,16 @@ namespace TrainingPlanApp.Web.Repositories
 			mealManageIngredientsVM.Ingredients = await ingredientRepository.GetListOfIngredients(mealManageIngredientsVM.IngredientIds);
 			mealManageIngredientsVM = await CountMacrosForMealManageIngredientVM(mealManageIngredientsVM);/*
 			mealManageIngredientsVM = await GetMacrosOfMeal(mealManageIngredientsVM);*/
+			var dietician = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			mealManageIngredientsVM.DieticianId = dietician.Id;
+
+
+			mealManageIngredientsVM.IngredientCreateVM = new IngredientCreateVM
+			{
+				DieticianId = dietician.Id,
+				AvailableCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name")
+			};
+
 			return mealManageIngredientsVM;
 		}
 

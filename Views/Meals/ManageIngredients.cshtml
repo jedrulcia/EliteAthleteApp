@@ -8,11 +8,12 @@
 	var errorMessage = TempData["ErrorMessage"] as string;
 }
 
-<h1>Manage Exercises</h1>
+<h1>Manage Ingredients</h1>
 
 <p>
 	<a asp-action="Index" class="btn btn-dark btn-sm">Back to List</a>&nbsp;
 	<button class="btn btn-primary btn-sm addBtn" data-addmealid="@Model.Id" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Ingredient</button>
+	<button class="btn btn-primary btn-sm createIngredientBtn" data-createingredientdieticianid="@Model.DieticianId" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New Ingredient</button>
 </p>
 
 @if (!string.IsNullOrEmpty(errorMessage))
@@ -122,7 +123,7 @@
 					<div class="form-group">
 						<label asp-for="NewIngredientId" class="control-label"></label>
 						<select asp-for="NewIngredientId" asp-items="Model?.AvailableIngredients" class="form-select">
-							<option>Select exercise</option>
+							<option>Select Ingredient</option>
 						</select>
 						<span asp-validation-for="NewIngredientId" class="text-danger"></span>
 					</div>
@@ -166,6 +167,71 @@
 	</div>
 </div>
 
+<!-- MODAL FOR INGREDIENT CREATE -->
+<div class="modal fade" id="createIngredientModal" tabindex="-1" role="dialog" aria-labelledby="createIngredientModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="createIngredientModalLabel">Create New Ingredient</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="createForm" asp-action="Create" asp-controller="Ingredients" method="post">
+					<input type="hidden" name="IngredientCreateVM.DieticianId" value="@Model.DieticianId" />
+					<input type="hidden" name="IngredientCreateVM.Redirect" value="Meals" />
+					<input type="hidden" name="id" value="@Model.Id" />
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Name" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Name" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Name" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.IngredientCategoryId" class="control-label"></label>
+						<select asp-for="IngredientCreateVM.IngredientCategoryId" asp-items="@Model.IngredientCreateVM.AvailableCategories" class="form-select">
+						</select>
+						<span asp-validation-for="IngredientCreateVM.IngredientCategoryId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Proteins" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Proteins" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Proteins" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Carbohydrates" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Carbohydrates" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Carbohydrates" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Fats" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Fats" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Fats" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.Fibres" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.Fibres" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.Fibres" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="IngredientCreateVM.SuggestedPortion" class="control-label"></label>
+						<input asp-for="IngredientCreateVM.SuggestedPortion" class="form-control" />
+						<span asp-validation-for="IngredientCreateVM.SuggestedPortion" class="text-danger"></span>
+					</div>
+					<div class="form-group form-check">
+						<input type="checkbox" asp-for="IngredientCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+						<label class="form-check-label" asp-for="IngredientCreateVM.SetAsPublic">Set as public</label>
+						<span asp-validation-for="IngredientCreateVM.SetAsPublic" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" id="confirmCreateIngredientBtn">Create</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Scripts
 {
 	<script>
@@ -178,7 +244,7 @@
 				$(this).closest('.modal').modal('hide');
 			});
 
-			// SCRIPT TO HANDLE ADDING EXERCISES TO MEAL
+			// SCRIPT TO HANDLE ADDING INGREDIENTS TO MEAL
 			$(document).on('click', '.addBtn', function () {
 				var btn = $(this);
 				var addMealId = btn.data("addmealid");
@@ -191,6 +257,21 @@
 			// SCRIPT TO HANDLE ADDING MEAL TO MEAL
 			$(document).on('click', '#confirmAddBtn', function () {
 				$('#addForm').submit();
+			});
+
+			// SCRIPT TO HANDLE CREATING INGREDIENTS
+			$(document).on('click', '.createIngredientBtn', function () {
+				var btn = $(this);
+				var createIngredientDieticianId = btn.data("createingredientdieticianid");
+
+				$('#createIngredientDieticianId').val(createIngredientDieticianId);
+
+				$('#createIngredientModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE CREATING CONFIRMATION
+			$(document).on('click', '#confirmCreateIngredientBtn', function () {
+				$('#createForm').submit();
 			});
 
 			// SCRIPT TO HANDLE REMOVING INGREDIENT FROM MEAL
