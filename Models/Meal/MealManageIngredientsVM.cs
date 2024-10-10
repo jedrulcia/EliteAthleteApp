@@ -47,5 +47,6 @@ namespace TrainingPlanApp.Web.Models.Meal
         public IngredientCreateVM? IngredientCreateVM { get; set; }
         public MealCreateVM? MealCreateVM { get; set; }
 		public MealCategoryVM? MealCategory { get; set; }
+		public string? ImageUrl { get; set; }
 	}
 }

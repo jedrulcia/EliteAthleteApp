@@ -19,5 +19,6 @@ namespace TrainingPlanApp.Web.Data
 
 		// OTHER
 		public bool SetAsPublic {  get; set; }
+		public string? ImageUrl { get; set; }
 	}
 }

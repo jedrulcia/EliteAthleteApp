@@ -22,6 +22,7 @@ namespace TrainingPlanApp.Web.Models.Meal
 
         // OTHER 
         public bool SetAsPublic { get; set; }
+		public string? ImageUrl { get; set; }
 
 		// FORM
 		public SelectList? AvailableCategories { get; set; }

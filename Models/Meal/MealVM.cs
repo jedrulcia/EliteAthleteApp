@@ -27,5 +27,6 @@ namespace TrainingPlanApp.Web.Models.Meal
 
 		// OTHER
 		public MealCategoryVM MealCategory { get; set; }
+		public string? ImageUrl { get; set; }
 	}
 }
