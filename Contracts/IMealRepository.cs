@@ -6,7 +6,7 @@ namespace TrainingPlanApp.Web.Contracts
 	public interface IMealRepository : IGenericRepository<Meal>
 	{
 		// CREATES A NEW DATABASE ENTITY IN THE MEAL TABLE.
-		Task CreateMeal(MealCreateVM mealCreateVM);
+		Task<int?> CreateMeal(MealCreateVM mealCreateVM);
 
 		// EDITS THE NAME AND RECIPE OF THE SPECIFIED MEAL.
 		Task EditMeal(MealCreateVM mealCreateVM);

@@ -44,33 +44,11 @@ namespace TrainingPlanApp.Web.Controllers
             if (ModelState.IsValid)
             {
                 await ingredientRepository.CreateIngredient(ingredientCreateVM);
-                if (ingredientCreateVM.Redirect == "Meals")
-                {
-                    return RedirectToAction("ManageIngredients", "Meals", new { id = id });
-                }
-                else if (ingredientCreateVM.Redirect == "Diets")
-                {
-					return RedirectToAction("Index", "Diets", new { id = id });
-				}
-				else
-				{
-					return RedirectToAction(nameof(Index));
-				}
+				return HandleCreateRedirect(ingredientCreateVM.Redirect, id);
 			}
 
 			TempData["ErrorMessage"] = $"Error while creating the ingredient. Please try again.";
-			if (ingredientCreateVM.Redirect == "Meals")
-			{
-				return RedirectToAction("ManageIngredients", "Meals", new { id = id });
-			}
-			else if (ingredientCreateVM.Redirect == "Diets")
-			{
-				return RedirectToAction("Index", "Diets", new { id = id });
-			}
-			else
-			{
-				return RedirectToAction(nameof(Index));
-			}
+			return HandleCreateRedirect(ingredientCreateVM.Redirect, id);
 		}
 
         // POST: Ingredients/Edit
@@ -93,7 +71,6 @@ namespace TrainingPlanApp.Web.Controllers
 					}
 				}
 			}
-
 			TempData["ErrorMessage"] = $"Error while editing the ingredient. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
@@ -106,5 +83,25 @@ namespace TrainingPlanApp.Web.Controllers
             await ingredientRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
-    }
+
+		// USED INSIDE OF CLASS
+
+		// HANDLES REDIRECTING FROM CREATE INGREDIENT
+		private IActionResult HandleCreateRedirect(string redirect, int? id)
+		{
+			if (redirect == "Meals")
+			{
+				return RedirectToAction("ManageIngredients", "Meals", new { id = id });
+			}
+			else if (redirect == "Diets")
+			{
+				return RedirectToAction("Index", "Diets", new { id = id });
+			}
+			else
+			{
+				return RedirectToAction(nameof(Index));
+			}
+		}
+
+	}
 }

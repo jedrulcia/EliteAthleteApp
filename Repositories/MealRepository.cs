@@ -31,7 +31,7 @@ namespace TrainingPlanApp.Web.Repositories
         }
 
         // Creates new database entity in Meal table
-        public async Task CreateMeal(MealCreateVM mealCreateVM)
+        public async Task<int?> CreateMeal(MealCreateVM mealCreateVM)
 		{
 			var dietician = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			var meal = mapper.Map<Meal>(mealCreateVM);
@@ -39,6 +39,7 @@ namespace TrainingPlanApp.Web.Repositories
             meal.IngredientQuantities = new List<int?>();
 			meal.DieticianId = dietician.Id;
             await AddAsync(meal);
+			return meal.Id;
 		}
 
         // Edits Name, Recipe of meal
@@ -100,6 +101,7 @@ namespace TrainingPlanApp.Web.Repositories
 				DieticianId = dietician.Id,
 				AvailableCategories = new SelectList(context.IngredientCategories.OrderBy(e => e.Name), "Id", "Name")
 			};
+			mealManageIngredientsVM.MealCreateVM = new MealCreateVM();
 
 			return mealManageIngredientsVM;
 		}

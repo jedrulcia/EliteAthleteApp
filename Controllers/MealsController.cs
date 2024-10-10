@@ -45,8 +45,8 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await mealRepository.CreateMeal(mealCreateVM);
-				return RedirectToAction(nameof(Index));
+				int? id = await mealRepository.CreateMeal(mealCreateVM);
+				return RedirectToAction(nameof(ManageIngredients), new { id = id });
 			}
 			TempData["ErrorMessage"] = $"Error while creating the meal. Please try again.";
 			return RedirectToAction(nameof(Index));
@@ -74,10 +74,10 @@ namespace TrainingPlanApp.Web.Controllers
 						throw;
 					}
 				}
-				return RedirectToAction(nameof(Index));
+				return RedirectToAction(nameof(ManageIngredients), new { id = mealCreateVM.Id });
 			}
 			TempData["ErrorMessage"] = $"Error while editing the meal. Please try again.";
-			return RedirectToAction(nameof(Index));
+			return RedirectToAction(nameof(ManageIngredients), new { id = mealCreateVM.Id });
 		}
 
 		// POST: Meals/Delete

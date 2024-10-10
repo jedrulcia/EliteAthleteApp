@@ -123,18 +123,7 @@
 											class="btn btn-primary btn-sm detailsBtn" type="button">
 										<i class="fa-solid fa-circle-info">&nbsp;</i>Details
 									</button>
-									<button data-editmealid="@item.Id"
-											data-editmealname="@item.Name"
-											data-editmealrecipe="@item.Recipe"
-											class="btn btn-primary btn-sm editBtn" type="button">
-										<i class="fa-solid fa-pen">&nbsp;</i>Edit
-									</button>
 									<a asp-action="ManageIngredients" class="btn btn-secondary btn-sm" asp-route-id="@item.Id"><i class="fa-solid fa-pen">&nbsp;</i>Ingredients</a>
-									<button data-deletemealid="@item.Id"
-											data-deletemealname="@item.Name"
-											class="btn btn-danger btn-sm deleteBtn" type="button">
-										<i class="fa-solid fa-trash">&nbsp;</i>Remove
-									</button>
 								</td>
 							</tr>
 						}
@@ -182,39 +171,6 @@
 	</div>
 </div>
 
-<!-- MODAL FOR EDITING MEAL -->
-<div class="modal fade" id="editMealModal" tabindex="-1" role="dialog" aria-labelledby="editMealModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="editMealModalLabel">Edit Meal</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form id="editForm" asp-action="Edit" method="post">
-					<input type="hidden" name="MealCreateVM.Id" id="editMealCreateId" />
-					<input type="hidden" name="id" id="editMealId" />
-					<div class="form-group">
-						<label asp-for="MealCreateVM.Name" class="control-label"></label>
-						<input id="editMealName" class="form-control" name="MealCreateVM.Name" />
-						<span asp-validation-for="MealCreateVM.Name" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="MealCreateVM.Recipe" class="control-label"></label>
-						<input id="editMealRecipe" class="form-control" name="MealCreateVM.Recipe" />
-						<span asp-validation-for="MealCreateVM.Recipe" class="text-danger"></span>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="confirmEditBtn">Edit</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-
 <!-- MODAL FOR MEAL DETAILS -->
 <div class="modal fade" id="mealDetailsModal" tabindex="-1" role="dialog" aria-labelledby="mealDetailsModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -233,30 +189,6 @@
 				<h4 id="detailsMealFats"></h4>
 				<h4 id="detailsMealFibres"></h4>
 				<h4 id="detailsMealRecipe"></h4>
-			</div>
-		</div>
-	</div>
-</div>
-
-<!-- MODAL FOR MEAL DELETE -->
-<div class="modal fade" id="deleteMealModal" tabindex="-1" role="dialog" aria-labelledby="deleteMealModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="deleteMealModalLabel">Delete</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form id="deleteForm" asp-action="Delete">
-					<input type="hidden" id="deleteMealId" name="Id" />
-					<p>Are you sure you want to delete this meal?</p>
-					<h5 id="deleteMealName"></h5>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
 			</div>
 		</div>
 	</div>
@@ -287,44 +219,6 @@
 			// SCRIPT TO HANDLE CREATING CONFIRMATION
 			$(document).on('click', '#confirmCreateBtn', function () {
 				$('#createForm').submit();
-			});
-
-			// SCRIPT TO HANDLE EDITING MEAL
-			$(document).on('click', '.editBtn', function () {
-				var btn = $(this);
-				var editMealId = btn.data("editmealid");
-				var editMealCreateId = btn.data("editmealid");
-				var editMealName = btn.data("editmealname");
-				var editMealRecipe = btn.data("editmealrecipe");
-
-				$('#editMealId').val(editMealId);
-				$('#editMealCreateId').val(editMealCreateId);
-				$('#editMealName').val(editMealName);
-				$('#editMealRecipe').val(editMealRecipe);
-
-				$('#editMealModal').modal('show');
-			});
-
-			// SCRIPT TO HANDLE EDITING MEAL
-			$(document).on('click', '#confirmEditBtn', function () {
-				$('#editForm').submit();
-			});
-
-			// SCRIPT TO HANDLE DELETING MEAL
-			$(document).on('click', '.deleteBtn', function () {
-				var btn = $(this);
-				var deleteMealId = btn.data("deletemealid");
-				var deleteMealName = btn.data("deletemealname");
-
-				$('#deleteMealId').val(deleteMealId);
-				$('#deleteMealName').text(deleteMealName);
-
-				$('#deleteMealModal').modal('show');
-			});
-
-			// SCRIPT TO HANDLE DELETE CONFIRMATION
-			$(document).on('click', '#confirmDeleteBtn', function () {
-				$('#deleteForm').submit();
 			});
 
 			// SCRIPT TO HANDLE DISPLAYING DETAILS

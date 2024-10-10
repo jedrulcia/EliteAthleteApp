@@ -11,6 +11,10 @@ namespace TrainingPlanApp.Web.Models.Meal
         public int? Id { get; set; }
         public string? DieticianId { get; set; }
 
+        // STRINGS etc.
+        public string? Name {  get; set; }
+        public string? Recipe {  get; set; }
+
         // MACROS
         public int? Kcal { get; set; }
         public decimal Proteins { get; set; }
@@ -40,5 +44,6 @@ namespace TrainingPlanApp.Web.Models.Meal
 
         // OTHER 
         public IngredientCreateVM? IngredientCreateVM { get; set; }
+        public MealCreateVM? MealCreateVM { get; set; }
     }
 }
