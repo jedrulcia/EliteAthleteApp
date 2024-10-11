@@ -6,6 +6,7 @@ using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models.TrainingModule;
 using TrainingPlanApp.Web.Models.TrainingPlan;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TrainingPlanApp.Web.Repositories
 {
@@ -29,13 +30,40 @@ namespace TrainingPlanApp.Web.Repositories
 				.ToListAsync();
 			var trainingModuleVMs = mapper.Map<List<TrainingModuleVM>>(trainingModules);
 
+			DateTime dateNow = DateTime.Now;
+			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, 1, 0, 0, 0);
+
+			var trainingModuleORMs = await context.TrainingModuleORMs
+				.Where(tm => tm.UserId == userId)
+				.ToListAsync();
+
+			var trainingModuleORMVMs = mapper.Map<List<TrainingModuleORMVM>>(trainingModuleORMs);
+
+			var trainingModuleORMVM = new TrainingModuleORMVM();
+
+			foreach (var ORM in trainingModuleORMVMs)
+			{
+				if (ORM.DateTime == modifiedDate)
+				{
+					trainingModuleORMVM = ORM;
+				}
+			}
+
+			if (trainingModuleORMVM.Id == null)
+			{
+				trainingModuleORMVM.DateTime = modifiedDate;
+				trainingModuleORMVM.UserId = userId;
+			}
+
 			var trainingModuleIndexVM = new TrainingModuleIndexVM
 			{
 				UserId = userId,
 				CoachId = trainingModuleVMs[0].CoachId,
 				TrainingModuleVMs = trainingModuleVMs,
-				TrainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId }
-            };
+				TrainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId },
+				TrainingModuleORMVMs = trainingModuleORMVMs,
+				TrainingModuleORMVM = trainingModuleORMVM
+			};
 
 			return trainingModuleIndexVM;
 		}
@@ -62,7 +90,7 @@ namespace TrainingPlanApp.Web.Repositories
 				throw new ArgumentException("New StartDate must be earlier than previous, and EndDate later than previous.");
 			}
 
-            List<DateTime> daysBefore = GetDaysBetween(trainingModule.StartDate, trainingModule.EndDate);
+			List<DateTime> daysBefore = GetDaysBetween(trainingModule.StartDate, trainingModule.EndDate);
 			List<DateTime> daysAfter = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
 			List<DateTime> newDays = GetNewDays(daysBefore, daysAfter);
 
@@ -82,6 +110,15 @@ namespace TrainingPlanApp.Web.Repositories
 				await trainingPlanRepository.DeleteAsync(trainingPlanId);
 			}
 			await DeleteAsync(id);
+		}
+
+		// CREATES NEW ORM
+		public async Task CreateNewORM(TrainingModuleORMVM trainingModuleORMVM)
+		{
+			var trainingModuleORM = mapper.Map<TrainingModuleORM>(trainingModuleORMVM);
+
+			await context.AddAsync(trainingModuleORM);
+			await context.SaveChangesAsync();
 		}
 
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
@@ -166,6 +203,5 @@ namespace TrainingPlanApp.Web.Repositories
 			}
 			return trainingModuleCreateVM;
 		}
-
 	}
 }

@@ -17,6 +17,9 @@ namespace TrainingPlanApp.Web.Contracts
 		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS.
 		Task DeleteTrainingModule(int id);
 
+		// CREATES NEW ORM
+		Task CreateNewORM(TrainingModuleORMVM trainingModuleORMVM);
+
 		// ARCHIVE
 
 		// CHECKS IF NEW DATES ARE NOT NULL

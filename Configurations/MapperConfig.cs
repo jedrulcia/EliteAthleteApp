@@ -25,17 +25,19 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<ExerciseCategory, ExerciseCategoryVM>().ReverseMap();
 			CreateMap<ExerciseMuscleGroup, ExerciseMuscleGroupVM>().ReverseMap();
 
-			// TRAINING MODULE MODULE MAPPING
-			CreateMap<TrainingModule, TrainingModuleVM>().ReverseMap();
-			CreateMap<TrainingModule, TrainingModuleIndexVM>().ReverseMap();
-			CreateMap<TrainingModule, TrainingModuleCreateVM>().ReverseMap();
-
 			// TRAINING PLAN MODULE MAPPING
 			CreateMap<TrainingPlan, TrainingPlanVM>().ReverseMap();
             CreateMap<TrainingPlan, TrainingPlanIndexVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanCreateVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanManageExercisesVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanDetailsVM>().ReverseMap();
+
+			// TRAINING MODULE MODULE MAPPING
+			CreateMap<TrainingModule, TrainingModuleVM>().ReverseMap();
+			CreateMap<TrainingModule, TrainingModuleIndexVM>().ReverseMap();
+			CreateMap<TrainingModule, TrainingModuleCreateVM>().ReverseMap();
+
+			CreateMap<TrainingModuleORM, TrainingModuleORMVM>().ReverseMap();
 
 			// INGREDIENT MODULE MAPPING
 			CreateMap<Ingredient, IngredientVM>().ReverseMap();

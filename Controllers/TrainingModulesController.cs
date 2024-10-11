@@ -88,5 +88,13 @@ namespace TrainingPlanApp.Web.Controllers
 			await trainingModuleRepository.DeleteTrainingModule(id);
 			return RedirectToAction(nameof(Index), new { userId = userId });
 		}
+
+		// POST: TrainingModules/ORM
+		[HttpPost, ActionName("CreateORM")]
+		public async Task<IActionResult> CreateORM(TrainingModuleORMVM trainingModuleORMVM)
+		{
+			await trainingModuleRepository.CreateNewORM(trainingModuleORMVM);
+			return RedirectToAction(nameof(Index), new { userId = trainingModuleORMVM.UserId });
+		}
 	}
 }

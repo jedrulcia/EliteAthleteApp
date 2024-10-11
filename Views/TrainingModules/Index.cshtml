@@ -8,15 +8,16 @@
 	ViewData["Title"] = "Index";
 	var errorMessage = TempData["ErrorMessage"] as string;
 }
-<h1>Training Modules</h1>
 
 
-@if (User.IsInRole(Roles.Administrator))
-{
-	<p>
+<p>
+	@if (User.IsInRole(Roles.Administrator))
+	{
 		<button class="btn btn-primary btn-sm createBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New</button>
-	</p>
-}
+	}
+
+
+</p>
 
 @if (!string.IsNullOrEmpty(errorMessage))
 {
@@ -24,57 +25,116 @@
 		@errorMessage
 	</div>
 }
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().Name)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().StartDate)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().EndDate)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().TrainingPlanIds)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model.TrainingModuleVMs)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.StartDate)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.EndDate)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TrainingPlanIds.Count)
-				</td>
-				<td>
-					<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
 
-					<button data-trainingmoduleid="@item.Id"
-							data-name="@item.Name"
-							data-startdate="@item.StartDate"
-							data-enddate="@item.EndDate"
-							class="btn btn-secondary btn-sm editBtn" type="button">
-						<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
+<div class="container">
+	<div class="row">
+		<div class="col-md-7">
+			<h1>Training Modules</h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().Name)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().StartDate)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().EndDate)
+						</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.TrainingModuleVMs)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.StartDate)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.EndDate)
+							</td>
+							<td>
+								<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
+
+								<button data-trainingmoduleid="@item.Id"
+										data-name="@item.Name"
+										data-startdate="@item.StartDate"
+										data-enddate="@item.EndDate"
+										class="btn btn-secondary btn-sm editBtn" type="button">
+									<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
+								</button>
+
+								<button data-trainingmoduleid="@item.Id" data-name="@item.Name" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-5">
+			<h1>
+				ORMs &nbsp;
+				@if (Model.TrainingModuleORMVM.Id == null)
+				{
+					<button data-createormuserid="@Model.TrainingModuleORMVM.UserId"
+							data-createormdatetime="@Model.TrainingModuleORMVM.DateTime"
+							class="btn btn-primary btn-sm createOrmBtn" type="button">
+						<i class="fa-solid fa-plus">&nbsp;</i>ORMs
 					</button>
+				}
+			</h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().DateTime)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().BenchPressORM)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().OverheadPressORM)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().SquatORM)
+						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().DeadliftORM)
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.TrainingModuleORMVMs)
+					{
+						<tr>
+							<td>
+								@Html.DisplayFor(modelItem => item.DateTime)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.BenchPressORM)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.OverheadPressORM)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.SquatORM)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.DeadliftORM)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
 
-					<button data-trainingmoduleid="@item.Id" data-name="@item.Name" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
 
 
 
@@ -143,7 +203,7 @@
 					</div>
 					<div class="form-group">
 						<label asp-for="TrainingModuleCreateVM.EndDate" class="control-label"></label>
-						<input asp-for="TrainingModuleCreateVM.EndDate"  class="form-control" />
+						<input asp-for="TrainingModuleCreateVM.EndDate" class="form-control" />
 						<span asp-validation-for="TrainingModuleCreateVM.EndDate" class="text-danger"></span>
 					</div>
 					<div class="form-group">
@@ -180,6 +240,53 @@
 	</div>
 </div>
 
+<!-- MODAL FOR ORM CREATE -->
+<div class="modal fade" id="createOrmModal" tabindex="-1" role="dialog" aria-labelledby="createOrmModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="createOrmModalLabel">Create New ORM</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="createForm" asp-action="CreateORM" method="post">
+					<input type="hidden" name="TrainingModuleORMVM.DateTime" id="createOrmDateTime" />
+					<input type="hidden" name="TrainingModuleORMVM.UserId" value="@Model.UserId" />
+					<div class="container">
+						<div class="row">
+							<div class="col-md-3 form-group">
+								<label asp-for="TrainingModuleORMVM.BenchPressORM" class="control-label"></label>
+								<input asp-for="TrainingModuleORMVM.BenchPressORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleORMVM.BenchPressORM" class="text-danger"></span>
+							</div>
+							<div class="col-md-3 form-group">
+								<label asp-for="TrainingModuleORMVM.OverheadPressORM" class="control-label"></label>
+								<input asp-for="TrainingModuleORMVM.OverheadPressORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleORMVM.OverheadPressORM" class="text-danger"></span>
+							</div>
+							<div class="col-md-3 form-group">
+								<label asp-for="TrainingModuleORMVM.SquatORM" class="control-label"></label>
+								<input asp-for="TrainingModuleORMVM.SquatORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleORMVM.SquatORM" class="text-danger"></span>
+							</div>
+							<div class="col-md-3 form-group">
+								<label asp-for="TrainingModuleORMVM.DeadliftORM" class="control-label"></label>
+								<input asp-for="TrainingModuleORMVM.DeadliftORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleORMVM.DeadliftORM" class="text-danger"></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary" id="submitCreateForm">Create</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Scripts
 {
 	<script>
@@ -195,6 +302,18 @@
 			// SCRIPT TO HANDLE CREATING TRAINING MODULES
 			$(document).on('click', '.createBtn', function () {
 				$('#createTrainingModuleModal').modal('show');
+			});
+
+			// SCRIPT TO HANDLE CREATING ORMS
+			$(document).on('click', '.createOrmBtn', function () {
+				var btn = $(this);
+				var createOrmUserId = btn.data("createormuserid");
+				var createOrmDateTime = btn.data("createormdatetime")
+
+				$('#createOrmUserId').val(createOrmUserId);
+				$('#createOrmDateTime').val(createOrmDateTime);
+
+				$('#createOrmModal').modal('show');
 			});
 
 			// SCRIPT TO HANDLE EDITING TRAINING MODULE

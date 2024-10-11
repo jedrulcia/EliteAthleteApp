@@ -38,5 +38,6 @@ namespace TrainingPlanApp.Web.Data
 		public DbSet<Meal> Meals { get; set; }
 		public DbSet<MealCategory> MealCategories {  get; set; }
 		public DbSet<TrainingModule> TrainingModules { get; set; }
-    }
+		public DbSet<TrainingModuleORM> TrainingModuleORMs { get; set; }
+	}
 }
