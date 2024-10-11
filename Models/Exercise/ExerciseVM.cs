@@ -23,6 +23,7 @@ namespace TrainingPlanApp.Web.Models.Exercise
 		// OTHER
 		[Display(Name = "Exercise Category")]
 		public ExerciseCategoryVM? ExerciseCategory { get; set; }
+		public ExerciseMuscleGroupVM? ExerciseMuscleGroup { get; set; }
 		public bool? SetAsPublic { get; set; }
 	}
 }

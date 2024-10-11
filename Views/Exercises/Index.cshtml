@@ -21,6 +21,9 @@
 						<th>
 							@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)
 						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseMuscleGroup.Name)
+						</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -36,11 +39,15 @@
 								<td>
 									@Html.DisplayFor(modelItem => item.ExerciseCategory.Name)
 								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.ExerciseMuscleGroup.Name)
+								</td>
 								<td class="text-end">
 									<button data-name="@item.Name"
 											data-videolink="@item.VideoLink"
 											data-description="@item.Description"
 											data-exercisecategoryname="@item.ExerciseCategory.Name"
+											data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
 											class="btn btn-secondary btn-sm detailsBtn">
 										<i class="fa-solid fa-info-circle">&nbsp;</i>Details
 									</button>
@@ -69,6 +76,9 @@
 						<th>
 							@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)
 						</th>
+						<th>
+							@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseMuscleGroup.Name)
+						</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -84,9 +94,13 @@
 								<td>
 									@Html.DisplayFor(modelItem => item.ExerciseCategory.Name)
 								</td>
+								<td>
+									@Html.DisplayFor(modelItem => item.ExerciseMuscleGroup.Name)
+								</td>
 								<td class="text-end">
 									<button data-exerciseid="@item.Id"
 											data-exercisecategoryid="@item.ExerciseCategory.Id"
+											data-exercisemusclegroupid="@item.ExerciseMuscleGroup.Id"
 											data-coachid="@Model.CoachId"
 											data-name="@item.Name"
 											data-description="@item.Description"
@@ -100,6 +114,7 @@
 											data-videolink="@item.VideoLink"
 											data-description="@item.Description"
 											data-exercisecategoryname="@item.ExerciseCategory.Name"
+											data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
 											class="btn btn-secondary btn-sm detailsBtn">
 										<i class="fa-solid fa-info-circle">&nbsp;</i>Details
 									</button>
@@ -151,6 +166,12 @@
 						<select asp-for="ExerciseCreateVM.ExerciseCategoryId" asp-items="@Model.ExerciseCreateVM.AvailableCategories" class="form-select">
 						</select>
 						<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label>
+						<select asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" asp-items="@Model.ExerciseCreateVM.AvailableMuscleGroups" class="form-select">
+						</select>
+						<span asp-validation-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="text-danger"></span>
 					</div>
 					<div class="form-group form-check">
 						<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
@@ -204,6 +225,16 @@
 							}
 						</select>
 						<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
+					</div>					
+					<div class="form-group">
+						<label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label>
+						<select id="exerciseMuscleGroupId" name="ExerciseCreateVM.ExerciseMuscleGroupId" class="form-select">
+							@foreach (var muscleGroup in Model.ExerciseCreateVM.AvailableMuscleGroups)
+							{
+								<option value="@muscleGroup.Value">@muscleGroup.Text</option>
+							}
+						</select>
+						<span asp-validation-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="text-danger"></span>
 					</div>
 					<div class="form-group form-check">
 						<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
@@ -235,6 +266,7 @@
 					<iframe id="exerciseVideoLink" width="100%" height="472" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
 				<h5 id="exerciseCategoryName"></h5>
+				<h5 id="exerciseMuscleGroupName"></h5>
 				<h4 id="exerciseDescription"></h4>
 			</div>
 		</div>
@@ -291,6 +323,7 @@
 				var videoLink = btn.data("videolink");
 				var description = btn.data("description");
 				var exerciseCategoryId = btn.data("exercisecategoryid");
+				var exerciseMuscleGroupId = btn.data("exercisemusclegroupid")
 				var setAsPublic = btn.data("setaspublic");
 
 				$('#exerciseId').val(exerciseId);
@@ -299,6 +332,7 @@
 				$('#videoLink').val(videoLink);
 				$('#description').val(description);
 				$('#exerciseCategoryId').val(exerciseCategoryId);
+				$('#exerciseMuscleGroupId').val(exerciseMuscleGroupId);
 				$('#setAsPublic').val(setAsPublic);
 
 				console.log("Opening edit modal");
@@ -312,10 +346,12 @@
 				var exerciseVideoLink = btn.data("videolink");
 				var exerciseDescription = btn.data("description");
 				var exerciseCategoryName = btn.data("exercisecategoryname");
+				var exerciseMuscleGroupName = btn.data("exercisemusclegroupname")
 
 				$('#exerciseName').text(name);
 				$('#exerciseDescription').text(exerciseDescription);
 				$('#exerciseCategoryName').text(exerciseCategoryName);
+				$('#exerciseMuscleGroupName').text(exerciseMuscleGroupName);
 				var mainVideoId = exerciseVideoLink.split('v=')[1]?.split('&')[0];
 				var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
 				$('#exerciseVideoLink').attr('src', mainEmbedUrl);

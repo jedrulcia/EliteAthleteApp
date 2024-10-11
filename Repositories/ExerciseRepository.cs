@@ -36,11 +36,17 @@ namespace TrainingPlanApp.Web.Repositories
 
 			for (int i = 0; i < exercises.Count; i++)
 			{
-				int? id = exercises[i].ExerciseCategoryId;
-				if (id != null)
+				int? categoryId = exercises[i].ExerciseCategoryId;
+				if (categoryId != null)
 				{
-					var category = await context.Set<ExerciseCategory>().FindAsync(id);
+					var category = await context.Set<ExerciseCategory>().FindAsync(categoryId);
 					exerciseVMs[i].ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
+				}
+				int? muscleGroupId = exercises[i].ExerciseMuscleGroupId;
+				if (muscleGroupId != null)
+				{
+					var muscleGroup = await context.Set<ExerciseMuscleGroup>().FindAsync(muscleGroupId);
+					exerciseVMs[i].ExerciseMuscleGroup = mapper.Map<ExerciseMuscleGroupVM>(muscleGroup);
 				}
 			}
 
@@ -51,7 +57,8 @@ namespace TrainingPlanApp.Web.Repositories
 				ExerciseCreateVM = new ExerciseCreateVM
 				{
 					CoachId = coach.Id,
-					AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name")
+					AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name"),
+					AvailableMuscleGroups = new SelectList(context.ExerciseMuscleGroups.OrderBy(e => e.Name), "Id", "Name")
 				}
 			};
 			return exerciseIndexVM;

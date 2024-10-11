@@ -7,9 +7,11 @@ namespace TrainingPlanApp.Web.Models.Exercise
 	{
 		// IDs
 		public int? Id { get; set; }
-		[Display(Name = "Category")]
-		public int? ExerciseCategoryId {  get; set; }
 		public string? CoachId { get; set; }
+		[Display(Name = "Category")]
+		public int? ExerciseCategoryId { get; set; }
+		[Display(Name = "Muscle Group")]
+		public int? ExerciseMuscleGroupId { get; set; }
 
 		// STRINGS etc.
 		[Display(Name = "Exercise")]
@@ -25,6 +27,8 @@ namespace TrainingPlanApp.Web.Models.Exercise
 		// FORM
 		[Display(Name = "Categories")]
 		public SelectList? AvailableCategories { get; set; }
+		[Display(Name = "Muscle Groups")]
+		public SelectList? AvailableMuscleGroups { get; set; }
 
 		// OTHER 
 		public bool SetAsPublic { get; set; }

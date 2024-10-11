@@ -5,6 +5,7 @@
 		// IDs
 		public int Id { get; set; }
 		public int? ExerciseCategoryId { get; set; }
+		public int? ExerciseMuscleGroupId { get; set; }
 		public string? CoachId {  get; set; }
 
 		// STRINGS etc.
