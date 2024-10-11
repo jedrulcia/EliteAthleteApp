@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+string blobConnectionString = builder.Configuration.GetValue<string>("BlobConnectionString");
+string containerName = builder.Configuration.GetValue<string>("BlobContainerName");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -24,7 +26,9 @@ builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IMealRepository, MealRepository>();
 builder.Services.AddScoped<IDietRepository, DietRepository>();
-builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
+builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>(); 
+builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>(provider =>
+	new BlobStorageRepository(blobConnectionString, containerName));
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 

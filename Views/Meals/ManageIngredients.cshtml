@@ -18,6 +18,7 @@
 			data-editmealname="@Model.Name"
 			data-editmealrecipe="@Model.Recipe"
 			data-editmealcategoryid="@Model.MealCategoryId"
+			data-editmealimageurl="@Model.ImageUrl"
 			class="btn btn-primary btn-sm editBtn" type="button">
 		<i class="fa-solid fa-pen">&nbsp;</i>Edit Meal
 	</button>
@@ -286,10 +287,11 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form id="editForm" asp-action="Edit" method="post">
+				<form id="editForm" asp-action="Edit" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="MealCreateVM.Id" value="@Model.Id"/>
 					<input type="hidden" name="id" id="editMealId" />
 					<input type="hidden" name="MealCreateVM.DieticianId" value="@Model.DieticianId" />
+					<input type="hidden" name="MealCreateVM.ImageUrl" id="editMealImageUrl" />
 					<div class="form-group">
 						<label asp-for="MealCreateVM.Name" class="control-label"></label>
 						<input id="editMealName" class="form-control" name="MealCreateVM.Name" />
@@ -309,7 +311,7 @@
 							}
 						</select>
 						<span asp-validation-for="MealCreateVM.MealCategoryId" class="text-danger"></span>
-					</div>>
+					</div>
 					<div class="form-group">
 						<label for="imageUpload" class="control-label">Upload Image</label>
 						<input type="file" name="imageUpload" class="form-control" id="imageUpload" accept="image/*" />
@@ -399,12 +401,14 @@
 				var editMealName = btn.data("editmealname");
 				var editMealRecipe = btn.data("editmealrecipe");
 				var editMealCategoryId = btn.data("editmealcategoryid");
+				var editMealImageUrl = btn.data("editmealimageurl");
 
 				$('#editMealId').val(editMealId);
 				$('#editMealId').val(editMealId);
 				$('#editMealName').val(editMealName);
 				$('#editMealRecipe').val(editMealRecipe);
 				$('#editMealCategoryId').val(editMealCategoryId);
+				$('#editMealImageUrl').val(editMealImageUrl);
 
 				$('#editMealModal').modal('show');
 			});

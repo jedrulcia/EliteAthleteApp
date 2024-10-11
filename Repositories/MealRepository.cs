@@ -49,6 +49,7 @@ namespace TrainingPlanApp.Web.Repositories
 			meal.Name = mealCreateVM.Name;
 			meal.Recipe = mealCreateVM.Recipe;
 			meal.MealCategoryId = mealCreateVM.MealCategoryId;
+			meal.ImageUrl = mealCreateVM.ImageUrl;
 			await UpdateAsync(meal);
 		}
 

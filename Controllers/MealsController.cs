@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,7 +19,7 @@ using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-    [Authorize(Roles = Roles.Administrator)]
+	[Authorize(Roles = Roles.Administrator)]
 	public class MealsController : Controller
 	{
 		private readonly ApplicationDbContext context;
@@ -25,14 +27,16 @@ namespace TrainingPlanApp.Web.Controllers
 		private readonly IMealRepository mealRepository;
 		private readonly IIngredientRepository ingredientRepository;
 		private readonly IConfiguration config;
+		private readonly IBlobStorageRepository blobStorageRepository;
 
-		public MealsController(ApplicationDbContext context, IMapper mapper, IMealRepository mealRepository, IIngredientRepository ingredientRepository, IConfiguration config)
+		public MealsController(ApplicationDbContext context, IMapper mapper, IMealRepository mealRepository, IIngredientRepository ingredientRepository, IConfiguration config, IBlobStorageRepository blobStorageRepository)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.mealRepository = mealRepository;
 			this.ingredientRepository = ingredientRepository;
 			this.config = config;
+			this.blobStorageRepository = blobStorageRepository;
 		}
 
 		// GET: Meals
@@ -42,57 +46,6 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(mealsVM);
 		}
 
-		// POST: Meals/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create(MealCreateVM mealCreateVM)
-		{
-			if (ModelState.IsValid)
-			{
-				var imageFile = Request.Form.Files["imageUpload"];
-				if (imageFile != null && imageFile.Length > 0)
-				{
-					var uploadResult = await UploadImage(); // Call your UploadImage method
-					if (uploadResult is OkObjectResult result)
-					{
-						var fileUrl = ((dynamic)result.Value).FileUrl;
-						mealCreateVM.ImageUrl = fileUrl; // Set the image URL
-					}
-				}
-				int? id = await mealRepository.CreateMeal(mealCreateVM);
-				return RedirectToAction(nameof(ManageIngredients), new { id = id });
-			}
-			TempData["ErrorMessage"] = $"Error while creating the meal. Please try again.";
-			return RedirectToAction(nameof(Index));
-		}
-
-		// POST: Meals/Edit
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, MealCreateVM mealCreateVM)
-		{
-			if (ModelState.IsValid)
-			{
-				try
-				{
-					await mealRepository.EditMeal(mealCreateVM);
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (!await mealRepository.Exists(id))
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return RedirectToAction(nameof(ManageIngredients), new { id = mealCreateVM.Id });
-			}
-			TempData["ErrorMessage"] = $"Error while editing the meal. Please try again.";
-			return RedirectToAction(nameof(ManageIngredients), new { id = mealCreateVM.Id });
-		}
 
 		// POST: Meals/Delete
 		[HttpPost, ActionName("Delete")]
@@ -131,7 +84,71 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(ManageIngredients), new { id = mealId });
 		}
 
+		// POST: Meals/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(MealCreateVM mealCreateVM)
+		{
+			if (ModelState.IsValid)
+			{
+				var imageFile = Request.Form.Files["imageUpload"];
+				if (imageFile != null && imageFile.Length > 0)
+				{
+					var uploadResult = await UploadImage(); // Call your UploadImage method
+					if (uploadResult is OkObjectResult result)
+					{
+						var fileUrl = ((dynamic)result.Value).FileUrl;
+						mealCreateVM.ImageUrl = fileUrl; // Set the image URL
+					}
+				}
+				int? id = await mealRepository.CreateMeal(mealCreateVM);
+				return RedirectToAction(nameof(ManageIngredients), new { id = id });
+			}
+			TempData["ErrorMessage"] = $"Error while creating the meal. Please try again.";
+			return RedirectToAction(nameof(Index));
+		}
 
+		// POST: Meals/Edit
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, MealCreateVM mealCreateVM)
+		{
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					var imageFile = Request.Form.Files["imageUpload"];
+					if (imageFile != null && imageFile.Length > 0)
+					{
+						var uploadResult = await UploadImage(); // Call your UploadImage method
+						if (uploadResult is OkObjectResult result)
+						{
+							if (mealCreateVM.ImageUrl != null)
+							{
+								await RemoveImage(mealCreateVM.ImageUrl);
+							}
+							var fileUrl = ((dynamic)result.Value).FileUrl;
+							mealCreateVM.ImageUrl = fileUrl; // Set the image URL
+						}
+					}
+					await mealRepository.EditMeal(mealCreateVM);
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!await mealRepository.Exists(id))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				return RedirectToAction(nameof(ManageIngredients), new { id = mealCreateVM.Id });
+			}
+			TempData["ErrorMessage"] = $"Error while editing the meal. Please try again.";
+			return RedirectToAction(nameof(ManageIngredients), new { id = mealCreateVM.Id });
+		}
 
 		[HttpPost, ActionName("UploadImage")]
 		public async Task<IActionResult> UploadImage()
@@ -142,31 +159,29 @@ namespace TrainingPlanApp.Web.Controllers
 				return BadRequest("No files uploaded.");
 			}
 
-			string fileUrl = "";
-			string systemFileName = files[0].FileName;
-			string blobstorageconnection = config.GetValue<string>("BlobConnectionString");
-			CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(blobstorageconnection);
-			CloudBlobClient blobClient = cloudStorageAccount.CreateCloudBlobClient();
-			CloudBlobContainer container = blobClient.GetContainerReference(config.GetValue<string>("BlobContainerName"));
-			CloudBlockBlob blockblob = container.GetBlockBlobReference(systemFileName);
-
 			try
 			{
-				await using (var data = files[0].OpenReadStream())
-				{
-					await blockblob.UploadFromStreamAsync(data);
-				}
-
-				fileUrl = blockblob.SnapshotQualifiedUri.AbsoluteUri;
+				string imageUrl = await blobStorageRepository.UploadImageAsync(files[0]);
+				return Ok(new { FileUrl = imageUrl });
 			}
 			catch (Exception ex)
 			{
-				// Log the exception if needed
 				return BadRequest("Upload failed: " + ex.Message);
 			}
+		}
 
-			// Return the file URL or any other response you need
-			return Ok(new { FileUrl = fileUrl });
+		[HttpPost, ActionName("RemoveImage")]
+		public async Task<IActionResult> RemoveImage(string imageUrl)
+		{
+			try
+			{
+				await blobStorageRepository.RemoveImageAsync(imageUrl);
+				return Ok();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest("Remove failed: " + ex.Message);
+			}
 		}
 	}
 }
