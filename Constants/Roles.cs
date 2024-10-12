@@ -5,5 +5,8 @@
     {
 		public const string Administrator = "Administrator";
         public const string User = "User";
+		public const string Dietician = "Dietician";
+		public const string Coach = "Coach";
+		public const string Full = "Full";
     }
 }

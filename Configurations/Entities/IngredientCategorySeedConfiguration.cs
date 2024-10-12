@@ -23,7 +23,8 @@ namespace TrainingPlanApp.Web.Configurations.Entities
 				new IngredientCategory { Id = 12, Name = "Baked Goods" },
 				new IngredientCategory { Id = 13, Name = "Pasta and Noodles" },
 				new IngredientCategory { Id = 14, Name = "Snacks" },
-				new IngredientCategory { Id = 15, Name = "Sweets" }
+				new IngredientCategory { Id = 15, Name = "Sweets" },
+				new IngredientCategory { Id = 16, Name = "Supplements" }
 			);
 		}
 	}
