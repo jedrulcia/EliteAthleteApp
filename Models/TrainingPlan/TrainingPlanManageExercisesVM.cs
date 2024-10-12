@@ -18,7 +18,9 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 		// LISTS
 		// indices are used to get the order of exercises
 		public List<string?>? Indices { get; set; }
-		public List<ExerciseVM?>? Exercises { get; set; }
+		public List<TrainingPlanPhaseVM?>? TrainingPlanPhaseVMs { get; set; }
+		public List<int?>? TrainingPlanPhaseIds { get; set; }
+		public List<ExerciseVM?>? ExerciseVMs { get; set; }
 		public List<int?>? ExerciseIds { get; set; }
         public List<int?>? Sets { get; set; }
 		// Units can be (example): 10reps/30sec/5km

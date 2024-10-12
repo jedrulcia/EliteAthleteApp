@@ -23,6 +23,8 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 		[DataType(DataType.Date)]
 		public DateTime? Date { get; set; }
 
+		public string? Raport { get; set; }
+
 		// OTHER
 		[Display(Name = "Status")]
 		public bool? IsCompleted { get; set; }

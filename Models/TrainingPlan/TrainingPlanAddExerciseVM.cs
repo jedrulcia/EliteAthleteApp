@@ -9,6 +9,8 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 		// FORMS
 		// indices are used to get the order of exercises
 		public string? ExerciseIndex { get; set; }
+		public SelectList? AvailableTrainingPlanPhases { get; set; }
+		public int? TrainingPlanPhaseId { get; set; }
 		public SelectList? AvailableExercises { get; set; }
 		[Display(Name = "Exercise")]
 		public int? ExerciseId { get; set; }

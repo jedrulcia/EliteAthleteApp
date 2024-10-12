@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingPlanApp.Web.Data;
 
@@ -11,9 +12,11 @@ using TrainingPlanApp.Web.Data;
 namespace TrainingPlanApp.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241012153539_AddingCoachDieticanToUser")]
+    partial class AddingCoachDieticanToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -808,9 +811,6 @@ namespace TrainingPlanApp.Web.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Raport")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RestTimes")
                         .HasColumnType("nvarchar(max)");
 
@@ -980,7 +980,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cc53b09e-23d5-4f1e-abb1-445d2c528226",
+                            ConcurrencyStamp = "490b1e12-9ac6-4021-b15d-2db228167574",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -988,9 +988,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIIVnFsOlaWH4k6omVTOFYIRn+X0lRwusdVaR0ZR3upoghdpeCYEz9RytlEbStAixQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOT+oUrp8Cn0Ntm2xgIQPRX3wrs397ICXdlZtxfH9qxdIpJbZN0ERtkQLLR1f8OrfQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3fe223ae-39c9-47e1-ba56-95e04df1643f",
+                            SecurityStamp = "bcf93fd8-bfe7-4cbd-adf2-deee9b25c2de",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -998,7 +998,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "859c76a6-7756-4197-bfce-fb1554ad0336",
+                            ConcurrencyStamp = "9e7b7649-5765-4aec-9713-c6c2c2f4834b",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -1006,9 +1006,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKyGoro0mMkk34GGlzY6yMNauT0sRimbhe18JO9/Uba/B48Rxv08CJQXw5FMpVX+TQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECeiq2/OfdCtxlNG+zCwIEdFSZ29AoQhvw8pfRmWhGaNCN+bAspcxbZl4AI3UkQ7Dg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3939c3ee-266f-4cb5-8cb6-6846c9809eac",
+                            SecurityStamp = "a3aff0db-4a9c-4427-bd66-4726a662c157",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         },
@@ -1016,7 +1016,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "12d241d3-46a8-4778-93eb-cec9b4475364",
+                            ConcurrencyStamp = "e5dc36e0-3350-4a46-922d-24789fb214bd",
                             Email = "dietician@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -1024,9 +1024,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "DIETICIAN@LOCALHOST.COM",
                             NormalizedUserName = "DIETICIAN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEF5W110felwSUrR1idV6eoWknvlFXMut3nf0A/mNWed7t8xM+X6kFagWHDySZak1wg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKHe2EHjg7J9FnU43b4QeidJgNJ0D8Mrj3rhJi/mEHZ7P+Gi7VCWm214g/oqrugbPA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "1691d81e-85a0-4fb0-9597-1ac22d8cbec0",
+                            SecurityStamp = "00cfe83c-a321-4fb4-b7f8-96355a7c7ffe",
                             TwoFactorEnabled = false,
                             UserName = "dietician@localhost.com"
                         },
@@ -1034,7 +1034,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4b080838-eabb-472f-89ed-a5d1df18ebc9",
+                            ConcurrencyStamp = "feff277c-8dec-4bbb-a63b-0f81daf93f59",
                             Email = "coach@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -1042,9 +1042,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "COACH@LOCALHOST.COM",
                             NormalizedUserName = "COACH@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJzt9wp+YfV+oXzhI8ulNjLUss0I/gdxeJzk86bHt6Six8kTbw3piOHr8pQ10NCpvw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJlmjX7iJO7kbknnIm6aqDjWJhGQJ+MCB9cVxSFdvlJeVV+w4YQ7BV6LukAmwOdibA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a2865e05-8b18-480c-846d-96338c008014",
+                            SecurityStamp = "451862c3-e095-4dfe-b9b8-77334ff4146d",
                             TwoFactorEnabled = false,
                             UserName = "coach@localhost.com"
                         },
@@ -1052,7 +1052,7 @@ namespace TrainingPlanApp.Web.Migrations
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bb62d402-a2da-4af8-9096-71e2343e776b",
+                            ConcurrencyStamp = "102275f0-12e6-4d09-ba16-e7824dea906b",
                             Email = "full@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -1060,9 +1060,9 @@ namespace TrainingPlanApp.Web.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "FULL@LOCALHOST.COM",
                             NormalizedUserName = "FULL@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEG0ImmyojymQDSTiUM5TIsQqdGat75HQD8OT638UqWTvNCE5Bwr/H24xVAKLr4QDQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPTmYJddIrr8w/+2nlPQrN1OgFNVDARAVmFJQb2rTtCaGcJsiT5rU38vgN+K8C3kkA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c6403a95-e9e2-4f06-9ebd-7472a5ee697c",
+                            SecurityStamp = "933ee46e-cfde-4b80-bad1-e10b5c2c0fd9",
                             TwoFactorEnabled = false,
                             UserName = "full@localhost.com"
                         });

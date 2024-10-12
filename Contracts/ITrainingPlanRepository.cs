@@ -28,7 +28,7 @@ namespace TrainingPlanApp.Web.Contracts
 		Task RemoveExerciseFromTrainingPlan(int id, int index);
 
 		// CHANGES THE STATUS OF THE TRAINING PLAN (ACTIVE/NOT ACTIVE).
-		Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, bool status);
+		Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, string raport);
 
 		// COPIES A TRAINING PLAN TO ANOTHER TRAINING PLAN WITHIN THE SAME MODULE.
 		Task CopyTrainingPlanToAnother(int copyFromId, int copyToId);

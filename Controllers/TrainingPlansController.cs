@@ -75,9 +75,9 @@ namespace TrainingPlanApp.Web.Controllers
 		}
 
 		// POST: TrainingPlans/Index/ChangeStatus
-		public async Task<IActionResult> ChangeStatus(int id, bool status, int trainingModuleId)
+		public async Task<IActionResult> ChangeStatus(int id, string raport, int trainingModuleId)
 		{
-			await trainingPlanRepository.ChangeTrainingPlanCompletionStatus(id, status);
+			await trainingPlanRepository.ChangeTrainingPlanCompletionStatus(id, raport);
 			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });
 		}
 

@@ -15,6 +15,7 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
+using TrainingPlanApp.Web.Models;
 
 namespace TrainingPlanApp.Web.Repositories
 {
@@ -50,10 +51,13 @@ namespace TrainingPlanApp.Web.Repositories
 				trainingPlanVMs.Add(mapper.Map<TrainingPlanVM>(trainingPlan));
 			}
 
+			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var coach = await userManager.FindByIdAsync(user.CoachId);
+
 			var trainingPlanIndexVM = new TrainingPlanIndexVM
 			{
-				UserId = trainingPlanVMs[0].UserId,
-				CoachId = trainingPlanVMs[0].CoachId,
+				UserId = user.Id,
+				CoachId = coach.Id,
 				TrainingModuleId = trainingPlanVMs[0].TrainingModuleId,
 				TrainingPlanVMs = trainingPlanVMs
 			};
@@ -65,6 +69,14 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
 			trainingPlanDetailsVM.ExerciseVMs = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
+
+			trainingPlanDetailsVM.TrainingPlanPhaseVMs = new List<TrainingPlanPhaseVM?>();
+			foreach (var phaseId in trainingPlanDetailsVM.TrainingPlanPhaseIds)
+			{
+				var trainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await context.Set<TrainingPlanPhase>().FindAsync(phaseId));
+				trainingPlanDetailsVM.TrainingPlanPhaseVMs.Add(trainingPlanPhaseVM);
+			}
+
 			trainingPlanDetailsVM = sortListsForSingleTrainingPlanDetails(trainingPlanDetailsVM);
 			return trainingPlanDetailsVM;
 		}
@@ -73,8 +85,20 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id)
 		{
 			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(id));
-			trainingPlanManageExercisesVM.TrainingPlanAddExerciseVM = new TrainingPlanAddExerciseVM { AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name") };
-			trainingPlanManageExercisesVM.Exercises = await exerciseRepository.GetListOfExercises(trainingPlanManageExercisesVM.ExerciseIds);
+			trainingPlanManageExercisesVM.TrainingPlanAddExerciseVM = new TrainingPlanAddExerciseVM
+			{
+				AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
+				AvailableTrainingPlanPhases = new SelectList(context.TrainingPlanPhases.OrderBy(e => e.Id), "Id", "Name")
+			};
+			trainingPlanManageExercisesVM.ExerciseVMs = await exerciseRepository.GetListOfExercises(trainingPlanManageExercisesVM.ExerciseIds);
+
+			trainingPlanManageExercisesVM.TrainingPlanPhaseVMs = new List<TrainingPlanPhaseVM?>();
+			foreach (var phaseId in trainingPlanManageExercisesVM.TrainingPlanPhaseIds)
+			{
+				var trainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await context.Set<TrainingPlanPhase>().FindAsync(phaseId));
+				trainingPlanManageExercisesVM.TrainingPlanPhaseVMs.Add(trainingPlanPhaseVM);
+			}
+
 			return trainingPlanManageExercisesVM;
 		}
 
@@ -83,8 +107,9 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
 
-			trainingPlan.ExerciseIds = new List<int?>();
 			trainingPlan.Indices = new List<string?>();
+			trainingPlan.TrainingPlanPhaseIds = new List<int?>();
+			trainingPlan.ExerciseIds = new List<int?>();
 			trainingPlan.Sets = new List<int?>();
 			trainingPlan.Units = new List<string?>();
 			trainingPlan.Weights = new List<string?>();
@@ -108,6 +133,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.Id);
 			trainingPlan.Indices.Add(trainingPlanAddExerciseVM.ExerciseIndex);
+			trainingPlan.TrainingPlanPhaseIds.Add(trainingPlanAddExerciseVM.TrainingPlanPhaseId);
 			trainingPlan.ExerciseIds.Add(trainingPlanAddExerciseVM.ExerciseId);
 			trainingPlan.Sets.Add(trainingPlanAddExerciseVM.ExerciseSets);
 			trainingPlan.Units.Add(trainingPlanAddExerciseVM.ExerciseUnits);
@@ -115,8 +141,8 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.RestTimes.Add(trainingPlanAddExerciseVM.ExerciseRestTime);
 			trainingPlan.Notes.Add(trainingPlanAddExerciseVM.ExerciseNote);
 			trainingPlan.IsEmpty = false;
-			await UpdateAsync(trainingPlan);
 
+			await UpdateAsync(trainingPlan);
 			return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
 		}
 
@@ -131,6 +157,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.Id);
 			trainingPlan.Indices[index.Value] = trainingPlanAddExerciseVM.ExerciseIndex;
+			trainingPlan.TrainingPlanPhaseIds[index.Value] = trainingPlanAddExerciseVM.TrainingPlanPhaseId;
 			trainingPlan.ExerciseIds[index.Value] = trainingPlanAddExerciseVM.ExerciseId;
 			trainingPlan.Sets[index.Value] = trainingPlanAddExerciseVM.ExerciseSets;
 			trainingPlan.Units[index.Value] = trainingPlanAddExerciseVM.ExerciseUnits;
@@ -146,8 +173,9 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task RemoveExerciseFromTrainingPlan(int id, int index)
 		{
 			var trainingPlan = await GetAsync(id);
-			trainingPlan.ExerciseIds.RemoveAt(index);
 			trainingPlan.Indices.RemoveAt(index);
+			trainingPlan.TrainingPlanPhaseIds.RemoveAt(index);
+			trainingPlan.ExerciseIds.RemoveAt(index);
 			trainingPlan.Sets.RemoveAt(index);
 			trainingPlan.Units.RemoveAt(index);
 			trainingPlan.Weights.RemoveAt(index);
@@ -161,17 +189,11 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CHANGES THE STATUS OF THE TRAINING PLAN (ACTIVE/NOT ACTIVE).
-		public async Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, bool status)
+		public async Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, string raport)
 		{
 			var trainingPlan = await GetAsync(trainingPlanId);
-			if (status)
-			{
-				trainingPlan.IsCompleted = true;
-			}
-			else
-			{
-				trainingPlan.IsCompleted = false;
-			}
+			trainingPlan.IsCompleted = true;
+			trainingPlan.Raport = raport;
 			await UpdateAsync(trainingPlan);
 		}
 
@@ -182,8 +204,9 @@ namespace TrainingPlanApp.Web.Repositories
 			var copyToTrainingPlan = await GetAsync(copyToId);
 
 			copyToTrainingPlan.IsEmpty = copyFromTrainingPlan.IsEmpty;
-			copyToTrainingPlan.ExerciseIds = copyFromTrainingPlan.ExerciseIds;
 			copyToTrainingPlan.Indices = copyFromTrainingPlan.Indices;
+			copyToTrainingPlan.TrainingPlanPhaseIds = copyFromTrainingPlan.TrainingPlanPhaseIds;
+			copyToTrainingPlan.ExerciseIds = copyFromTrainingPlan.ExerciseIds;
 			copyToTrainingPlan.Sets = copyFromTrainingPlan.Sets;
 			copyToTrainingPlan.Units = copyFromTrainingPlan.Units;
 			copyToTrainingPlan.Weights = copyFromTrainingPlan.Weights;
@@ -227,7 +250,7 @@ namespace TrainingPlanApp.Web.Repositories
 						gfx.DrawString($"str.{pageList.Count}", font, XBrushes.Black, new XRect(570, 830, 5, 5), XStringFormats.Center);
 						pageList.Add(document.AddPage());
 						tableY = 50;
-						gfx = XGraphics.FromPdfPage(pageList[pageList.Count-1]);
+						gfx = XGraphics.FromPdfPage(pageList[pageList.Count - 1]);
 					}
 
 					font = new XFont("Verdana", 20, XFontStyleEx.Bold);
@@ -242,9 +265,9 @@ namespace TrainingPlanApp.Web.Repositories
 						gfx.DrawRectangle(XPens.Black, tableX + columnWidth * 3 + 50, tableY + rowHeight * i, columnWidth, rowHeight);
 
 						gfx.DrawString($"{trainingPlanVM.Indices[i]}: {trainingPlanVM.ExerciseVMs[i].Name}", font, XBrushes.Black, new XRect(tableX + columnWidth * 0, tableY + rowHeight * i, columnWidth + 50, rowHeight), XStringFormats.CenterLeft);
-						gfx.DrawString($"{trainingPlanVM.Sets[i]}x{trainingPlanVM.Units[i]}",				 font, XBrushes.Black, new XRect(tableX + columnWidth * 1 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
-						gfx.DrawString($"Weight: {trainingPlanVM.Weights[i]}",								 font, XBrushes.Black, new XRect(tableX + columnWidth * 2 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
-						gfx.DrawString($"Rest: {trainingPlanVM.RestTimes[i]}",								 font, XBrushes.Black, new XRect(tableX + columnWidth * 3 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
+						gfx.DrawString($"{trainingPlanVM.Sets[i]}x{trainingPlanVM.Units[i]}", font, XBrushes.Black, new XRect(tableX + columnWidth * 1 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
+						gfx.DrawString($"Weight: {trainingPlanVM.Weights[i]}", font, XBrushes.Black, new XRect(tableX + columnWidth * 2 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
+						gfx.DrawString($"Rest: {trainingPlanVM.RestTimes[i]}", font, XBrushes.Black, new XRect(tableX + columnWidth * 3 + 50, tableY + rowHeight * i, columnWidth, rowHeight), XStringFormats.Center);
 						tableYOffset += 15;
 					}
 					tableY += tableYOffset + 30;
@@ -275,7 +298,9 @@ namespace TrainingPlanApp.Web.Repositories
 				.ToList();
 
 			var sortedIndicesList = sortedIndices.Select(x => trainingPlanDetailsVM.Indices[x.Index]).ToList();
-			var sortedExercises = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseVMs[x.Index]).ToList();
+			var sortedTrainingPlanPhaseVMs = sortedIndices.Select(x => trainingPlanDetailsVM.TrainingPlanPhaseVMs[x.Index]).ToList();
+			var sortedTrainingPlanPhaseIds = sortedIndices.Select(x => trainingPlanDetailsVM.TrainingPlanPhaseIds[x.Index]).ToList();
+			var sortedExerciseVMs = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseVMs[x.Index]).ToList();
 			var sortedExerciseIds = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseIds[x.Index]).ToList();
 			var sortedSets = sortedIndices.Select(x => trainingPlanDetailsVM.Sets[x.Index]).ToList();
 			var sortedUnits = sortedIndices.Select(x => trainingPlanDetailsVM.Units[x.Index]).ToList();
@@ -284,7 +309,9 @@ namespace TrainingPlanApp.Web.Repositories
 			var sortedNotes = sortedIndices.Select(x => trainingPlanDetailsVM.Notes[x.Index]).ToList();
 
 			trainingPlanDetailsVM.Indices = sortedIndicesList;
-			trainingPlanDetailsVM.ExerciseVMs = sortedExercises;
+			trainingPlanDetailsVM.TrainingPlanPhaseVMs = sortedTrainingPlanPhaseVMs;
+			trainingPlanDetailsVM.TrainingPlanPhaseIds = sortedTrainingPlanPhaseIds;
+			trainingPlanDetailsVM.ExerciseVMs = sortedExerciseVMs;
 			trainingPlanDetailsVM.ExerciseIds = sortedExerciseIds;
 			trainingPlanDetailsVM.Sets = sortedSets;
 			trainingPlanDetailsVM.Units = sortedUnits;

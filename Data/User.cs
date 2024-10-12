@@ -8,5 +8,7 @@ namespace TrainingPlanApp.Web.Data
 		public string? FirstName {  get; set; }
 		public string? LastName { get; set; }
 		public string? DateOfBith {  get; set; }
+		public string? CoachId { get; set; }
+		public string? DieticianId { get; set; }
 	}
 }

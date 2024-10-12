@@ -14,10 +14,12 @@ namespace TrainingPlanApp.Web.Data
         // STRINGS etc.
         public string? Name { get; set; }
         public DateTime? Date { get; set; }
+		public string? Raport {  get; set; }
 
 		// LISTS
 		// indices are used to get the order of exercises
 		public List<string?>? Indices { get; set; }
+		public List<int?>? TrainingPlanPhaseIds { get; set; }
 		public List<int?>? ExerciseIds { get; set; }
 		public List<int?>? Sets { get; set; }
 		// Units can be (example): 10reps/30sec/5km

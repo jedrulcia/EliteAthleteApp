@@ -25,11 +25,11 @@
 		</tr>
 	</thead>
 	<tbody>
-		@for (int i = 0; i < Model.Exercises.Count; i++)
+		@for (int i = 0; i < Model.ExerciseVMs.Count; i++)
 		{
 			<tr>
 				<td>
-					<strong>@Html.DisplayFor(modelItem => Model.Indices[i]): @Html.DisplayFor(modelItem => Model.Exercises[i].Name)</strong>
+					<strong>@Html.DisplayFor(modelItem => Model.Indices[i]): @Html.DisplayFor(modelItem => Model.ExerciseVMs[i].Name)</strong>
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => Model.Sets[i])x @Html.DisplayFor(modelItem => Model.Units[i])
@@ -44,6 +44,7 @@
 					<button data-edittrainingplanid="@Model.Id"
 							data-edititeration="@i"
 							data-editindex="@Model.Indices[i]"
+							data-edittrainingplanphaseid="@Model.TrainingPlanPhaseIds[i]"
 							data-editexerciseid="@Model.ExerciseIds[i]"
 							data-editsets="@Model.Sets[i]"
 							data-editunits="@Model.Units[i]"
@@ -55,7 +56,7 @@
 					</button>
 					<button data-removetrainingplanid="@Model.Id"
 							data-removeindex="@i"
-							data-removename="@Model.Exercises[i].Name"
+							data-removename="@Model.ExerciseVMs[i].Name"
 							class="btn btn-danger btn-sm removeBtn" type="button">
 						<i class="fa-solid fa-trash">&nbsp;</i>Remove
 					</button>
@@ -85,6 +86,14 @@
 							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseIndex" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
+							<label asp-for="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="control-label"></label>
+							<select asp-for="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" asp-items="Model?.TrainingPlanAddExerciseVM.AvailableTrainingPlanPhases" class="form-select">
+							</select>
+							<span asp-validation-for="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseId" class="control-label"></label>
 							<select asp-for="TrainingPlanAddExerciseVM.ExerciseId" asp-items="Model?.TrainingPlanAddExerciseVM.AvailableExercises" class="form-select">
 								<option>Select exercise</option>
@@ -144,17 +153,29 @@
 			</div>
 			<div class="modal-body">
 				<form id="editForm" asp-action="EditExercise" method="post">
-					<input type="hidden" name="TrainingPlanAddExerciseVM.TrainingPlanId" id="editTrainingPlanId" />
+					<input type="hidden" name="TrainingPlanAddExerciseVM.Id" id="editTrainingPlanId" />
 					<input type="hidden" name="index" id="editIteration" />
 					<div class="row">
 						<div class="form-group col-md-6">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseIndex" class="control-label"></label>
-							<input id="editIndex" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseIndex" />
+							<input id="editIndex" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseIndex" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseIndex" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
+							<label asp-for="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="control-label"></label>
+							<select id="editTrainingPlanPhaseId" name="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="form-select">
+								@foreach (var phase in Model.TrainingPlanAddExerciseVM.AvailableTrainingPlanPhases)
+								{
+									<option value="@phase.Value">@phase.Text</option>
+								}
+							</select>
+							<span asp-validation-for="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseId" class="control-label"></label>
-							<select id="editExerciseId" name="TrainingPlanAddExerciseVM.NewExerciseId" class="form-select">
+							<select id="editExerciseId" name="TrainingPlanAddExerciseVM.ExerciseId" class="form-select">
 								@foreach (var exercise in Model.TrainingPlanAddExerciseVM.AvailableExercises)
 								{
 									<option value="@exercise.Value">@exercise.Text</option>
@@ -166,31 +187,31 @@
 					<div class="row">
 						<div class="form-group col-md-6">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseSets" class="control-label"></label>
-							<input id="editSets" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseSets" />
+							<input id="editSets" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseSets" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseSets" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseUnits" class="control-label"></label>
-							<input id="editUnits" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseUnits" />
+							<input id="editUnits" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseUnits" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseUnits" class="text-danger"></span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group col-md-6">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseWeight" class="control-label"></label>
-							<input id="editWeight" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseWeight" />
+							<input id="editWeight" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseWeight" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseWeight" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-6">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseRestTime" class="control-label"></label>
-							<input id="editRestTime" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseRestTime" />
+							<input id="editRestTime" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseRestTime" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseRestTime" class="text-danger"></span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group col-md-12">
 							<label asp-for="TrainingPlanAddExerciseVM.ExerciseNote" class="control-label"></label>
-							<input id="editNote" class="form-control" name="TrainingPlanAddExerciseVM.NewExerciseNote" />
+							<input id="editNote" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseNote" />
 							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseNote" class="text-danger"></span>
 						</div>
 					</div>
@@ -265,6 +286,7 @@
 				var editIteration = btn.data("edititeration");
 				var editTrainingPlanId = btn.data("edittrainingplanid");
 				var editIndex = btn.data("editindex");
+				var editTrainingPlanPhaseId = btn.data("edittrainingplanphaseid");
 				var editExerciseId = btn.data("editexerciseid");
 				var editSets = btn.data("editsets");
 				var editUnits = btn.data("editunits");
@@ -275,6 +297,7 @@
 				$('#editIteration').val(editIteration);
 				$('#editTrainingPlanId').val(editTrainingPlanId);
 				$('#editIndex').val(editIndex);
+				$('#editTrainingPlanPhaseId').val(editTrainingPlanPhaseId);
 				$('#editExerciseId').val(editExerciseId);
 				$('#editSets').val(editSets);
 				$('#editUnits').val(editUnits);

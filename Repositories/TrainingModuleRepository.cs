@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -14,17 +16,24 @@ namespace TrainingPlanApp.Web.Repositories
 	{
 		private readonly IMapper mapper;
 		private readonly ITrainingPlanRepository trainingPlanRepository;
+		private readonly UserManager<User> userManager;
+		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ApplicationDbContext context;
-		public TrainingModuleRepository(ApplicationDbContext context, IMapper mapper, ITrainingPlanRepository trainingPlanRepository) : base(context)
+		public TrainingModuleRepository(ApplicationDbContext context, IMapper mapper, ITrainingPlanRepository trainingPlanRepository, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.trainingPlanRepository = trainingPlanRepository;
+			this.userManager = userManager;
+			this.httpContextAccessor = httpContextAccessor;
 		}
 
 		// GETS TRAINING MODULE INDEX VIEW MODEL FOR A SPECIFIC USER.
 		public async Task<TrainingModuleIndexVM> GetUserTrainingModuleIndexVM(string userId)
 		{
+			var user = await userManager.FindByIdAsync(userId);
+			var coach = await userManager.FindByIdAsync(user.CoachId);
+
 			var trainingModules = await context.TrainingModules
 				.Where(x => x.UserId == userId)
 				.ToListAsync();
@@ -58,7 +67,7 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingModuleIndexVM = new TrainingModuleIndexVM
 			{
 				UserId = userId,
-				CoachId = trainingModuleVMs[0].CoachId,
+				CoachId = coach.Id,
 				TrainingModuleVMs = trainingModuleVMs,
 				TrainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId },
 				TrainingModuleORMVMs = trainingModuleORMVMs,
