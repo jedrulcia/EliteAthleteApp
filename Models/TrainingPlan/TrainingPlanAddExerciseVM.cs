@@ -8,11 +8,13 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 		public int? Id { get; set; }
 		// FORMS
 		// indices are used to get the order of exercises
+		[Required]
 		public string? ExerciseIndex { get; set; }
 		public SelectList? AvailableTrainingPlanPhases { get; set; }
 		public int? TrainingPlanPhaseId { get; set; }
 		public SelectList? AvailableExercises { get; set; }
 		[Display(Name = "Exercise")]
+		[Required]
 		public int? ExerciseId { get; set; }
 		public int? ExerciseSets { get; set; }
 		// Units can be (example): 10reps/30sec/5km

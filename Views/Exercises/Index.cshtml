@@ -10,26 +10,30 @@
 
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-8">
+		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="exerciseTabs" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="my-exercises-tab" data-toggle="tab" href="#my-exercises" role="tab" aria-controls="my-exercises" aria-selected="true">My Exercises</a>
+					<a class="nav-link active" id="my-exercises-tab" data-toggle="tab" href="#my-exercises" role="tab" aria-controls="my-exercises" aria-selected="true"><strong>My Exercises</strong></a>
 				</li>
 				<li class="nav-item" role="presentation">
-					<a class="nav-link" id="all-exercises-tab" data-toggle="tab" href="#all-exercises" role="tab" aria-controls="all-exercises" aria-selected="false">All Exercises</a>
+					<a class="nav-link" id="all-exercises-tab" data-toggle="tab" href="#all-exercises" role="tab" aria-controls="all-exercises" aria-selected="false"><strong>All Exercises</strong></a>
+				</li>
+				<li class="nav-item ms-auto" role="presentation">
+					<button data-coachId="@Model.CoachId" class="nav-link createBtn" type="button" id="create-new-tab" aria-controls="all-exercises" aria-selected="false">
+						<i class="fa-solid fa-square-plus">&nbsp;</i><strong>Create New</strong>
+					</button>
 				</li>
 			</ul>
-			<br><br />
+			<br />
 			<div class="tab-content" id="exerciseTabsContent">
 				<div class="tab-pane fade show active" id="my-exercises" role="tabpanel" aria-labelledby="my-exercises-tab">
-					<h1>My Exercises <button data-coachId="@Model.CoachId" class="btn btn-primary btn-sm createBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New</button></h1>
+					<h1><span class="badge bg-dark d-block w-100"><strong>My Exercises</strong></span></h1>
 					@if (!string.IsNullOrEmpty(errorMessage))
 					{
 						<div class="alert alert-danger">
 							@errorMessage
 						</div>
 					}
-
 					<table class="table">
 						<thead>
 							<tr>
@@ -61,31 +65,42 @@
 											@Html.DisplayFor(modelItem => item.ExerciseMuscleGroup.Name)
 										</td>
 										<td class="text-end">
-											<button data-exerciseid="@item.Id"
-													data-exercisecategoryid="@item.ExerciseCategory.Id"
-													data-exercisemusclegroupid="@item.ExerciseMuscleGroup.Id"
-													data-coachid="@Model.CoachId"
-													data-name="@item.Name"
-													data-description="@item.Description"
-													data-videolink="@item.VideoLink"
-													data-setaspublic="@item.SetAsPublic"
-													class="btn btn-primary btn-sm editBtn">
-												<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
-											</button>
-
-											<button data-name="@item.Name"
-													data-videolink="@item.VideoLink"
-													data-description="@item.Description"
-													data-exercisecategoryname="@item.ExerciseCategory.Name"
-													data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
-													class="btn btn-secondary btn-sm detailsBtn">
-												<i class="fa-solid fa-info-circle">&nbsp;</i>Details
-											</button>
-
-											<button data-exerciseid="@item.Id"
-													class="btn btn-danger btn-sm deleteBtn">
-												<i class="fa-solid fa-trash">&nbsp;</i>Delete
-											</button>
+											<div class="dropdown">
+												<button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+													Actions
+												</button>
+												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+													<li>
+														<button data-exerciseid="@item.Id"
+																data-exercisecategoryid="@item.ExerciseCategory.Id"
+																data-exercisemusclegroupid="@item.ExerciseMuscleGroup.Id"
+																data-coachid="@Model.CoachId"
+																data-name="@item.Name"
+																data-description="@item.Description"
+																data-videolink="@item.VideoLink"
+																data-setaspublic="@item.SetAsPublic"
+																class="dropdown-item editBtn">
+															<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
+														</button>
+													</li>
+													<li>
+														<button data-name="@item.Name"
+																data-videolink="@item.VideoLink"
+																data-description="@item.Description"
+																data-exercisecategoryname="@item.ExerciseCategory.Name"
+																data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
+																class="dropdown-item detailsBtn">
+															<i class="fa-solid fa-info-circle">&nbsp;</i>Details
+														</button>
+													</li>
+													<li>
+														<button data-exerciseid="@item.Id"
+																class="dropdown-item deleteBtn">
+															<i class="fa-solid fa-trash">&nbsp;</i>Delete
+														</button>
+													</li>
+												</ul>
+											</div>
 										</td>
 									</tr>
 								}
@@ -95,7 +110,7 @@
 				</div>
 
 				<div class="tab-pane fade" id="all-exercises" role="tabpanel" aria-labelledby="all-exercises-tab">
-					<h1>All Exercises</h1>
+					<h1><span class="badge bg-dark d-block w-100"><strong>All Exercises</strong></span></h1>
 					<table class="table" style="width:100%">
 						<thead>
 							<tr>
@@ -127,14 +142,23 @@
 											@Html.DisplayFor(modelItem => item.ExerciseMuscleGroup.Name)
 										</td>
 										<td class="text-end">
-											<button data-name="@item.Name"
-													data-videolink="@item.VideoLink"
-													data-description="@item.Description"
-													data-exercisecategoryname="@item.ExerciseCategory.Name"
-													data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
-													class="btn btn-secondary btn-sm detailsBtn">
-												<i class="fa-solid fa-info-circle">&nbsp;</i>Details
-											</button>
+											<div class="dropdown">
+												<button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+													Actions
+												</button>
+												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+													<li>
+														<button data-name="@item.Name"
+																data-videolink="@item.VideoLink"
+																data-description="@item.Description"
+																data-exercisecategoryname="@item.ExerciseCategory.Name"
+																data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
+																class="dropdown-item detailsBtn">
+															<i class="fa-solid fa-info-circle">&nbsp;</i>Details
+														</button>
+													</li>
+												</ul>
+											</div>
 										</td>
 									</tr>
 								}

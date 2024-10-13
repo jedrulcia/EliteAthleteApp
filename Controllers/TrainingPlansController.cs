@@ -96,7 +96,13 @@ namespace TrainingPlanApp.Web.Controllers
 		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> AddExercise(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
-			await trainingPlanRepository.AddExerciseToTrainingPlanAsync(trainingPlanAddExerciseVM);
+			if (ModelState.IsValid)
+			{
+				await trainingPlanRepository.AddExerciseToTrainingPlanAsync(trainingPlanAddExerciseVM);
+				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
+			}
+
+			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
 		}
 
@@ -106,7 +112,12 @@ namespace TrainingPlanApp.Web.Controllers
 		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> EditExercises(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
 		{
-			await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM, index);
+			if (ModelState.IsValid)
+			{
+				await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM, index);
+				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
+			}
+			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
 		}
 

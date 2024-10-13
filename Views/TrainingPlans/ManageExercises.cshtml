@@ -5,6 +5,7 @@
 
 @{
 	ViewData["Title"] = "ManageExercises";
+	var errorMessage = TempData["ErrorMessage"] as string;
 }
 
 <h1>Manage Exercises</h1>
@@ -13,6 +14,13 @@
 	<a asp-action="Index" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
 	<button class="btn btn-primary btn-sm addBtn" data-addtrainingplanid="@Model.Id" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Exercise</button>
 </p>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
+	</div>
+}
 
 <table class="table">
 	<thead>

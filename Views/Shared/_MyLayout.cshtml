@@ -6,271 +6,105 @@
 @inject UserManager<User> UserManager
 
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html lang="en">
 
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!-- Tell the browser to be responsive to screen width -->
-	<meta name="keywords"
-		  content="">
-	<meta name="description"
-		  content="">
-	<meta name="robots" content="noindex,nofollow">
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - Your Application</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TrainingPlanApp.Web</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialdesignicons/5.4.55/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/themify-icons/0.1.0/themify-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TrainingPlanApp.Web.styles.css" asp-append-version="true" />
+    <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
 
-
-
-	<title>@ViewData["Title"] - TrainingPlanApp.Web</title>
-
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialdesignicons/5.4.55/css/materialdesignicons.min.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/themify-icons/0.1.0/themify-icons.min.css" />
-	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/TrainingPlanApp.Web.styles.css" asp-append-version="true" />
-
-	<link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
-	<!-- Custom CSS -->
-	<link href="~/css/style.min.css" rel="stylesheet">
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-	<![endif]-->
+    <link href="~/css/style.min.css" rel="stylesheet">
 </head>
 
+
 <body>
-	<!-- ============================================================== -->
-	<!-- Preloader - style you can find in spinners.css -->
-	<!-- ============================================================== -->
-	<div class="preloader">
-		<div class="lds-ripple">
-			<div class="lds-pos"></div>
-			<div class="lds-pos"></div>
-		</div>
-	</div>
-	<!-- ============================================================== -->
-	<!-- Main wrapper - style you can find in pages.scss -->
-	<!-- ============================================================== -->
-	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
-		 data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
-		<!-- ============================================================== -->
-		<!-- Topbar header - style you can find in pages.scss -->
-		<!-- ============================================================== -->
-		<header class="topbar" data-navbarbg="skin5">
-			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
-				<div class="navbar-header" data-logobg="skin5">
-					<!-- ============================================================== -->
-					<!-- Logo -->
-					<!-- ============================================================== -->
-					<a class="navbar-brand" href="index.html">
-						<!-- Logo icon -->
-						<!--End Logo icon -->
-						<!-- Logo text -->
-						<span class="logo-text">
-							<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-dumbbell"></i> S&C Training Plan Application</a>
-						</span>
-					</a>
-					<!-- ============================================================== -->
-					<!-- End Logo -->
-					<!-- ============================================================== -->
-					<!-- This is for the sidebar toggle which is visible on mobile only -->
-					<a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
-						<i class="ti-menu ti-close"></i>
-					</a>
-				</div>
-				<!-- ============================================================== -->
-				<!-- End Logo -->
-				<!-- ============================================================== -->
-				<div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-					<!-- ============================================================== -->
-					<!-- toggle and nav items -->
-					<!-- ============================================================== -->
-				</div>
-			</nav>
-		</header>
-		<!-- ============================================================== -->
-		<!-- End Topbar header -->
-		<!-- ============================================================== -->
-		<!-- ============================================================== -->
-		<!-- Left Sidebar - style you can find in sidebar.scss  -->
-		<!-- ============================================================== -->
-		<aside class="left-sidebar" data-sidebarbg="skin6">
-			<!-- Sidebar scroll-->
-			<div class="scroll-sidebar">
-				<!-- Sidebar navigation-->
-				<nav class="sidebar-nav">
-					<ul id="sidebarnav">
-						<!-- User Profile-->
-						<li>
-							<!-- User Profile-->
-							@if (SignInManager.IsSignedIn(User))
-							{
-								<div class="user-profile d-flex no-block">
-									<div class="user-pic">
-										<img src="~/images/users/1.jpg" alt="users"
-											 class="rounded-circle" width="40" />
-									</div>
-									<div class="user-content hide-menu m-l-10">
-										<a href="#" class="" id="Userdd" role="button"
-										   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<h5 class="m-b-0 user-name font-medium">
-												@User.Identity?.Name <i class="fa fa-angle-down"></i>
-											</h5>
-											@if (User.FindFirstValue(ClaimTypes.Role) == Roles.Administrator)
-											{
-												<span class="op-5 user-email">Coach</span>
-											}
-											else if (User.FindFirstValue(ClaimTypes.Role) == Roles.User)
-											{
-												<span class="op-5 user-email">Athlete</span>
-											}
-										</a>
-									</div>
-								</div>
-							<li class="p-15 m-t-10">
-								<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-									<button type="submit" class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center">
-										<i class="fa fa-power-off m-r-5 m-l-5"></i>
-										<span>Logout</span>
-									</button>
-								</form>
-							</li>
-							}
-							else
-							{
-							<li class="p-15 m-t-10">
-								<a class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center" asp-area="Identity" asp-page="/Account/Register">
-									<i class="fas fa-portrait"></i>&nbsp;
-									<span>Register</span>
-								</a>
-							</li>
-							<li class="p-15 m-t-10">
-								<a class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center" asp-area="Identity" asp-page="/Account/Login">
-									<i class="fas fa-user"></i>&nbsp;
-									<span>Login</span>
-								</a>
-							</li>
-							}
-						<!-- End User Profile-->
-						</li>
-						<!-- User Profile-->
-						<li class="sidebar-item">
-							<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
-								<i class="fa-solid fa-house"></i>&nbsp;
-								<span>Home</span>
-							</a>
-						</li>
-						@if (User.IsInRole("User"))
-						{
-							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="TrainingModules" asp-action="Index">
-									<i class="fa-solid fa-dumbbell"></i>
-									<span>Training Modules</span>
-								</a>
-							</li>
-							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Diets" asp-action="Index">
-									<i class="fa-solid fa-apple-whole"></i>
-									<span>Diets</span>
-								</a>
-							</li>
-						}
-						@if (User.IsInRole("Administrator"))
-						{
-							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Users" asp-action="Index">
-									<i class="fa-solid fa-user"></i>
-									<span>Athletes</span>
-								</a>
-							</li>
-							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Exercises" asp-action="Index">
-									<i class="fa-solid fa-dumbbell"></i>
-									<span>Exercises</span>
-								</a>
-							</li>
-							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Ingredients" asp-action="Index">
-									<i class="fa-solid fa-apple-whole"></i>
-									<span>Ingredients</span>
-								</a>
-							</li>
-							<li class="sidebar-item">
-								<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Meals" asp-action="Index">
-									<i class="fa-solid fa-utensils"></i>
-									<span>Meals</span>
-								</a>
-							</li>
-						}
-					</ul>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-black border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <strong><a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-dumbbell">&nbsp;</i> Elite Athlete</a></strong>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        @if (User.IsInRole("User"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="TrainingPlans" asp-action="Index">Training Plans</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="Index">Athletes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Exercises" asp-action="Index">Exercises</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Ingredients" asp-action="Index">Ingredients</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Meals" asp-action="Index">Meals</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
-				</nav>
-				<!-- End Sidebar navigation -->
-			</div>
-			<!-- End Sidebar scroll-->
-		</aside>
-		<!-- ============================================================== -->
-		<!-- End Left Sidebar - style you can find in sidebar.scss  -->
-		<!-- ============================================================== -->
-		<!-- ============================================================== -->
-		<!-- Page wrapper  -->
-		<!-- ============================================================== -->
-		<div class="page-wrapper">
-			<div class="container-fluid">
-				<div class="row">
-					@RenderBody()
-				</div>
-			</div>
-		</div>
-		<!-- ============================================================== -->
-		<!-- End Page wrapper  -->
-		<!-- ============================================================== -->
-	</div>
-	<!-- ============================================================== -->
-	<!-- End Wrapper -->
-	<!-- ============================================================== -->
-	<!-- ============================================================== -->
-	<!-- All Jquery -->
-	<!-- ============================================================== -->
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/lib/sweetalert/sweetalert.min.js"></script>
-	<script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
-	<script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
-	<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - TrainingPlanApp.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
 
-	<!--Wave Effects -->
-	<script src="~/js/waves.js"></script>
-	<!--Menu sidebar -->
-	<script src="~/js/sidebarmenu.js"></script>
-	<!--Custom JavaScript -->
-	<script src="~/js/custom.js"></script>
-	<!--This page JavaScript -->
-	<!--chartis chart-->
-	@*<script src="~/js/dashboard1.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/sweetalert/sweetalert.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/waves.js"></script>
+    <script src="~/js/sidebarmenu.js"></script>
+    <script src="~/js/custom.js"></script>
 
-	<script>
-		$(function () {
-			$('.table').DataTable();
-			$(".datepicker").datepicker(
-				{
-					dateFormat: "yy-mm-dd"
-				});
-		});
-	</script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
-	@await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(function () {
+            $('.table').DataTable({
+                pageLength: 50
+            });
+            $(".datepicker").datepicker(
+                {
+                    dateFormat: "yy-mm-dd"
+                });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
-
 </html>
