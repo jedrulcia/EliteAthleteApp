@@ -28,3 +28,17 @@ body {
     max-width: 200px;
     display: inline-block;
 }
+
+.tab-content {
+    display: block; /* Ensure it is set to block or flex */
+    width: 100%; /* Full width */
+}
+
+.tab-pane {
+    width: 100%; /* Ustaw szerokoœæ zak³adek na pe³n¹ szerokoœæ */
+    overflow: auto; /* W³¹cz przewijanie, jeœli zawartoœæ bêdzie wiêksza ni¿ dostêpna przestrzeñ */
+}
+
+.container {
+    width: 100%; /* or set to a desired width */
+}

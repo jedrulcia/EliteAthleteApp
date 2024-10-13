@@ -12,6 +12,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- Tell the browser to be responsive to screen width -->
 	<meta name="keywords"
 		  content="">
 	<meta name="description"
@@ -35,39 +36,81 @@
 	<link rel="stylesheet" href="~/TrainingPlanApp.Web.styles.css" asp-append-version="true" />
 
 	<link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
+	<!-- Custom CSS -->
 	<link href="~/css/style.min.css" rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 </head>
 
 <body>
+	<!-- ============================================================== -->
+	<!-- Preloader - style you can find in spinners.css -->
+	<!-- ============================================================== -->
 	<div class="preloader">
 		<div class="lds-ripple">
 			<div class="lds-pos"></div>
 			<div class="lds-pos"></div>
 		</div>
 	</div>
+	<!-- ============================================================== -->
+	<!-- Main wrapper - style you can find in pages.scss -->
+	<!-- ============================================================== -->
 	<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
 		 data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+		<!-- ============================================================== -->
+		<!-- Topbar header - style you can find in pages.scss -->
+		<!-- ============================================================== -->
 		<header class="topbar" data-navbarbg="skin5">
 			<nav class="navbar top-navbar navbar-expand-md navbar-dark">
 				<div class="navbar-header" data-logobg="skin5">
+					<!-- ============================================================== -->
+					<!-- Logo -->
+					<!-- ============================================================== -->
 					<a class="navbar-brand" href="index.html">
+						<!-- Logo icon -->
+						<!--End Logo icon -->
+						<!-- Logo text -->
 						<span class="logo-text">
 							<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-dumbbell"></i> S&C Training Plan Application</a>
 						</span>
 					</a>
+					<!-- ============================================================== -->
+					<!-- End Logo -->
+					<!-- ============================================================== -->
+					<!-- This is for the sidebar toggle which is visible on mobile only -->
 					<a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)">
 						<i class="ti-menu ti-close"></i>
 					</a>
 				</div>
+				<!-- ============================================================== -->
+				<!-- End Logo -->
+				<!-- ============================================================== -->
 				<div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+					<!-- ============================================================== -->
+					<!-- toggle and nav items -->
+					<!-- ============================================================== -->
 				</div>
 			</nav>
 		</header>
+		<!-- ============================================================== -->
+		<!-- End Topbar header -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- Left Sidebar - style you can find in sidebar.scss  -->
+		<!-- ============================================================== -->
 		<aside class="left-sidebar" data-sidebarbg="skin6">
+			<!-- Sidebar scroll-->
 			<div class="scroll-sidebar">
+				<!-- Sidebar navigation-->
 				<nav class="sidebar-nav">
 					<ul id="sidebarnav">
+						<!-- User Profile-->
 						<li>
+							<!-- User Profile-->
 							@if (SignInManager.IsSignedIn(User))
 							{
 								<div class="user-profile d-flex no-block">
@@ -116,7 +159,9 @@
 								</a>
 							</li>
 							}
+						<!-- End User Profile-->
 						</li>
+						<!-- User Profile-->
 						<li class="sidebar-item">
 							<a class="sidebar-link waves-effect waves-dark sidebar-link" asp-area="" asp-controller="Home" asp-action="Index">
 								<i class="fa-solid fa-house"></i>&nbsp;
@@ -166,9 +211,18 @@
 							</li>
 						}
 					</ul>
+
 				</nav>
+				<!-- End Sidebar navigation -->
 			</div>
+			<!-- End Sidebar scroll-->
 		</aside>
+		<!-- ============================================================== -->
+		<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+		<!-- ============================================================== -->
+		<!-- ============================================================== -->
+		<!-- Page wrapper  -->
+		<!-- ============================================================== -->
 		<div class="page-wrapper">
 			<div class="container-fluid">
 				<div class="row">
@@ -176,8 +230,16 @@
 				</div>
 			</div>
 		</div>
+		<!-- ============================================================== -->
+		<!-- End Page wrapper  -->
+		<!-- ============================================================== -->
 	</div>
-
+	<!-- ============================================================== -->
+	<!-- End Wrapper -->
+	<!-- ============================================================== -->
+	<!-- ============================================================== -->
+	<!-- All Jquery -->
+	<!-- ============================================================== -->
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/lib/sweetalert/sweetalert.min.js"></script>
@@ -186,9 +248,16 @@
 	<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	<!--Wave Effects -->
 	<script src="~/js/waves.js"></script>
+	<!--Menu sidebar -->
 	<script src="~/js/sidebarmenu.js"></script>
+	<!--Custom JavaScript -->
 	<script src="~/js/custom.js"></script>
+	<!--This page JavaScript -->
+	<!--chartis chart-->
+	@*<script src="~/js/dashboard1.js"></script>*@
 
 	<script>
 		$(function () {
