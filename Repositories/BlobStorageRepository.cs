@@ -14,6 +14,7 @@ namespace TrainingPlanApp.Web.Repositories
 			this.containerName = containerName;
 		}
 
+		// UPLOAD IMAGE TO THE AZURE BLOB STORAGE
 		public async Task<string> UploadImageAsync(IFormFile file)
 		{
 			string fileExtension = Path.GetExtension(file.FileName);
@@ -35,9 +36,10 @@ namespace TrainingPlanApp.Web.Repositories
 				await blobClient.UploadAsync(data);
 			}
 
-			return blobClient.Uri.AbsoluteUri; // Zwraca URL przesłanego pliku
+			return blobClient.Uri.AbsoluteUri;
 		}
 
+		// REMOVES IMAGE FROM THE AZURE BLOB STORAGE
 		public async Task RemoveImageAsync(string imageUrl)
 		{
 			int index = imageUrl.LastIndexOf('/');
@@ -48,6 +50,7 @@ namespace TrainingPlanApp.Web.Repositories
 			await blobClient.DeleteIfExistsAsync();
 		}
 
+		// CHECKS IF BLOB EXSISTS IN THE STORAGE
 		public async Task<bool> BlobExistsAsync(string blobName)
 		{
 			var containerClient = blobServiceClient.GetBlobContainerClient(containerName);

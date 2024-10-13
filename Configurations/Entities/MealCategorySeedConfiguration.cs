@@ -4,6 +4,7 @@ using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
+	// SEED CONFIGURATION FOR INITIAL MEAL CATEGORIES IN THE DATABASE.
 	public class MealCategorySeedConfiguration : IEntityTypeConfiguration<MealCategory>
 	{
 		public void Configure(EntityTypeBuilder<MealCategory> builder)

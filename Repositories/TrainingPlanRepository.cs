@@ -41,7 +41,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
-		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVM(List<int> trainingPlanIds)
+		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVMAsync(List<int> trainingPlanIds)
 		{
 			List<TrainingPlanVM> trainingPlanVMs = new List<TrainingPlanVM>();
 
@@ -65,10 +65,10 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVM(TrainingPlan trainingPlan)
+		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVMAsync(TrainingPlan trainingPlan)
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
-			trainingPlanDetailsVM.ExerciseVMs = await exerciseRepository.GetListOfExercises(trainingPlanDetailsVM.ExerciseIds);
+			trainingPlanDetailsVM.ExerciseVMs = await exerciseRepository.GetListOfExercisesAsync(trainingPlanDetailsVM.ExerciseIds);
 
 			trainingPlanDetailsVM.TrainingPlanPhaseVMs = new List<TrainingPlanPhaseVM?>();
 			foreach (var phaseId in trainingPlanDetailsVM.TrainingPlanPhaseIds)
@@ -77,12 +77,12 @@ namespace TrainingPlanApp.Web.Repositories
 				trainingPlanDetailsVM.TrainingPlanPhaseVMs.Add(trainingPlanPhaseVM);
 			}
 
-			trainingPlanDetailsVM = sortListsForSingleTrainingPlanDetails(trainingPlanDetailsVM);
+			trainingPlanDetailsVM = SortListsForTrainingPlanDetailsVM(trainingPlanDetailsVM);
 			return trainingPlanDetailsVM;
 		}
 
 		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
-		public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVM(int? id)
+		public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? id)
 		{
 			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(id));
 			trainingPlanManageExercisesVM.TrainingPlanAddExerciseVM = new TrainingPlanAddExerciseVM
@@ -90,7 +90,7 @@ namespace TrainingPlanApp.Web.Repositories
 				AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
 				AvailableTrainingPlanPhases = new SelectList(context.TrainingPlanPhases.OrderBy(e => e.Id), "Id", "Name")
 			};
-			trainingPlanManageExercisesVM.ExerciseVMs = await exerciseRepository.GetListOfExercises(trainingPlanManageExercisesVM.ExerciseIds);
+			trainingPlanManageExercisesVM.ExerciseVMs = await exerciseRepository.GetListOfExercisesAsync(trainingPlanManageExercisesVM.ExerciseIds);
 
 			trainingPlanManageExercisesVM.TrainingPlanPhaseVMs = new List<TrainingPlanPhaseVM?>();
 			foreach (var phaseId in trainingPlanManageExercisesVM.TrainingPlanPhaseIds)
@@ -103,7 +103,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
-		public async Task<int> CreateTrainingPlan(TrainingPlanCreateVM trainingPlanCreateVM)
+		public async Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
 			var trainingPlan = mapper.Map<TrainingPlan>(trainingPlanCreateVM);
 
@@ -123,12 +123,12 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlan(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
+		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.ExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+				return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.Id);
 			}
 
 			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.Id);
@@ -143,16 +143,16 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.IsEmpty = false;
 
 			await UpdateAsync(trainingPlan);
-			return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.Id);
 		}
 
 		// EDITS AN EXERCISE IN THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlan(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
+		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.ExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+				return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.Id);
 			}
 
 			var trainingPlan = await GetAsync(trainingPlanAddExerciseVM.Id);
@@ -166,11 +166,11 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlan.Notes[index.Value] = trainingPlanAddExerciseVM.ExerciseNote;
 			await UpdateAsync(trainingPlan);
 
-			return await GetTrainingPlanManageExercisesVM(trainingPlanAddExerciseVM.Id);
+			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.Id);
 		}
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
-		public async Task RemoveExerciseFromTrainingPlan(int id, int index)
+		public async Task RemoveExerciseFromTrainingPlanAsync(int id, int index)
 		{
 			var trainingPlan = await GetAsync(id);
 			trainingPlan.Indices.RemoveAt(index);
@@ -189,7 +189,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CHANGES THE STATUS OF THE TRAINING PLAN (ACTIVE/NOT ACTIVE).
-		public async Task ChangeTrainingPlanCompletionStatus(int trainingPlanId, string raport)
+		public async Task CompleteTrainingPlanAsync(int trainingPlanId, string raport)
 		{
 			var trainingPlan = await GetAsync(trainingPlanId);
 			trainingPlan.IsCompleted = true;
@@ -198,7 +198,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// COPIES A TRAINING PLAN TO ANOTHER TRAINING PLAN WITHIN THE SAME MODULE.
-		public async Task CopyTrainingPlanToAnother(int copyFromId, int copyToId)
+		public async Task CopyTrainingPlanAsync(int copyFromId, int copyToId)
 		{
 			var copyFromTrainingPlan = await GetAsync(copyFromId);
 			var copyToTrainingPlan = await GetAsync(copyToId);
@@ -216,14 +216,14 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// GENERATES TRAINING MODULE IN PDF
-		public async Task<byte[]> GetTrainingModulePDF(List<int> trainingPlanIds)
+		public async Task<byte[]> GetTrainingModulePDFAsync(List<int> trainingPlanIds)
 		{
 			List<TrainingPlanDetailsVM> trainingPlanVMs = new List<TrainingPlanDetailsVM>();
 
 			foreach (int id in trainingPlanIds)
 			{
 				var trainingPlan = await GetAsync(id);
-				trainingPlanVMs.Add(await GetTrainingPlanDetailsVM(trainingPlan));
+				trainingPlanVMs.Add(await GetTrainingPlanDetailsVMAsync(trainingPlan));
 			}
 
 			PdfDocument document = new PdfDocument();
@@ -288,7 +288,7 @@ namespace TrainingPlanApp.Web.Repositories
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
 		// SORTS ALL LISTS BY INDICES LIST
-		private TrainingPlanDetailsVM sortListsForSingleTrainingPlanDetails(TrainingPlanDetailsVM trainingPlanDetailsVM)
+		private TrainingPlanDetailsVM SortListsForTrainingPlanDetailsVM(TrainingPlanDetailsVM trainingPlanDetailsVM)
 		{
 			var sortedIndices = trainingPlanDetailsVM.Indices
 				.Select((value, index) => new { Index = index, Value = value })

@@ -17,7 +17,7 @@ using TrainingPlanApp.Web.Models.Meal;
 
 namespace TrainingPlanApp.Web.Controllers
 {
-	[Authorize(Roles = Roles.Administrator)]
+	[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 	public class ExercisesController : Controller
 	{
 		private readonly IExerciseRepository exerciseRepository;
@@ -36,7 +36,7 @@ namespace TrainingPlanApp.Web.Controllers
 		// GET: Exercises
 		public async Task<IActionResult> Index()
 		{
-			return View(await exerciseRepository.GetExerciseIndexVM());
+			return View(await exerciseRepository.GetExerciseIndexVMAsync());
 		}
 
 		[HttpPost]
@@ -45,7 +45,7 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await exerciseRepository.CreateExercise(exerciseCreateVM);
+				await exerciseRepository.CreateExerciseAsync(exerciseCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
 
@@ -62,7 +62,7 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				try
 				{
-					await exerciseRepository.EditExercise(exerciseCreateVM);
+					await exerciseRepository.EditExerciseAsync(exerciseCreateVM);
 					return RedirectToAction(nameof(Index));
 				}
 				catch (DbUpdateConcurrencyException)

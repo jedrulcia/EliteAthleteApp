@@ -4,6 +4,7 @@ using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
+	// SEED CONFIGURATION FOR INITIAL TRAINING PLAN PHASES IN THE DATABASE.
 	public class TrainingPlanPhaseSeedConfiguration : IEntityTypeConfiguration<TrainingPlanPhase>
 	{
 		public void Configure(EntityTypeBuilder<TrainingPlanPhase> builder)

@@ -4,6 +4,7 @@ using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
+	// SEED CONFIGURATION FOR INITIAL EXERCISE MUSCLE GROUPS IN THE DATABASE.
 	public class ExerciseMuscleGroupSeedConfiguration : IEntityTypeConfiguration<ExerciseMuscleGroup>
 	{
 		public void Configure(EntityTypeBuilder<ExerciseMuscleGroup> builder)

@@ -4,6 +4,7 @@ using TrainingPlanApp.Web.Data;
 
 namespace TrainingPlanApp.Web.Configurations.Entities
 {
+	// SEED CONFIGURATION FOR INITIAL INGREDIENT CATEGORIES IN THE DATABASE.
 	public class IngredientCategorySeedConfiguration : IEntityTypeConfiguration<IngredientCategory>
 	{
 		public void Configure(EntityTypeBuilder<IngredientCategory> builder)

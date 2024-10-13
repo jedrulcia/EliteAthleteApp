@@ -7,7 +7,7 @@ namespace TrainingPlanApp.Web.Configurations.Entities
 {
     public class UserSeedConfiguration : IEntityTypeConfiguration<User>
 	{
-		// SEED CONFIGURATION FOR INITIAL USER ACCOUNTS IN THE DATABASE, INCLUDING ADMIN AND REGULAR USER.
+		// SEED CONFIGURATION FOR INITIAL USER ACCOUNTS IN THE DATABASE.
 		public void Configure(EntityTypeBuilder<User> builder)
         {
             var hasher = new PasswordHasher<User>();

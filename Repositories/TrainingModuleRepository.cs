@@ -29,7 +29,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// GETS TRAINING MODULE INDEX VIEW MODEL FOR A SPECIFIC USER.
-		public async Task<TrainingModuleIndexVM> GetUserTrainingModuleIndexVM(string userId)
+		public async Task<TrainingModuleIndexVM> GetTrainingModuleIndexVMAsync(string userId)
 		{
 			var user = await userManager.FindByIdAsync(userId);
 			var coach = await userManager.FindByIdAsync(user.CoachId);
@@ -78,7 +78,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CREATES A NEW TRAINING MODULE.
-		public async Task CreateTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM)
+		public async Task CreateTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			var trainingModule = mapper.Map<TrainingModule>(trainingModuleCreateVM);
 			trainingModule.TrainingPlanIds = new List<int>();
@@ -86,11 +86,11 @@ namespace TrainingPlanApp.Web.Repositories
 
 			await context.AddAsync(trainingModule);
 			await context.SaveChangesAsync();
-			await CreateNewDayInTrainingModule(days, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
+			await CreateDayInTrainingModuleAsync(days, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
 		// EDITS AN EXISTING TRAINING MODULE, ALLOWING ONLY EXTENSION OF DAYS AND NAME CHANGE.
-		public async Task EditTrainingModule(TrainingModuleCreateVM trainingModuleCreateVM)
+		public async Task EditTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			var trainingModule = await GetAsync(trainingModuleCreateVM.Id);
 
@@ -107,11 +107,11 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingModule.StartDate = trainingModuleCreateVM.StartDate;
 			trainingModule.EndDate = trainingModuleCreateVM.EndDate;
 
-			await CreateNewDayInTrainingModule(newDays, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
+			await CreateDayInTrainingModuleAsync(newDays, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
 		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS.
-		public async Task DeleteTrainingModule(int id)
+		public async Task DeleteTrainingModuleAsync(int id)
 		{
 			var trainingModule = await GetAsync(id);
 			foreach (var trainingPlanId in trainingModule.TrainingPlanIds)
@@ -122,7 +122,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CREATES NEW ORM
-		public async Task CreateNewORM(TrainingModuleORMVM trainingModuleORMVM)
+		public async Task CreateORMAsync(TrainingModuleORMVM trainingModuleORMVM)
 		{
 			var trainingModuleORM = mapper.Map<TrainingModuleORM>(trainingModuleORMVM);
 
@@ -175,7 +175,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// CREATES NEW DAY IN TRAINING MODULE (TRAINING PLAN ENTITY)
-		private async Task CreateNewDayInTrainingModule(List<DateTime> days, string userId, string coachId, int trainingModuleId)
+		private async Task CreateDayInTrainingModuleAsync(List<DateTime> days, string userId, string coachId, int trainingModuleId)
 		{
 			var trainingModule = await GetAsync(trainingModuleId);
 
@@ -189,28 +189,10 @@ namespace TrainingPlanApp.Web.Repositories
 					TrainingModuleId = trainingModuleId,
 					CoachId = coachId
 				};
-				int trainingPlanId = await trainingPlanRepository.CreateTrainingPlan(trainingPlanCreateVM);
+				int trainingPlanId = await trainingPlanRepository.CreateTrainingPlanAsync(trainingPlanCreateVM);
 				trainingModule.TrainingPlanIds.Add(trainingPlanId);
 			}
 			await UpdateAsync(trainingModule);
-		}
-
-		// ARCHIVE
-
-		// CHECKS IF NEW DATES ARE NOT NULL
-		public async Task<TrainingModuleCreateVM> CheckTheDates(TrainingModuleCreateVM trainingModuleCreateVM)
-		{
-			var trainingModule = await GetAsync(trainingModuleCreateVM.Id);
-
-			if (trainingModuleCreateVM.StartDate == null)
-			{
-				trainingModuleCreateVM.StartDate = trainingModule.StartDate;
-			}
-			if (trainingModuleCreateVM.EndDate == null)
-			{
-				trainingModuleCreateVM.EndDate = trainingModule.EndDate;
-			}
-			return trainingModuleCreateVM;
 		}
 	}
 }

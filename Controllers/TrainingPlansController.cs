@@ -53,7 +53,7 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> Index(int trainingModuleId)
         {
             List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-			return View(await trainingPlanRepository.GetTrainingPlanIndexVM(trainingPlanIds));
+			return View(await trainingPlanRepository.GetTrainingPlanIndexVMAsync(trainingPlanIds));
 		}
 
 		// GET: TrainingPlans/Details
@@ -64,20 +64,21 @@ namespace TrainingPlanApp.Web.Controllers
 			{
 				return NotFound();
 			}
-			return PartialView("Details", await trainingPlanRepository.GetTrainingPlanDetailsVM(trainingPlan));
+			return PartialView("Details", await trainingPlanRepository.GetTrainingPlanDetailsVMAsync(trainingPlan));
 		}
 
 		// GET: TrainingPlans/ManageExercises
-		[Authorize(Roles = Roles.Administrator)]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
+
 		public async Task<IActionResult> ManageExercises(int? id)
 		{
-			return View(await trainingPlanRepository.GetTrainingPlanManageExercisesVM(id));
+			return View(await trainingPlanRepository.GetTrainingPlanManageExercisesVMAsync(id));
 		}
 
 		// POST: TrainingPlans/Index/ChangeStatus
 		public async Task<IActionResult> ChangeStatus(int id, string raport, int trainingModuleId)
 		{
-			await trainingPlanRepository.ChangeTrainingPlanCompletionStatus(id, raport);
+			await trainingPlanRepository.CompleteTrainingPlanAsync(id, raport);
 			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });
 		}
 
@@ -85,47 +86,47 @@ namespace TrainingPlanApp.Web.Controllers
 		public async Task<IActionResult> PrintPDF(int trainingModuleId)
 		{
 			List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-			byte[] pdf = await trainingPlanRepository.GetTrainingModulePDF(trainingPlanIds);
+			byte[] pdf = await trainingPlanRepository.GetTrainingModulePDFAsync(trainingPlanIds);
 			return File(pdf, "application/pdf", "PlanTreningowy.pdf");
 		}
 
 		// POST: TrainingPlans/ManageExercises/AddExercise
 		[HttpPost, ActionName("AddExercise")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> AddExercise(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
-			await trainingPlanRepository.AddExerciseToTrainingPlan(trainingPlanAddExerciseVM);
+			await trainingPlanRepository.AddExerciseToTrainingPlanAsync(trainingPlanAddExerciseVM);
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
 		}
 
 		// POST: TrainingPlans/ManageExercises/EditExercise
 		[HttpPost, ActionName("EditExercise")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> EditExercises(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
 		{
-			await trainingPlanRepository.EditExerciseInTrainingPlan(trainingPlanAddExerciseVM, index);
+			await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM, index);
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
 		}
 
 		// POST: TrainingPlans/ManageExercises/RemoveExercise
 		[HttpPost, ActionName("RemoveExercise")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> RemoveExercise(int trainingPlanId, int index)
 		{
-			await trainingPlanRepository.RemoveExerciseFromTrainingPlan(trainingPlanId, index);
+			await trainingPlanRepository.RemoveExerciseFromTrainingPlanAsync(trainingPlanId, index);
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanId });
 		}
 
 		// POST: TrainingPlans/ManageExercises/CopyTrainingPlan
 		[HttpPost, ActionName("CopyTrainingPlan")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator)]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> CopyTrainingPlan(int copyFromId, int copyToId, int trainingModuleId)
 		{
-			await trainingPlanRepository.CopyTrainingPlanToAnother(copyFromId, copyToId);
+			await trainingPlanRepository.CopyTrainingPlanAsync(copyFromId, copyToId);
 			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });
 		}
 	}

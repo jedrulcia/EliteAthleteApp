@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using TrainingPlanApp.Web.Constants;
 using TrainingPlanApp.Web.Contracts;
 using TrainingPlanApp.Web.Data;
 using TrainingPlanApp.Web.Models;
@@ -48,18 +50,19 @@ namespace TrainingPlanApp.Web.Controllers
 				var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 				userId = user.Id;
 			}
-			var trainingModuleIndexVM = await trainingModuleRepository.GetUserTrainingModuleIndexVM(userId);
+			var trainingModuleIndexVM = await trainingModuleRepository.GetTrainingModuleIndexVMAsync(userId);
 			return View(trainingModuleIndexVM);
 		}
 
 		// POST: TrainingModules/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> Create(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			if (ModelState.IsValid)
 			{
-				await trainingModuleRepository.CreateTrainingModule(trainingModuleCreateVM);
+				await trainingModuleRepository.CreateTrainingModuleAsync(trainingModuleCreateVM);
 				return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 			}
 			TempData["ErrorMessage"] = $"Error while creating the training module. Please try again.";
@@ -69,11 +72,12 @@ namespace TrainingPlanApp.Web.Controllers
 		// POST: TrainingModules/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> Edit(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			if (ModelState.IsValid)
 			{
-				await trainingModuleRepository.EditTrainingModule(trainingModuleCreateVM);
+				await trainingModuleRepository.EditTrainingModuleAsync(trainingModuleCreateVM);
 				return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 			}
 			TempData["ErrorMessage"] = $"Error while editing the training module. Please try again.";
@@ -83,9 +87,10 @@ namespace TrainingPlanApp.Web.Controllers
 		// POST: TrainingModules/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 		public async Task<IActionResult> DeleteConfirmed(int id, string userId)
 		{
-			await trainingModuleRepository.DeleteTrainingModule(id);
+			await trainingModuleRepository.DeleteTrainingModuleAsync(id);
 			return RedirectToAction(nameof(Index), new { userId = userId });
 		}
 
@@ -93,7 +98,7 @@ namespace TrainingPlanApp.Web.Controllers
 		[HttpPost, ActionName("CreateORM")]
 		public async Task<IActionResult> CreateORM(TrainingModuleORMVM trainingModuleORMVM)
 		{
-			await trainingModuleRepository.CreateNewORM(trainingModuleORMVM);
+			await trainingModuleRepository.CreateORMAsync(trainingModuleORMVM);
 			return RedirectToAction(nameof(Index), new { userId = trainingModuleORMVM.UserId });
 		}
 	}
