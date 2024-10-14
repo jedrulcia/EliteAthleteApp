@@ -87,7 +87,10 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(await GetAsync(id));
 			trainingPlanManageExercisesVM.TrainingPlanAddExerciseVM = new TrainingPlanAddExerciseVM
 			{
-				AvailableExercises = new SelectList(context.Exercises.OrderBy(e => e.Name), "Id", "Name"),
+				AvailableExercises = new SelectList(
+					context.Exercises
+							.Where(e => e.CoachId == null || e.CoachId == trainingPlanManageExercisesVM.CoachId)
+							.OrderBy(e => e.Name), "Id","Name"),
 				AvailableTrainingPlanPhases = new SelectList(context.TrainingPlanPhases.OrderBy(e => e.Id), "Id", "Name")
 			};
 			trainingPlanManageExercisesVM.ExerciseVMs = await exerciseRepository.GetListOfExercisesAsync(trainingPlanManageExercisesVM.ExerciseIds);

@@ -37,16 +37,16 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th>
+								<th style="width:50%">
 									@Html.DisplayNameFor(model => model.ExerciseVMs.First().Name)
 								</th>
-								<th>
+								<th style="width:20%">
 									@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)
 								</th>
-								<th>
+								<th style="width:20%">
 									@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseMuscleGroup.Name)
 								</th>
-								<th></th>
+								<th style="width:10%"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -66,7 +66,7 @@
 										</td>
 										<td class="text-end">
 											<div class="dropdown">
-												<button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+												<button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
 													Actions
 												</button>
 												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -95,6 +95,7 @@
 													</li>
 													<li>
 														<button data-exerciseid="@item.Id"
+																data-name="@item.Name"
 																class="dropdown-item deleteBtn">
 															<i class="fa-solid fa-trash">&nbsp;</i>Delete
 														</button>
@@ -114,16 +115,16 @@
 					<table class="table" style="width:100%">
 						<thead>
 							<tr>
-								<th>
+								<th style="width:50%">
 									@Html.DisplayNameFor(model => model.ExerciseVMs.First().Name)
 								</th>
-								<th>
+								<th style="width:20%">
 									@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)
 								</th>
-								<th>
+								<th style="width:20%">
 									@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseMuscleGroup.Name)
 								</th>
-								<th></th>
+								<th style="width:10%"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -177,48 +178,59 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="createExerciseModalLabel">Create New Exercise</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="createExerciseModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Create New Exercise</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body">
 				<form id="createForm" asp-action="Create" method="post">
 					<input type="hidden" name="ExerciseCreateVM.CoachId" value="@Model.CoachId" />
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.Name" class="control-label"></label>
-						<input asp-for="ExerciseCreateVM.Name" class="form-control" />
-						<span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
+					<div class="row">
+						<div class="form-group col-md-4">
+							<strong><label asp-for="ExerciseCreateVM.Name" class="control-label"></label></strong>
+							<i class="bi bi-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip"></i>
+							<input asp-for="ExerciseCreateVM.Name" class="form-control" />
+							<span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-8">
+							<strong><label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label></strong>
+							<input asp-for="ExerciseCreateVM.VideoLink" class="form-control" />
+							<span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<strong><label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label></strong>
+							<select asp-for="ExerciseCreateVM.ExerciseCategoryId" asp-items="@Model.ExerciseCreateVM.AvailableCategories" class="form-select">
+							</select>
+							<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<strong><label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label></strong>
+							<select asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" asp-items="@Model.ExerciseCreateVM.AvailableMuscleGroups" class="form-select">
+							</select>
+							<span asp-validation-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="text-danger"></span>
+						</div>
 					</div>
 					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label>
-						<input asp-for="ExerciseCreateVM.VideoLink" class="form-control" />
-						<span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.Description" class="control-label"></label>
-						<input asp-for="ExerciseCreateVM.Description" class="form-control" />
+						<strong><label asp-for="ExerciseCreateVM.Description" class="control-label"></label></strong>
+						<textarea asp-for="ExerciseCreateVM.Description" class="form-control"></textarea>
 						<span asp-validation-for="ExerciseCreateVM.Description" class="text-danger"></span>
 					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label>
-						<select asp-for="ExerciseCreateVM.ExerciseCategoryId" asp-items="@Model.ExerciseCreateVM.AvailableCategories" class="form-select">
-						</select>
-						<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label>
-						<select asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" asp-items="@Model.ExerciseCreateVM.AvailableMuscleGroups" class="form-select">
-						</select>
-						<span asp-validation-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="text-danger"></span>
-					</div>
-					<div class="form-group form-check">
-						<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
-						<label class="form-check-label" asp-for="ExerciseCreateVM.SetAsPublic">Set as public</label>
-						<span asp-validation-for="ExerciseCreateVM.SetAsPublic" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="submitCreateForm">Create</button>
+					<div class="row">
+						<div class="form-group form-check col-md-10">
+							<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+							<label class="form-check-label" asp-for="ExerciseCreateVM.SetAsPublic"><strong>Set as public</strong></label>
+							<span asp-validation-for="ExerciseCreateVM.SetAsPublic" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-2 text-end">
+							<button type="submit" class="btn btn-outline-dark" id="submitCreateForm"><strong>Create</strong></button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -231,57 +243,68 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="editExerciseModalLabel">Edit Exercise</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="editExerciseModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Edit Exercise</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body">
 				<form id="editForm" asp-action="Edit" method="post">
 					<input type="hidden" id="exerciseId" name="ExerciseCreateVM.Id" />
 					<input type="hidden" id="coachId" name="ExerciseCreateVM.CoachId" />
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.Name" class="control-label"></label>
-						<input id="name" class="form-control" name="ExerciseCreateVM.Name" />
-						<span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
+					<div class="row">
+						<div class="form-group col-md-4">
+							<strong><label asp-for="ExerciseCreateVM.Name" class="control-label"></label></strong>
+							<input id="name" class="form-control" name="ExerciseCreateVM.Name" />
+							<span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-8">
+							<strong><label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label></strong>
+							<input id="videoLink" class="form-control" name="ExerciseCreateVM.VideoLink" />
+							<span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<strong><label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label></strong>
+							<select id="exerciseCategoryId" name="ExerciseCreateVM.ExerciseCategoryId" class="form-select">
+								@foreach (var category in Model.ExerciseCreateVM.AvailableCategories)
+								{
+									<option value="@category.Value">@category.Text</option>
+								}
+							</select>
+							<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<strong><label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label></strong>
+							<select id="exerciseMuscleGroupId" name="ExerciseCreateVM.ExerciseMuscleGroupId" class="form-select">
+								@foreach (var muscleGroup in Model.ExerciseCreateVM.AvailableMuscleGroups)
+								{
+									<option value="@muscleGroup.Value">@muscleGroup.Text</option>
+								}
+							</select>
+							<span asp-validation-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="text-danger"></span>
+						</div>
+
 					</div>
 					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label>
-						<input id="videoLink" class="form-control" name="ExerciseCreateVM.VideoLink" />
-						<span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.Description" class="control-label"></label>
-						<input id="description" class="form-control" name="ExerciseCreateVM.Description" />
+						<strong><label asp-for="ExerciseCreateVM.Description" class="control-label"></label></strong>
+						<textarea id="description" class="form-control" name="ExerciseCreateVM.Description" /></textarea>
 						<span asp-validation-for="ExerciseCreateVM.Description" class="text-danger"></span>
 					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label>
-						<select id="exerciseCategoryId" name="ExerciseCreateVM.ExerciseCategoryId" class="form-select">
-							@foreach (var category in Model.ExerciseCreateVM.AvailableCategories)
-							{
-								<option value="@category.Value">@category.Text</option>
-							}
-						</select>
-						<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label>
-						<select id="exerciseMuscleGroupId" name="ExerciseCreateVM.ExerciseMuscleGroupId" class="form-select">
-							@foreach (var muscleGroup in Model.ExerciseCreateVM.AvailableMuscleGroups)
-							{
-								<option value="@muscleGroup.Value">@muscleGroup.Text</option>
-							}
-						</select>
-						<span asp-validation-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="text-danger"></span>
-					</div>
-					<div class="form-group form-check">
-						<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
-						<label class="form-check-label" asp-for="ExerciseCreateVM.SetAsPublic">Set as public</label>
-						<span asp-validation-for="ExerciseCreateVM.SetAsPublic" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="submitEditForm">Save</button>
+					<div class="row">
+						<div class="form-group form-check col-md-10">
+							<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+							<label class="form-check-label" asp-for="ExerciseCreateVM.SetAsPublic"><strong>Set as public</strong></label>
+							<span asp-validation-for="ExerciseCreateVM.SetAsPublic" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-2 text-end">
+							<button type="submit" class="btn btn-outline-dark" id="submitEditForm"><strong>Save</strong></button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -294,18 +317,26 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exerciseDetailsModalLabel">Exercise Details</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title  w-100" id="exerciseDetailsModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Exercise Details</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body">
-				<h4 id="exerciseName"></h4>
+				<div class="d-flex justify-content-between align-items-center">
+					<h4 id="exerciseName" class="mb-0"></h4>
+					<div class="text-end">
+						<h5 id="exerciseCategoryName" class="mb-0"></h5>
+						<h5 id="exerciseMuscleGroupName" class="mb-0"></h5>
+					</div>
+				</div>
 				<div>
 					<iframe id="exerciseVideoLink" width="100%" height="472" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
-				<h5 id="exerciseCategoryName"></h5>
-				<h5 id="exerciseMuscleGroupName"></h5>
 				<h4 id="exerciseDescription"></h4>
 			</div>
 		</div>
@@ -317,10 +348,13 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="deleteExerciseModalLabel">Delete Exercise</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="deleteExerciseModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Delete Exercise</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+				</h3>
 			</div>
 			<div class="modal-body">
 				<form id="deleteForm" asp-action="Delete">
@@ -330,7 +364,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+				<button type="button" class="btn btn-outline-danger" id="confirmDeleteBtn">Delete</button>
 			</div>
 		</div>
 	</div>

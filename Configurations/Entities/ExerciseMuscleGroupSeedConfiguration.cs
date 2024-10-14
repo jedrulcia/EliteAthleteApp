@@ -23,7 +23,10 @@ namespace TrainingPlanApp.Web.Configurations.Entities
 				new ExerciseMuscleGroup { Id = 12, Name = "Lower Back" },
 				new ExerciseMuscleGroup { Id = 13, Name = "Quadriceps" },
 				new ExerciseMuscleGroup { Id = 14, Name = "Hamstrings" },
-				new ExerciseMuscleGroup { Id = 15, Name = "Calves" }
+				new ExerciseMuscleGroup { Id = 15, Name = "Calves" },
+				new ExerciseMuscleGroup { Id = 16, Name = "Trapezius" },
+				new ExerciseMuscleGroup { Id = 17, Name = "Adductors" },
+				new ExerciseMuscleGroup { Id = 18, Name = "Abductors" }
 			);
 		}
 	}
