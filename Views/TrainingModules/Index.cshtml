@@ -10,11 +10,6 @@
 }
 
 
-<p>
-
-
-</p>
-
 @if (!string.IsNullOrEmpty(errorMessage))
 {
 	<div class="alert alert-danger">
@@ -33,30 +28,21 @@
 					</a>
 				</li>
 				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="orm-tab" data-toggle="tab" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
+					<a class="nav-link" id="orm-tab" data-toggle="tab" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
 						<i class="bi bi-person">&nbsp;</i>
 						<strong>My ORMs</strong>
 					</a>
 				</li>
-				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="orm-tab" data-toggle="tab" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
-						<strong>My ORMs</strong>
-					</a>
+				<li class="nav-item ms-auto" role="presentation">
+					<button class="nav-link createBtn" type="button" id="create-new-tab" aria-controls="create-new-tab" aria-selected="false">
+						<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New Training Module</strong>
+					</button>
 				</li>
-				@if (Model.TrainingModuleORMVM.Id == null)
-				{
-					<li class="nav-item ms-auto" role="presentation">
-						<button class="nav-link createBtn" type="button" id="create-new-tab" aria-controls="create-new-tab" aria-selected="false">
-							<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New</strong>
-						</button>
-					</li>
-				}
 				@if (User.IsInRole(Roles.Administrator))
 				{
-					<li class="nav-item ms-auto" role="presentation">
-						<button data-createormuserid="@Model.TrainingModuleORMVM.UserId"
-								data-createormdatetime="@Model.TrainingModuleORMVM.DateTime"
+					<li class="nav-item" role="presentation">
+						<button data-createormuserid="@Model.TrainingModuleAddORMVM.UserId"
+								data-createormdatetime="@Model.TrainingModuleAddORMVM.DateTime"
 								class="nav-link createOrmBtn" type="button" id="create-orm-tab" aria-controls="create-orm-tab" aria-selected="false">
 							<i class="bi bi-plus-square-fill">&nbsp;</i>
 							<strong>Add New ORMs</strong>
@@ -66,21 +52,21 @@
 			</ul>
 			<br />
 			<div class="tab-content" id="trainingModuleTabsContent">
-				<div class="tab-pane fade show active" id="training-modules" role="tabpanel" aria-labelledby="training-modules-tab">
+				<div class="tab-pane fade show active" id="training-modules" role="tabpanel" aria-labelledby="training-modules-tab" >
 					<h1><span class="badge bg-dark d-block w-100"><strong>Training Modules</strong></span></h1>
 					<table class="table">
 						<thead>
 							<tr>
-								<th>
+								<th style="width:50%">
 									@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().Name)
 								</th>
-								<th>
+								<th style="width:20%">
 									@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().StartDate)
 								</th>
-								<th>
+								<th style="width:20%">
 									@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().EndDate)
 								</th>
-								<th></th>
+								<th style="width:10%"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -96,33 +82,48 @@
 									<td>
 										@Html.DisplayFor(modelItem => item.EndDate)
 									</td>
-									<td>
-										<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
-
-										<button data-edittrainingmoduleid="@item.Id"
-												data-edittrainingmodulename="@item.Name"
-												data-edittrainingmodulestartdate="@item.StartDate"
-												data-edittrainingmoduleenddate="@item.EndDate"
-												class="btn btn-secondary btn-sm editBtn" type="button">
-											<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
-										</button>
-
-										<button data-trainingmoduleid="@item.Id"
-												data-name="@item.Name"
-												class="btn btn-danger btn-sm deleteBtn" type="button">
-											<i class="fa-solid fa-trash">&nbsp;</i>Delete
-										</button>
+									<td class="text-end">
+										<div class="dropdown">
+											<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+												<strong>Actions</strong>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+												<li>
+													<button data-edittrainingmoduleid="@item.Id"
+															data-edittrainingmodulename="@item.Name"
+															data-edittrainingmodulestartdate="@item.StartDate"
+															data-edittrainingmoduleenddate="@item.EndDate"
+															class="dropdown-item editBtn">
+														<i class="bi bi-pencil">&nbsp;</i>Edit
+													</button>
+												</li>
+												<li>
+													<a asp-action="Index"asp-controller="TrainingPlans" class="dropdown-item detailsBtn"
+													   asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id">
+														<i class="bi bi-question-circle">&nbsp;</i>Details
+													</a>
+												</li>
+												<li>
+													<button data-deletetrainingmoduleid="@item.Id"
+															data-deletetrainingmodulename="@item.Name"
+															class="dropdown-item deleteBtn">
+														<i class="bi bi-trash">&nbsp;</i>Delete
+													</button>
+												</li>
+											</ul>
+										</div>
 									</td>
 								</tr>
 							}
 						</tbody>
 					</table>
 				</div>
-				<div class="tab-pane fade show active" id="orm" role="tabpanel" aria-labelledby="orm-tab">
-					<h1><span class="badge bg-dark d-block w-100"><strong>ORMs</strong></span></h1><table class="table">
+				<div class="tab-pane fade" id="orm" role="tabpanel" aria-labelledby="orm-tab">
+					<h1><span class="badge bg-dark d-block w-100"><strong>ORMs</strong></span></h1>
+					<table class="table" style="width:100%">
 						<thead>
 							<tr>
-								<th>
+								<th class="text-start">
 									@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().DateTime)
 								</th>
 								<th>
@@ -143,7 +144,7 @@
 							@foreach (var item in Model.TrainingModuleORMVMs)
 							{
 								<tr>
-									<td>
+									<td class="text-start">
 										@Html.DisplayFor(modelItem => item.DateTime)
 									</td>
 									<td>
@@ -173,32 +174,38 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="createTrainingModuleModalLabel">Create New Training Module</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="createTrainingModuleModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Create New Training Module</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body">
 				<form id="createForm" asp-action="Create" method="post">
 					<input type="hidden" name="TrainingModuleCreateVM.CoachId" value="@Model.CoachId" />
 					<input type="hidden" name="TrainingModuleCreateVM.UserId" value="@Model.UserId" />
-					<div class="form-group">
-						<label asp-for="TrainingModuleCreateVM.Name" class="control-label"></label>
+					<div class="form-group" >
+						<strong><label asp-for="TrainingModuleCreateVM.Name" class="control-label"></label></strong>
 						<input asp-for="TrainingModuleCreateVM.Name" class="form-control" />
 						<span asp-validation-for="TrainingModuleCreateVM.Name" class="text-danger"></span>
 					</div>
-					<div class="form-group col-md-12">
-						<label asp-for="TrainingModuleCreateVM.StartDate" class="control-label"></label>
-						<input asp-for="TrainingModuleCreateVM.StartDate" class="form-control" />
-						<span asp-validation-for="TrainingModuleCreateVM.StartDate" class="text-danger"></span>
-					</div>
-					<div class="form-group col-md-12">
-						<label asp-for="TrainingModuleCreateVM.EndDate" class="control-label"></label>
-						<input asp-for="TrainingModuleCreateVM.EndDate" class="form-control" />
-						<span asp-validation-for="TrainingModuleCreateVM.EndDate" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="submitCreateForm">Create</button>
+					<div class="row align-items-end">
+						<div class="form-group col-md-5">
+							<strong><label asp-for="TrainingModuleCreateVM.StartDate" class="control-label"></label></strong>
+							<input asp-for="TrainingModuleCreateVM.StartDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>
+							<span asp-validation-for="TrainingModuleCreateVM.StartDate" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-5">
+							<strong><label asp-for="TrainingModuleCreateVM.EndDate" class="control-label"></label></strong>
+							<input asp-for="TrainingModuleCreateVM.EndDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+							<span asp-validation-for="TrainingModuleCreateVM.EndDate" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-2 text-end">
+							<button type="submit" class="btn btn-dark" id="submitCreateForm">Create</button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -211,33 +218,39 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="editTrainingModuleModalLabel">Edit Training Module</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+			<h3 class="modal-title w-100" id="editTrainingModuleModalLabel">
+				<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+					<strong>Edit Training Module</strong>
+					<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</span>
+			</h3>
 			</div>
 			<div class="modal-body">
 				<form id="editForm" asp-action="Edit" method="post">
-					<input type="hidden" id="trainingModuleId" name="TrainingModuleCreateVM.Id" />
+					<input type="hidden" name="TrainingModuleCreateVM.Id" id="editTrainingModuleId" />
 					<input type="hidden" name="TrainingModuleCreateVM.CoachId" value="@Model.CoachId" />
 					<input type="hidden" name="TrainingModuleCreateVM.UserId" value="@Model.UserId" />
 					<div class="form-group">
-						<label asp-for="TrainingModuleCreateVM.Name" class="control-label"></label>
+						<strong><label asp-for="TrainingModuleCreateVM.Name" class="control-label"></label></strong>
 						<input id="editTrainingModuleName" class="form-control" name="TrainingModuleCreateVM.Name" />
 						<span asp-validation-for="TrainingModuleCreateVM.Name" class="text-danger"></span>
 					</div>
-					<div class="form-group">
-						<label asp-for="TrainingModuleCreateVM.StartDate" class="control-label"></label>
-						<input id="editTrainingModuleStartDate" asp-for="TrainingModuleCreateVM.StartDate" class="form-control" />
-						<span asp-validation-for="TrainingModuleCreateVM.StartDate" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<label asp-for="TrainingModuleCreateVM.EndDate" class="control-label"></label>
-						<input id="editTrainingModuleEndDate" asp-for="TrainingModuleCreateVM.EndDate" class="form-control" />
-						<span asp-validation-for="TrainingModuleCreateVM.EndDate" class="text-danger"></span>
-					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="submitEditForm">Save</button>
+					<div class="row align-items-end">
+						<div class="form-group col-md-5">
+							<strong><label asp-for="TrainingModuleCreateVM.StartDate" class="control-label"></label></strong>
+							<input asp-for="TrainingModuleCreateVM.StartDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+							<span asp-validation-for="TrainingModuleCreateVM.StartDate" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-5">
+							<strong><label asp-for="TrainingModuleCreateVM.EndDate" class="control-label"></label></strong>
+							<input asp-for="TrainingModuleCreateVM.EndDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+							<span asp-validation-for="TrainingModuleCreateVM.EndDate" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-2 text-end">
+							<button type="submit" class="btn btn-dark" id="submitEditForm">Save</button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -250,10 +263,14 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="deleteTrainingModuleModalLabel">Delete Training Module</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="deleteTrainingModuleModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Delete Training Module</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body">
 				<form id="deleteForm" asp-action="Delete">
@@ -282,29 +299,29 @@
 			</div>
 			<div class="modal-body">
 				<form id="createForm" asp-action="CreateORM" method="post">
-					<input type="hidden" name="TrainingModuleORMVM.DateTime" id="createOrmDateTime" />
-					<input type="hidden" name="TrainingModuleORMVM.UserId" value="@Model.UserId" />
+					<input type="hidden" name="TrainingModuleAddORMVM.DateTime" id="createOrmDateTime" />
+					<input type="hidden" name="TrainingModuleAddORMVM.UserId" value="@Model.UserId" />
 					<div class="container">
 						<div class="row">
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleORMVM.BenchPressORM" class="control-label"></label>
-								<input asp-for="TrainingModuleORMVM.BenchPressORM" class="form-control" />
-								<span asp-validation-for="TrainingModuleORMVM.BenchPressORM" class="text-danger"></span>
+								<label asp-for="TrainingModuleAddORMVM.BenchPressORM" class="control-label"></label>
+								<input asp-for="TrainingModuleAddORMVM.BenchPressORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleAddORMVM.BenchPressORM" class="text-danger"></span>
 							</div>
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleORMVM.OverheadPressORM" class="control-label"></label>
-								<input asp-for="TrainingModuleORMVM.OverheadPressORM" class="form-control" />
-								<span asp-validation-for="TrainingModuleORMVM.OverheadPressORM" class="text-danger"></span>
+								<label asp-for="TrainingModuleAddORMVM.OverheadPressORM" class="control-label"></label>
+								<input asp-for="TrainingModuleAddORMVM.OverheadPressORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleAddORMVM.OverheadPressORM" class="text-danger"></span>
 							</div>
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleORMVM.SquatORM" class="control-label"></label>
-								<input asp-for="TrainingModuleORMVM.SquatORM" class="form-control" />
-								<span asp-validation-for="TrainingModuleORMVM.SquatORM" class="text-danger"></span>
+								<label asp-for="TrainingModuleAddORMVM.SquatORM" class="control-label"></label>
+								<input asp-for="TrainingModuleAddORMVM.SquatORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleAddORMVM.SquatORM" class="text-danger"></span>
 							</div>
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleORMVM.DeadliftORM" class="control-label"></label>
-								<input asp-for="TrainingModuleORMVM.DeadliftORM" class="form-control" />
-								<span asp-validation-for="TrainingModuleORMVM.DeadliftORM" class="text-danger"></span>
+								<label asp-for="TrainingModuleAddORMVM.DeadliftORM" class="control-label"></label>
+								<input asp-for="TrainingModuleAddORMVM.DeadliftORM" class="form-control" />
+								<span asp-validation-for="TrainingModuleAddORMVM.DeadliftORM" class="text-danger"></span>
 							</div>
 						</div>
 					</div>
@@ -321,6 +338,7 @@
 {
 	<script>
 		$(function () {
+
 			// DATATABLE INITIALIZE
 			$('.table').DataTable();
 
@@ -355,7 +373,7 @@
 				var editTrainingModuleEndDate = btn.data("edittrainingmoduleenddate");
 
 				$('#editTrainingModuleId').val(editTrainingModuleId);
-				$('#neditTrainingModuleName').val(editTrainingModuleName);
+				$('#editTrainingModuleName').val(editTrainingModuleName);
 				$('#editTrainingModuleStartDate').val(editTrainingModuleStartDate);
 				$('#editTrainingModuleEndDate').val(editTrainingModuleEndDate);
 

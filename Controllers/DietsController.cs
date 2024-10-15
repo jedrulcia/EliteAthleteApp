@@ -15,6 +15,7 @@ using TrainingPlanApp.Web.Repositories;
 
 namespace TrainingPlanApp.Web.Controllers
 {
+	[Authorize(Roles = Roles.Administrator)]
 	public class DietsController : Controller
 	{
 		private readonly ApplicationDbContext context;

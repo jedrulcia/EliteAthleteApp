@@ -6,62 +6,21 @@ html {
     html {
         font-size: 16px;
     }
-}
+    table {
+        width: 100%;
+    }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+        table th {
+            white-space: nowrap; /* Zapobiega zwijaniu tekstu w nag³ówkach */
+            overflow: hidden; /* Ukrywa nadmiarowy tekst */
+            text-overflow: ellipsis; /* Dodaje wielokropek, jeœli tekst jest zbyt d³ugi */
+        }
 
-html {
-    position: relative;
-    min-height: 100%;
+        table td {
+            white-space: nowrap; /* Zapobiega zwijaniu tekstu w komórkach */
+        }
 }
 
 body {
     margin-bottom: 60px;
-}
-
-.truncated-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
-    display: inline-block;
-}
-
-.tab-content {
-    display: block; /* Ensure it is set to block or flex */
-    width: 100%; /* Full width */
-}
-
-.tab-pane {
-    width: 100%; /* Ustaw szerokoœæ zak³adek na pe³n¹ szerokoœæ */
-    overflow: auto; /* W³¹cz przewijanie, jeœli zawartoœæ bêdzie wiêksza ni¿ dostêpna przestrzeñ */
-}
-
-.container {
-    width: 100%; /* or set to a desired width */
-}
-
-/* Zmieniamy kolor t³a przycisku zaznaczenia strony na czarny */
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background-color: black !important; /* Ustaw kolor t³a na czarny */
-    color: white !important; /* Ustaw kolor tekstu na bia³y */
-    border: 1px solid #ccc; /* Mo¿esz dostosowaæ obramowanie */
-}
-
-/* Zmieniamy kolor t³a pozosta³ych przycisków na czarny */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    background-color: black !important; /* Ustaw kolor t³a na czarny */
-    color: white !important; /* Ustaw kolor tekstu na bia³y */
-}
-
-    /* Zmieniamy kolor t³a przycisku, gdy jest na niego najechane */
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background-color: #555 !important; /* Ustaw kolor t³a na szary przy najechaniu */
-    color: white !important; /* Ustaw kolor tekstu na bia³y */
-}
-
-th {
-    border-bottom: 4px solid #000; /* Grubsza linia o szerokoœci 4px i kolorze czarnym */
 }

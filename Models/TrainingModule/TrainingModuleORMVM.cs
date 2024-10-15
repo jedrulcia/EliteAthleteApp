@@ -10,7 +10,7 @@ namespace TrainingPlanApp.Web.Models.TrainingModule
 		public int? OverheadPressORM { get; set; }
 		public int? DeadliftORM { get; set; }
 		public int? SquatORM { get; set; }
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM}")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
 		public DateTime? DateTime { get; set; }
 	}
 }

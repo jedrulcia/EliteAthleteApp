@@ -96,10 +96,10 @@ namespace TrainingPlanApp.Web.Controllers
 
 		// POST: TrainingModules/ORM
 		[HttpPost, ActionName("CreateORM")]
-		public async Task<IActionResult> CreateORM(TrainingModuleORMVM trainingModuleORMVM)
+		public async Task<IActionResult> CreateORM(TrainingModuleORMVM trainingModuleAddORMVM)
 		{
-			await trainingModuleRepository.CreateORMAsync(trainingModuleORMVM);
-			return RedirectToAction(nameof(Index), new { userId = trainingModuleORMVM.UserId });
+			await trainingModuleRepository.CreateORMAsync(trainingModuleAddORMVM);
+			return RedirectToAction(nameof(Index), new { userId = trainingModuleAddORMVM.UserId });
 		}
 	}
 }

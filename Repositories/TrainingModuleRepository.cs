@@ -40,7 +40,7 @@ namespace TrainingPlanApp.Web.Repositories
 			var trainingModuleVMs = mapper.Map<List<TrainingModuleVM>>(trainingModules);
 
 			DateTime dateNow = DateTime.Now;
-			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, 1, 0, 0, 0);
+			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 0, 0, 0);
 
 			var trainingModuleORMs = await context.TrainingModuleORMs
 				.Where(tm => tm.UserId == userId)
@@ -48,20 +48,20 @@ namespace TrainingPlanApp.Web.Repositories
 
 			var trainingModuleORMVMs = mapper.Map<List<TrainingModuleORMVM>>(trainingModuleORMs);
 
-			var trainingModuleORMVM = new TrainingModuleORMVM();
+			var trainingModuleAddORMVM = new TrainingModuleORMVM();
 
 			foreach (var ORM in trainingModuleORMVMs)
 			{
 				if (ORM.DateTime == modifiedDate)
 				{
-					trainingModuleORMVM = ORM;
+					trainingModuleAddORMVM = ORM;
 				}
 			}
 
-			if (trainingModuleORMVM.Id == null)
+			if (trainingModuleAddORMVM.Id == null)
 			{
-				trainingModuleORMVM.DateTime = modifiedDate;
-				trainingModuleORMVM.UserId = userId;
+				trainingModuleAddORMVM.DateTime = modifiedDate;
+				trainingModuleAddORMVM.UserId = userId;
 			}
 
 			var trainingModuleIndexVM = new TrainingModuleIndexVM
@@ -71,7 +71,7 @@ namespace TrainingPlanApp.Web.Repositories
 				TrainingModuleVMs = trainingModuleVMs,
 				TrainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId },
 				TrainingModuleORMVMs = trainingModuleORMVMs,
-				TrainingModuleORMVM = trainingModuleORMVM
+				TrainingModuleAddORMVM = trainingModuleAddORMVM
 			};
 
 			return trainingModuleIndexVM;

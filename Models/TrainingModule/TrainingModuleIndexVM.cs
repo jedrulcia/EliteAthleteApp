@@ -11,6 +11,6 @@ namespace TrainingPlanApp.Web.Models.TrainingModule
 		public List<TrainingModuleVM?>? TrainingModuleVMs { get; set; }
 		public TrainingModuleCreateVM? TrainingModuleCreateVM { get; set; }
 		public List<TrainingModuleORMVM?>? TrainingModuleORMVMs { get; set; }
-		public TrainingModuleORMVM? TrainingModuleORMVM { get;set; }
+		public TrainingModuleORMVM? TrainingModuleAddORMVM { get;set; }
 	}
 }
