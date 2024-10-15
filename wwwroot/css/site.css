@@ -57,7 +57,11 @@ body {
 }
 
     /* Zmieniamy kolor t³a przycisku, gdy jest na niego najechane */
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        background-color: #555 !important; /* Ustaw kolor t³a na szary przy najechaniu */
-        color: white !important; /* Ustaw kolor tekstu na bia³y */
-    }
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #555 !important; /* Ustaw kolor t³a na szary przy najechaniu */
+    color: white !important; /* Ustaw kolor tekstu na bia³y */
+}
+
+th {
+    border-bottom: 4px solid #000; /* Grubsza linia o szerokoœci 4px i kolorze czarnym */
+}

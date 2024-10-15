@@ -11,10 +11,6 @@
 
 
 <p>
-	@if (User.IsInRole(Roles.Administrator))
-	{
-		<button class="btn btn-primary btn-sm createBtn" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Create New</button>
-	}
 
 
 </p>
@@ -27,116 +23,150 @@
 }
 
 <div class="container">
-	<div class="row">
-		<div class="col-md-7">
-			<h1>Training Modules</h1>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().Name)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().StartDate)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().EndDate)
-						</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model.TrainingModuleVMs)
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.Name)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.StartDate)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.EndDate)
-							</td>
-							<td>
-								<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
-
-								<button data-trainingmoduleid="@item.Id"
-										data-name="@item.Name"
-										data-startdate="@item.StartDate"
-										data-enddate="@item.EndDate"
-										class="btn btn-secondary btn-sm editBtn" type="button">
-									<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
-								</button>
-
-								<button data-trainingmoduleid="@item.Id" data-name="@item.Name" class="btn btn-danger btn-sm deleteBtn" type="button"><i class="fa-solid fa-trash">&nbsp;</i>Delete</button>
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-		<div class="col-md-5">
-			<h1>
-				ORMs &nbsp;
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs" id="trainingModuleTabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<a class="nav-link active" id="training-modules-tab" data-toggle="tab" href="#training-modules" role="tab" aria-controls="training-modules" aria-selected="true">
+						<i class="bi bi-person">&nbsp;</i>
+						<strong>My Training Modules</strong>
+					</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link active" id="orm-tab" data-toggle="tab" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
+						<i class="bi bi-person">&nbsp;</i>
+						<strong>My ORMs</strong>
+					</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link active" id="orm-tab" data-toggle="tab" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
+						<i class="bi bi-person">&nbsp;</i>
+						<strong>My ORMs</strong>
+					</a>
+				</li>
 				@if (Model.TrainingModuleORMVM.Id == null)
 				{
-					<button data-createormuserid="@Model.TrainingModuleORMVM.UserId"
-							data-createormdatetime="@Model.TrainingModuleORMVM.DateTime"
-							class="btn btn-primary btn-sm createOrmBtn" type="button">
-						<i class="fa-solid fa-plus">&nbsp;</i>ORMs
-					</button>
+					<li class="nav-item ms-auto" role="presentation">
+						<button class="nav-link createBtn" type="button" id="create-new-tab" aria-controls="create-new-tab" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New</strong>
+						</button>
+					</li>
 				}
-			</h1>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().DateTime)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().BenchPressORM)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().OverheadPressORM)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().SquatORM)
-						</th>
-						<th>
-							@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().DeadliftORM)
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model.TrainingModuleORMVMs)
-					{
-						<tr>
-							<td>
-								@Html.DisplayFor(modelItem => item.DateTime)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.BenchPressORM)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.OverheadPressORM)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.SquatORM)
-							</td>
-							<td>
-								@Html.DisplayFor(modelItem => item.DeadliftORM)
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
+				@if (User.IsInRole(Roles.Administrator))
+				{
+					<li class="nav-item ms-auto" role="presentation">
+						<button data-createormuserid="@Model.TrainingModuleORMVM.UserId"
+								data-createormdatetime="@Model.TrainingModuleORMVM.DateTime"
+								class="nav-link createOrmBtn" type="button" id="create-orm-tab" aria-controls="create-orm-tab" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i>
+							<strong>Add New ORMs</strong>
+						</button>
+					</li>
+				}
+			</ul>
+			<br />
+			<div class="tab-content" id="trainingModuleTabsContent">
+				<div class="tab-pane fade show active" id="training-modules" role="tabpanel" aria-labelledby="training-modules-tab">
+					<h1><span class="badge bg-dark d-block w-100"><strong>Training Modules</strong></span></h1>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().Name)
+								</th>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().StartDate)
+								</th>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleVMs.First().EndDate)
+								</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.TrainingModuleVMs)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.Name)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.StartDate)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.EndDate)
+									</td>
+									<td>
+										<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-secondary btn-sm" asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id"><i class="fa-solid fa-pen-to-square">&nbsp;</i>Plan</a>
+
+										<button data-edittrainingmoduleid="@item.Id"
+												data-edittrainingmodulename="@item.Name"
+												data-edittrainingmodulestartdate="@item.StartDate"
+												data-edittrainingmoduleenddate="@item.EndDate"
+												class="btn btn-secondary btn-sm editBtn" type="button">
+											<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
+										</button>
+
+										<button data-trainingmoduleid="@item.Id"
+												data-name="@item.Name"
+												class="btn btn-danger btn-sm deleteBtn" type="button">
+											<i class="fa-solid fa-trash">&nbsp;</i>Delete
+										</button>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+				<div class="tab-pane fade show active" id="orm" role="tabpanel" aria-labelledby="orm-tab">
+					<h1><span class="badge bg-dark d-block w-100"><strong>ORMs</strong></span></h1><table class="table">
+						<thead>
+							<tr>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().DateTime)
+								</th>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().BenchPressORM)
+								</th>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().OverheadPressORM)
+								</th>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().SquatORM)
+								</th>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingModuleORMVMs.First().DeadliftORM)
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in Model.TrainingModuleORMVMs)
+							{
+								<tr>
+									<td>
+										@Html.DisplayFor(modelItem => item.DateTime)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.BenchPressORM)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.OverheadPressORM)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.SquatORM)
+									</td>
+									<td>
+										@Html.DisplayFor(modelItem => item.DeadliftORM)
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-
-
-
 
 <!-- MODAL FOR TRAINING MODULE CREATE -->
 <div class="modal fade" id="createTrainingModuleModal" tabindex="-1" role="dialog" aria-labelledby="createTrainingModuleModalLabel" aria-hidden="true">
@@ -193,17 +223,17 @@
 					<input type="hidden" name="TrainingModuleCreateVM.UserId" value="@Model.UserId" />
 					<div class="form-group">
 						<label asp-for="TrainingModuleCreateVM.Name" class="control-label"></label>
-						<input id="name" class="form-control" name="TrainingModuleCreateVM.Name" />
+						<input id="editTrainingModuleName" class="form-control" name="TrainingModuleCreateVM.Name" />
 						<span asp-validation-for="TrainingModuleCreateVM.Name" class="text-danger"></span>
 					</div>
 					<div class="form-group">
 						<label asp-for="TrainingModuleCreateVM.StartDate" class="control-label"></label>
-						<input asp-for="TrainingModuleCreateVM.StartDate" class="form-control" />
+						<input id="editTrainingModuleStartDate" asp-for="TrainingModuleCreateVM.StartDate" class="form-control" />
 						<span asp-validation-for="TrainingModuleCreateVM.StartDate" class="text-danger"></span>
 					</div>
 					<div class="form-group">
 						<label asp-for="TrainingModuleCreateVM.EndDate" class="control-label"></label>
-						<input asp-for="TrainingModuleCreateVM.EndDate" class="form-control" />
+						<input id="editTrainingModuleEndDate" asp-for="TrainingModuleCreateVM.EndDate" class="form-control" />
 						<span asp-validation-for="TrainingModuleCreateVM.EndDate" class="text-danger"></span>
 					</div>
 					<div class="form-group">
@@ -227,10 +257,10 @@
 			</div>
 			<div class="modal-body">
 				<form id="deleteForm" asp-action="Delete">
-					<input type="hidden" id="Id" name="Id" />
+					<input type="hidden" name="Id" id="deleteTrainingModuleId" />
 					<input type="hidden" name="userId" value="@Model.UserId" />
 					<p>Are you sure you want to delete this training module?</p>
-					<h5 id="trainingModuleNameToDelete"></h5>
+					<h5 id="deleteTrainingModuleName"></h5>
 				</form>
 			</div>
 			<div class="modal-footer">
@@ -319,15 +349,15 @@
 			// SCRIPT TO HANDLE EDITING TRAINING MODULE
 			$(document).on('click', '.editBtn', function () {
 				var btn = $(this);
-				var trainingModuleId = btn.data("trainingmoduleid");
-				var name = btn.data("name");
-				var startDate = btn.data("startdate");
-				var endDate = btn.data("enddate");
+				var editTrainingModuleId = btn.data("edittrainingmoduleid");
+				var editTrainingModuleName = btn.data("edittrainingmodulename");
+				var editTrainingModuleStartDate = btn.data("edittrainingmodulestartdate");
+				var editTrainingModuleEndDate = btn.data("edittrainingmoduleenddate");
 
-				$('#trainingModuleId').val(trainingModuleId);
-				$('#name').val(name);
-				$('#startDate').val(startDate);
-				$('#endDate').val(endDate);
+				$('#editTrainingModuleId').val(editTrainingModuleId);
+				$('#neditTrainingModuleName').val(editTrainingModuleName);
+				$('#editTrainingModuleStartDate').val(editTrainingModuleStartDate);
+				$('#editTrainingModuleEndDate').val(editTrainingModuleEndDate);
 
 				$('#editTrainingModuleModal').modal('show');
 			});
@@ -335,11 +365,11 @@
 			// SCRIPT TO HANDLE DELETING TRAINING MODULE
 			$(document).on('click', '.deleteBtn', function () {
 				var btn = $(this);
-				var trainingModuleId = btn.data("trainingmoduleid");
-				var name = btn.data("name");
+				var deleteTrainingModuleId = btn.data("deletetrainingmoduleid");
+				var deleteTrainingModuleName = btn.data("deletetrainingmodulename");
 
-				$('#Id').val(trainingModuleId);
-				$('#trainingModuleNameToDelete').text(name);
+				$('#deleteTrainingModuleId').val(deleteTrainingModuleId);
+				$('#deleteTrainingModuleName').text(deleteTrainingModuleName);
 
 				$('#deleteTrainingModuleModal').modal('show');
 			});
@@ -347,6 +377,12 @@
 			// SCRIPT TO HANDLE DELETING TRAINING MODULE
 			$(document).on('click', '#confirmDeleteBtn', function () {
 				$('#deleteForm').submit();
+			});
+
+			// Handle tab switch with Bootstrap Tabs
+			$('#trainingModuleTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				e.target // newly activated tab
+				e.relatedTarget // previous tab
 			});
 
 		});

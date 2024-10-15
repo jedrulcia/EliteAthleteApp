@@ -13,14 +13,18 @@
 		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="exerciseTabs" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="my-exercises-tab" data-toggle="tab" href="#my-exercises" role="tab" aria-controls="my-exercises" aria-selected="true"><strong>My Exercises</strong></a>
+					<a class="nav-link active" id="my-exercises-tab" data-toggle="tab" href="#my-exercises" role="tab" aria-controls="my-exercises" aria-selected="true">
+						<i class="bi bi-person">&nbsp;</i><strong>My Exercises</strong>
+					</a>
 				</li>
 				<li class="nav-item" role="presentation">
-					<a class="nav-link" id="all-exercises-tab" data-toggle="tab" href="#all-exercises" role="tab" aria-controls="all-exercises" aria-selected="false"><strong>All Exercises</strong></a>
+					<a class="nav-link" id="all-exercises-tab" data-toggle="tab" href="#all-exercises" role="tab" aria-controls="all-exercises" aria-selected="false">
+						<i class="bi bi-people">&nbsp;</i><strong>All Exercises</strong>
+					</a>
 				</li>
 				<li class="nav-item ms-auto" role="presentation">
 					<button data-coachId="@Model.CoachId" class="nav-link createBtn" type="button" id="create-new-tab" aria-controls="all-exercises" aria-selected="false">
-						<i class="fa-solid fa-square-plus">&nbsp;</i><strong>Create New</strong>
+						<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New</strong>
 					</button>
 				</li>
 			</ul>
@@ -38,13 +42,13 @@
 						<thead>
 							<tr>
 								<th style="width:50%">
-									@Html.DisplayNameFor(model => model.ExerciseVMs.First().Name)
+									<strong>@Html.DisplayNameFor(model => model.ExerciseVMs.First().Name)</strong>
 								</th>
 								<th style="width:20%">
-									@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)
+									<strong>@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseCategory.Name)</strong>
 								</th>
 								<th style="width:20%">
-									@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseMuscleGroup.Name)
+									<strong>@Html.DisplayNameFor(model => model.ExerciseVMs.First().ExerciseMuscleGroup.Name)</strong>
 								</th>
 								<th style="width:10%"></th>
 							</tr>
@@ -66,38 +70,38 @@
 										</td>
 										<td class="text-end">
 											<div class="dropdown">
-												<button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-													Actions
+												<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+													<strong>Actions</strong>
 												</button>
 												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 													<li>
-														<button data-exerciseid="@item.Id"
-																data-exercisecategoryid="@item.ExerciseCategory.Id"
-																data-exercisemusclegroupid="@item.ExerciseMuscleGroup.Id"
-																data-coachid="@Model.CoachId"
-																data-name="@item.Name"
-																data-description="@item.Description"
-																data-videolink="@item.VideoLink"
-																data-setaspublic="@item.SetAsPublic"
+														<button data-editexerciseid="@item.Id"
+																data-editexercisecategoryid="@item.ExerciseCategory.Id"
+																data-editexercisemusclegroupid="@item.ExerciseMuscleGroup.Id"
+																data-editexercisecoachid="@Model.CoachId"
+																data-editexercisename="@item.Name"
+																data-editexercisedescription="@item.Description"
+																data-editexercisevideolink="@item.VideoLink"
+																data-editexercisesetaspublic="@item.SetAsPublic"
 																class="dropdown-item editBtn">
-															<i class="fa-solid fa-pen-to-square">&nbsp;</i>Edit
+															<i class="bi bi-pencil">&nbsp;</i>Edit
 														</button>
 													</li>
 													<li>
-														<button data-name="@item.Name"
-																data-videolink="@item.VideoLink"
-																data-description="@item.Description"
-																data-exercisecategoryname="@item.ExerciseCategory.Name"
-																data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
+														<button data-detailsexercisename="@item.Name"
+																data-detailsexercisevideolink="@item.VideoLink"
+																data-detailsexercisedescription="@item.Description"
+																data-detailsexercisecategoryname="@item.ExerciseCategory.Name"
+																data-detailsexercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
 																class="dropdown-item detailsBtn">
-															<i class="fa-solid fa-info-circle">&nbsp;</i>Details
+															<i class="bi bi-question-circle">&nbsp;</i>Details
 														</button>
 													</li>
 													<li>
-														<button data-exerciseid="@item.Id"
-																data-name="@item.Name"
+														<button data-deleteexerciseid="@item.Id"
+																data-deleteexercisename="@item.Name"
 																class="dropdown-item deleteBtn">
-															<i class="fa-solid fa-trash">&nbsp;</i>Delete
+															<i class="bi bi-trash">&nbsp;</i>Delete
 														</button>
 													</li>
 												</ul>
@@ -144,18 +148,18 @@
 										</td>
 										<td class="text-end">
 											<div class="dropdown">
-												<button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-													Actions
+												<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+													<strong>Actions</strong>
 												</button>
 												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 													<li>
-														<button data-name="@item.Name"
-																data-videolink="@item.VideoLink"
-																data-description="@item.Description"
-																data-exercisecategoryname="@item.ExerciseCategory.Name"
-																data-exercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
+														<button data-detailsexercisename="@item.Name"
+																data-detailsexercisevideolink="@item.VideoLink"
+																data-detailsexercisedescription="@item.Description"
+																data-detailsexercisecategoryname="@item.ExerciseCategory.Name"
+																data-detailsexercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
 																class="dropdown-item detailsBtn">
-															<i class="fa-solid fa-info-circle">&nbsp;</i>Details
+															<i class="bi bi-question-circle">&nbsp;</i>Details
 														</button>
 													</li>
 												</ul>
@@ -229,7 +233,7 @@
 							<span asp-validation-for="ExerciseCreateVM.SetAsPublic" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-2 text-end">
-							<button type="submit" class="btn btn-outline-dark" id="submitCreateForm"><strong>Create</strong></button>
+							<button type="submit" class="btn btn-dark" id="submitCreateForm"><strong>Create</strong></button>
 						</div>
 					</div>
 				</form>
@@ -254,24 +258,24 @@
 			</div>
 			<div class="modal-body">
 				<form id="editForm" asp-action="Edit" method="post">
-					<input type="hidden" id="exerciseId" name="ExerciseCreateVM.Id" />
-					<input type="hidden" id="coachId" name="ExerciseCreateVM.CoachId" />
+					<input type="hidden" id="editExerciseId" name="ExerciseCreateVM.Id" />
+					<input type="hidden" id="editExerciseCoachId" name="ExerciseCreateVM.CoachId" />
 					<div class="row">
 						<div class="form-group col-md-4">
 							<strong><label asp-for="ExerciseCreateVM.Name" class="control-label"></label></strong>
-							<input id="name" class="form-control" name="ExerciseCreateVM.Name" />
+							<input id="editExerciseName" class="form-control" name="ExerciseCreateVM.Name" />
 							<span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-8">
 							<strong><label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label></strong>
-							<input id="videoLink" class="form-control" name="ExerciseCreateVM.VideoLink" />
+							<input id="editExerciseVideoLink" class="form-control" name="ExerciseCreateVM.VideoLink" />
 							<span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="form-group col-md-6">
 							<strong><label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label></strong>
-							<select id="exerciseCategoryId" name="ExerciseCreateVM.ExerciseCategoryId" class="form-select">
+							<select id="editExerciseCategoryId" name="ExerciseCreateVM.ExerciseCategoryId" class="form-select">
 								@foreach (var category in Model.ExerciseCreateVM.AvailableCategories)
 								{
 									<option value="@category.Value">@category.Text</option>
@@ -281,7 +285,7 @@
 						</div>
 						<div class="form-group col-md-6">
 							<strong><label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label></strong>
-							<select id="exerciseMuscleGroupId" name="ExerciseCreateVM.ExerciseMuscleGroupId" class="form-select">
+							<select id="editExerciseMuscleGroupId" name="ExerciseCreateVM.ExerciseMuscleGroupId" class="form-select">
 								@foreach (var muscleGroup in Model.ExerciseCreateVM.AvailableMuscleGroups)
 								{
 									<option value="@muscleGroup.Value">@muscleGroup.Text</option>
@@ -293,17 +297,17 @@
 					</div>
 					<div class="form-group">
 						<strong><label asp-for="ExerciseCreateVM.Description" class="control-label"></label></strong>
-						<textarea id="description" class="form-control" name="ExerciseCreateVM.Description" /></textarea>
+						<textarea id="editExerciseDescription" class="form-control" name="ExerciseCreateVM.Description" /></textarea>
 						<span asp-validation-for="ExerciseCreateVM.Description" class="text-danger"></span>
 					</div>
 					<div class="row">
 						<div class="form-group form-check col-md-10">
-							<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+							<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="editExerciseSetAsPublic" />
 							<label class="form-check-label" asp-for="ExerciseCreateVM.SetAsPublic"><strong>Set as public</strong></label>
 							<span asp-validation-for="ExerciseCreateVM.SetAsPublic" class="text-danger"></span>
 						</div>
 						<div class="form-group col-md-2 text-end">
-							<button type="submit" class="btn btn-outline-dark" id="submitEditForm"><strong>Save</strong></button>
+							<button type="submit" class="btn btn-dark" id="submitEditForm"><strong>Save</strong></button>
 						</div>
 					</div>
 				</form>
@@ -327,17 +331,13 @@
 				</h3>
 			</div>
 			<div class="modal-body">
-				<div class="d-flex justify-content-between align-items-center">
-					<h4 id="exerciseName" class="mb-0"></h4>
-					<div class="text-end">
-						<h5 id="exerciseCategoryName" class="mb-0"></h5>
-						<h5 id="exerciseMuscleGroupName" class="mb-0"></h5>
-					</div>
-				</div>
+				<h4 id="detailsExerciseName"></h4>
 				<div>
-					<iframe id="exerciseVideoLink" width="100%" height="472" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					<iframe id="detailsExerciseVideoLink" width="100%" height="472" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
-				<h4 id="exerciseDescription"></h4>
+				<strong>Description:</strong><p id="detailsExerciseDescription"></p>
+				<strong>Category:</strong> <p id="detailsExerciseCategoryName"></p>
+				<strong>Muscle Group:</strong>  <p id="detailsExerciseMuscleGroupName"></p>
 			</div>
 		</div>
 	</div>
@@ -358,13 +358,13 @@
 			</div>
 			<div class="modal-body">
 				<form id="deleteForm" asp-action="Delete">
-					<input type="hidden" id="Id" name="Id" />
+					<input type="hidden" id="deleteExerciseId" name="Id" />
 					<p>Are you sure you want to delete this exercise?</p>
-					<h5 id="exerciseNameToDelete"></h5>
+					<h5 id="deleteExerciseName"></h5>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-outline-danger" id="confirmDeleteBtn">Delete</button>
+				<button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
 			</div>
 		</div>
 	</div>
@@ -390,23 +390,23 @@
 			// SCRIPT TO HANDLE EDITING EXERCISE
 			$(document).on('click', '.editBtn', function () {
 				var btn = $(this);
-				var exerciseId = btn.data("exerciseid");
-				var coachId = btn.data("coachid");
-				var name = btn.data("name");
-				var videoLink = btn.data("videolink");
-				var description = btn.data("description");
-				var exerciseCategoryId = btn.data("exercisecategoryid");
-				var exerciseMuscleGroupId = btn.data("exercisemusclegroupid")
-				var setAsPublic = btn.data("setaspublic");
+				var editExerciseId = btn.data("editexerciseid");
+				var editExerciseCoachId = btn.data("editexercisecoachid");
+				var editExerciseName = btn.data("editexercisename");
+				var editExerciseVideoLink = btn.data("editexercisevideolink");
+				var editExerciseDescription = btn.data("editexercisedescription");
+				var editExerciseCategoryId = btn.data("editexercisecategoryid");
+				var editExerciseMuscleGroupId = btn.data("editexercisemusclegroupid")
+				var editExerciseSetAsPublic = btn.data("editexercisesetaspublic");
 
-				$('#exerciseId').val(exerciseId);
-				$('#coachId').val(coachId);
-				$('#name').val(name);
-				$('#videoLink').val(videoLink);
-				$('#description').val(description);
-				$('#exerciseCategoryId').val(exerciseCategoryId);
-				$('#exerciseMuscleGroupId').val(exerciseMuscleGroupId);
-				$('#setAsPublic').val(setAsPublic);
+				$('#editExerciseId').val(editExerciseId);
+				$('#editExerciseCoachId').val(editExerciseCoachId);
+				$('#editExerciseName').val(editExerciseName);
+				$('#editExerciseVideoLink').val(editExerciseVideoLink);
+				$('#editExerciseDescription').val(editExerciseDescription);
+				$('#editExerciseCategoryId').val(editExerciseCategoryId);
+				$('#editExerciseMuscleGroupId').val(editExerciseMuscleGroupId);
+				$('#editExerciseSetAsPublic').val(editExerciseSetAsPublic);
 
 				console.log("Opening edit modal");
 				$('#editExerciseModal').modal('show');
@@ -415,19 +415,20 @@
 			// SCRIPT TO HANDLE EXERCISE DETAILS
 			$(document).on('click', '.detailsBtn', function () {
 				var btn = $(this);
-				var name = btn.data("name");
-				var exerciseVideoLink = btn.data("videolink");
-				var exerciseDescription = btn.data("description");
-				var exerciseCategoryName = btn.data("exercisecategoryname");
-				var exerciseMuscleGroupName = btn.data("exercisemusclegroupname")
+				var detailsExerciseName = btn.data("detailsexercisename");
+				var detailsExerciseVideoLink = btn.data("detailsexercisevideolink");
+				var detailsExerciseDescription = btn.data("detailsexercisedescription");
+				var detailsExerciseCategoryName = btn.data("detailsexercisecategoryname");
+				var detailsExerciseMuscleGroupName = btn.data("detailsexercisemusclegroupname")
 
-				$('#exerciseName').text(name);
-				$('#exerciseDescription').text(exerciseDescription);
-				$('#exerciseCategoryName').text(exerciseCategoryName);
-				$('#exerciseMuscleGroupName').text(exerciseMuscleGroupName);
-				var mainVideoId = exerciseVideoLink.split('v=')[1]?.split('&')[0];
+
+				$('#detailsExerciseName').text(detailsExerciseName);
+				$('#detailsExerciseDescription').text(detailsExerciseDescription);
+				$('#detailsExerciseCategoryName').text(detailsExerciseCategoryName);
+				$('#detailsExerciseMuscleGroupName').text(detailsExerciseMuscleGroupName);
+				var mainVideoId = detailsExerciseVideoLink.split('v=')[1]?.split('&')[0];
 				var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
-				$('#exerciseVideoLink').attr('src', mainEmbedUrl);
+				$('#detailsExerciseVideoLink').attr('src', mainEmbedUrl);
 
 				$('#exerciseDetailsModal').modal('show');
 			});
@@ -435,11 +436,11 @@
 			// SCRIPT TO HANDLE DELETING EXERCISE
 			$(document).on('click', '.deleteBtn', function () {
 				var btn = $(this);
-				var exerciseId = btn.data("exerciseid");
-				var exerciseName = btn.data("name");
+				var deleteExerciseId = btn.data("deleteexerciseid");
+				var deleteExerciseName = btn.data("deleteexercisename");
 
-				$('#Id').val(exerciseId);
-				$('#exerciseNameToDelete').text(exerciseName);
+				$('#deleteExerciseId').val(deleteExerciseId);
+				$('#deleteExerciseName').text(deleteExerciseName);
 
 				$('#deleteExerciseModal').modal('show');
 			});
