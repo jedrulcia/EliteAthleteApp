@@ -1,26 +1,9 @@
-html {
-    font-size: 14px;
-}
-
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
-    table {
-        width: 100%;
+
+    div.dataTables_scrollBody.dropdown-visible {
+        overflow: visible !important;
     }
-
-        table th {
-            white-space: nowrap; /* Zapobiega zwijaniu tekstu w nag³ówkach */
-            overflow: hidden; /* Ukrywa nadmiarowy tekst */
-            text-overflow: ellipsis; /* Dodaje wielokropek, jeœli tekst jest zbyt d³ugi */
-        }
-
-        table td {
-            white-space: nowrap; /* Zapobiega zwijaniu tekstu w komórkach */
-        }
-}
-
-body {
-    margin-bottom: 60px;
 }

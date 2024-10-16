@@ -45,7 +45,7 @@
 								data-createormdatetime="@Model.TrainingModuleAddORMVM.DateTime"
 								class="nav-link createOrmBtn" type="button" id="create-orm-tab" aria-controls="create-orm-tab" aria-selected="false">
 							<i class="bi bi-plus-square-fill">&nbsp;</i>
-							<strong>Add New ORMs</strong>
+							<strong>Add New ORM</strong>
 						</button>
 					</li>
 				}
@@ -53,8 +53,8 @@
 			<br />
 			<div class="tab-content" id="trainingModuleTabsContent">
 				<div class="tab-pane fade show active" id="training-modules" role="tabpanel" aria-labelledby="training-modules-tab" >
-					<h1><span class="badge bg-dark d-block w-100"><strong>Training Modules</strong></span></h1>
-					<table class="table">
+					<h1><span class="badge bg-black d-block w-100"><strong>Training Modules</strong></span></h1>
+					<table class="table" id="table">
 						<thead>
 							<tr>
 								<th style="width:50%">
@@ -119,7 +119,7 @@
 					</table>
 				</div>
 				<div class="tab-pane fade" id="orm" role="tabpanel" aria-labelledby="orm-tab">
-					<h1><span class="badge bg-dark d-block w-100"><strong>ORMs</strong></span></h1>
+					<h1><span class="badge bg-black d-block w-100"><strong>My ORMs (One-Rep Max)</strong></span></h1>
 					<table class="table" style="width:100%">
 						<thead>
 							<tr>
@@ -292,10 +292,14 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="createOrmModalLabel">Create New ORM</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="createOrmModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Create New ORM (One-Rep Max)</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body">
 				<form id="createForm" asp-action="CreateORM" method="post">
@@ -304,29 +308,29 @@
 					<div class="container">
 						<div class="row">
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleAddORMVM.BenchPressORM" class="control-label"></label>
+								<strong><label asp-for="TrainingModuleAddORMVM.BenchPressORM" class="control-label"></label></strong>
 								<input asp-for="TrainingModuleAddORMVM.BenchPressORM" class="form-control" />
 								<span asp-validation-for="TrainingModuleAddORMVM.BenchPressORM" class="text-danger"></span>
 							</div>
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleAddORMVM.OverheadPressORM" class="control-label"></label>
+								<strong><label asp-for="TrainingModuleAddORMVM.OverheadPressORM" class="control-label"></label></strong>
 								<input asp-for="TrainingModuleAddORMVM.OverheadPressORM" class="form-control" />
 								<span asp-validation-for="TrainingModuleAddORMVM.OverheadPressORM" class="text-danger"></span>
 							</div>
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleAddORMVM.SquatORM" class="control-label"></label>
+								<strong><label asp-for="TrainingModuleAddORMVM.SquatORM" class="control-label"></label></strong>
 								<input asp-for="TrainingModuleAddORMVM.SquatORM" class="form-control" />
 								<span asp-validation-for="TrainingModuleAddORMVM.SquatORM" class="text-danger"></span>
 							</div>
 							<div class="col-md-3 form-group">
-								<label asp-for="TrainingModuleAddORMVM.DeadliftORM" class="control-label"></label>
+								<strong><label asp-for="TrainingModuleAddORMVM.DeadliftORM" class="control-label"></label></strong>
 								<input asp-for="TrainingModuleAddORMVM.DeadliftORM" class="form-control" />
 								<span asp-validation-for="TrainingModuleAddORMVM.DeadliftORM" class="text-danger"></span>
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary" id="submitCreateForm">Create</button>
+					<div class="form-group text-end">
+						<button type="submit" class="btn btn-dark text-end" id="submitCreateForm">Create</button>
 					</div>
 				</form>
 			</div>

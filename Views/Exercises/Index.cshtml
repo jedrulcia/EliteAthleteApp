@@ -31,7 +31,7 @@
 			<br />
 			<div class="tab-content" id="exerciseTabsContent">
 				<div class="tab-pane fade show active" id="my-exercises" role="tabpanel" aria-labelledby="my-exercises-tab" >
-					<h1><span class="badge bg-dark d-block w-100"><strong>My Exercises</strong></span></h1>
+					<h1><span class="badge bg-black d-block w-100"><strong>My Exercises</strong></span></h1>
 					@if (!string.IsNullOrEmpty(errorMessage))
 					{
 						<div class="alert alert-danger">
@@ -115,7 +115,7 @@
 				</div>
 
 				<div class="tab-pane fade" id="all-exercises" role="tabpanel" aria-labelledby="all-exercises-tab">
-					<h1><span class="badge bg-dark d-block w-100"><strong>All Exercises</strong></span></h1>
+					<h1><span class="badge bg-black d-block w-100"><strong>All Exercises</strong></span></h1>
 					<table class="table" style="width:100%">
 						<thead>
 							<tr>
@@ -455,6 +455,11 @@
 			$('#exerciseTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 				e.target // newly activated tab
 				e.relatedTarget // previous tab
+			});
+
+
+			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
 			});
 
 		});
