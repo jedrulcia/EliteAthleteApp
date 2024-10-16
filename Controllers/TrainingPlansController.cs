@@ -75,7 +75,14 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(await trainingPlanRepository.GetTrainingPlanManageExercisesVMAsync(id));
 		}
 
+		public async Task<IActionResult> ChangeStatus(int trainingPlanId)
+		{
+			return PartialView("ChangeStatus", await trainingPlanRepository.GetTrainingPlanChangeStatusVMAsync(trainingPlanId));
+		}
+
 		// POST: TrainingPlans/Index/ChangeStatus
+		[HttpPost, ActionName("ChangeStatus")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ChangeStatus(int id, string raport, int trainingModuleId)
 		{
 			await trainingPlanRepository.CompleteTrainingPlanAsync(id, raport);
@@ -131,11 +138,17 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanId });
 		}
 
+		public async Task<IActionResult> Copy(int copyFromId, int trainingModuleId)
+		{
+			List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
+			return PartialView("Copy", await trainingPlanRepository.GetTrainingPlanCopyVMAsync(copyFromId, trainingPlanIds));
+		}
+
 		// POST: TrainingPlans/ManageExercises/CopyTrainingPlan
-		[HttpPost, ActionName("CopyTrainingPlan")]
+		[HttpPost, ActionName("Copy")]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
-		public async Task<IActionResult> CopyTrainingPlan(int copyFromId, int copyToId, int trainingModuleId)
+		public async Task<IActionResult> Copy(int copyFromId, int copyToId, int trainingModuleId)
 		{
 			await trainingPlanRepository.CopyTrainingPlanAsync(copyFromId, copyToId);
 			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });

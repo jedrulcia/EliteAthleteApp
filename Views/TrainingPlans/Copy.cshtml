@@ -1,0 +1,27 @@
+﻿@using TrainingPlanApp.Web.Models.TrainingPlan
+@using TrainingPlanApp.Web.Constants
+
+@model TrainingPlanCopyVM
+
+@{
+	ViewData["Title"] = "Copy";
+}
+
+<form asp-action="Copy">
+	<input type="hidden" asp-for="CopyFromId" />
+	<input type="hidden" asp-for="TrainingModuleId" />
+	<div class="form-group">
+		<label for="copyToSelect">Select Plan to Copy to</label>
+		<select id="copyToSelect" name="copyToId" class="form-control">
+			@foreach (var item in Model.TrainingPlanVMs.OrderBy(m => m.Date))
+			{
+				var backgroundColor = item.IsEmpty ? "background-color: gray;" : "background-color: red;";
+				var textColor = "color: white;";
+				<option value="@item.Id" style="@backgroundColor @textColor">@item.Name</option>
+			}
+		</select>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary">Copy</button>
+	</div>
+</form>

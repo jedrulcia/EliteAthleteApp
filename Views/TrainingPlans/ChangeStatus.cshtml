@@ -1,0 +1,25 @@
+﻿@using TrainingPlanApp.Web.Models.TrainingPlan
+@using TrainingPlanApp.Web.Constants
+
+@model TrainingPlanChangeStatusVM
+
+
+@{
+	ViewData["Title"] = "ChangeStatus";
+}
+
+<div class="row">
+	<form asp-action="ChangeStatus">
+		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="TrainingModuleId" />
+		<div class="form-group col-md-12">
+			<label asp-for="Raport" class="control-label"></label>
+			<input asp-for="Raport" class="form-control" />
+			<span asp-validation-for="Raport" class="text-danger"></span>
+		</div>
+		<div class="modal-footer">
+			<input type="submit" value="ChangeStatus" class="btn btn-primary" />
+		</div>
+	</form>
+</div>

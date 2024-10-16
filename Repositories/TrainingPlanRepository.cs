@@ -104,6 +104,37 @@ namespace TrainingPlanApp.Web.Repositories
 
 			return trainingPlanManageExercisesVM;
 		}
+		public async Task<TrainingPlanChangeStatusVM> GetTrainingPlanChangeStatusVMAsync(int id)
+		{
+			var trainingPlanVM = mapper.Map<TrainingPlanVM>(await GetAsync(id));
+			var trainingPlanChangeStatusVM = new TrainingPlanChangeStatusVM
+			{
+				Id = trainingPlanVM.Id,
+				TrainingModuleId = trainingPlanVM.TrainingModuleId,
+				Raport = trainingPlanVM.Raport
+			};
+
+			return trainingPlanChangeStatusVM;
+		}
+
+		public async Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds)
+		{
+			List<TrainingPlanVM> trainingPlanVMs = new List<TrainingPlanVM>();
+
+			foreach (int id in trainingPlanIds)
+			{
+				var trainingPlan = await GetAsync(id);
+				trainingPlanVMs.Add(mapper.Map<TrainingPlanVM>(trainingPlan));
+			}
+
+			var trainingPlanCopyVM = new TrainingPlanCopyVM
+			{
+				TrainingModuleId = trainingPlanVMs[0].TrainingModuleId,
+				CopyFromId = copyFromId,
+				TrainingPlanVMs = trainingPlanVMs
+			};
+			return trainingPlanCopyVM;
+		}
 
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		public async Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM trainingPlanCreateVM)
