@@ -45,10 +45,33 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			List<TrainingPlanVM> trainingPlanVMs = new List<TrainingPlanVM>();
 
+			int completed = 0;
+			int notCompleted = 0;
+
 			foreach (int id in trainingPlanIds)
 			{
 				var trainingPlan = await GetAsync(id);
-				trainingPlanVMs.Add(mapper.Map<TrainingPlanVM>(trainingPlan));
+				var trainingPlanVM = (mapper.Map<TrainingPlanVM>(trainingPlan));
+				trainingPlanVMs.Add(trainingPlanVM);
+				if(!trainingPlanVM.IsEmpty)
+				{
+					if(trainingPlanVM.IsCompleted)
+					{
+						completed++;
+					}
+					else
+					{
+						notCompleted++;
+					}
+				}
+			}
+
+			int total = completed + notCompleted;
+			int progress = 0;
+			if (total != 0)
+			{
+				float holder = ((float)completed / (float)total) * 100;
+				progress = (int)holder;
 			}
 
 			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
@@ -59,7 +82,8 @@ namespace TrainingPlanApp.Web.Repositories
 				UserId = user.Id,
 				CoachId = coach.Id,
 				TrainingModuleId = trainingPlanVMs[0].TrainingModuleId,
-				TrainingPlanVMs = trainingPlanVMs
+				TrainingPlanVMs = trainingPlanVMs,
+				Progress = progress
 			};
 			return trainingPlanIndexVM;
 		}

@@ -6,4 +6,9 @@
     div.dataTables_scrollBody.dropdown-visible {
         overflow: visible !important;
     }
+
+    .custom-progress {
+        height: 30px; /* Wysokoœæ paska, mo¿esz dostosowaæ do swoich potrzeb */
+    }
+
 }
