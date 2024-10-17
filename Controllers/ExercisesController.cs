@@ -42,7 +42,7 @@ namespace TrainingPlanApp.Web.Controllers
 		// GET: Exercises/Create
 		public async Task<IActionResult> Create()
 		{
-			return PartialView("Create", await exerciseRepository.GetExerciseCreateVMAsync());
+			return PartialView(await exerciseRepository.GetExerciseCreateVMAsync());
 		}
 
 		// POST: Exercises/Create
@@ -84,12 +84,19 @@ namespace TrainingPlanApp.Web.Controllers
 			TempData["ErrorMessage"] = $"Error while editing the exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
+
+		// GET: Exercises/Details
+		public async Task<IActionResult> Details(int id)
+		{
+			return PartialView(await exerciseRepository.GetExerciseDetailsVMAsync(id));
+		}
+
+
 		// GET: Exercises/Delete
 		public async Task<IActionResult> Delete(int id)
 		{
 			return PartialView(await exerciseRepository.GetExerciseDeleteVMAsync(id));
 		}
-
 
 		// POST: Exercises/Delete
 		[HttpPost, ActionName("Delete")]

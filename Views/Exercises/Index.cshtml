@@ -1,5 +1,4 @@
 ﻿@using TrainingPlanApp.Web.Models.Exercise
-@using TrainingPlanApp.Web.Constants
 
 @model ExerciseIndexVM
 
@@ -88,11 +87,7 @@
 														</button>
 													</li>
 													<li>
-														<button data-detailsexercisename="@item.Name"
-																data-detailsexercisevideolink="@item.VideoLink"
-																data-detailsexercisedescription="@item.Description"
-																data-detailsexercisecategoryname="@item.ExerciseCategory.Name"
-																data-detailsexercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
+														<button data-detailsexerciseid="@item.Id"
 																class="dropdown-item detailsBtn">
 															<i class="bi bi-question-circle">&nbsp;</i>Details
 														</button>
@@ -284,14 +279,7 @@
 					</span>
 				</h3>
 			</div>
-			<div class="modal-body">
-				<h4 id="detailsExerciseName"></h4>
-				<div>
-					<iframe id="detailsExerciseVideoLink" width="100%" height="472" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-				</div>
-				<strong>Description:</strong><p id="detailsExerciseDescription"></p>
-				<strong>Category:</strong> <p id="detailsExerciseCategoryName"></p>
-				<strong>Muscle Group:</strong>  <p id="detailsExerciseMuscleGroupName"></p>
+			<div class="modal-body" id="exerciseDetailsContent">
 			</div>
 		</div>
 	</div>
@@ -362,6 +350,25 @@
 					},
 					error: function () {
 						alert("An error occurred while loading the exercise delete modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE DETAILS MODAL
+			$(document).on('click', '.detailsBtn', function (e) {
+				e.preventDefault();
+
+				var id = $(this).data("detailsexerciseid");
+				$.ajax({
+					url: '@Url.Action("Details", "Exercises")',
+					type: 'GET',
+					data: { id: id },
+					success: function (data) {
+						$('#exerciseDetailsContent').html(data);
+						$('#exerciseDetailsModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise details modal.");
 					}
 				});
 			});

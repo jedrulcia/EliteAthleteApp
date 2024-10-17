@@ -72,6 +72,20 @@ namespace TrainingPlanApp.Web.Repositories
 			return mapper.Map<ExerciseDeleteVM>(await GetAsync(id));
 		}
 
+		public async Task<ExerciseVM> GetExerciseDetailsVMAsync(int id)
+		{
+			var exercise = await GetAsync(id);
+			var exerciseVM = mapper.Map<ExerciseVM>(exercise);
+
+			var category = await context.Set<ExerciseCategory>().FindAsync(exercise.ExerciseCategoryId);
+			exerciseVM.ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
+
+			var muscleGroup = await context.Set<ExerciseMuscleGroup>().FindAsync(exercise.ExerciseMuscleGroupId);
+			exerciseVM.ExerciseMuscleGroup = mapper.Map<ExerciseMuscleGroupVM>(muscleGroup);
+
+			return exerciseVM;
+		}
+
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		public async Task CreateExerciseAsync(ExerciseCreateVM exerciseCreateVM)
 		{
