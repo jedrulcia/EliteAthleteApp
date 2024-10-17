@@ -7,6 +7,5 @@ namespace TrainingPlanApp.Web.Models.Exercise
 	{
 		public string CoachId { get; set; }
 		public List<ExerciseVM> ExerciseVMs { get; set; }
-        public ExerciseCreateVM? ExerciseCreateVM { get; set; }
     }
 }

@@ -11,7 +11,7 @@ using TrainingPlanApp.Web.Models.Exercise;
 
 namespace TrainingPlanApp.Web.Repositories
 {
-    public class ExerciseRepository : GenericRepository<Exercise>, IExerciseRepository
+	public class ExerciseRepository : GenericRepository<Exercise>, IExerciseRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
@@ -51,15 +51,25 @@ namespace TrainingPlanApp.Web.Repositories
 			var exerciseIndexVM = new ExerciseIndexVM
 			{
 				CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id,
-				ExerciseVMs = exerciseVMs,
-				ExerciseCreateVM = new ExerciseCreateVM
-				{
-					CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id,
-					AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name"),
-					AvailableMuscleGroups = new SelectList(context.ExerciseMuscleGroups.OrderBy(e => e.Name), "Id", "Name")
-				}
+				ExerciseVMs = exerciseVMs
 			};
 			return exerciseIndexVM;
+		}
+
+		public async Task<ExerciseCreateVM> GetExerciseCreateVMAsync()
+		{
+			var exerciseCreateVM = new ExerciseCreateVM
+			{
+				CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id,
+				AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name"),
+				AvailableMuscleGroups = new SelectList(context.ExerciseMuscleGroups.OrderBy(e => e.Name), "Id", "Name")
+			};
+			return exerciseCreateVM;
+		}
+
+		public async Task<ExerciseDeleteVM> GetExerciseDeleteVMAsync(int id)
+		{
+			return mapper.Map<ExerciseDeleteVM>(await GetAsync(id));
 		}
 
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.

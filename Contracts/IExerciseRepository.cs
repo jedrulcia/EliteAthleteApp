@@ -9,6 +9,12 @@ namespace TrainingPlanApp.Web.Contracts
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
 		Task<ExerciseIndexVM> GetExerciseIndexVMAsync();
 
+		// GETS EXERCISE CREATE VIEW MODEL.
+		Task<ExerciseCreateVM> GetExerciseCreateVMAsync();
+
+		// GETS EXERCISE DELETE VIEW MODEL.
+		Task<ExerciseDeleteVM> GetExerciseDeleteVMAsync(int id);
+
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		Task CreateExerciseAsync(ExerciseCreateVM exerciseCreateVM);
 

@@ -39,6 +39,13 @@ namespace TrainingPlanApp.Web.Controllers
 			return View(await exerciseRepository.GetExerciseIndexVMAsync());
 		}
 
+		// GET: Exercises/Create
+		public async Task<IActionResult> Create()
+		{
+			return PartialView("Create", await exerciseRepository.GetExerciseCreateVMAsync());
+		}
+
+		// POST: Exercises/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(ExerciseCreateVM exerciseCreateVM)
@@ -77,6 +84,12 @@ namespace TrainingPlanApp.Web.Controllers
 			TempData["ErrorMessage"] = $"Error while editing the exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
+		// GET: Exercises/Delete
+		public async Task<IActionResult> Delete(int id)
+		{
+			return PartialView(await exerciseRepository.GetExerciseDeleteVMAsync(id));
+		}
+
 
 		// POST: Exercises/Delete
 		[HttpPost, ActionName("Delete")]

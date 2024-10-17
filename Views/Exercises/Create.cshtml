@@ -1,65 +1,52 @@
 ﻿@using TrainingPlanApp.Web.Models.Exercise
 @using TrainingPlanApp.Web.Constants
 
-@model ExerciseIndexVM
-@{
-	Layout = null;
-}
+@model ExerciseCreateVM
 
-	<div class="modal-header">
-		<h3 class="modal-title w-100" id="createExerciseModalLabel">
-			<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-				<strong>Create New Exercise</strong>
-				<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</span>
-		</h3>
+@{
+	ViewData["Title"] = "Create";
+}
+<form asp-action="Create">
+	<input type="hidden" asp-for="CoachId" />
+	<div class="row">
+		<div class="form-group col-md-4">
+			<strong><label asp-for="Name" class="control-label"></label></strong>
+			<input asp-for="Name" class="form-control" />
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-8">
+			<strong><label asp-for="VideoLink" class="control-label"></label></strong>
+			<input asp-for="VideoLink" class="form-control" />
+			<span asp-validation-for="VideoLink" class="text-danger"></span>
+		</div>
 	</div>
-	<div class="modal-body">
-		<form id="createForm" asp-action="Create" method="post">
-			<input type="hidden" name="ExerciseCreateVM.CoachId" value="@Model.CoachId" />
-			<div class="row">
-				<div class="form-group col-md-4">
-					<strong><label asp-for="ExerciseCreateVM.Name" class="control-label"></label></strong>
-					<i class="bi bi-question-circle" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip"></i>
-					<input asp-for="ExerciseCreateVM.Name" class="form-control" />
-					<span asp-validation-for="ExerciseCreateVM.Name" class="text-danger"></span>
-				</div>
-				<div class="form-group col-md-8">
-					<strong><label asp-for="ExerciseCreateVM.VideoLink" class="control-label"></label></strong>
-					<input asp-for="ExerciseCreateVM.VideoLink" class="form-control" />
-					<span asp-validation-for="ExerciseCreateVM.VideoLink" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row">
-				<div class="form-group col-md-6">
-					<strong><label asp-for="ExerciseCreateVM.ExerciseCategoryId" class="control-label"></label></strong>
-					<select asp-for="ExerciseCreateVM.ExerciseCategoryId" asp-items="@Model.ExerciseCreateVM.AvailableCategories" class="form-select">
-					</select>
-					<span asp-validation-for="ExerciseCreateVM.ExerciseCategoryId" class="text-danger"></span>
-				</div>
-				<div class="form-group col-md-6">
-					<strong><label asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="control-label"></label></strong>
-					<select asp-for="ExerciseCreateVM.ExerciseMuscleGroupId" asp-items="@Model.ExerciseCreateVM.AvailableMuscleGroups" class="form-select">
-					</select>
-					<span asp-validation-for="ExerciseCreateVM.ExerciseMuscleGroupId" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="form-group">
-				<strong><label asp-for="ExerciseCreateVM.Description" class="control-label"></label></strong>
-				<textarea asp-for="ExerciseCreateVM.Description" class="form-control"></textarea>
-				<span asp-validation-for="ExerciseCreateVM.Description" class="text-danger"></span>
-			</div>
-			<div class="row">
-				<div class="form-group form-check col-md-10">
-					<input type="checkbox" asp-for="ExerciseCreateVM.SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
-					<label class="form-check-label" asp-for="ExerciseCreateVM.SetAsPublic"><strong>Set as public</strong></label>
-					<span asp-validation-for="ExerciseCreateVM.SetAsPublic" class="text-danger"></span>
-				</div>
-				<div class="form-group col-md-2 text-end">
-					<button type="submit" class="btn btn-dark" id="submitCreateForm"><strong>Create</strong></button>
-				</div>
-			</div>
-		</form>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<strong><label asp-for="ExerciseCategoryId" class="control-label"></label></strong>
+			<select asp-for="ExerciseCategoryId" asp-items="@Model.AvailableCategories" class="form-select">
+			</select>
+			<span asp-validation-for="ExerciseCategoryId" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-6">
+			<strong><label asp-for="ExerciseMuscleGroupId" class="control-label"></label></strong>
+			<select asp-for="ExerciseMuscleGroupId" asp-items="@Model.AvailableMuscleGroups" class="form-select">
+			</select>
+			<span asp-validation-for="ExerciseMuscleGroupId" class="text-danger"></span>
+		</div>
 	</div>
+	<div class="form-group">
+		<strong><label asp-for="Description" class="control-label"></label></strong>
+		<textarea asp-for="Description" class="form-control"></textarea>
+		<span asp-validation-for="Description" class="text-danger"></span>
+	</div>
+	<div class="row">
+		<div class="form-group form-check col-md-10">
+			<input type="checkbox" asp-for="SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+			<label class="form-check-label" asp-for="SetAsPublic"><strong>Set as public</strong></label>
+			<span asp-validation-for="SetAsPublic" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-2 text-end">
+			<button type="submit" class="btn btn-dark"><strong>Create</strong></button>
+		</div>
+	</div>
+</form>

@@ -21,6 +21,7 @@ namespace TrainingPlanApp.Web.Configurations
 			CreateMap<Exercise, ExerciseVM>().ReverseMap();
 			CreateMap<Exercise, ExerciseIndexVM>().ReverseMap();
 			CreateMap<Exercise, ExerciseCreateVM>().ReverseMap();
+			CreateMap<Exercise, ExerciseDeleteVM>().ReverseMap();
 
 			CreateMap<ExerciseCategory, ExerciseCategoryVM>().ReverseMap();
 			CreateMap<ExerciseMuscleGroup, ExerciseMuscleGroupVM>().ReverseMap();
