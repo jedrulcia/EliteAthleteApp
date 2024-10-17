@@ -15,11 +15,11 @@
 		<input type="hidden" asp-for="TrainingModuleId" />
 		<div class="form-group col-md-12">
 			<label asp-for="Raport" class="control-label"></label>
-			<input asp-for="Raport" class="form-control" />
+			<textarea asp-for="Raport" class="form-control"></textarea>
 			<span asp-validation-for="Raport" class="text-danger"></span>
 		</div>
-		<div class="modal-footer">
-			<input type="submit" value="ChangeStatus" class="btn btn-primary" />
+		<div class="modal-footer text-end">
+			<button type="submit" class="btn btn-dark">Change Status</button>
 		</div>
 	</form>
 </div>

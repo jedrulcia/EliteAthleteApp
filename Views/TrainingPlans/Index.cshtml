@@ -7,134 +7,164 @@
 	ViewData["Title"] = "Index";
 }
 
-@if (User.IsInRole(Roles.User))
-{
-	<h1>Training Plans</h1>
-	<p>
-		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>&nbsp;
-		<a asp-action="PrintPDF" class="btn btn-danger btn-sm text-white" asp-route-trainingModuleId="@Model.TrainingModuleId">Print PDF</a>
-	</p>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model.TrainingPlanVMs)
-			{
-				if (!item.IsEmpty)
-				{
-					<tr>
-						<td>
-							@Html.DisplayFor(modelItem => item.Date)
-						</td>
-						<td>
-							<a class="training-plan-link" data-detailstrainingplanid="@item.Id">
-								@if (item.IsCompleted == true)
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs" id="trainingPlanTabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<a asp-action="Index" asp-controller="TrainingModules" asp-route-trainingModuleId="@Model?.UserId" class="nav-link" id="back-to-list" aria-controls="training-modules" aria-selected="false">
+						<i class="bi bi-arrow-left">&nbsp;</i><strong>Back to List</strong>
+					</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link active" id="training-plans-tab" data-toggle="tab" href="#training-plans" role="tab" aria-controls="training-plans" aria-selected="true">
+						<i class="bi bi-person">&nbsp;</i><strong>Training Plan</strong>
+					</a>
+				</li>
+				<li class="nav-item ms-auto" role="presentation">
+					<a asp-action="PrintPDF" asp-route-trainingModuleId="@Model.TrainingModuleId" class="nav-link text-danger" id="print-pdf" aria-controls="training-modules" aria-selected="false">
+						<i class="bi bi-file-earmark-pdf-fill">&nbsp;</i><strong>Print PDF</strong>
+					</a>
+				</li>
+			</ul>
+			<br />
+			<div class="tab-content" id="trainingPlansTabsContent">
+				<div class="tab-pane fade show active" id="training-plans" role="tabpanel" aria-labelledby="training-plans-tab">
+					<h1><span class="badge bg-black d-block w-100"><strong>My Training Plan</strong></span></h1>
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="text-start">
+									@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
+								</th>
+								<th>
+									@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
+								</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							@if (User.IsInRole(Roles.User))
+							{
+								@foreach (var item in Model.TrainingPlanVMs)
 								{
-									<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+									if (!item.IsEmpty)
+									{
+										<tr>
+											<td class="text-start">
+												@Html.DisplayFor(modelItem => item.Date)
+											</td>
+											<td>
+												<a class="training-plan-link" data-detailstrainingplanid="@item.Id">
+													@if (item.IsCompleted == true)
+													{
+														<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+													}
+													else
+													{
+														<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+													}
+												</a>
+											</td>
+											<td class="text-end">
+												<div class="dropdown">
+													<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+														<strong>Actions</strong>
+													</button>
+													<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+														<li>
+															<button data-completetrainingplanid="@item.Id"
+																	data-completetrainingmoduleid="@item.TrainingModuleId"
+																	class="dropdown-item changeStatusBtn">
+																<i class="bi bi-check2">&nbsp;</i>Complete
+															</button>
+														</li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									}
 								}
-								else
+							}
+							@if (User.IsInRole(Roles.Administrator))
+							{
+								@foreach (var item in Model.TrainingPlanVMs)
 								{
-									<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+									<tr>
+										<td class="text-start">
+											@Html.DisplayFor(modelItem => item.Date)
+										</td>
+										<td>
+											<a class="detailsBtn" data-detailstrainingplanid="@item.Id">
+												@if (item.IsEmpty)
+												{
+													<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>
+												}
+												else if (item.IsCompleted == true)
+												{
+													<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+												}
+												else
+												{
+													<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+												}
+											</a>
+										</td>
+										<td class="text-end">
+											<div class="dropdown">
+												<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+													<strong>Actions</strong>
+												</button>
+												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+													<li>
+														<button data-copyfromid="@item.Id"
+																data-copytrainingmoduleid="@item.TrainingModuleId"
+																class="dropdown-item copyBtn">
+															<i class="bi bi-clipboard">&nbsp;</i>Copy
+														</button>
+													</li>
+													<li>
+														<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId" class="dropdown-item">
+															<i class="bi bi-pencil">&nbsp;</i>Exercises
+														</a>
+													</li>
+													<li>
+														<button data-completetrainingplanid="@item.Id"
+																data-completetrainingmoduleid="@item.TrainingModuleId"
+																class="dropdown-item changeStatusBtn">
+															<i class="bi bi-check2">&nbsp;</i>Complete
+														</button>
+													</li>
+												</ul>
+											</div>
+										</td>
+									</tr>
 								}
-							</a>
-						</td>
-						<td class="text-end">
-							<a class="changeStatusBtn"
-							   data-completetrainingplanid="@item.Id"
-							   data-completetrainingmoduleid="@item.TrainingModuleId">
-								<button class="btn btn-success btn-sm">
-									<i class="fa-solid fa-check">&nbsp;</i>Complete
-								</button>
-							</a>
-						</td>
-					</tr>
-				}
-			}
-		</tbody>
-	</table>
-
-}
-
-@if (User.IsInRole(Roles.Administrator))
-{
-	<h1>Training Plans</h1>
-	<p>
-		<a asp-action="Index" asp-controller="TrainingModules" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.UserId">Back to List</a>
-		<a asp-action="PrintPDF" class="btn btn-danger btn-sm text-white" asp-route-trainingModuleId="@Model.TrainingModuleId">Print PDF</a>
-	</p>
-	<table class="table">
-		<thead>
-			<tr>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
-				</th>
-				<th>
-					@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model.TrainingPlanVMs)
-			{
-				<tr>
-					<td>
-						@Html.DisplayFor(modelItem => item.Date)
-					</td>
-					<td>
-						<a class="detailsBtn" data-detailstrainingplanid="@item.Id">
-							@if (item.IsEmpty)
-							{
-								<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>
 							}
-							else if (item.IsCompleted == true)
-							{
-								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
-							}
-							else
-							{
-								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
-							}
-						</a>
-					</td>
-					<td>
-						<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId">
-							<i class="text-end btn btn-secondary btn-sm"> Exercises</i>
-						</a>
-						<button data-copyfromid="@item.Id"
-								data-copytrainingmoduleid="@item.TrainingModuleId"
-								class="btn btn-secondary btn-sm copyBtn">
-							<i class="fa-solid fa-copy">&nbsp;</i>Copy
-						</button>
-					</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-}
 
 <!-- MODAL FOR COPY TRAINING PLAN -->
 <div class="modal fade" id="trainingPlanCopyModal" tabindex="-1" role="dialog" aria-labelledby="trainingPlanCopyModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="trainingPlanCopyModalLabel">Copy Training Plan</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="trainingPlanCopyModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Copy Training Plan</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body" id="trainingPlanCopyContent">
-				
 			</div>
 		</div>
 	</div>
@@ -145,10 +175,14 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="trainingPlanChangeStatusModalLabel">Complete Training Plan</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="trainingPlanChangeStatusModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Complete Training Plan</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body" id="trainingPlanChangeStatusContent">
 			</div>
@@ -161,10 +195,14 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="trainingPlanDetailsModalLabel">Training Plan Details</h5>
-				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
+				<h3 class="modal-title w-100" id="trainingPlanDetailsModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Training Plan Details</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body" id="trainingPlanDetailsContent">
 			</div>
@@ -185,7 +223,17 @@
 				$(this).closest('.modal').modal('hide');
 			});
 
-			// AJAX FOR LOADING TRAINING PLAN DETAILS
+			// Handle tab switch with Bootstrap Tabs
+			$('#exerciseTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				e.target // newly activated tab
+				e.relatedTarget // previous tab
+			});
+
+			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
+			});
+
+			// AJAX FOR LOADING TRAINING PLAN DETAILS MODAL
 			$(document).on('click', '.detailsBtn', function (e) {
 				e.preventDefault();
 
@@ -204,7 +252,7 @@
 				});
 			});
 
-			// AJAX FOR LOADING TRAINING PLAN CHANGE STATUS
+			// AJAX FOR LOADING TRAINING PLAN CHANGE STATUS MODAL
 			$(document).on('click', '.changeStatusBtn', function (e) {
 				e.preventDefault();
 
@@ -224,7 +272,7 @@
 				});
 			});
 
-			// AJAX FOR LOADING TRAINING PLAN COPY
+			// AJAX FOR LOADING TRAINING PLAN COPY MODAL
 			$(document).on('click', '.copyBtn', function (e) {
 				e.preventDefault();
 
