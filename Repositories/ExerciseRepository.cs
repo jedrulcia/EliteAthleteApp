@@ -86,6 +86,16 @@ namespace TrainingPlanApp.Web.Repositories
 			return exerciseVM;
 		}
 
+		public async Task<ExerciseCreateVM> GetExerciseEditVMAsync(int id)
+		{
+			var exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
+			exerciseCreateVM.CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
+			exerciseCreateVM.AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name");
+			exerciseCreateVM.AvailableMuscleGroups = new SelectList(context.ExerciseMuscleGroups.OrderBy(e => e.Name), "Id", "Name");
+
+			return exerciseCreateVM;
+		}
+
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		public async Task CreateExerciseAsync(ExerciseCreateVM exerciseCreateVM)
 		{

@@ -60,6 +60,12 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
+		// GET: Exercises/Edit
+		public async Task<IActionResult> Edit(int id)
+		{
+			return PartialView(await exerciseRepository.GetExerciseEditVMAsync(id));
+		}
+
 		// POST: Exercises/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -90,7 +96,6 @@ namespace TrainingPlanApp.Web.Controllers
 		{
 			return PartialView(await exerciseRepository.GetExerciseDetailsVMAsync(id));
 		}
-
 
 		// GET: Exercises/Delete
 		public async Task<IActionResult> Delete(int id)

@@ -18,6 +18,9 @@ namespace TrainingPlanApp.Web.Contracts
 		// GETS EXERCISE DETAILS VIEW MODEL.
 		Task<ExerciseVM> GetExerciseDetailsVMAsync(int id);
 
+		// GETS EXERCISE EDIT VIEW MODEL.
+		Task<ExerciseCreateVM> GetExerciseEditVMAsync(int id);
+
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE.
 		Task CreateExerciseAsync(ExerciseCreateVM exerciseCreateVM);
 
