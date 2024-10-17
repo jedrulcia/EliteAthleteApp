@@ -140,11 +140,7 @@
 												</button>
 												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 													<li>
-														<button data-detailsexercisename="@item.Name"
-																data-detailsexercisevideolink="@item.VideoLink"
-																data-detailsexercisedescription="@item.Description"
-																data-detailsexercisecategoryname="@item.ExerciseCategory.Name"
-																data-detailsexercisemusclegroupname="@item.ExerciseMuscleGroup.Name"
+														<button data-detailsexerciseid="@item.Id"
 																class="dropdown-item detailsBtn">
 															<i class="bi bi-question-circle">&nbsp;</i>Details
 														</button>
@@ -258,6 +254,16 @@
 				$(this).closest('.modal').modal('hide');
 			});
 
+			// Handle tab switch with Bootstrap Tabs
+			$('#exerciseTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				e.target // newly activated tab
+				e.relatedTarget // previous tab
+			});
+
+			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
+			});
+
 			// AJAX FOR LOADING EXERCISE CREATE MODAL
 			$(document).on('click', '.createBtn', function (e) {
 				e.preventDefault();
@@ -331,17 +337,6 @@
 					}
 				});
 			});
-
-			// Handle tab switch with Bootstrap Tabs
-			$('#exerciseTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-				e.target // newly activated tab
-				e.relatedTarget // previous tab
-			});
-
-			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
-				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
-			});
-
 		});
 	</script>
 }
