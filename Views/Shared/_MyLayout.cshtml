@@ -82,16 +82,8 @@
 				pageLength: 50,
 				pagingType: "full_numbers",
 				scrollY: '500px',
-				scrollCollapse: true,
-				responsive: true
+				scrollCollapse: true
 			});
-
-			$('table').on('show.bs.dropdown', function () {
-				$('.dataTables_scrollBody').addClass('dropdown-visible');
-			})
-				.on('hide.bs.dropdown', function () {
-					$('.dataTables_scrollBody').removeClass('dropdown-visible');
-				});
 		});
 	</script>
 	<script>
