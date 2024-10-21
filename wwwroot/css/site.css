@@ -1,10 +1,257 @@
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
 
-    .custom-progress {
-        height: 30px; /* Wysokoœæ paska, mo¿esz dostosowaæ do swoich potrzeb */
-    }
+/*=====================================================BODY=====================================================*/
 
+body {
+    background-color: #222; /* Dark background for the body */
+    color: white; /* Default text color */
 }
+
+/* Apply the gradient to the body */
+body {
+    background: linear-gradient(to bottom, #000000 0%, #000000 10%, #3f3f3f 50%, #7a7a7a 100%); /* Background gradient */
+    color: white; /* Default text color */
+    min-height: 100vh; /* Ensure it covers the whole screen */
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+}
+
+/*=====================================================NAVBAR=====================================================*/
+.navbar {
+    border: none; /* Remove border */
+    box-shadow: none; /* Remove box-shadow */
+    background-color: #000; /* Match the navbar's background color */
+    margin-bottom: 0; /* Remove any margin */
+}
+
+.custom-container {
+    padding: 0; /* Adjust padding if needed */
+}
+
+/*=====================================================FONT COLOR=====================================================*/
+.text-default {
+    background: #3b82f6; /* Apply gradient */
+    -webkit-background-clip: text; /* Clip background to text */
+    -webkit-text-fill-color: transparent; /* Make the text itself transparent */
+    background-clip: text;
+    text-fill-color: transparent; /* For Firefox compatibility */
+    transition: filter 0.3s; /* Smooth transition for the brightness effect */
+}
+
+    /* Hover effect to make the text brighter */
+    .text-default:hover {
+        filter: brightness(1.5); /* Increase brightness on hover */
+    }
+
+/*=====================================================DEFAULT GRADIENTS=====================================================*/
+
+.btn-gradient-default {
+    background: linear-gradient(to right, #3b82f6, #00FC8B);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    transition: background-position 0.5s;
+    border: none;
+    padding: 0.375rem 0.75rem;
+}
+
+    .btn-gradient-default:hover {
+        background-position: 0 0;
+    }
+
+/* Outline button styles */
+.btn-gradient-outline-default {
+    background-color: transparent; /* Transparent background */
+    border: 2px solid transparent; /* Transparent border to avoid collapse */
+    border-image: linear-gradient(to right, #3b82f6, #00FC8B) 1; /* Gradient border */
+    color: #3b82f6; /* Color of the text */
+    position: relative; /* For the pseudo-element */
+    overflow: hidden; /* Prevents overflow of pseudo-element */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+    /* Pseudo-element for the gradient background */
+    .btn-gradient-outline-default::before {
+        content: ""; /* Empty content */
+        position: absolute; /* Absolute positioning */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0; /* Behind the text */
+        background: linear-gradient(to right, #3b82f6, #00FC8B); /* Gradient background */
+        opacity: 0; /* Initially hidden */
+        transition: opacity 0.3s; /* Smooth transition */
+    }
+
+    /* Change opacity on hover */
+    .btn-gradient-outline-default:hover::before {
+        opacity: 0.3; /* Slightly transparent fill on hover */
+    }
+
+    /* Change text color and border on hover */
+    .btn-gradient-outline-default:hover {
+        color: white; /* Change text color on hover */
+        border-color: transparent; /* Keep border transparent on hover */
+    }
+
+.text-gradient-default {
+    background: linear-gradient(to right, #3b82f6, #00FC8B); /* Apply gradient */
+    -webkit-background-clip: text; /* Clip background to text */
+    -webkit-text-fill-color: transparent; /* Make the text itself transparent */
+    background-clip: text;
+    text-fill-color: transparent; /* For Firefox compatibility */
+    transition: filter 0.3s; /* Smooth transition for the brightness effect */
+}
+
+    /* Hover effect to make the text brighter */
+    .text-gradient-default:hover {
+        filter: brightness(1.5); /* Increase brightness on hover */
+    }
+
+/*=====================================================DATATABLES=====================================================*/
+
+.table {
+    width: 100%; /* Optional: To ensure the table takes full width */
+}
+
+.dataTables_wrapper {
+    background-color: #333; /* Dark background for the entire DataTable wrapper */
+    border-radius: 0.5rem; /* Rounded corners */
+    padding: 1rem; /* Padding for better spacing */
+}
+
+/* Table styles */
+table.dataTable {
+    color: white; /* White text color for table */
+    border-collapse: collapse; /* Ensure borders are collapsed */
+}
+
+    table.dataTable thead th {
+        background-color: #444; /* Dark background for table header */
+        color: white; /* White text for table header */
+    }
+
+    table.dataTable tbody tr {
+        background: #333; /* Dark background for table body */
+    }
+
+        table.dataTable tbody tr:hover {
+            background: #444; /* Darker background on row hover */
+        }
+
+/* Pagination styles */
+.dataTables_paginate .paginate_button {
+    background: #444; /* Dark background for pagination buttons */
+    border: 1px solid #555; /* Border color for pagination buttons */
+    color: white; /* White text color for pagination buttons */
+    margin: 0 0.25rem; /* Space between buttons */
+    padding: 0.5rem 1rem; /* Padding for buttons */
+    border-radius: 0.25rem; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+    opacity: 1; /* Ensure buttons are fully opaque */
+}
+
+    .dataTables_paginate .paginate_button:hover {
+        background: #555; /* Slightly lighter background on hover */
+        color: white; /* Keep text color white on hover */
+    }
+
+    .dataTables_paginate .paginate_button.current {
+        background: #3b82f6; /* Bright background for the active page */
+        color: white; /* White text for active page */
+        border-color: #3b82f6; /* Border color for active page */
+    }
+
+    .dataTables_paginate .paginate_button.disabled {
+        background: transparent; /* Transparent background for disabled buttons */
+        border: 1px solid #555; /* Border color for disabled buttons */
+        color: white; /* White text color for disabled buttons */
+        cursor: not-allowed; /* Change cursor for disabled buttons */
+    }
+
+/* Dark mode styles for "Show X entries" and search box */
+.dataTables_length select,
+.dataTables_filter input {
+    background-color: #444; /* Dark background for select and input */
+    color: white; /* White text */
+    border: 1px solid #555; /* Border color */
+    border-radius: 0.25rem; /* Rounded corners */
+}
+
+    .dataTables_length select:focus,
+    .dataTables_filter input:focus {
+        outline: none; /* Remove outline on focus */
+        border-color: #3b82f6; /* Optional: border color on focus */
+    }
+
+.dataTables_length label {
+    color: white; /* Change label text color to white */
+}
+
+/* Style the search input */
+.dataTables_filter label {
+    color: white; /* White text for the search label */
+}
+
+.table thead th {
+    background-color: #333; /* Dark background for header */
+    color: white !important; /* Force white text for header */
+}
+
+.table tbody td {
+    background-color: #444; /* Dark background for body cells */
+    color: white !important; /* Force white text for body */
+}
+
+/* Optional: Change even row colors for better visibility */
+.table tbody tr:nth-child(even) td {
+    background-color: #555; /* Darker background for even rows */
+}
+
+/*=====================================================PROGRESSION BARS=====================================================*/
+.custom-progress {
+    height: 30px; /* Wysokoœæ paska, mo¿esz dostosowaæ do swoich potrzeb */
+}
+
+/*=====================================================NAV TABS=====================================================*/
+/* General Style for the Nav Tabs */
+.nav-tabs .nav-link {
+    color: #3b82f6; /* Default text color for inactive tabs */
+    border: 2px solid transparent; /* Transparent border for consistency */
+    position: relative; /* For the pseudo-element */
+    overflow: hidden; /* Prevents overflow of pseudo-element */
+    padding: 0.5rem 1rem; /* Padding for better spacing */
+    transition: color 0.3s, background-color 0.3s; /* Smooth transition */
+    background-color: transparent; /* Initial transparent background */
+}
+
+    /* Gradient Background for Tabs */
+    .nav-tabs .nav-link::before {
+        content: ""; /* Empty content */
+        position: absolute; /* Absolute positioning */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0; /* Behind the text */
+        background: linear-gradient(to right, #3b82f6, #00FC8B); /* Gradient background */
+        opacity: 0; /* Initially hidden */
+        transition: opacity 0.3s; /* Smooth transition */
+    }
+
+    /* Show gradient background on hover */
+    .nav-tabs .nav-link:hover::before,
+    .nav-tabs .nav-link.active::before { /* Apply hover styles to active tab */
+        opacity: 0.3; /* Show gradient with transparency */
+    }
+
+    /* Active Tab Styles */
+    .nav-tabs .nav-link.active {
+        background-color: rgba(59, 130, 246, 0.3); /* Slightly transparent active background */
+        color: white; /* Text color for the active tab */
+        border-color: #3b82f6; /* Match border color with active background */
+    }
+
+    /* Ensure text color remains white for inactive tabs */
+    .nav-tabs .nav-link:not(.active) {
+        color: #3b82f6; /* Default text color for inactive tabs */
+    }

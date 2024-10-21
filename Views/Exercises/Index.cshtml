@@ -30,14 +30,14 @@
 			<br />
 			<div class="tab-content" id="exerciseTabsContent">
 				<div class="tab-pane fade show active" id="my-exercises" role="tabpanel" aria-labelledby="my-exercises-tab">
-					<h1><span class="badge bg-black d-block w-100"><strong>My Exercises</strong></span></h1>
+					<h1><span class="text-gradient-default badge text-start"><strong>My Exercises</strong></span></h1>
 					@if (!string.IsNullOrEmpty(errorMessage))
 					{
 						<div class="alert alert-danger">
 							@errorMessage
 						</div>
 					}
-					<table class="table">
+					<table class="table text-white table-dark">
 						<thead>
 							<tr>
 								<th style="width:50%">
@@ -69,7 +69,7 @@
 										</td>
 										<td class="text-end">
 											<div class="dropdown">
-												<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+												<button class="btn btn-gradient-outline-default btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
 													<strong>Actions</strong>
 												</button>
 												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -102,8 +102,8 @@
 				</div>
 
 				<div class="tab-pane fade" id="all-exercises" role="tabpanel" aria-labelledby="all-exercises-tab">
-					<h1><span class="badge bg-black d-block w-100"><strong>All Exercises</strong></span></h1>
-					<table class="table" style="width:100%">
+					<h1><span class="text-gradient-default badge text-start"><strong>All Exercises</strong></span></h1>
+					<table class="table text-white table-dark" style="width:100%">
 						<thead>
 							<tr>
 								<th style="width:50%">
@@ -135,7 +135,7 @@
 										</td>
 										<td class="text-end">
 											<div class="dropdown">
-												<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+												<button class="btn btn-gradient-outline-default btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
 													<strong>Actions</strong>
 												</button>
 												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
