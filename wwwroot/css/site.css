@@ -1,4 +1,9 @@
 
+:root {
+    --gradient-color-first: #3b82f6;
+    --gradient-color-second: #d17a0f;
+}
+
 /*=====================================================BODY=====================================================*/
 
 body {
@@ -8,7 +13,7 @@ body {
 
 /* Apply the gradient to the body */
 body {
-    background: linear-gradient(to bottom, #000000 0%, #000000 10%, #3f3f3f 50%, #7a7a7a 100%); /* Background gradient */
+    background: linear-gradient(to bottom, #000000 0%, #000000 20%, #3b82f6 100%); /* Background gradient */
     color: white; /* Default text color */
     min-height: 100vh; /* Ensure it covers the whole screen */
     margin: 0; /* Reset margin */
@@ -17,9 +22,32 @@ body {
 
 /*=====================================================NAVBAR=====================================================*/
 .navbar {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
     box-shadow: none; /* Remove box-shadow */
-    background-color: #000; /* Match the navbar's background color */
     margin-bottom: 0; /* Remove any margin */
+    border-bottom: none; /* Optional: Remove any border */
+    position: relative; /* Ensure navbar stays in place */
+    z-index: 1000; /* Ensure it appears above content */
+    height: 60px; /* Adjust height as needed */
+}
+
+    .navbar::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px; /* Adjust the thickness of the bottom line */
+        background-color: #3b82f6; /* The blue margin color */
+        width: 67%;
+        margin: 0 auto; /* Center the line */
+    }
+
+.navbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
 }
 
 /* If your navbar items have a border or box shadow, add this */
@@ -29,12 +57,12 @@ body {
 
     /* Optional: Adjust hover styles if needed */
     .navbar-nav .nav-link:hover {
-        border-color: #00FC8B; /* Change hover border color to green */
+        border-color: var(--gradient-color-second); /* Change hover border color to green */
     }
 
 /*=====================================================FONT COLOR=====================================================*/
 .text-default {
-    background: #3b82f6; /* Apply gradient */
+    background: var(--gradient-color-first); /* Apply gradient */
     -webkit-background-clip: text; /* Clip background to text */
     -webkit-text-fill-color: transparent; /* Make the text itself transparent */
     background-clip: text;
@@ -50,7 +78,7 @@ body {
 /*=====================================================DEFAULT GRADIENTS=====================================================*/
 
 .btn-gradient-default {
-    background: linear-gradient(to right, #3b82f6, #00FC8B);
+    background: linear-gradient(to right, var(--gradient-color-first), var(--gradient-color-second));
     background-size: 200% 100%;
     background-position: 100% 0;
     transition: background-position 0.5s;
@@ -66,8 +94,8 @@ body {
 .btn-gradient-outline-default {
     background-color: transparent; /* Transparent background */
     border: 2px solid transparent; /* Transparent border to avoid collapse */
-    border-image: linear-gradient(to right, #3b82f6, #00FC8B) 1; /* Gradient border */
-    color: #3b82f6; /* Color of the text */
+    border-image: linear-gradient(to right, var(--gradient-color-first), var(--gradient-color-second)) 1; /* Gradient border */
+    color: var(--gradient-color-first); /* Color of the text */
     position: relative; /* For the pseudo-element */
     overflow: hidden; /* Prevents overflow of pseudo-element */
     transition: color 0.3s; /* Smooth color transition */
@@ -82,7 +110,7 @@ body {
         right: 0;
         bottom: 0;
         z-index: 0; /* Behind the text */
-        background: linear-gradient(to right, #3b82f6, #00FC8B); /* Gradient background */
+        background: linear-gradient(to right, var(--gradient-color-first), var(--gradient-color-second)); /* Gradient background */
         opacity: 0; /* Initially hidden */
         transition: opacity 0.3s; /* Smooth transition */
     }
@@ -99,7 +127,7 @@ body {
     }
 
 .text-gradient-default {
-    background: linear-gradient(to right, #3b82f6, #00FC8B); /* Apply gradient */
+    background: linear-gradient(to right, var(--gradient-color-first), var(--gradient-color-second)); /* Apply gradient */
     -webkit-background-clip: text; /* Clip background to text */
     -webkit-text-fill-color: transparent; /* Make the text itself transparent */
     background-clip: text;
@@ -124,12 +152,12 @@ body {
 }
 
     .dataTables_wrapper::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #3b82f6, #00FC8B); /* Color of the scrollbar handle */
+        background: linear-gradient(to bottom, var(--gradient-color-first), var(--gradient-color-second)); /* Color of the scrollbar handle */
         border-radius: 6px; /* Roundness of the scrollbar handle */
     }
 
         .dataTables_wrapper::-webkit-scrollbar-thumb:hover {
-            background: #00FC8B; /* Color on hover */
+            background: var(--gradient-color-second); /* Color on hover */
         }
 
 /* Ensure dropdown menus overflow outside the DataTable */
@@ -174,9 +202,9 @@ table.dataTable {
     }
 
     .dataTables_paginate .paginate_button.current {
-        background: #3b82f6; /* Bright background for the active page */
+        background: var(--gradient-color-first); /* Bright background for the active page */
         color: white; /* White text for active page */
-        border-color: #3b82f6; /* Border color for active page */
+        border-color: var(--gradient-color-first); /* Border color for active page */
     }
 
     .dataTables_paginate .paginate_button.disabled {
@@ -198,7 +226,7 @@ table.dataTable {
     .dataTables_length select:focus,
     .dataTables_filter input:focus {
         outline: none; /* Remove outline on focus */
-        border-color: #3b82f6; /* Optional: border color on focus */
+        border-color: var(--gradient-color-first); /* Optional: border color on focus */
     }
 
 .dataTables_length label {
@@ -244,13 +272,13 @@ table.dataTable {
         right: 0;
         bottom: -2px; /* Move the line down by changing this value */
         height: 2px; /* Height for the thicker line */
-        background: linear-gradient(to right, #3b82f6, #00FC8B); /* Gradient line */
+        background: var(--gradient-color-first); /* Gradient line */
         z-index: 1; /* Ensure it's below the nav links */
     }
 
     /* Existing styles for the nav-link */
     .nav-tabs .nav-link {
-        color: #3b82f6; /* Default text color for inactive tabs */
+        color: var(--gradient-color-first); /* Default text color for inactive tabs */
         border: 2px solid transparent; /* Transparent border for consistency */
         position: relative; /* For the pseudo-element */
         overflow: hidden; /* Prevents overflow of pseudo-element */
@@ -268,7 +296,7 @@ table.dataTable {
             right: 0;
             bottom: 0;
             z-index: 0; /* Behind the text */
-            background: linear-gradient(to right, #3b82f6, #00FC8B); /* Gradient background */
+            background: linear-gradient(to right, var(--gradient-color-first), var(--gradient-color-second)); /* Gradient background */
             opacity: 0; /* Initially hidden */
             transition: opacity 0.3s; /* Smooth transition */
         }
@@ -283,12 +311,12 @@ table.dataTable {
         .nav-tabs .nav-link.active {
             background-color: rgba(59, 130, 246, 0.3); /* Slightly transparent active background */
             color: white; /* Text color for the active tab */
-            border-color: #3b82f6; /* Match border color with active background */
+            border-color: var(--gradient-color-first); /* Match border color with active background */
         }
 
         /* Ensure text color remains white for inactive tabs */
         .nav-tabs .nav-link:not(.active) {
-            color: #3b82f6; /* Default text color for inactive tabs */
+            color: var(--gradient-color-first); /* Default text color for inactive tabs */
         }
 
 
