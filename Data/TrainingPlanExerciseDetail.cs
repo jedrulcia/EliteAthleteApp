@@ -6,7 +6,7 @@ namespace TrainingPlanApp.Web.Data
 {
 	public class TrainingPlanExerciseDetail
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 		public int? ExerciseId { get; set; }
 		public int? TrainingPlanPhaseId { get; set; }
 		public string? Index { get; set; }

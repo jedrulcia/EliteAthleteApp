@@ -26,18 +26,21 @@ namespace TrainingPlanApp.Web.Repositories
 		private readonly IExerciseRepository exerciseRepository;
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository;
 
 		public TrainingPlanRepository(ApplicationDbContext context,
 			IMapper mapper,
 			IExerciseRepository exerciseRepository,
 			UserManager<User> userManager,
-			IHttpContextAccessor httpContextAccessor) : base(context)
+			IHttpContextAccessor httpContextAccessor,
+			ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.exerciseRepository = exerciseRepository;
 			this.userManager = userManager;
 			this.httpContextAccessor = httpContextAccessor;
+			this.trainingPlanExerciseDetailRepository = trainingPlanExerciseDetailRepository;
 		}
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
@@ -92,6 +95,13 @@ namespace TrainingPlanApp.Web.Repositories
 		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVMAsync(TrainingPlan trainingPlan)
 		{
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
+			trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = new List<TrainingPlanExerciseDetailVM>();
+
+			foreach(var id in trainingPlan.TrainingPlanExerciseDetailIds)
+			{
+				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await trainingPlanExerciseDetailRepository.GetAsync(id));
+				trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs.Add(trainingPlanExerciseDetailVM);
+			}
 
 			trainingPlanDetailsVM.TrainingPlanPhaseVMs = new List<TrainingPlanPhaseVM?>();
 			foreach (var trainingPlanExerciseDetailVM in trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs)
@@ -114,7 +124,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			foreach (var exerciseDetailId in trainingPlan.TrainingPlanExerciseDetailIds)
 			{
-				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await context.Set<TrainingPlanExerciseDetail>().FindAsync(exerciseDetailId));
+				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await trainingPlanExerciseDetailRepository.GetAsync(exerciseDetailId));
 				trainingPlanManageExercisesVM.TrainingPlanExerciseDetailVMs.Add(trainingPlanExerciseDetailVM);
 			}
 
@@ -176,7 +186,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 		public async Task<TrainingPlanAddExerciseVM> GetTrainingPlanEditExerciseVMAsync(int trainingPlanId, string coachId, int trainingPlanExerciseDetailId)
 		{
-			var trainingPlanAddExerciseVM = mapper.Map<TrainingPlanAddExerciseVM>(await context.Set<TrainingPlanExerciseDetail>().FindAsync(trainingPlanExerciseDetailId));
+			var trainingPlanAddExerciseVM = mapper.Map<TrainingPlanAddExerciseVM>(await trainingPlanExerciseDetailRepository.GetAsync(trainingPlanExerciseDetailId));
 
 			trainingPlanAddExerciseVM.AvailableExercises = new SelectList(
 					context.Exercises
@@ -242,7 +252,7 @@ namespace TrainingPlanApp.Web.Repositories
 				return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 			}
 
-			var trainingPlanExerciseDetail = await context.Set<TrainingPlanExerciseDetail>().FindAsync(trainingPlanAddExerciseVM.Id);
+			var trainingPlanExerciseDetail = await trainingPlanExerciseDetailRepository.GetAsync(trainingPlanAddExerciseVM.Id);
 			trainingPlanExerciseDetail.Index = trainingPlanAddExerciseVM.Index;
 			trainingPlanExerciseDetail.TrainingPlanPhaseId = trainingPlanAddExerciseVM.TrainingPlanPhaseId;
 			trainingPlanExerciseDetail.ExerciseId = trainingPlanAddExerciseVM.ExerciseId;
@@ -251,8 +261,7 @@ namespace TrainingPlanApp.Web.Repositories
 			trainingPlanExerciseDetail.Weight = trainingPlanAddExerciseVM.Weight;
 			trainingPlanExerciseDetail.RestTime = trainingPlanAddExerciseVM.RestTime;
 			trainingPlanExerciseDetail.Note = trainingPlanAddExerciseVM.Note;
-			context.Update(trainingPlanExerciseDetail);
-			await context.SaveChangesAsync();
+			await trainingPlanExerciseDetailRepository.AddAsync(trainingPlanExerciseDetail);
 
 			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 		}
@@ -262,9 +271,10 @@ namespace TrainingPlanApp.Web.Repositories
 		{
 			var trainingPlan = await GetAsync(trainingPlanRemoveExerciseVM.TrainingPlanId);
 
-			var trainingPlanExerciseDetail = await context.Set<TrainingPlanExerciseDetail>().FindAsync(trainingPlanRemoveExerciseVM.Id);
-			context.Set<TrainingPlanExerciseDetail>().Remove(trainingPlanExerciseDetail);
-			await context.SaveChangesAsync();
+			var trainingPlanExerciseDetail = await trainingPlanExerciseDetailRepository.GetAsync(trainingPlanRemoveExerciseVM.Id);
+
+			
+			await trainingPlanExerciseDetailRepository.DeleteAsync(trainingPlanRemoveExerciseVM.Id);
 
 			trainingPlan.TrainingPlanExerciseDetailIds.Remove(trainingPlanRemoveExerciseVM.Id);
 			
@@ -296,7 +306,7 @@ namespace TrainingPlanApp.Web.Repositories
 
 			foreach (var id in trainingPlanExerciseDetailIds)
 			{
-				var copyFromExerciseDetail = await context.Set<TrainingPlanExerciseDetail>().FindAsync(id);
+				var copyFromExerciseDetail = await trainingPlanExerciseDetailRepository.GetAsync(id);
 				var copyToExerciseDetail = new TrainingPlanExerciseDetail();
 				copyToExerciseDetail.Index = copyFromExerciseDetail.Index;
 				copyToExerciseDetail.TrainingPlanPhaseId = copyFromExerciseDetail.TrainingPlanPhaseId;
@@ -306,10 +316,9 @@ namespace TrainingPlanApp.Web.Repositories
 				copyToExerciseDetail.Weight = copyFromExerciseDetail.Weight;
 				copyToExerciseDetail.RestTime = copyFromExerciseDetail.RestTime;
 				copyToExerciseDetail.Note = copyFromExerciseDetail.Note;
-				await context.AddAsync(copyToExerciseDetail);
+				await trainingPlanExerciseDetailRepository.AddAsync(copyToExerciseDetail);
 				copyToTrainingPlan.TrainingPlanExerciseDetailIds.Add(copyToExerciseDetail.Id);
 			}
-
 			await UpdateAsync(copyToTrainingPlan);
 		}
 

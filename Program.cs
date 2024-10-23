@@ -27,6 +27,7 @@ builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IMealRepository, MealRepository>();
 builder.Services.AddScoped<IDietRepository, DietRepository>();
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>(); 
+builder.Services.AddScoped<ITrainingPlanExerciseDetailRepository, TrainingPlanExerciseDetailRepository>();
 builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>(provider =>
 	new BlobStorageRepository(blobConnectionString, containerName));
 
