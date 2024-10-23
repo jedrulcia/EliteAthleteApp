@@ -43,12 +43,12 @@
 	</div>
 	<div class="row">
 		<div class="form-group form-check col-md-10">
-			<input type="checkbox" asp-for="SetAsPublic" />
-			<label class="form-check-label" asp-for="SetAsPublic"><strong>Set as public</strong></label>
+			<input type="checkbox" asp-for="SetAsPublic" class="form-check-input" id="setAsPublicCheckbox" />
+			<label class="form-check-label" asp-for="SetAsPublic">&nbsp;<strong>Set as public</strong></label>
 			<span asp-validation-for="SetAsPublic" class="text-danger"></span>
 		</div>
 		<div class="form-group col-md-2 text-end">
-			<button type="submit" class="btn btn-dark"><strong>Save</strong></button>
+			<button type="submit" class="btn btn-outline-primary-a"><strong>Save</strong></button>
 		</div>
 	</div>
 </form>
