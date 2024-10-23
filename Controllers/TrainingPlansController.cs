@@ -97,6 +97,7 @@ namespace TrainingPlanApp.Web.Controllers
 			return File(pdf, "application/pdf", "PlanTreningowy.pdf");
 		}
 
+		// GET: TrainingPlans/ManageExercises/AddExercise
 		public async Task<IActionResult> AddExercise(int trainingPlanId, string coachId)
         {
             return PartialView("AddExercise", await trainingPlanRepository.GetTrainingPlanAddExerciseVMAsync(trainingPlanId, coachId));
@@ -118,29 +119,42 @@ namespace TrainingPlanApp.Web.Controllers
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 
+		// GET: TrainingPlans/ManageExercises/EditExercise
+		public async Task<IActionResult> EditExercise(int trainingPlanId, string coachId, int trainingPlanExerciseDetailId)
+		{
+			return PartialView("EditExercise", await trainingPlanRepository.GetTrainingPlanEditExerciseVMAsync(trainingPlanId, coachId, trainingPlanExerciseDetailId));
+		}
+
 		// POST: TrainingPlans/ManageExercises/EditExercise
 		[HttpPost, ActionName("EditExercise")]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
-		public async Task<IActionResult> EditExercises(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
+		public async Task<IActionResult> EditExercise(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			if (ModelState.IsValid)
 			{
-				await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM, index);
+				await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM);
 				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
 			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 
+		// GET: TrainingPlans/ManageExercises/RemoveExercise
+		public async Task<IActionResult> RemoveExercise(int trainingPlanId, int trainingPlanExerciseDetailId, string name)
+		{
+			
+			return PartialView("RemoveExercise", await trainingPlanRepository.GetTrainingPlanRemoveExerciseVM(trainingPlanId, trainingPlanExerciseDetailId, name));
+		}
+
 		// POST: TrainingPlans/ManageExercises/RemoveExercise
 		[HttpPost, ActionName("RemoveExercise")]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
-		public async Task<IActionResult> RemoveExercise(int trainingPlanId, int index)
+		public async Task<IActionResult> RemoveExercise(TrainingPlanRemoveExerciseVM trainingPlanRemoveExerciseVM)
 		{
-			await trainingPlanRepository.RemoveExerciseFromTrainingPlanAsync(trainingPlanId, index);
-			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanId });
+			await trainingPlanRepository.RemoveExerciseFromTrainingPlanAsync(trainingPlanRemoveExerciseVM);
+			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanRemoveExerciseVM.TrainingPlanId });
 		}
 
 		public async Task<IActionResult> Copy(int copyFromId, int trainingModuleId)

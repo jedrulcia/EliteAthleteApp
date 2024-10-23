@@ -443,7 +443,7 @@ table.dataTable .btn-action {
 
 /*=====================================================MODAL=====================================================*/
 .modal-content {
-    background: linear-gradient(to bottom, #000000 0%, #000000 %, #3f3f3f 100%); /* Gradient t³a dla treœci modala */
+    background: linear-gradient(to bottom, #000000 0%, #000000 2%, #3f3f3f 100%); /* Background gradient */
     color: white; /* Kolor tekstu */
     font-family: 'Montserrat', sans-serif; /* Czcionka Montserrat */
     font-size: 14px; /* Rozmiar tekstu */

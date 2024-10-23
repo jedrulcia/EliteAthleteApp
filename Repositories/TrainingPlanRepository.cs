@@ -159,7 +159,7 @@ namespace TrainingPlanApp.Web.Repositories
 			return trainingPlanCopyVM;
 		}
 
-		public async Task<TrainingPlanAddExerciseVM> GetTrainingPlanAddExerciseVMAsync(int id, string coachId)
+		public async Task<TrainingPlanAddExerciseVM> GetTrainingPlanAddExerciseVMAsync(int trainingPlanId, string coachId)
 		{
 			var trainingPlanAddExerciseVM = new TrainingPlanAddExerciseVM
 			{
@@ -167,10 +167,36 @@ namespace TrainingPlanApp.Web.Repositories
 					context.Exercises
 							.Where(e => e.CoachId == null || e.CoachId == coachId)
 							.OrderBy(e => e.Name), "Id", "Name"),
-				AvailableTrainingPlanPhases = new SelectList(context.TrainingPlanPhases.OrderBy(e => e.Id), "Id", "Name")
+				AvailableTrainingPlanPhases = new SelectList(context.TrainingPlanPhases.OrderBy(e => e.Id), "Id", "Name"),
+				TrainingPlanId = trainingPlanId
 			};
 
 			return trainingPlanAddExerciseVM;
+		}
+
+		public async Task<TrainingPlanAddExerciseVM> GetTrainingPlanEditExerciseVMAsync(int trainingPlanId, string coachId, int trainingPlanExerciseDetailId)
+		{
+			var trainingPlanAddExerciseVM = mapper.Map<TrainingPlanAddExerciseVM>(await context.Set<TrainingPlanExerciseDetail>().FindAsync(trainingPlanExerciseDetailId));
+
+			trainingPlanAddExerciseVM.AvailableExercises = new SelectList(
+					context.Exercises
+							.Where(e => e.CoachId == null || e.CoachId == coachId)
+							.OrderBy(e => e.Name), "Id", "Name");
+			trainingPlanAddExerciseVM.AvailableTrainingPlanPhases = new SelectList(context.TrainingPlanPhases.OrderBy(e => e.Id), "Id", "Name");
+			trainingPlanAddExerciseVM.TrainingPlanId = trainingPlanId;
+
+			return trainingPlanAddExerciseVM;
+		}
+
+		public async Task<TrainingPlanRemoveExerciseVM> GetTrainingPlanRemoveExerciseVM(int trainingPlanId, int trainingPlanExerciseDetailId, string name)
+		{
+			var trainingPlanRemoveExerciseVM = new TrainingPlanRemoveExerciseVM
+			{
+				Name = name,
+				Id = trainingPlanExerciseDetailId,
+				TrainingPlanId = trainingPlanId
+			};
+			return trainingPlanRemoveExerciseVM;
 		}
 
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
@@ -208,7 +234,7 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// EDITS AN EXERCISE IN THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM, int? index)
+		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.ExerciseId);
 			if (exercise == null)
@@ -232,16 +258,15 @@ namespace TrainingPlanApp.Web.Repositories
 		}
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
-		public async Task RemoveExerciseFromTrainingPlanAsync(int id, int index)
+		public async Task RemoveExerciseFromTrainingPlanAsync(TrainingPlanRemoveExerciseVM trainingPlanRemoveExerciseVM)
 		{
+			var trainingPlan = await GetAsync(trainingPlanRemoveExerciseVM.TrainingPlanId);
 
-			var trainingPlan = await GetAsync(id);
-
-			var trainingPlanExerciseDetail = await context.Set<TrainingPlanExerciseDetail>().FindAsync(trainingPlan.TrainingPlanExerciseDetailIds[index]);
+			var trainingPlanExerciseDetail = await context.Set<TrainingPlanExerciseDetail>().FindAsync(trainingPlanRemoveExerciseVM.Id);
 			context.Set<TrainingPlanExerciseDetail>().Remove(trainingPlanExerciseDetail);
 			await context.SaveChangesAsync();
 
-			trainingPlan.TrainingPlanExerciseDetailIds.RemoveAt(index);
+			trainingPlan.TrainingPlanExerciseDetailIds.Remove(trainingPlanRemoveExerciseVM.Id);
 			
 			if (trainingPlan.TrainingPlanExerciseDetailIds.Count == 0)
 			{

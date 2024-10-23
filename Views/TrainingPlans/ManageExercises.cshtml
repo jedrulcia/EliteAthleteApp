@@ -12,7 +12,12 @@
 
 <p>
 	<a asp-action="Index" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
-	<button class="btn btn-outline-primary-a btn-sm addExerciseBtn" data-addexercisetrainingplanid="@Model.Id" type="button"><i class="fa-solid fa-plus">&nbsp;</i>Add Exercise</button>
+	<button class="btn btn-outline-primary-a btn-sm addExerciseBtn"
+			data-addexercisetrainingplanid="@Model.Id"
+			data-addexercisecoachid="@Model.CoachId"
+			type="button">
+		<i class="fa-solid fa-plus">&nbsp;</i>Add Exercise
+	</button>
 </p>
 
 @if (!string.IsNullOrEmpty(errorMessage))
@@ -49,23 +54,16 @@
 					Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].RestTime)
 				</td>
 				<td class="text-end">
-					<button @* data-edittrainingplanid="@Model.Id"
-							data-edititeration="@i"
-							data-editindex="@Model.Indices[i]"
-							data-edittrainingplanphaseid="@Model.TrainingPlanPhaseIds[i]"
-							data-editexerciseid="@Model.ExerciseIds[i]"
-							data-editsets="@Model.Sets[i]"
-							data-editunits="@Model.Units[i]"
-							data-editweight="@Model.Weights[i]"
-							data-editresttime="@Model.RestTimes[i]"
-							data-editnote="@Model.Notes[i]" *@
-							class="btn btn-primary btn-sm editBtn" type="button">
+					<button data-editexercisetrainingplanid="@Model.Id"
+							data-editexercisecoachid="@Model.CoachId"
+							data-editexercisetrainingplanexercisedetailid="@Model.TrainingPlanExerciseDetailVMs[i].Id"
+							class="btn btn-primary btn-sm editExerciseBtn" type="button">
 						<i class="fa-solid fa-pen">&nbsp;</i>Edit
 					</button>
-					<button @* data-removetrainingplanid="@Model.Id"
-							data-removeindex="@i"
-							data-removename="@Model.ExerciseVMs[i].Name" *@
-							class="btn btn-danger btn-sm removeBtn" type="button">
+					<button data-removeexercisetrainingplanid="@Model.Id"
+							data-removeexercisename="@Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name"
+							data-removeexercisetrainingplanexercisedetailid="@Model.TrainingPlanExerciseDetailVMs[i].Id"
+							class="btn btn-danger btn-sm removeExerciseBtn" type="button">
 						<i class="fa-solid fa-trash">&nbsp;</i>Remove
 					</button>
 				</td>
@@ -84,115 +82,39 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body" id="trainingPlanAddExerciseContent">				
+			<div class="modal-body" id="trainingPlanAddExerciseContent">
 			</div>
 		</div>
 	</div>
 </div>
 
-@* <!-- MODAL FOR EDITING EXERCISE -->
-<div class="modal fade" id="editExerciseModal" tabindex="-1" role="dialog" aria-labelledby="editExerciseModalLabel" aria-hidden="true">
+<!-- MODAL FOR EDITING EXERCISE -->
+<div class="modal fade" id="trainingPlanEditExerciseModal" tabindex="-1" role="dialog" aria-labelledby="trainingPlanEditExerciseModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="editExerciseModalLabel">Edit Exercise</h5>
+				<h5 class="modal-title" id="trainingPlanEditExerciseModalLabel">Edit Exercise</h5>
 				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<form id="editForm" asp-action="EditExercise" method="post">
-					<input type="hidden" name="TrainingPlanAddExerciseVM.Id" id="editTrainingPlanId" />
-					<input type="hidden" name="index" id="editIteration" />
-					<div class="row">
-						<div class="form-group col-md-6">
-							<label asp-for="TrainingPlanAddExerciseVM.ExerciseIndex" class="control-label"></label>
-							<input id="editIndex" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseIndex" />
-							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseIndex" class="text-danger"></span>
-						</div>
-						<div class="form-group col-md-6">
-							<label asp-for="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="control-label"></label>
-							<select id="editTrainingPlanPhaseId" name="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="form-select">
-								@foreach (var phase in Model.TrainingPlanAddExerciseVM.AvailableTrainingPlanPhases)
-								{
-									<option value="@phase.Value">@phase.Text</option>
-								}
-							</select>
-							<span asp-validation-for="TrainingPlanAddExerciseVM.TrainingPlanPhaseId" class="text-danger"></span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group">
-							<label asp-for="TrainingPlanAddExerciseVM.ExerciseId" class="control-label"></label>
-							<select id="editExerciseId" name="TrainingPlanAddExerciseVM.ExerciseId" class="form-select">
-								@foreach (var exercise in Model.TrainingPlanAddExerciseVM.AvailableExercises)
-								{
-									<option value="@exercise.Value">@exercise.Text</option>
-								}
-							</select>
-							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseId" class="text-danger"></span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-md-6">
-							<label asp-for="TrainingPlanAddExerciseVM.ExerciseSets" class="control-label"></label>
-							<input id="editSets" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseSets" />
-							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseSets" class="text-danger"></span>
-						</div>
-						<div class="form-group col-md-6">
-							<label asp-for="TrainingPlanAddExerciseVM.ExerciseUnits" class="control-label"></label>
-							<input id="editUnits" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseUnits" />
-							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseUnits" class="text-danger"></span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-md-6">
-							<label asp-for="TrainingPlanAddExerciseVM.ExerciseWeight" class="control-label"></label>
-							<input id="editWeight" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseWeight" />
-							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseWeight" class="text-danger"></span>
-						</div>
-						<div class="form-group col-md-6">
-							<label asp-for="TrainingPlanAddExerciseVM.ExerciseRestTime" class="control-label"></label>
-							<input id="editRestTime" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseRestTime" />
-							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseRestTime" class="text-danger"></span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="form-group col-md-12">
-							<label asp-for="TrainingPlanAddExerciseVM.ExerciseNote" class="control-label"></label>
-							<input id="editNote" class="form-control" name="TrainingPlanAddExerciseVM.ExerciseNote" />
-							<span asp-validation-for="TrainingPlanAddExerciseVM.ExerciseNote" class="text-danger"></span>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" id="confirmEditBtn">Edit</button>
-					</div>
-				</form>
+			<div class="modal-body" id="trainingPlanEditExerciseContent">
 			</div>
 		</div>
 	</div>
-</div> *@
+</div>
 
 <!-- MODAL FOR EXERCISE REMOVE -->
-<div class="modal fade" id="removeExerciseModal" tabindex="-1" role="dialog" aria-labelledby="removeExerciseModalLabel" aria-hidden="true">
+<div class="modal fade" id="trainingPlanRemoveExerciseModal" tabindex="-1" role="dialog" aria-labelledby="trainingPlanRemoveExerciseModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="removeExerciseModalLabel">Remove Training Module</h5>
+				<h5 class="modal-title" id="trainingPlanRemoveExerciseModalLabel">Remove Training Module</h5>
 				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<form id="removeForm" asp-action="RemoveExercise">
-					<input type="hidden" name="trainingPlanId" id="removeTrainingPlanId" />
-					<input type="hidden" name="index" id="removeIndex" />
-					<p>Are you sure you want to remove this exercise?</p>
-					<h5 id="exerciseNameToRemove"></h5>
-				</form>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" id="confirmRemoveBtn">Remove</button>
+			<div class="modal-body" id="trainingPlanRemoveExerciseContent">
 			</div>
 		</div>
 	</div>
@@ -214,15 +136,15 @@
 			$(document).on('click', '.addExerciseBtn', function (e) {
 				e.preventDefault();
 
-				
-				var id = $(this).data("addexercisetrainingplanid");
+				var trainingPlanId = $(this).data("addexercisetrainingplanid");
+				var coachId = $(this).data("addexercisecoachid")
 				$.ajax({
 					url: '@Url.Action("AddExercise", "TrainingPlans")',
 					type: 'GET',
-					data: { id: id },
+					data: { trainingPlanId: trainingPlanId, coachId: coachId },
 					success: function (data) {
 						$('#trainingPlanAddExerciseContent').html(data);
-						$('#trainingPlanADdExerciseModal').modal('show');
+						$('#trainingPlanAddExerciseModal').modal('show');
 					},
 					error: function () {
 						alert("An error occurred while loading the training plan add exercise modal.");
@@ -234,19 +156,40 @@
 			$(document).on('click', '.editExerciseBtn', function (e) {
 				e.preventDefault();
 
-				
 				var trainingPlanId = $(this).data("editexercisetrainingplanid");
-				var exerciseDetailsId = $(this).data("editexercisetrainingplanid");
+				var trainingPlanExerciseDetailId = $(this).data("editexercisetrainingplanexercisedetailid");
+				var coachId = $(this).data("editexercisecoachid");
 				$.ajax({
 					url: '@Url.Action("EditExercise", "TrainingPlans")',
 					type: 'GET',
-					data: { trainingPlanId : trainingPlanId, exerciseDetailsId : exerciseDetailsId },
+					data: { trainingPlanId: trainingPlanId, trainingPlanExerciseDetailId: trainingPlanExerciseDetailId, coachId: coachId },
 					success: function (data) {
 						$('#trainingPlanEditExerciseContent').html(data);
 						$('#trainingPlanEditExerciseModal').modal('show');
 					},
 					error: function () {
 						alert("An error occurred while loading the training plan edit exercise modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE CREATE MODAL
+			$(document).on('click', '.removeExerciseBtn', function (e) {
+				e.preventDefault();
+
+				var trainingPlanId = $(this).data("removeexercisetrainingplanid");
+				var trainingPlanExerciseDetailId = $(this).data("removeexercisetrainingplanexercisedetailid");
+				var name = $(this).data("removeexercisename");
+				$.ajax({
+					url: '@Url.Action("RemoveExercise", "TrainingPlans")',
+					type: 'GET',
+					data: { trainingPlanId: trainingPlanId, trainingPlanExerciseDetailId: trainingPlanExerciseDetailId, name: name },
+					success: function (data) {
+						$('#trainingPlanRemoveExerciseContent').html(data);
+						$('#trainingPlanRemoveExerciseModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the training plan remove exercise modal.");
 					}
 				});
 			});

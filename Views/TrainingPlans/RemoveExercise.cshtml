@@ -1,0 +1,19 @@
+﻿@using TrainingPlanApp.Web.Models.TrainingPlan
+
+@model TrainingPlanRemoveExerciseVM
+
+
+@{
+	ViewData["Title"] = "RemoveExercise";
+}
+
+
+<form asp-action="RemoveExercise">
+	<input type="hidden" asp-for="Id" />
+	<input type="hidden" asp-for="TrainingPlanId" />
+	<p>Are you sure you want to remove this exercise?</p>
+	<h5>@Model.Name</h5>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-outline-primary-a btn-sm"><strong>Remove</strong></button>
+	</div>
+</form>

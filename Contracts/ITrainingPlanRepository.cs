@@ -13,16 +13,22 @@ namespace TrainingPlanApp.Web.Contracts
 		Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVMAsync(TrainingPlan trainingPlan);
 
 		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
-		Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? id);
+		Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? trainingPlanId);
 
 		// GETS THE TRAINING PLAN COPY VM
 		Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds);
 
 		// GETS THE TRAINING PLAN CHANGE STATUS VM
-		Task<TrainingPlanChangeStatusVM> GetTrainingPlanChangeStatusVMAsync(int id);
+		Task<TrainingPlanChangeStatusVM> GetTrainingPlanChangeStatusVMAsync(int trainingPlanId);
 
 		// GET THE TRAINING PLAN ADD EXERCISE VM
-		Task<TrainingPlanAddExerciseVM> GetTrainingPlanAddExerciseVMAsync(int id, string coachId);
+		Task<TrainingPlanAddExerciseVM> GetTrainingPlanAddExerciseVMAsync(int trainingPlanId, string coachId);
+
+		// GET THE TRAINING PLAN ADD EXERCISE VM
+		Task<TrainingPlanAddExerciseVM> GetTrainingPlanEditExerciseVMAsync(int trainingPlanId, string coachId, int trainingPlanExerciseDetailId);
+
+		// GET THE TRAINING PLAN REMOVE EXERCISE VM
+		Task<TrainingPlanRemoveExerciseVM> GetTrainingPlanRemoveExerciseVM(int trainingPlanId, int trainingPlanExerciseDetailId, string name);
 
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM model);
@@ -31,10 +37,10 @@ namespace TrainingPlanApp.Web.Contracts
 		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM);
 
 		// EDIT AN EXERCISE IN SPECIFIED TRAINING PLAN.
-		Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM, int? index);
+		Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM);
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
-		Task RemoveExerciseFromTrainingPlanAsync(int id, int index);
+		Task RemoveExerciseFromTrainingPlanAsync(TrainingPlanRemoveExerciseVM trainingPlanRemoveExerciseVM);
 
 		// CHANGES THE STATUS OF THE TRAINING PLAN (ACTIVE/NOT ACTIVE).
 		Task CompleteTrainingPlanAsync(int trainingPlanId, string raport);
