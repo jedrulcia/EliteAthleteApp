@@ -5,22 +5,22 @@ namespace TrainingPlanApp.Web.Models.TrainingPlan
 {
 	public class TrainingPlanAddExerciseVM
 	{
+		public int? TrainingPlanId { get; set; }
 		public int? Id { get; set; }
-		// FORMS
-		// indices are used to get the order of exercises
-		[Required]
-		public string? ExerciseIndex { get; set; }
-		public SelectList? AvailableTrainingPlanPhases { get; set; }
-		public int? TrainingPlanPhaseId { get; set; }
-		public SelectList? AvailableExercises { get; set; }
 		[Display(Name = "Exercise")]
 		[Required]
 		public int? ExerciseId { get; set; }
-		public int? ExerciseSets { get; set; }
-		// Units can be (example): 10reps/30sec/5km
-		public string? ExerciseUnits { get; set; }
-		public string? ExerciseWeight { get; set; }
-		public string? ExerciseRestTime { get; set; }
-		public string? ExerciseNote { get; set; }
-	}
+		public int? TrainingPlanPhaseId { get; set; }
+		[Required]
+		public string? Index { get; set; }
+		public int? Sets { get; set; }
+		public string? Units { get; set; }
+		public string? Weight { get; set; }
+		public string? RestTime { get; set; }
+		public string? Note { get; set; }
+
+
+        public SelectList? AvailableTrainingPlanPhases { get; set; }
+        public SelectList? AvailableExercises { get; set; }
+    }
 }

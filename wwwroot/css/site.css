@@ -439,3 +439,58 @@ table.dataTable .btn-action {
 .dropdown {
     position: relative;
 }
+
+
+/*=====================================================MODAL=====================================================*/
+.modal-content {
+    background: linear-gradient(to bottom, #000000 0%, #000000 %, #3f3f3f 100%); /* Gradient t³a dla treœci modala */
+    color: white; /* Kolor tekstu */
+    font-family: 'Montserrat', sans-serif; /* Czcionka Montserrat */
+    font-size: 14px; /* Rozmiar tekstu */
+    font-weight: bold; /* Tekst pogrubiony */
+    border-radius: 10px; /* Zaokr¹glone krawêdzie modala */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5); /* Cieñ dla g³êbi */
+}
+
+/* Styl dla nag³ówka modala */
+.modal-header {
+    border-bottom: 1px solid #444; /* Delikatne podkreœlenie oddzielaj¹ce nag³ówek od treœci */
+    color: white; /* Kolor tekstu w nag³ówku */
+}
+
+/* Styl dla treœci modala */
+.modal-body {
+    color: white; /* Tekst w treœci modala */
+}
+
+/* Styl przycisku zamkniêcia modala */
+.modal-header .close {
+    color: white; /* Kolor ikonki zamkniêcia (x) */
+    opacity: 1; /* Pe³na widocznoœæ */
+}
+
+    /* Przycisk zamkniêcia (hover efekt) */
+    .modal-header .close:hover {
+        color: #bbb; /* Jaœniejszy kolor przy najechaniu */
+    }
+
+/* Dostosowanie rozmiarów modala */
+.modal-dialog {
+    max-width: 900px; /* Szerokoœæ modala */
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center; /* Wyœrodkowanie modala pionowo */
+    justify-content: center; /* Wyœrodkowanie modala poziomo */
+}
+
+/* Styl dla pó³przezroczystego t³a modala (ciemniejszy overlay) */
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.8); /* Ciemniejsze t³o za modalem */
+}
+
+/* Resetowanie domyœlnej ramki */
+.modal-content {
+    border: none; /* Usuniêcie domyœlnej ramki */
+}

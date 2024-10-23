@@ -13,11 +13,11 @@ namespace TrainingPlanApp.Web.Data
 			: base(options)
 		{
 		}
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
 			builder.ApplyConfiguration(new RoleSeedConfiguration());
-            builder.ApplyConfiguration(new UserSeedConfiguration());
-            builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+			builder.ApplyConfiguration(new UserSeedConfiguration());
+			builder.ApplyConfiguration(new UserRoleSeedConfiguration());
 
 			builder.ApplyConfiguration(new ExerciseCategorySeedConfiguration());
 			builder.ApplyConfiguration(new ExerciseMuscleGroupSeedConfiguration());
@@ -27,15 +27,16 @@ namespace TrainingPlanApp.Web.Data
 			builder.ApplyConfiguration(new IngredientCategorySeedConfiguration());
 			builder.ApplyConfiguration(new MealCategorySeedConfiguration());
 
-            base.OnModelCreating(builder);
-        }
+			base.OnModelCreating(builder);
+		}
 
-        public DbSet<Exercise> Exercises {  get; set; }
-        public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
+		public DbSet<Exercise> Exercises { get; set; }
+		public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
 		public DbSet<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; }
 
-        public DbSet<TrainingPlan> TrainingPlans { get; set; }
+		public DbSet<TrainingPlan> TrainingPlans { get; set; }
 		public DbSet<TrainingPlanPhase> TrainingPlanPhases { get; set; }
+		public DbSet<TrainingPlanExerciseDetail> TrainingPlanExerciseDetails { get; set; }
 
 		public DbSet<TrainingModule> TrainingModules { get; set; }
 		public DbSet<TrainingModuleORM> TrainingModuleORMs { get; set; }

@@ -15,9 +15,14 @@ namespace TrainingPlanApp.Web.Contracts
 		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
 		Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? id);
 
+		// GETS THE TRAINING PLAN COPY VM
 		Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds);
 
+		// GETS THE TRAINING PLAN CHANGE STATUS VM
 		Task<TrainingPlanChangeStatusVM> GetTrainingPlanChangeStatusVMAsync(int id);
+
+		// GET THE TRAINING PLAN ADD EXERCISE VM
+		Task<TrainingPlanAddExerciseVM> GetTrainingPlanAddExerciseVMAsync(int id, string coachId);
 
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM model);

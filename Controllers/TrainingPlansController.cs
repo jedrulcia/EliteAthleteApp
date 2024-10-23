@@ -97,6 +97,11 @@ namespace TrainingPlanApp.Web.Controllers
 			return File(pdf, "application/pdf", "PlanTreningowy.pdf");
 		}
 
+		public async Task<IActionResult> AddExercise(int trainingPlanId, string coachId)
+        {
+            return PartialView("AddExercise", await trainingPlanRepository.GetTrainingPlanAddExerciseVMAsync(trainingPlanId, coachId));
+        }
+
 		// POST: TrainingPlans/ManageExercises/AddExercise
 		[HttpPost, ActionName("AddExercise")]
 		[ValidateAntiForgeryToken]
@@ -106,11 +111,11 @@ namespace TrainingPlanApp.Web.Controllers
 			if (ModelState.IsValid)
 			{
 				await trainingPlanRepository.AddExerciseToTrainingPlanAsync(trainingPlanAddExerciseVM);
-				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
+				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
 
 			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
-			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
+			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 
 		// POST: TrainingPlans/ManageExercises/EditExercise
@@ -122,10 +127,10 @@ namespace TrainingPlanApp.Web.Controllers
 			if (ModelState.IsValid)
 			{
 				await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM, index);
-				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
+				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
 			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
-			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.Id });
+			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 
 		// POST: TrainingPlans/ManageExercises/RemoveExercise

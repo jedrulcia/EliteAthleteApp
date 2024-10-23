@@ -1,0 +1,67 @@
+@using TrainingPlanApp.Web.Models.TrainingPlan
+
+@model TrainingPlanAddExerciseVM
+
+
+@{
+	ViewData["Title"] = "AddExercise";
+}
+
+<form asp-action="AddExercise">
+	<input type="hidden" asp-for="TrainingPlanId" />
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label asp-for="Index" class="control-label"></label>
+			<input asp-for="Index" class="form-control" />
+			<span asp-validation-for="Index" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-6">
+			<label asp-for="TrainingPlanPhaseId" class="control-label"></label>
+			<select asp-for="TrainingPlanPhaseId" asp-items="@Model.AvailableTrainingPlanPhases" class="form-select">
+			</select>
+			<span asp-validation-for="TrainingPlanPhaseId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group">
+			<label asp-for="ExerciseId" class="control-label"></label>
+			<select asp-for="ExerciseId" asp-items="@Model.AvailableExercises" class="form-select">
+			</select>
+			<span asp-validation-for="ExerciseId" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label asp-for="Sets" class="control-label"></label>
+			<input asp-for="Sets" class="form-control" />
+			<span asp-validation-for="Sets" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-6">
+			<label asp-for="Units" class="control-label"></label>
+			<input asp-for="Units" class="form-control" />
+			<span asp-validation-for="Units" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label asp-for="Weight" class="control-label"></label>
+			<input asp-for="Weight" class="form-control" />
+			<span asp-validation-for="Weight" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-6">
+			<label asp-for="RestTime" class="control-label"></label>
+			<input asp-for="RestTime" class="form-control" />
+			<span asp-validation-for="RestTime" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-md-12">
+			<label asp-for="Note" class="control-label"></label>
+			<input asp-for="Note" class="form-control" />
+			<span asp-validation-for="Note" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-outline-primary-a btn-sm"><strong>Add</strong></button>
+	</div>
+</form>

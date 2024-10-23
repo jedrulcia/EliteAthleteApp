@@ -7,30 +7,30 @@
 	ViewData["Title"] = "Details";
 }
 
-@for (int i = 0; i < Model.ExerciseVMs.Count; i++)
+@for (int i = 0; i < Model.TrainingPlanExerciseDetailVMs.Count; i++)
 {
-	<h1>@Html.DisplayFor(modelItem => Model.Indices[i]): @Html.DisplayFor(modelItem => Model.ExerciseVMs[i].Name) - @Html.DisplayFor(modelItem => Model.ExerciseVMs[i].ExerciseCategory.Name)</h1>
+	<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name) - @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.ExerciseCategory.Name)</h1>
 	<dd class="col-sm-12">
 		@{
-			var mainVideoUrl = Model.ExerciseVMs[i].VideoLink;
+			var mainVideoUrl = Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.VideoLink;
 			var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
 			var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
 		}
 		<iframe width="765" height="430" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	</dd>
 	<dd class="col-sm-12">
-		@Html.DisplayFor(modelItem => Model.ExerciseVMs[i].Description)
+		@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Description)
 	</dd>
 	<dd class="col-sm-12">
-		@Html.DisplayFor(modelItem => Model.Sets[i])x @Html.DisplayFor(modelItem => Model.Units[i])
+		@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Units)
 	</dd>
 	<dd class="col-sm-12">
-		Weight: @Html.DisplayFor(modelItem => Model.Weights[i])
+		Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Weight)
 	</dd>
 	<dd class="col-sm-12">
-		Rest: @Html.DisplayFor(modelItem => Model.RestTimes[i])
+		Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].RestTime)
 	</dd>
 	<dd class="col-sm-12">
-		Notes: @Html.DisplayFor(modelItem => Model.Notes[i])
+		Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Note)
 	</dd>
 }
