@@ -1,4 +1,4 @@
-﻿namespace TrainingPlanApp.Web.Data
+﻿namespace EliteAthleteApp.Data
 {
 	public class TrainingPlanPhase
 	{

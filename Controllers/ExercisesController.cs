@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using TrainingPlanApp.Web.Constants;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Exercise;
-using TrainingPlanApp.Web.Models.Meal;
+using EliteAthleteApp.Constants;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.Meal;
 
-namespace TrainingPlanApp.Web.Controllers
+namespace EliteAthleteApp.Controllers
 {
 	[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
 	public class ExercisesController : Controller

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Models.Meal;
+using EliteAthleteApp.Models.Meal;
 
-namespace TrainingPlanApp.Web.Models.Diet
+namespace EliteAthleteApp.Models.Diet
 {
     public class DietManageMealsVM
     {

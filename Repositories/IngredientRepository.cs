@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Ingredient;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Ingredient;
 
-namespace TrainingPlanApp.Web.Repositories
+namespace EliteAthleteApp.Repositories
 {
     public class IngredientRepository : GenericRepository<Ingredient>, IIngredientRepository
     {

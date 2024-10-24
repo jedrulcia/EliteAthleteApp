@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using TrainingPlanApp.Web.Controllers;
+using EliteAthleteApp.Controllers;
 
-namespace TrainingPlanApp.Web.Data
+namespace EliteAthleteApp.Data
 {
 	public class TrainingPlan
     {

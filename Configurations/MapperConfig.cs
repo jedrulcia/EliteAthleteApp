@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
-using TrainingPlanApp.Web.Models.Diet;
-using TrainingPlanApp.Web.Models.Exercise;
-using TrainingPlanApp.Web.Models.Ingredient;
-using TrainingPlanApp.Web.Models.Meal;
-using TrainingPlanApp.Web.Models.TrainingModule;
-using TrainingPlanApp.Web.Models.TrainingPlan;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.Diet;
+using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.Ingredient;
+using EliteAthleteApp.Models.Meal;
+using EliteAthleteApp.Models.TrainingModule;
+using EliteAthleteApp.Models.TrainingPlan;
 
-namespace TrainingPlanApp.Web.Configurations
+namespace EliteAthleteApp.Configurations
 {
 	public class MapperConfig : Profile
 	{

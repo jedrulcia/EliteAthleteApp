@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TrainingPlanApp.Web.Controllers;
-using TrainingPlanApp.Web.Data;
+using EliteAthleteApp.Controllers;
+using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Models.TrainingPlan
+namespace EliteAthleteApp.Models.TrainingPlan
 {
     public class TrainingPlanIndexVM
     {

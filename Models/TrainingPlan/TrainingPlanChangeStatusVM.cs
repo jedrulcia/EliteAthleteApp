@@ -1,4 +1,4 @@
-﻿namespace TrainingPlanApp.Web.Models.TrainingPlan
+﻿namespace EliteAthleteApp.Models.TrainingPlan
 {
 	public class TrainingPlanChangeStatusVM
 	{

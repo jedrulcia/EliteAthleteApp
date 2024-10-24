@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Repositories
+namespace EliteAthleteApp.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

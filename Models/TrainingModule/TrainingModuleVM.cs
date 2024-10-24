@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Models.TrainingPlan;
+using EliteAthleteApp.Models.TrainingPlan;
 
-namespace TrainingPlanApp.Web.Models.TrainingModule
+namespace EliteAthleteApp.Models.TrainingModule
 {
 	public class TrainingModuleVM
 	{

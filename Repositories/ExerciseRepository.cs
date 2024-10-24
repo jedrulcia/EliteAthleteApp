@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
-using TrainingPlanApp.Web.Models.Exercise;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.Exercise;
 
-namespace TrainingPlanApp.Web.Repositories
+namespace EliteAthleteApp.Repositories
 {
 	public class ExerciseRepository : GenericRepository<Exercise>, IExerciseRepository
 	{

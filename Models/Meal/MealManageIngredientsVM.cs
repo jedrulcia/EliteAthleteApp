@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Models.Ingredient;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Models.Ingredient;
 
-namespace TrainingPlanApp.Web.Models.Meal
+namespace EliteAthleteApp.Models.Meal
 {
     public class MealManageIngredientsVM
     {

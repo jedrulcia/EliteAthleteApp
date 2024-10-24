@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing.Constraints;
 
-namespace TrainingPlanApp.Web.Data
+namespace EliteAthleteApp.Data
 {
 	public class TrainingModuleORM
 	{

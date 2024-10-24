@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
-using TrainingPlanApp.Web.Configurations.Entities;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using EliteAthleteApp.Configurations.Entities;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models;
 
-namespace TrainingPlanApp.Web.Data
+namespace EliteAthleteApp.Data
 {
 	public class ApplicationDbContext : IdentityDbContext<User>
 	{

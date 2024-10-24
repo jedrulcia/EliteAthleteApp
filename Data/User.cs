@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace TrainingPlanApp.Web.Data
+namespace EliteAthleteApp.Data
 {
 	public class User : IdentityUser
 	{

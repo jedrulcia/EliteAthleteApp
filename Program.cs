@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TrainingPlanApp.Web.Configurations;
-using TrainingPlanApp.Web.Configurations.Entities;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Repositories;
+using EliteAthleteApp.Configurations;
+using EliteAthleteApp.Configurations.Entities;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

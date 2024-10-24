@@ -1,6 +1,6 @@
 ﻿using System.Collections.Specialized;
 
-namespace TrainingPlanApp.Web.Data
+namespace EliteAthleteApp.Data
 {
     public class TrainingModule
     {

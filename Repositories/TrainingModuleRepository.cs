@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.TrainingModule;
-using TrainingPlanApp.Web.Models.TrainingPlan;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.TrainingModule;
+using EliteAthleteApp.Models.TrainingPlan;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace TrainingPlanApp.Web.Repositories
+namespace EliteAthleteApp.Repositories
 {
 	public class TrainingModuleRepository : GenericRepository<TrainingModule>, ITrainingModuleRepository
 	{

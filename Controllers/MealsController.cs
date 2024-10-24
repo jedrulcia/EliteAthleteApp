@@ -11,13 +11,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
-using TrainingPlanApp.Web.Constants;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Meal;
-using TrainingPlanApp.Web.Repositories;
+using EliteAthleteApp.Constants;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Meal;
+using EliteAthleteApp.Repositories;
 
-namespace TrainingPlanApp.Web.Controllers
+namespace EliteAthleteApp.Controllers
 {
 	[Authorize(Roles = Roles.Administrator)]
 	public class MealsController : Controller

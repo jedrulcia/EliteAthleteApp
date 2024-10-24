@@ -18,10 +18,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using TrainingPlanApp.Web.Constants;
-using TrainingPlanApp.Web.Data;
+using EliteAthleteApp.Constants;
+using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Areas.Identity.Pages.Account
+namespace EliteAthleteApp.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {

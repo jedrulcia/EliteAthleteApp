@@ -10,15 +10,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
-using TrainingPlanApp.Web.Constants;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
-using TrainingPlanApp.Web.Models.TrainingModule;
-using TrainingPlanApp.Web.Models.TrainingPlan;
-using TrainingPlanApp.Web.Repositories;
+using EliteAthleteApp.Constants;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.TrainingModule;
+using EliteAthleteApp.Models.TrainingPlan;
+using EliteAthleteApp.Repositories;
 
-namespace TrainingPlanApp.Web.Controllers
+namespace EliteAthleteApp.Controllers
 {
 	public class TrainingModulesController : Controller
 	{

@@ -1,7 +1,7 @@
 ﻿using Azure.Storage.Blobs;
-using TrainingPlanApp.Web.Contracts;
+using EliteAthleteApp.Contracts;
 
-namespace TrainingPlanApp.Web.Repositories
+namespace EliteAthleteApp.Repositories
 {
 	public class BlobStorageRepository : IBlobStorageRepository
 	{

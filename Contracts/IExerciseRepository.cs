@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Exercise;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Exercise;
 
-namespace TrainingPlanApp.Web.Contracts
+namespace EliteAthleteApp.Contracts
 {
 	public interface IExerciseRepository : IGenericRepository<Exercise>
 	{

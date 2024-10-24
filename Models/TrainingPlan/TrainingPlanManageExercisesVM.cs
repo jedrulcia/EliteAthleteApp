@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Exercise;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Exercise;
 
-namespace TrainingPlanApp.Web.Models.TrainingPlan
+namespace EliteAthleteApp.Models.TrainingPlan
 {
     public class TrainingPlanManageExercisesVM
     {

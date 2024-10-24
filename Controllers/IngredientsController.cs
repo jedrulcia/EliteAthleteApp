@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using TrainingPlanApp.Web.Constants;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Exercise;
-using TrainingPlanApp.Web.Models.Ingredient;
-using TrainingPlanApp.Web.Repositories;
+using EliteAthleteApp.Constants;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.Ingredient;
+using EliteAthleteApp.Repositories;
 
-namespace TrainingPlanApp.Web.Controllers
+namespace EliteAthleteApp.Controllers
 {
     [Authorize(Roles = Roles.Administrator)]
 	public class IngredientsController : Controller

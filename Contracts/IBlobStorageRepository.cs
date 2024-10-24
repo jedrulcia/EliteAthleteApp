@@ -1,4 +1,4 @@
-﻿namespace TrainingPlanApp.Web.Contracts
+﻿namespace EliteAthleteApp.Contracts
 {
 	public interface IBlobStorageRepository
 	{

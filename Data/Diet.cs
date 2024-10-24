@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TrainingPlanApp.Web.Data
+namespace EliteAthleteApp.Data
 {
 	public class Diet
 	{

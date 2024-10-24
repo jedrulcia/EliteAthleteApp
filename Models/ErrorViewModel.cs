@@ -1,4 +1,4 @@
-namespace TrainingPlanApp.Web.Models
+namespace EliteAthleteApp.Models
 {
 	public class ErrorViewModel
 	{

@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TrainingPlanApp.Web.Constants;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models;
+using EliteAthleteApp.Constants;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models;
 
-namespace TrainingPlanApp.Web.Controllers
+namespace EliteAthleteApp.Controllers
 {
     [Authorize(Roles = Roles.Administrator)]
     public class UsersController : Controller

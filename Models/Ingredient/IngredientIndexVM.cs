@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TrainingPlanApp.Web.Data;
+using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Models.Ingredient
+namespace EliteAthleteApp.Models.Ingredient
 {
     public class IngredientIndexVM
     {

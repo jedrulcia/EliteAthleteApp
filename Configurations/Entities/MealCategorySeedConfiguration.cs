@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using TrainingPlanApp.Web.Data;
+using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Configurations.Entities
+namespace EliteAthleteApp.Configurations.Entities
 {
 	// SEED CONFIGURATION FOR INITIAL MEAL CATEGORIES IN THE DATABASE.
 	public class MealCategorySeedConfiguration : IEntityTypeConfiguration<MealCategory>

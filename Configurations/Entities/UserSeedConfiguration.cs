@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TrainingPlanApp.Web.Data;
+using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Configurations.Entities
+namespace EliteAthleteApp.Configurations.Entities
 {
     public class UserSeedConfiguration : IEntityTypeConfiguration<User>
 	{

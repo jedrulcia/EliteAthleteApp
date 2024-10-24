@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrainingPlanApp.Web.Models.Ingredient
+namespace EliteAthleteApp.Models.Ingredient
 {
 	public class IngredientCategoryVM
 	{

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace TrainingPlanApp.Web.Models.Diet
+namespace EliteAthleteApp.Models.Diet
 {
     public class DietCreateVM
     {

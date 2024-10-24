@@ -1,4 +1,4 @@
-﻿namespace TrainingPlanApp.Web.Constants
+﻿namespace EliteAthleteApp.Constants
 {
 	// DEFINES CONSTANT VALUES FOR USER ROLES TO BE USED IN ROLE-BASED AUTHORIZATION THROUGHOUT THE APPLICATION.
 	public static class Roles

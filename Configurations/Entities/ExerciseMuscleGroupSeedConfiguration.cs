@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TrainingPlanApp.Web.Data;
+using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Configurations.Entities
+namespace EliteAthleteApp.Configurations.Entities
 {
 	// SEED CONFIGURATION FOR INITIAL EXERCISE MUSCLE GROUPS IN THE DATABASE.
 	public class ExerciseMuscleGroupSeedConfiguration : IEntityTypeConfiguration<ExerciseMuscleGroup>

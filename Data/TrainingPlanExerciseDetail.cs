@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TrainingPlanApp.Web.Models.Exercise;
-using TrainingPlanApp.Web.Models.TrainingPlan;
+using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.TrainingPlan;
 
-namespace TrainingPlanApp.Web.Data
+namespace EliteAthleteApp.Data
 {
 	public class TrainingPlanExerciseDetail
 	{

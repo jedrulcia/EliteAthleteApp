@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.TrainingPlan;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.TrainingPlan;
 
-namespace TrainingPlanApp.Web.Contracts
+namespace EliteAthleteApp.Contracts
 {
 	public interface ITrainingPlanRepository : IGenericRepository<TrainingPlan>
 	{

@@ -7,17 +7,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Identity.Client;
 using OpenQA.Selenium.DevTools.V125.Page;
-using TrainingPlanApp.Web.Contracts;
-using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Exercise;
-using TrainingPlanApp.Web.Models.TrainingPlan;
+using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.TrainingPlan;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
-using TrainingPlanApp.Web.Models;
+using EliteAthleteApp.Models;
 
-namespace TrainingPlanApp.Web.Repositories
+namespace EliteAthleteApp.Repositories
 {
 	public class TrainingPlanRepository : GenericRepository<TrainingPlan>, ITrainingPlanRepository
 	{

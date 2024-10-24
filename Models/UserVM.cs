@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrainingPlanApp.Web.Models
+namespace EliteAthleteApp.Models
 {
     public class UserVM
     {

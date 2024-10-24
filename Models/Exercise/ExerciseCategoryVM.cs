@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrainingPlanApp.Web.Models.Exercise
+namespace EliteAthleteApp.Models.Exercise
 {
     public class ExerciseCategoryVM
     {

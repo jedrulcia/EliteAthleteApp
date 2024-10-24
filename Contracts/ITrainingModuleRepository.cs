@@ -1,7 +1,7 @@
-﻿using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.TrainingModule;
+﻿using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.TrainingModule;
 
-namespace TrainingPlanApp.Web.Contracts
+namespace EliteAthleteApp.Contracts
 {
 	public interface ITrainingModuleRepository : IGenericRepository<TrainingModule>
 	{

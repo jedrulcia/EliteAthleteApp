@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace TrainingPlanApp.Web.Configurations.Entities
+namespace EliteAthleteApp.Configurations.Entities
 {
     // SEED CONFIGURATION FOR INITIAL USER-ROLE ASSOCIATIONS IN THE DATABASE.
 	public class UserRoleSeedConfiguration : IEntityTypeConfiguration<IdentityUserRole<string>>

@@ -1,6 +1,6 @@
-﻿using TrainingPlanApp.Web.Models.Exercise;
+﻿using EliteAthleteApp.Models.Exercise;
 
-namespace TrainingPlanApp.Web.Models.TrainingPlan
+namespace EliteAthleteApp.Models.TrainingPlan
 {
 	public class TrainingPlanExerciseDetailVM
 	{

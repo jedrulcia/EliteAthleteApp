@@ -1,6 +1,6 @@
-﻿using TrainingPlanApp.Web.Data;
+﻿using EliteAthleteApp.Data;
 
-namespace TrainingPlanApp.Web.Contracts
+namespace EliteAthleteApp.Contracts
 {
 	public interface ITrainingPlanExerciseDetailRepository : IGenericRepository<TrainingPlanExerciseDetail>
 	{

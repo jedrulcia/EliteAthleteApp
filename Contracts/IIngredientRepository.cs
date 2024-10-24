@@ -1,7 +1,7 @@
-﻿using TrainingPlanApp.Web.Data;
-using TrainingPlanApp.Web.Models.Ingredient;
+﻿using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Ingredient;
 
-namespace TrainingPlanApp.Web.Contracts
+namespace EliteAthleteApp.Contracts
 {
 	public interface IIngredientRepository : IGenericRepository<Ingredient>
 	{

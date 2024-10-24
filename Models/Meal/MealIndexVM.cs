@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrainingPlanApp.Web.Models.Meal
+namespace EliteAthleteApp.Models.Meal
 {
     public class MealIndexVM
     {
