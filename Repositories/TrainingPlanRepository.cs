@@ -111,7 +111,7 @@ namespace EliteAthleteApp.Repositories
 				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<ExerciseVM>(await exerciseRepository.GetAsync(trainingPlanExerciseDetailVM.ExerciseId));
 			}
 
-			/*trainingPlanDetailsVM = SortListsForTrainingPlanDetailsVM(trainingPlanDetailsVM);*/
+			trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = SortTrainingPlanExerciseDetailVMs(trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs);
 			return trainingPlanDetailsVM;
 		}
 
@@ -395,38 +395,21 @@ namespace EliteAthleteApp.Repositories
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
 		// SORTS ALL LISTS BY INDICES LIST
-		/*private TrainingPlanDetailsVM SortListsForTrainingPlanDetailsVM(TrainingPlanDetailsVM trainingPlanDetailsVM)
+		private List<TrainingPlanExerciseDetailVM> SortTrainingPlanExerciseDetailVMs(List<TrainingPlanExerciseDetailVM> trainingPlanExerciseDetailVMs)
 		{
-			var sortedIndices = trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs.Indices
-				.Select((value, index) => new { Index = index, Value = value })
-				.Select(x => new { x.Index, NumberPart = ExtractNumber(x.Value), LetterPart = ExtractLetters(x.Value) })
+			var sortedList = trainingPlanExerciseDetailVMs
+				.Select(x => new
+				{
+					TrainingPlanExerciseDetail = x,
+					NumberPart = ExtractNumber(x.Index),
+					LetterPart = ExtractLetters(x.Index)
+				})
 				.OrderBy(x => x.NumberPart)
 				.ThenBy(x => x.LetterPart)
+				.Select(x => x.TrainingPlanExerciseDetail)
 				.ToList();
 
-			var sortedIndicesList = sortedIndices.Select(x => trainingPlanDetailsVM.Indices[x.Index]).ToList();
-			var sortedTrainingPlanPhaseVMs = sortedIndices.Select(x => trainingPlanDetailsVM.TrainingPlanPhaseVMs[x.Index]).ToList();
-			var sortedTrainingPlanPhaseIds = sortedIndices.Select(x => trainingPlanDetailsVM.TrainingPlanPhaseIds[x.Index]).ToList();
-			var sortedExerciseVMs = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseVMs[x.Index]).ToList();
-			var sortedExerciseIds = sortedIndices.Select(x => trainingPlanDetailsVM.ExerciseIds[x.Index]).ToList();
-			var sortedSets = sortedIndices.Select(x => trainingPlanDetailsVM.Sets[x.Index]).ToList();
-			var sortedUnits = sortedIndices.Select(x => trainingPlanDetailsVM.Units[x.Index]).ToList();
-			var sortedWeights = sortedIndices.Select(x => trainingPlanDetailsVM.Weights[x.Index]).ToList();
-			var sortedRestTimes = sortedIndices.Select(x => trainingPlanDetailsVM.RestTimes[x.Index]).ToList();
-			var sortedNotes = sortedIndices.Select(x => trainingPlanDetailsVM.Notes[x.Index]).ToList();
-
-			trainingPlanDetailsVM.Indices = sortedIndicesList;
-			trainingPlanDetailsVM.TrainingPlanPhaseVMs = sortedTrainingPlanPhaseVMs;
-			trainingPlanDetailsVM.TrainingPlanPhaseIds = sortedTrainingPlanPhaseIds;
-			trainingPlanDetailsVM.ExerciseVMs = sortedExerciseVMs;
-			trainingPlanDetailsVM.ExerciseIds = sortedExerciseIds;
-			trainingPlanDetailsVM.Sets = sortedSets;
-			trainingPlanDetailsVM.Units = sortedUnits;
-			trainingPlanDetailsVM.Weights = sortedWeights;
-			trainingPlanDetailsVM.RestTimes = sortedRestTimes;
-			trainingPlanDetailsVM.Notes = sortedNotes;
-
-			return trainingPlanDetailsVM;
+			return sortedList;
 		}
 
 		// EXTRACTS NUMBER FROM INDICES
@@ -441,6 +424,6 @@ namespace EliteAthleteApp.Repositories
 		{
 			var letterString = new string(str.SkipWhile(char.IsDigit).ToArray());
 			return letterString;
-		}*/
+		}
 	}
 }
