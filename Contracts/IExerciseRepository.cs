@@ -29,8 +29,5 @@ namespace EliteAthleteApp.Contracts
 
 		// EDITS THE NAME, VIDEO LINK, AND DESCRIPTION OF THE SPECIFIED EXERCISE.
 		Task EditExerciseAsync(ExerciseCreateVM exerciseCreateVM);
-
-		// GETS A LIST OF SPECIFIC EXERCISES BASED ON PROVIDED EXERCISE IDs.
-		Task<List<ExerciseVM>> GetListOfExercisesAsync(List<int?> exercisesIds);
 	}
 }

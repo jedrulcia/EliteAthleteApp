@@ -54,6 +54,24 @@ namespace EliteAthleteApp.Controllers
 			return View(trainingModuleIndexVM);
 		}
 
+		// GET: TrainingModules/TrainingModuleList
+		public async Task<IActionResult> TrainingModuleList(string userId)
+		{
+			return PartialView(await trainingModuleRepository.GetTrainingModuleVMsAsync(userId));
+		}
+
+		// GET: TrainingModules/ORMList
+		public async Task<IActionResult> ListORM(string userId)
+		{
+			return PartialView(await trainingModuleRepository.GetTrainingModuleORMVMsAsync(userId));
+		}
+
+		// GET: TrainingModules/Create
+		public IActionResult Create(string userId, string coachId)
+		{
+			return PartialView(trainingModuleRepository.GetTrainingModuleCreateVM(userId, coachId));
+		}
+
 		// POST: TrainingModules/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -67,6 +85,12 @@ namespace EliteAthleteApp.Controllers
 			}
 			TempData["ErrorMessage"] = $"Error while creating the training module. Please try again.";
 			return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
+		}
+
+		// GET: TrainingModules/Edit
+		public async Task<IActionResult> Edit(int trainingModuleId)
+		{
+			return PartialView(await trainingModuleRepository.GetTrainingModuleEditVMAsync(trainingModuleId));
 		}
 
 		// POST: TrainingModules/Edit
@@ -84,6 +108,12 @@ namespace EliteAthleteApp.Controllers
 			return RedirectToAction(nameof(Index), new { userId = trainingModuleCreateVM.UserId });
 		}
 
+		// GET: TrainingModules/Delete
+		public IActionResult Delete(int trainingModuleId, string userId, string name)
+		{
+			return PartialView(trainingModuleRepository.GetTrainingModuleDeleteVM(trainingModuleId, name, userId));
+		}
+
 		// POST: TrainingModules/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
@@ -94,12 +124,18 @@ namespace EliteAthleteApp.Controllers
 			return RedirectToAction(nameof(Index), new { userId = userId });
 		}
 
+		// GET: TrainingModules/ORMCreate
+		public IActionResult CreateORM(string userId)
+		{
+			return PartialView(trainingModuleRepository.GetTrainingModuleORMCreateVM(userId));
+		}
+
 		// POST: TrainingModules/ORM
 		[HttpPost, ActionName("CreateORM")]
-		public async Task<IActionResult> CreateORM(TrainingModuleORMVM trainingModuleAddORMVM)
+		public async Task<IActionResult> CreateORM(TrainingModuleORMCreateVM trainingModuleAddORMCreateVM)
 		{
-			await trainingModuleRepository.CreateORMAsync(trainingModuleAddORMVM);
-			return RedirectToAction(nameof(Index), new { userId = trainingModuleAddORMVM.UserId });
+			await trainingModuleRepository.CreateORMAsync(trainingModuleAddORMCreateVM);
+			return RedirectToAction(nameof(Index), new { userId = trainingModuleAddORMCreateVM.UserId });
 		}
 	}
 }

@@ -1,0 +1,70 @@
+﻿@using EliteAthleteApp.Models.TrainingModule
+
+@model IEnumerable<TrainingModuleVM>
+
+@{
+	ViewData["Title"] = "TrainingModuleList";
+}
+
+<table class="table table-dark">
+	<thead>
+		<tr>
+			<th style="width:50%">
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th style="width:20%">
+				@Html.DisplayNameFor(model => model.StartDate)
+			</th>
+			<th style="width:20%">
+				@Html.DisplayNameFor(model => model.EndDate)
+			</th>
+			<th style="width:10%"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.StartDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.EndDate)
+				</td>
+				<td class="text-end">
+					<div class="dropdown">
+						<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+							<strong>Actions</strong>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<li>
+								<button data-trainingmoduleid="@item.Id"
+										data-coachid="@item.CoachId"
+										class="dropdown-item editBtn">
+									<i class="bi bi-pencil">&nbsp;</i>Edit
+								</button>
+							</li>
+							<li>
+								<a asp-action="Index" asp-controller="TrainingPlans" class="dropdown-item detailsBtn"
+								   asp-route-userId="@item.UserId" asp-route-trainingModuleId="@item.Id">
+									<i class="bi bi-question-circle">&nbsp;</i>Details
+								</a>
+							</li>
+							<li>
+								<button data-trainingmoduleid="@item.Id"
+										data-name="@item.Name"
+										data-userid="@item.UserId"
+										class="dropdown-item deleteBtn">
+									<i class="bi bi-trash">&nbsp;</i>Delete
+								</button>
+							</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

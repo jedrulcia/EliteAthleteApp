@@ -1,0 +1,31 @@
+﻿@using EliteAthleteApp.Models.TrainingModule
+
+@model TrainingModuleCreateVM
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<form asp-action="Edit">
+	<input type="hidden" asp-for="Id" />
+	<div class="form-group">
+		<strong><label asp-for="Name" class="control-label"></label></strong>
+		<input asp-for="Name" class="form-control" name="TrainingModuleCreateVM.Name" />
+		<span asp-validation-for="Name" class="text-danger"></span>
+	</div>
+	<div class="row align-items-end">
+		<div class="form-group col-md-5">
+			<strong><label asp-for="StartDate" class="control-label"></label></strong>
+			<input asp-for="StartDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+			<span asp-validation-for="StartDate" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-5">
+			<strong><label asp-for="EndDate" class="control-label"></label></strong>
+			<input asp-for="EndDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+			<span asp-validation-for="EndDate" class="text-danger"></span>
+		</div>
+		<div class="form-group col-md-2 text-end">
+			<button type="submit" class="btn btn-outline-primary-a"><strong>Save</strong></button>
+		</div>
+	</div>
+</form>

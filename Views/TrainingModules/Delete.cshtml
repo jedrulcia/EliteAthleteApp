@@ -1,0 +1,16 @@
+﻿@using EliteAthleteApp.Models.TrainingModule
+
+@model TrainingModuleDeleteVM
+
+@{
+	ViewData["Title"] = "Delete";
+}
+
+<form asp-action="Delete">
+	<input type="hidden" asp-for="Id" />
+	<p>Are you sure you want to delete this training module?</p>
+	<h5>@Model.Name</h5>
+	<div class="text-end">
+		<button type="submit" class="btn btn-outline-danger-a"><strong>Delete</strong></button>
+	</div>
+</form>

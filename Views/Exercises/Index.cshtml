@@ -140,6 +140,23 @@
 				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
 			});
 
+			// Ładowanie zawartości dla "exercisePrivate" po załadowaniu strony
+			var coachId = $('#exercisePrivateTab').data("coachid"); // Pobranie coachId z atrybutu data
+			$.ajax({
+				url: '@Url.Action("ExercisePrivate", "Exercises")',
+				type: 'GET',
+				data: { coachId: coachId },
+				success: function (data) {
+					$('#exercisePrivate').html(data);
+					$('.table').DataTable();
+					$('#exercisePrivateTab').tab('show');
+
+				},
+				error: function () {
+					alert("An error occurred while loading 'exercisePrivate' content.");
+				}
+			});
+
 			// AJAX FOR LOADING EXERCISE CREATE MODAL
 			$(document).on('click', '.createBtn', function (e) {
 				e.preventDefault();
@@ -227,9 +244,9 @@
 					data: { coachId: coachId },
 					success: function (data) {
 						$('#exercisePrivate').html(data);
+						$('.table').DataTable();
 						$('#exercisePrivateTab').tab('show');
 
-						$('.table').DataTable();
 					},
 					error: function () {
 						alert("An error occurred while loading 'exercisePrivate' content.");
@@ -246,9 +263,9 @@
 					type: 'GET',
 					success: function (data) {
 						$('#exercisePublic').html(data);
+						$('.table').DataTable();
 						$('#exercisePublicTab').tab('show');
 
-						$('.table').DataTable();
 					},
 					error: function () {
 						alert("An error occurred while loading 'exercisePublic' content.");

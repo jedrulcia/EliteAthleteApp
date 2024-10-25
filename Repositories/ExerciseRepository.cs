@@ -30,24 +30,14 @@ namespace EliteAthleteApp.Repositories
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
 		public async Task<ExerciseIndexVM> GetExerciseIndexVMAsync()
 		{
-			var exerciseIndexVM = new ExerciseIndexVM
-			{
-				CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id
-			};
-			return exerciseIndexVM;
+			return new ExerciseIndexVM { CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id };
 		}
 
+		// GETS LIST OF EXERCISE VM
 		public async Task<List<ExerciseVM>> GetExerciseVMAsync(string? coachId)
 		{
 			var exercises = new List<Exercise>();
-			if (coachId == null)
-			{
-				exercises = (await GetAllAsync()).Where(e => e.CoachId == null).ToList();
-			}
-			else
-			{
-				exercises = (await GetAllAsync()).Where(e => e.CoachId == coachId).ToList();
-			}
+			exercises = (await GetAllAsync()).Where(e => e.CoachId == coachId).ToList();
 			var exerciseVMs = mapper.Map<List<ExerciseVM>>(exercises);
 
 			for (int i = 0; i < exerciseVMs.Count; i++)
@@ -70,6 +60,7 @@ namespace EliteAthleteApp.Repositories
 			return exerciseVMs;
 		}
 
+		// GETS EXERCISE CREATE VM
 		public async Task<ExerciseCreateVM> GetExerciseCreateVMAsync()
 		{
 			var exerciseCreateVM = new ExerciseCreateVM
@@ -81,11 +72,13 @@ namespace EliteAthleteApp.Repositories
 			return exerciseCreateVM;
 		}
 
+		// GETS EXERCISE DELETE VM
 		public async Task<ExerciseDeleteVM> GetExerciseDeleteVMAsync(int id)
 		{
 			return mapper.Map<ExerciseDeleteVM>(await GetAsync(id));
 		}
 
+		// GETS EXERCISE DETAILS VM
 		public async Task<ExerciseVM> GetExerciseDetailsVMAsync(int id)
 		{
 			var exercise = await GetAsync(id);
@@ -100,6 +93,7 @@ namespace EliteAthleteApp.Repositories
 			return exerciseVM;
 		}
 
+		// GETS EXERCISE EDIT VM
 		public async Task<ExerciseCreateVM> GetExerciseEditVMAsync(int id)
 		{
 			var exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
@@ -123,18 +117,5 @@ namespace EliteAthleteApp.Repositories
 			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
 			await UpdateAsync(exercise);
 		}
-
-		// GETS A LIST OF SPECIFIC EXERCISES BASED ON PROVIDED EXERCISE IDs.
-		public async Task<List<ExerciseVM>> GetListOfExercisesAsync(List<int?> exercisesIds)
-		{
-			List<ExerciseVM> exercises = new List<ExerciseVM>();
-			foreach (int id in exercisesIds)
-			{
-				var exerciseVM = mapper.Map<ExerciseVM>(await GetAsync(id));
-				exercises.Add(exerciseVM);
-			}
-			return exercises;
-		}
-
 	}
 }

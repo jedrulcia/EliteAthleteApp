@@ -18,6 +18,13 @@ namespace EliteAthleteApp.Contracts
 		Task DeleteTrainingModuleAsync(int id);
 
 		// CREATES NEW ORM
-		Task CreateORMAsync(TrainingModuleORMVM trainingModuleORMVM);
+		Task CreateORMAsync(TrainingModuleORMCreateVM trainingModuleORMCreateVM);
+
+		Task<List<TrainingModuleVM>> GetTrainingModuleVMsAsync(string userId);
+		Task<List<TrainingModuleORMVM>> GetTrainingModuleORMVMsAsync(string userId);
+		TrainingModuleCreateVM GetTrainingModuleCreateVM(string userId, string coachId);
+		Task<TrainingModuleCreateVM> GetTrainingModuleEditVMAsync(int trainingModuleId);
+		TrainingModuleDeleteVM GetTrainingModuleDeleteVM(int trainingModuleId, string name, string userId);
+		TrainingModuleORMCreateVM GetTrainingModuleORMCreateVM(string userId);
 	}
 }

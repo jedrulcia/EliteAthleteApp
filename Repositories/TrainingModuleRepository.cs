@@ -34,47 +34,67 @@ namespace EliteAthleteApp.Repositories
 			var user = await userManager.FindByIdAsync(userId);
 			var coach = await userManager.FindByIdAsync(user.CoachId);
 
+			var trainingModuleIndexVM = new TrainingModuleIndexVM
+			{
+				UserId = userId,
+				CoachId = coach.Id
+			};
+
+			return trainingModuleIndexVM;
+		}
+
+		public async Task<List<TrainingModuleVM>> GetTrainingModuleVMsAsync(string userId)
+		{
 			var trainingModules = await context.TrainingModules
 				.Where(x => x.UserId == userId)
 				.ToListAsync();
-			var trainingModuleVMs = mapper.Map<List<TrainingModuleVM>>(trainingModules);
+			return mapper.Map<List<TrainingModuleVM>>(trainingModules);
+		}
 
-			DateTime dateNow = DateTime.Now;
-			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 0, 0, 0);
-
+		public async Task<List<TrainingModuleORMVM>> GetTrainingModuleORMVMsAsync(string userId)
+		{
 			var trainingModuleORMs = await context.TrainingModuleORMs
 				.Where(tm => tm.UserId == userId)
 				.ToListAsync();
 
-			var trainingModuleORMVMs = mapper.Map<List<TrainingModuleORMVM>>(trainingModuleORMs);
+			return mapper.Map<List<TrainingModuleORMVM>>(trainingModuleORMs);
+		}
 
-			var trainingModuleAddORMVM = new TrainingModuleORMVM();
+		public TrainingModuleCreateVM GetTrainingModuleCreateVM(string userId, string coachId)
+		{
+			var trainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId, CoachId = coachId };
+			return trainingModuleCreateVM;
+		}
 
-			foreach (var ORM in trainingModuleORMVMs)
+		public async Task<TrainingModuleCreateVM> GetTrainingModuleEditVMAsync(int trainingModuleId)
+		{
+			var trainingModule = await GetAsync(trainingModuleId);
+			var trainingModuleCreateVM = mapper.Map<TrainingModuleCreateVM>(trainingModule);
+			return trainingModuleCreateVM;
+		}
+
+		public TrainingModuleDeleteVM GetTrainingModuleDeleteVM(int trainingModuleId, string name, string userId	)
+		{
+			var trainingModuleDeleteVM = new TrainingModuleDeleteVM
 			{
-				if (ORM.DateTime == modifiedDate)
-				{
-					trainingModuleAddORMVM = ORM;
-				}
-			}
-
-			if (trainingModuleAddORMVM.Id == null)
-			{
-				trainingModuleAddORMVM.DateTime = modifiedDate;
-				trainingModuleAddORMVM.UserId = userId;
-			}
-
-			var trainingModuleIndexVM = new TrainingModuleIndexVM
-			{
-				UserId = userId,
-				CoachId = coach.Id,
-				TrainingModuleVMs = trainingModuleVMs,
-				TrainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId },
-				TrainingModuleORMVMs = trainingModuleORMVMs,
-				TrainingModuleAddORMVM = trainingModuleAddORMVM
+				Id = trainingModuleId,
+				Name = name,
+				UserId = userId
 			};
+			return trainingModuleDeleteVM;
+		}
 
-			return trainingModuleIndexVM;
+		public TrainingModuleORMCreateVM GetTrainingModuleORMCreateVM(string userId)
+		{
+			DateTime dateNow = DateTime.Now;
+			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 0, 0, 0);
+
+			var trainingModuleORMCreateVM = new TrainingModuleORMCreateVM
+			{
+				DateTime = modifiedDate,
+				UserId = userId
+			};
+			return trainingModuleORMCreateVM;
 		}
 
 		// CREATES A NEW TRAINING MODULE.
@@ -122,9 +142,9 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// CREATES NEW ORM
-		public async Task CreateORMAsync(TrainingModuleORMVM trainingModuleORMVM)
+		public async Task CreateORMAsync(TrainingModuleORMCreateVM trainingModuleORMCreateVM)
 		{
-			var trainingModuleORM = mapper.Map<TrainingModuleORM>(trainingModuleORMVM);
+			var trainingModuleORM = mapper.Map<TrainingModuleORM>(trainingModuleORMCreateVM);
 
 			await context.AddAsync(trainingModuleORM);
 			await context.SaveChangesAsync();
