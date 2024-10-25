@@ -261,7 +261,7 @@ namespace EliteAthleteApp.Repositories
 			trainingPlanExerciseDetail.Weight = trainingPlanAddExerciseVM.Weight;
 			trainingPlanExerciseDetail.RestTime = trainingPlanAddExerciseVM.RestTime;
 			trainingPlanExerciseDetail.Note = trainingPlanAddExerciseVM.Note;
-			await trainingPlanExerciseDetailRepository.AddAsync(trainingPlanExerciseDetail);
+			await trainingPlanExerciseDetailRepository.UpdateAsync(trainingPlanExerciseDetail);
 
 			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 		}

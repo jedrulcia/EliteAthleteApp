@@ -39,13 +39,25 @@ namespace EliteAthleteApp.Controllers
 			return View(await exerciseRepository.GetExerciseIndexVMAsync());
 		}
 
-		// GET: Exercises/Create
+		// GET: Exercises/Index/ExercisePublic
+		public async Task<IActionResult> ExercisePublic()
+		{
+			return PartialView(await exerciseRepository.GetExerciseVMAsync(null));
+		}
+
+		// GET: Exercises/Index/ExercisePrivate
+		public async Task<IActionResult> ExercisePrivate(string coachId)
+		{
+			return PartialView(await exerciseRepository.GetExerciseVMAsync(coachId));
+		}
+
+		// GET: Exercises/Index/Create
 		public async Task<IActionResult> Create()
 		{
 			return PartialView(await exerciseRepository.GetExerciseCreateVMAsync());
 		}
 
-		// POST: Exercises/Create
+		// POST: Exercises/Index/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(ExerciseCreateVM exerciseCreateVM)
@@ -66,7 +78,7 @@ namespace EliteAthleteApp.Controllers
 			return PartialView(await exerciseRepository.GetExerciseEditVMAsync(id));
 		}
 
-		// POST: Exercises/Edit
+		// POST: Exercises/Index/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(ExerciseCreateVM exerciseCreateVM)
@@ -91,19 +103,19 @@ namespace EliteAthleteApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		// GET: Exercises/Details
+		// GET: Exercises/Index/Details
 		public async Task<IActionResult> Details(int id)
 		{
 			return PartialView(await exerciseRepository.GetExerciseDetailsVMAsync(id));
 		}
 
-		// GET: Exercises/Delete
+		// GET: Exercises/Index/Delete
 		public async Task<IActionResult> Delete(int id)
 		{
 			return PartialView(await exerciseRepository.GetExerciseDeleteVMAsync(id));
 		}
 
-		// POST: Exercises/Delete
+		// POST: Exercises/Index/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)

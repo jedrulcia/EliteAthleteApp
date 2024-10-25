@@ -9,6 +9,9 @@ namespace EliteAthleteApp.Contracts
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
 		Task<ExerciseIndexVM> GetExerciseIndexVMAsync();
 
+		// GETS LIST OF ALL PUBLIC EXERCISES
+		Task<List<ExerciseVM>> GetExerciseVMAsync(string? coachId);
+
 		// GETS EXERCISE CREATE VIEW MODEL.
 		Task<ExerciseCreateVM> GetExerciseCreateVMAsync();
 

@@ -8,6 +8,7 @@ using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models;
 using EliteAthleteApp.Models.Exercise;
+using System.ComponentModel;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -29,10 +30,27 @@ namespace EliteAthleteApp.Repositories
 		// GETS EXERCISE INDEX VIEW MODEL LIST.
 		public async Task<ExerciseIndexVM> GetExerciseIndexVMAsync()
 		{
-			var exercises = await GetAllAsync();
+			var exerciseIndexVM = new ExerciseIndexVM
+			{
+				CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id
+			};
+			return exerciseIndexVM;
+		}
+
+		public async Task<List<ExerciseVM>> GetExerciseVMAsync(string? coachId)
+		{
+			var exercises = new List<Exercise>();
+			if (coachId == null)
+			{
+				exercises = (await GetAllAsync()).Where(e => e.CoachId == null).ToList();
+			}
+			else
+			{
+				exercises = (await GetAllAsync()).Where(e => e.CoachId == coachId).ToList();
+			}
 			var exerciseVMs = mapper.Map<List<ExerciseVM>>(exercises);
 
-			for (int i = 0; i < exercises.Count; i++)
+			for (int i = 0; i < exerciseVMs.Count; i++)
 			{
 				int? categoryId = exercises[i].ExerciseCategoryId;
 				if (categoryId != null)
@@ -40,6 +58,7 @@ namespace EliteAthleteApp.Repositories
 					var category = await context.Set<ExerciseCategory>().FindAsync(categoryId);
 					exerciseVMs[i].ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
 				}
+
 				int? muscleGroupId = exercises[i].ExerciseMuscleGroupId;
 				if (muscleGroupId != null)
 				{
@@ -48,12 +67,7 @@ namespace EliteAthleteApp.Repositories
 				}
 			}
 
-			var exerciseIndexVM = new ExerciseIndexVM
-			{
-				CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id,
-				ExerciseVMs = exerciseVMs
-			};
-			return exerciseIndexVM;
+			return exerciseVMs;
 		}
 
 		public async Task<ExerciseCreateVM> GetExerciseCreateVMAsync()
@@ -121,5 +135,6 @@ namespace EliteAthleteApp.Repositories
 			}
 			return exercises;
 		}
+
 	}
 }
