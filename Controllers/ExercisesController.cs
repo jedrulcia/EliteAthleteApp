@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.EntityFrameworkCore;
 using EliteAthleteApp.Constants;
 using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.Exercise;
-using EliteAthleteApp.Models.Meal;
 
 namespace EliteAthleteApp.Controllers
 {
