@@ -29,9 +29,18 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS TRAINING MODULE INDEX VIEW MODEL FOR A SPECIFIC USER.
-		public async Task<TrainingModuleIndexVM> GetTrainingModuleIndexVMAsync(string userId)
+		public async Task<TrainingModuleIndexVM> GetTrainingModuleIndexVMAsync(string? userId)
 		{
-			var user = await userManager.FindByIdAsync(userId);
+			var user = new User();
+			if (userId == null)
+			{
+				user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+				userId = user.Id;
+			}
+			else
+			{
+				user = await userManager.FindByIdAsync(userId);
+			}
 			var coach = await userManager.FindByIdAsync(user.CoachId);
 
 			var trainingModuleIndexVM = new TrainingModuleIndexVM
@@ -100,6 +109,10 @@ namespace EliteAthleteApp.Repositories
 		// CREATES A NEW TRAINING MODULE.
 		public async Task CreateTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
+			if (trainingModuleCreateVM.UserId == null)
+			{
+				trainingModuleCreateVM.UserId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
+			}
 			var trainingModule = mapper.Map<TrainingModule>(trainingModuleCreateVM);
 			trainingModule.TrainingPlanIds = new List<int>();
 			List<DateTime> days = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);

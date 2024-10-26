@@ -27,9 +27,9 @@ namespace EliteAthleteApp.Controllers
 		private readonly IMealRepository mealRepository;
 		private readonly IIngredientRepository ingredientRepository;
 		private readonly IConfiguration config;
-		private readonly IBlobStorageRepository blobStorageRepository;
+		private readonly IBlobStorageService blobStorageRepository;
 
-		public MealsController(ApplicationDbContext context, IMapper mapper, IMealRepository mealRepository, IIngredientRepository ingredientRepository, IConfiguration config, IBlobStorageRepository blobStorageRepository)
+		public MealsController(ApplicationDbContext context, IMapper mapper, IMealRepository mealRepository, IIngredientRepository ingredientRepository, IConfiguration config, IBlobStorageService blobStorageRepository)
 		{
 			this.context = context;
 			this.mapper = mapper;

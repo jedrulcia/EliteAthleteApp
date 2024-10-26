@@ -1,6 +1,6 @@
 ﻿namespace EliteAthleteApp.Contracts
 {
-	public interface IBlobStorageRepository
+	public interface IBlobStorageService
 	{
 		// UPLOAD IMAGE TO THE AZURE BLOB STORAGE
 		Task<string> UploadImageAsync(IFormFile file);

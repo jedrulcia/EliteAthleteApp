@@ -47,8 +47,5 @@ namespace EliteAthleteApp.Contracts
 
 		// COPIES A TRAINING PLAN TO ANOTHER TRAINING PLAN WITHIN THE SAME MODULE.
 		Task CopyTrainingPlanAsync(int copyFromId, int copyToId);
-
-		// GENERATES TRAINING MODULE IN PDF
-		Task<byte[]> GetTrainingModulePDFAsync(List<int> trainingPlanIds);
 	}
 }

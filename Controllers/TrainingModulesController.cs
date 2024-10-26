@@ -22,34 +22,16 @@ namespace EliteAthleteApp.Controllers
 {
 	public class TrainingModulesController : Controller
 	{
-		private readonly ApplicationDbContext context;
-		private readonly UserManager<User> userManager;
-		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ITrainingModuleRepository trainingModuleRepository;
-		private readonly IMapper mapper;
 
-		public TrainingModulesController(
-			ApplicationDbContext context,
-			UserManager<User> userManager,
-			IHttpContextAccessor httpContextAccessor,
-			ITrainingModuleRepository trainingModuleRepository,
-			IMapper mapper)
+		public TrainingModulesController(ITrainingModuleRepository trainingModuleRepository)
 		{
-			this.context = context;
-			this.userManager = userManager;
-			this.httpContextAccessor = httpContextAccessor;
 			this.trainingModuleRepository = trainingModuleRepository;
-			this.mapper = mapper;
 		}
 
 		// GET: TrainingModules
 		public async Task<IActionResult> Index(string userId)
 		{
-			if (userId == null)
-			{
-				var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-				userId = user.Id;
-			}
 			var trainingModuleIndexVM = await trainingModuleRepository.GetTrainingModuleIndexVMAsync(userId);
 			return View(trainingModuleIndexVM);
 		}

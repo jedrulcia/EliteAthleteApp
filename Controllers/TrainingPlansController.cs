@@ -25,28 +25,16 @@ namespace EliteAthleteApp.Controllers
     public class TrainingPlansController : Controller
 	{
 		private readonly ITrainingPlanRepository trainingPlanRepository;
-		private readonly IMapper mapper;
-		private readonly IExerciseRepository exerciseRepository;
-		private readonly UserManager<User> userManager;
-        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ITrainingModuleRepository trainingModuleRepository;
-        private readonly ApplicationDbContext context;
+		private readonly IPdfService pdfService;
 
-        public TrainingPlansController(ApplicationDbContext context,
-			ITrainingPlanRepository trainingPlanRepository,
-			IMapper mapper,
-			IExerciseRepository exerciseRepository,
-			UserManager<User> userManager,
-			IHttpContextAccessor httpContextAccessor,
-			ITrainingModuleRepository trainingModuleRepository)
+        public TrainingPlansController(ITrainingPlanRepository trainingPlanRepository,
+			ITrainingModuleRepository trainingModuleRepository,
+			IPdfService pdfService)
 		{
-			this.mapper = mapper;
-			this.exerciseRepository = exerciseRepository;
 			this.trainingPlanRepository = trainingPlanRepository;
 			this.trainingModuleRepository = trainingModuleRepository;
-			this.userManager = userManager;
-            this.httpContextAccessor = httpContextAccessor;
-			this.context = context;
+			this.pdfService = pdfService;
 		}
 
 		// GET: TrainingPlans
@@ -80,7 +68,7 @@ namespace EliteAthleteApp.Controllers
 			return PartialView("ChangeStatus", await trainingPlanRepository.GetTrainingPlanChangeStatusVMAsync(trainingPlanId));
 		}
 
-		// POST: TrainingPlans/Index/ChangeStatus
+		// POST: TrainingPlans/ChangeStatus
 		[HttpPost, ActionName("ChangeStatus")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ChangeStatus(int id, string raport, int trainingModuleId)
@@ -89,11 +77,10 @@ namespace EliteAthleteApp.Controllers
 			return RedirectToAction(nameof(Index), new { trainingModuleId = trainingModuleId });
 		}
 
-		// POST: TrainingPlans/Index/PrintPDF
+		// POST: TrainingPlans/PrintPDF
 		public async Task<IActionResult> PrintPDF(int trainingModuleId)
 		{
-			List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-			byte[] pdf = await trainingPlanRepository.GetTrainingModulePDFAsync(trainingPlanIds);
+			byte[] pdf = await pdfService.GetTrainingModulePDFAsync(trainingModuleId);
 			return File(pdf, "application/pdf", "PlanTreningowy.pdf");
 		}
 

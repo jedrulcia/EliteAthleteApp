@@ -5,6 +5,7 @@ using EliteAthleteApp.Configurations.Entities;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Repositories;
+using EliteAthleteApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,8 +29,9 @@ builder.Services.AddScoped<IMealRepository, MealRepository>();
 builder.Services.AddScoped<IDietRepository, DietRepository>();
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>(); 
 builder.Services.AddScoped<ITrainingPlanExerciseDetailRepository, TrainingPlanExerciseDetailRepository>();
-builder.Services.AddScoped<IBlobStorageRepository, BlobStorageRepository>(provider =>
-	new BlobStorageRepository(blobConnectionString, containerName));
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>
+	new BlobStorageService(blobConnectionString, containerName));
+builder.Services.AddScoped<IPdfService, PdfService>();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 

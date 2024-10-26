@@ -21,16 +21,10 @@ namespace EliteAthleteApp.Controllers
 	public class ExercisesController : Controller
 	{
 		private readonly IExerciseRepository exerciseRepository;
-		private readonly IMapper mapper;
-		private readonly ICompositeViewEngine viewEngine;
-		private readonly ApplicationDbContext context;
 
-		public ExercisesController(IExerciseRepository exerciseRepository, IMapper mapper, ICompositeViewEngine viewEngine, ApplicationDbContext context)
+		public ExercisesController(IExerciseRepository exerciseRepository)
 		{
 			this.exerciseRepository = exerciseRepository;
-			this.mapper = mapper;
-			this.viewEngine = viewEngine;
-			this.context = context;
 		}
 
 		// GET: Exercises
@@ -39,25 +33,25 @@ namespace EliteAthleteApp.Controllers
 			return View(await exerciseRepository.GetExerciseIndexVMAsync());
 		}
 
-		// GET: Exercises/Index/ExercisePublic
+		// GET: Exercises/ExercisePublic
 		public async Task<IActionResult> ExercisePublic()
 		{
 			return PartialView(await exerciseRepository.GetExerciseVMAsync(null));
 		}
 
-		// GET: Exercises/Index/ExercisePrivate
+		// GET: Exercises/ExercisePrivate
 		public async Task<IActionResult> ExercisePrivate(string coachId)
 		{
 			return PartialView(await exerciseRepository.GetExerciseVMAsync(coachId));
 		}
 
-		// GET: Exercises/Index/Create
+		// GET: Exercises/Create
 		public async Task<IActionResult> Create()
 		{
 			return PartialView(await exerciseRepository.GetExerciseCreateVMAsync());
 		}
 
-		// POST: Exercises/Index/Create
+		// POST: Exercises/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(ExerciseCreateVM exerciseCreateVM)
@@ -67,7 +61,6 @@ namespace EliteAthleteApp.Controllers
 				await exerciseRepository.CreateExerciseAsync(exerciseCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
-
 			TempData["ErrorMessage"] = $"Error while creating the exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
@@ -78,44 +71,33 @@ namespace EliteAthleteApp.Controllers
 			return PartialView(await exerciseRepository.GetExerciseEditVMAsync(id));
 		}
 
-		// POST: Exercises/Index/Edit
+		// POST: Exercises/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Edit(ExerciseCreateVM exerciseCreateVM)
 		{
 			if (ModelState.IsValid)
 			{
-				try
-				{
-					await exerciseRepository.EditExerciseAsync(exerciseCreateVM);
-					return RedirectToAction(nameof(Index));
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (exerciseCreateVM.Id == null)
-					{
-						return NotFound();
-					}
-				}
+				await exerciseRepository.EditExerciseAsync(exerciseCreateVM);
+				return RedirectToAction(nameof(Index));
 			}
-
 			TempData["ErrorMessage"] = $"Error while editing the exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 
-		// GET: Exercises/Index/Details
+		// GET: Exercises/Details
 		public async Task<IActionResult> Details(int id)
 		{
 			return PartialView(await exerciseRepository.GetExerciseDetailsVMAsync(id));
 		}
 
-		// GET: Exercises/Index/Delete
+		// GET: Exercises/Delete
 		public async Task<IActionResult> Delete(int id)
 		{
 			return PartialView(await exerciseRepository.GetExerciseDeleteVMAsync(id));
 		}
 
-		// POST: Exercises/Index/Delete
+		// POST: Exercises/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
