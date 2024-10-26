@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingModule;
 using EliteAthleteApp.Models.TrainingPlan;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -18,14 +14,21 @@ namespace EliteAthleteApp.Repositories
 		private readonly ITrainingPlanRepository trainingPlanRepository;
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly ITrainingModuleORMRepository trainingModuleORMRepository;
 		private readonly ApplicationDbContext context;
-		public TrainingModuleRepository(ApplicationDbContext context, IMapper mapper, ITrainingPlanRepository trainingPlanRepository, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
+		public TrainingModuleRepository(ApplicationDbContext context, 
+			IMapper mapper, 
+			ITrainingPlanRepository trainingPlanRepository, 
+			UserManager<User> userManager, 
+			IHttpContextAccessor httpContextAccessor,
+			ITrainingModuleORMRepository trainingModuleORMRepository) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.trainingPlanRepository = trainingPlanRepository;
 			this.userManager = userManager;
 			this.httpContextAccessor = httpContextAccessor;
+			this.trainingModuleORMRepository = trainingModuleORMRepository;
 		}
 
 		// GETS TRAINING MODULE INDEX VIEW MODEL FOR A SPECIFIC USER.
@@ -43,82 +46,38 @@ namespace EliteAthleteApp.Repositories
 			}
 			var coach = await userManager.FindByIdAsync(user.CoachId);
 
-			var trainingModuleIndexVM = new TrainingModuleIndexVM
-			{
-				UserId = userId,
-				CoachId = coach.Id
-			};
-
-			return trainingModuleIndexVM;
+			return new TrainingModuleIndexVM{ UserId = userId, CoachId = coach.Id }; 
 		}
 
 		public async Task<List<TrainingModuleVM>> GetTrainingModuleVMsAsync(string userId)
 		{
-			var trainingModules = await context.TrainingModules
-				.Where(x => x.UserId == userId)
-				.ToListAsync();
+			var trainingModules = (await GetAllAsync()).Where(x => x.UserId == userId);
 			return mapper.Map<List<TrainingModuleVM>>(trainingModules);
-		}
-
-		public async Task<List<TrainingModuleORMVM>> GetTrainingModuleORMVMsAsync(string userId)
-		{
-			var trainingModuleORMs = await context.TrainingModuleORMs
-				.Where(tm => tm.UserId == userId)
-				.ToListAsync();
-
-			return mapper.Map<List<TrainingModuleORMVM>>(trainingModuleORMs);
 		}
 
 		public TrainingModuleCreateVM GetTrainingModuleCreateVM(string userId, string coachId)
 		{
-			var trainingModuleCreateVM = new TrainingModuleCreateVM { UserId = userId, CoachId = coachId };
-			return trainingModuleCreateVM;
+			return new TrainingModuleCreateVM { UserId = userId, CoachId = coachId };
 		}
 
 		public async Task<TrainingModuleCreateVM> GetTrainingModuleEditVMAsync(int trainingModuleId)
 		{
 			var trainingModule = await GetAsync(trainingModuleId);
-			var trainingModuleCreateVM = mapper.Map<TrainingModuleCreateVM>(trainingModule);
-			return trainingModuleCreateVM;
+			return mapper.Map<TrainingModuleCreateVM>(trainingModule);
 		}
 
-		public TrainingModuleDeleteVM GetTrainingModuleDeleteVM(int trainingModuleId, string name, string userId	)
+		public async Task<TrainingModuleDeleteVM> GetTrainingModuleDeleteVM(int trainingModuleId)
 		{
-			var trainingModuleDeleteVM = new TrainingModuleDeleteVM
-			{
-				Id = trainingModuleId,
-				Name = name,
-				UserId = userId
-			};
-			return trainingModuleDeleteVM;
+			return mapper.Map<TrainingModuleDeleteVM>(await GetAsync(trainingModuleId));
 		}
 
-		public TrainingModuleORMCreateVM GetTrainingModuleORMCreateVM(string userId)
-		{
-			DateTime dateNow = DateTime.Now;
-			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 0, 0, 0);
-
-			var trainingModuleORMCreateVM = new TrainingModuleORMCreateVM
-			{
-				DateTime = modifiedDate,
-				UserId = userId
-			};
-			return trainingModuleORMCreateVM;
-		}
-
-		// CREATES A NEW TRAINING MODULE.
+		// CREATES A NEW TRAINING MODULE
 		public async Task CreateTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
-			if (trainingModuleCreateVM.UserId == null)
-			{
-				trainingModuleCreateVM.UserId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
-			}
 			var trainingModule = mapper.Map<TrainingModule>(trainingModuleCreateVM);
-			trainingModule.TrainingPlanIds = new List<int>();
 			List<DateTime> days = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
 
-			await context.AddAsync(trainingModule);
-			await context.SaveChangesAsync();
+			await AddAsync(trainingModule);
 			await CreateDayInTrainingModuleAsync(days, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
@@ -152,15 +111,6 @@ namespace EliteAthleteApp.Repositories
 				await trainingPlanRepository.DeleteAsync(trainingPlanId);
 			}
 			await DeleteAsync(id);
-		}
-
-		// CREATES NEW ORM
-		public async Task CreateORMAsync(TrainingModuleORMCreateVM trainingModuleORMCreateVM)
-		{
-			var trainingModuleORM = mapper.Map<TrainingModuleORM>(trainingModuleORMCreateVM);
-
-			await context.AddAsync(trainingModuleORM);
-			await context.SaveChangesAsync();
 		}
 
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW

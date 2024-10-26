@@ -8,6 +8,9 @@ namespace EliteAthleteApp.Contracts
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
 		Task<ExerciseIndexVM> GetExerciseIndexVMAsync();
 
+		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
+		Task<List<ExerciseVM>> GetExerciseVMsAsync(string? coachId);
+
 		// GETS EXERCISE CREATE VIEW MODEL
 		Task<ExerciseCreateVM> GetExerciseCreateVMAsync();
 
@@ -19,9 +22,6 @@ namespace EliteAthleteApp.Contracts
 
 		// GETS EXERCISE EDIT VIEW MODEL
 		Task<ExerciseCreateVM> GetExerciseEditVMAsync(int id);
-
-		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
-		Task<List<ExerciseVM>> GetExerciseVMAsync(string? coachId);
 
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE
 		Task CreateExerciseAsync(ExerciseCreateVM exerciseCreateVM);

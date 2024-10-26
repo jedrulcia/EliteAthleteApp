@@ -9,29 +9,24 @@ namespace EliteAthleteApp.Controllers
 	public class TrainingModulesController : Controller
 	{
 		private readonly ITrainingModuleRepository trainingModuleRepository;
+		private readonly ITrainingModuleORMRepository trainingModuleORMRepository;
 
-		public TrainingModulesController(ITrainingModuleRepository trainingModuleRepository)
+		public TrainingModulesController(ITrainingModuleRepository trainingModuleRepository, ITrainingModuleORMRepository trainingModuleORMRepository)
 		{
 			this.trainingModuleRepository = trainingModuleRepository;
+			this.trainingModuleORMRepository = trainingModuleORMRepository;
 		}
 
 		// GET: TrainingModules
 		public async Task<IActionResult> Index(string userId)
 		{
-			var trainingModuleIndexVM = await trainingModuleRepository.GetTrainingModuleIndexVMAsync(userId);
-			return View(trainingModuleIndexVM);
+			return View(await trainingModuleRepository.GetTrainingModuleIndexVMAsync(userId));
 		}
 
 		// GET: TrainingModules/TrainingModuleList
-		public async Task<IActionResult> TrainingModuleList(string userId)
+		public async Task<IActionResult> List(string userId)
 		{
 			return PartialView(await trainingModuleRepository.GetTrainingModuleVMsAsync(userId));
-		}
-
-		// GET: TrainingModules/ORMList
-		public async Task<IActionResult> ListORM(string userId)
-		{
-			return PartialView(await trainingModuleRepository.GetTrainingModuleORMVMsAsync(userId));
 		}
 
 		// GET: TrainingModules/Create
@@ -77,33 +72,19 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: TrainingModules/Delete
-		public IActionResult Delete(int trainingModuleId, string userId, string name)
+		public async Task<IActionResult> Delete(int trainingModuleId)
 		{
-			return PartialView(trainingModuleRepository.GetTrainingModuleDeleteVM(trainingModuleId, name, userId));
+			return PartialView(await trainingModuleRepository.GetTrainingModuleDeleteVM(trainingModuleId));
 		}
 
 		// POST: TrainingModules/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach + "," + Roles.Full)]
-		public async Task<IActionResult> DeleteConfirmed(int id, string userId)
+		public async Task<IActionResult> Delete(TrainingModuleDeleteVM trainingModuleDeleteVM)
 		{
-			await trainingModuleRepository.DeleteTrainingModuleAsync(id);
-			return RedirectToAction(nameof(Index), new { userId = userId });
-		}
-
-		// GET: TrainingModules/ORMCreate
-		public IActionResult CreateORM(string userId)
-		{
-			return PartialView(trainingModuleRepository.GetTrainingModuleORMCreateVM(userId));
-		}
-
-		// POST: TrainingModules/ORM
-		[HttpPost, ActionName("CreateORM")]
-		public async Task<IActionResult> CreateORM(TrainingModuleORMCreateVM trainingModuleAddORMCreateVM)
-		{
-			await trainingModuleRepository.CreateORMAsync(trainingModuleAddORMCreateVM);
-			return RedirectToAction(nameof(Index), new { userId = trainingModuleAddORMCreateVM.UserId });
+			await trainingModuleRepository.DeleteTrainingModuleAsync(trainingModuleDeleteVM.Id);
+			return RedirectToAction(nameof(Index), new { userId = trainingModuleDeleteVM.UserId });
 		}
 	}
 }

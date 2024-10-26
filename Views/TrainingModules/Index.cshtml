@@ -171,7 +171,7 @@
 			// Ładowanie zawartości dla "exercisePrivate" po załadowaniu strony
 			var userId = $('#trainingModuleTab').data("userid"); // Pobranie coachId z atrybutu data
 			$.ajax({
-				url: '@Url.Action("TrainingModuleList", "TrainingModules")',
+				url: '@Url.Action("List", "TrainingModules")',
 				type: 'GET',
 				data: { userId: userId },
 				success: function (data) {
@@ -193,7 +193,7 @@
 				var userId = $(this).data("userid");
 
 				$.ajax({
-					url: '@Url.Action("TrainingModuleList", "TrainingModules")',
+					url: '@Url.Action("List", "TrainingModules")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {
@@ -216,7 +216,7 @@
 				var userId = $(this).data("userid");
 
 				$.ajax({
-					url: '@Url.Action("ListORM", "TrainingModules")',
+					url: '@Url.Action("List", "TrainingModuleORM")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {
@@ -275,12 +275,10 @@
 				e.preventDefault();
 
 				var trainingModuleId = $(this).data("trainingmoduleid");
-				var name = $(this).data("name");
-				var userId = $(this).data("userid");
 				$.ajax({
 					url: '@Url.Action("Delete", "TrainingModules")',
 					type: 'GET',
-					data: { trainingModuleId: trainingModuleId, name: name, userId: userId },
+					data: { trainingModuleId: trainingModuleId},
 					success: function (data) {
 						$('#trainingModuleDeleteContent').html(data);
 						$('#trainingModuleDeleteModal').modal('show');
@@ -297,7 +295,7 @@
 
 				var userId = $(this).data("userid");
 				$.ajax({
-					url: '@Url.Action("CreateORM", "TrainingModules")',
+					url: '@Url.Action("Create", "TrainingModuleORM")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {

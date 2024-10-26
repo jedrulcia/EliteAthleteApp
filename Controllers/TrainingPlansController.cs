@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using EliteAthleteApp.Constants;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.TrainingPlan;
+using EliteAthleteApp.Contracts.Services;
 
 namespace EliteAthleteApp.Controllers
 {

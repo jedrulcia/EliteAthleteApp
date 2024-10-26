@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Blobs;
-using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Contracts.Services;
 
 namespace EliteAthleteApp.Services
 {

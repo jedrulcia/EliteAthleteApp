@@ -28,6 +28,20 @@ namespace EliteAthleteApp.Repositories
 			return new ExerciseIndexVM { CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id };
 		}
 
+		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
+		public async Task<List<ExerciseVM>> GetExerciseVMsAsync(string? coachId)
+		{
+			var exercises = (await GetAllAsync()).Where(e => e.CoachId == coachId).ToList();
+			var exerciseVMs = mapper.Map<List<ExerciseVM>>(exercises);
+
+			for (int i = 0; i < exerciseVMs.Count; i++)
+			{
+				exerciseVMs[i] = await GetExerciseForeignEntitiesAsync(exerciseVMs[i], exercises[i]);
+			}
+
+			return exerciseVMs;
+		}
+
 		// GETS EXERCISE CREATE VIEW MODEL
 		public async Task<ExerciseCreateVM> GetExerciseCreateVMAsync()
 		{
@@ -56,20 +70,6 @@ namespace EliteAthleteApp.Repositories
 		public async Task<ExerciseDeleteVM> GetExerciseDeleteVMAsync(int id)
 		{
 			return mapper.Map<ExerciseDeleteVM>(await GetAsync(id));
-		}
-
-		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
-		public async Task<List<ExerciseVM>> GetExerciseVMAsync(string? coachId)
-		{
-			var exercises = (await GetAllAsync()).Where(e => e.CoachId == coachId).ToList();
-			var exerciseVMs = mapper.Map<List<ExerciseVM>>(exercises);
-
-			for (int i = 0; i < exerciseVMs.Count; i++)
-			{
-				exerciseVMs[i] = await GetExerciseForeignEntitiesAsync(exerciseVMs[i], exercises[i]);
-			}
-
-			return exerciseVMs;
 		}
 
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE

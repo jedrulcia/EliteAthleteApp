@@ -16,10 +16,11 @@ using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.Meal;
 using EliteAthleteApp.Repositories;
+using EliteAthleteApp.Contracts.Services;
 
 namespace EliteAthleteApp.Controllers
 {
-	[Authorize(Roles = Roles.Administrator)]
+    [Authorize(Roles = Roles.Administrator)]
 	public class MealsController : Controller
 	{
 		private readonly ApplicationDbContext context;

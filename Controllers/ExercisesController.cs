@@ -25,13 +25,13 @@ namespace EliteAthleteApp.Controllers
 		// GET: Exercises/ExercisePublic
 		public async Task<IActionResult> ExercisePublic()
 		{
-			return PartialView(await exerciseRepository.GetExerciseVMAsync(null));
+			return PartialView(await exerciseRepository.GetExerciseVMsAsync(null));
 		}
 
 		// GET: Exercises/ExercisePrivate
 		public async Task<IActionResult> ExercisePrivate(string coachId)
 		{
-			return PartialView(await exerciseRepository.GetExerciseVMAsync(coachId));
+			return PartialView(await exerciseRepository.GetExerciseVMsAsync(coachId));
 		}
 
 		// GET: Exercises/Create

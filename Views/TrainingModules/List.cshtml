@@ -3,7 +3,7 @@
 @model IEnumerable<TrainingModuleVM>
 
 @{
-	ViewData["Title"] = "TrainingModuleList";
+	ViewData["Title"] = "List";
 }
 
 <table class="table table-dark">
@@ -55,8 +55,6 @@
 							</li>
 							<li>
 								<button data-trainingmoduleid="@item.Id"
-										data-name="@item.Name"
-										data-userid="@item.UserId"
 										class="dropdown-item deleteBtn">
 									<i class="bi bi-trash">&nbsp;</i>Delete
 								</button>
