@@ -26,7 +26,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Index(int trainingModuleId)
         {
             List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-			return View(await trainingPlanRepository.GetTrainingPlanIndexVMAsync(trainingPlanIds));
+			return View(await trainingPlanRepository.GetTrainingPlanIndexVMAsync(trainingPlanIds, trainingModuleId));
 		}
 
 		// GET: TrainingPlans/Details
@@ -127,7 +127,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Copy(int copyFromId, int trainingModuleId)
 		{
 			List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-			return PartialView("Copy", await trainingPlanRepository.GetTrainingPlanCopyVMAsync(copyFromId, trainingPlanIds));
+			return PartialView("Copy", await trainingPlanRepository.GetTrainingPlanCopyVMAsync(copyFromId, trainingPlanIds, trainingModuleId));
 		}
 
 		// POST: TrainingPlans/ManageExercises/CopyTrainingPlan

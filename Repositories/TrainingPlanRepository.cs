@@ -16,6 +16,7 @@ using PdfSharp.Drawing;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
 using EliteAthleteApp.Models;
+using EliteAthleteApp.Contracts.Repositories;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -27,13 +28,15 @@ namespace EliteAthleteApp.Repositories
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository;
+		private readonly ITrainingPlanPhaseRepository trainingPlanPhaseRepository;
 
 		public TrainingPlanRepository(ApplicationDbContext context,
 			IMapper mapper,
 			IExerciseRepository exerciseRepository,
 			UserManager<User> userManager,
 			IHttpContextAccessor httpContextAccessor,
-			ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository) : base(context)
+			ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository,
+			ITrainingPlanPhaseRepository trainingPlanPhaseRepository) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
@@ -41,10 +44,11 @@ namespace EliteAthleteApp.Repositories
 			this.userManager = userManager;
 			this.httpContextAccessor = httpContextAccessor;
 			this.trainingPlanExerciseDetailRepository = trainingPlanExerciseDetailRepository;
+			this.trainingPlanPhaseRepository = trainingPlanPhaseRepository;
 		}
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
-		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVMAsync(List<int> trainingPlanIds)
+		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVMAsync(List<int> trainingPlanIds, int trainingModuleId)
 		{
 			var (trainingPlanVMs, progress) = await GetTrainingPlanVMsAndProgressAsync(trainingPlanIds);
 			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
@@ -54,7 +58,7 @@ namespace EliteAthleteApp.Repositories
 			{
 				UserId = user.Id,
 				CoachId = coach.Id,
-				TrainingModuleId = trainingPlanVMs[0].TrainingModuleId,
+				TrainingModuleId = trainingModuleId,
 				TrainingPlanVMs = trainingPlanVMs,
 				Progress = (int)progress
 			};
@@ -89,7 +93,7 @@ namespace EliteAthleteApp.Repositories
 			return mapper.Map<TrainingPlanChangeStatusVM>(await GetAsync(id));
 		}
 
-		public async Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds)
+		public async Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds, int trainingModuleId)
 		{
 			List<TrainingPlanVM> trainingPlanVMs = new List<TrainingPlanVM>();
 
@@ -101,7 +105,7 @@ namespace EliteAthleteApp.Repositories
 
 			var trainingPlanCopyVM = new TrainingPlanCopyVM
 			{
-				TrainingModuleId = trainingPlanVMs[0].TrainingModuleId,
+				TrainingModuleId = trainingModuleId,
 				CopyFromId = copyFromId,
 				TrainingPlanVMs = trainingPlanVMs
 			};
@@ -186,9 +190,8 @@ namespace EliteAthleteApp.Repositories
 			var trainingPlan = await GetAsync(trainingPlanRemoveExerciseVM.TrainingPlanId);
 			var trainingPlanExerciseDetail = await trainingPlanExerciseDetailRepository.GetAsync(trainingPlanRemoveExerciseVM.Id);
 
-			await trainingPlanExerciseDetailRepository.DeleteAsync(trainingPlanRemoveExerciseVM.Id);
 			trainingPlan.TrainingPlanExerciseDetailIds.Remove(trainingPlanRemoveExerciseVM.Id);
-
+			await trainingPlanExerciseDetailRepository.DeleteAsync(trainingPlanRemoveExerciseVM.Id);
 			if (trainingPlan.TrainingPlanExerciseDetailIds.Count == 0)
 			{
 				trainingPlan.IsEmpty = true;
@@ -211,10 +214,15 @@ namespace EliteAthleteApp.Repositories
 			var copyFromTrainingPlan = await GetAsync(copyFromId);
 			var copyToTrainingPlan = await GetAsync(copyToId);
 
-			copyToTrainingPlan.IsEmpty = copyFromTrainingPlan.IsEmpty;
-			var trainingPlanExerciseDetailIds = copyFromTrainingPlan.TrainingPlanExerciseDetailIds;
+			foreach (var id in copyToTrainingPlan.TrainingPlanExerciseDetailIds)
+			{
+				await trainingPlanExerciseDetailRepository.DeleteAsync(id.Value);
+			}
 
-			foreach (var id in trainingPlanExerciseDetailIds)
+			copyToTrainingPlan.TrainingPlanExerciseDetailIds = new List<int?>();
+			copyToTrainingPlan.IsEmpty = copyFromTrainingPlan.IsEmpty;
+
+			foreach (var id in copyFromTrainingPlan.TrainingPlanExerciseDetailIds)
 			{
 				var copyToExerciseDetail = await trainingPlanExerciseDetailRepository.GetAsync(id);
 				copyToExerciseDetail.Id = null;
@@ -236,7 +244,7 @@ namespace EliteAthleteApp.Repositories
 				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await trainingPlanExerciseDetailRepository.GetAsync(id));
 
 				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<ExerciseVM>(await exerciseRepository.GetAsync(trainingPlanExerciseDetailVM.ExerciseId));
-				trainingPlanExerciseDetailVM.TrainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await context.Set<TrainingPlanPhase>().FindAsync(trainingPlanExerciseDetailVM.TrainingPlanPhaseId));
+				trainingPlanExerciseDetailVM.TrainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await trainingPlanPhaseRepository.GetAsync(trainingPlanExerciseDetailVM.TrainingPlanPhaseId));
 				trainingPlanExerciseDetailVMs.Add(trainingPlanExerciseDetailVM);
 			}
 
@@ -284,9 +292,10 @@ namespace EliteAthleteApp.Repositories
 			}
 
 			var availableExerciseVMs = mapper.Map<List<ExerciseVM>>(await exerciseRepository.GetAllAsync()).Where(e => e.CoachId == null || e.CoachId == coachId).OrderBy(e => e.Name);
+			var availableTrainingPlanPhaseVMs = mapper.Map<List<TrainingPlanPhaseVM>>(await trainingPlanPhaseRepository.GetAllAsync()).OrderBy(e => e.Id);
 
 			trainingPlanAddExerciseVM.AvailableExercises = new SelectList(availableExerciseVMs, "Id", "Name");
-			trainingPlanAddExerciseVM.AvailableTrainingPlanPhases = new SelectList(context.TrainingPlanPhases.OrderBy(e => e.Id), "Id", "Name");
+			trainingPlanAddExerciseVM.AvailableTrainingPlanPhases = new SelectList(availableTrainingPlanPhaseVMs, "Id", "Name");
 			trainingPlanAddExerciseVM.TrainingPlanId = trainingPlanId;
 			return trainingPlanAddExerciseVM;
 		}

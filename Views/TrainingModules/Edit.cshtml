@@ -8,9 +8,11 @@
 
 <form asp-action="Edit">
 	<input type="hidden" asp-for="Id" />
+	<input type="hidden" asp-for="UserId" />
+	<input type="hidden" asp-for="CoachId" />
 	<div class="form-group">
 		<strong><label asp-for="Name" class="control-label"></label></strong>
-		<input asp-for="Name" class="form-control" name="TrainingModuleCreateVM.Name" />
+		<input asp-for="Name" class="form-control" />
 		<span asp-validation-for="Name" class="text-danger"></span>
 	</div>
 	<div class="row align-items-end">

@@ -5,13 +5,13 @@ namespace EliteAthleteApp.Contracts
 {
 	public interface ITrainingModuleORMRepository : IGenericRepository<TrainingModuleORM>
 	{
-		// GETS LIST ONE REPETITION MAX ENTITIES
+		// GETS LIST OF TRAINING MODULE ORMs
 		Task<List<TrainingModuleORMVM>> GetTrainingModuleORMVMsAsync(string userId);
 
-
+		// GETS TRAINING MODULE ORM CREATE VM
 		TrainingModuleORMCreateVM GetTrainingModuleORMCreateVM(string userId);
 
-		// CREATES NEW ORM
+		// CREATES NEW ORM ENTITY
 		Task CreateORMAsync(TrainingModuleORMCreateVM trainingModuleORMCreateVM);
 	}
 }

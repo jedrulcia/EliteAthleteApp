@@ -7,6 +7,7 @@ using EliteAthleteApp.Data;
 using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Services;
 using EliteAthleteApp.Contracts.Services;
+using EliteAthleteApp.Contracts.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,14 +26,24 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 	.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<IExerciseCategoryRepository, ExerciseCategoryRepository>();
+builder.Services.AddScoped<IExerciseMuscleGroupRepository, ExerciseMuscleGroupRepository>();
+
 builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
-builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
-builder.Services.AddScoped<IMealRepository, MealRepository>();
-builder.Services.AddScoped<IDietRepository, DietRepository>();
-builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>(); 
 builder.Services.AddScoped<ITrainingPlanExerciseDetailRepository, TrainingPlanExerciseDetailRepository>();
+builder.Services.AddScoped<ITrainingPlanPhaseRepository, TrainingPlanPhaseRepository>();
+
+builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddScoped<ITrainingModuleORMRepository, TrainingModuleORMRepository>();
+
+builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+
+builder.Services.AddScoped<IMealRepository, MealRepository>();
+
+builder.Services.AddScoped<IDietRepository, DietRepository>();
+
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, containerName));
 builder.Services.AddScoped<IPdfService, PdfService>();
 

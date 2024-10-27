@@ -7,7 +7,7 @@ namespace EliteAthleteApp.Contracts
 	public interface ITrainingPlanRepository : IGenericRepository<TrainingPlan>
 	{
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
-		Task<TrainingPlanIndexVM> GetTrainingPlanIndexVMAsync(List<int> trainingPlanIds);
+		Task<TrainingPlanIndexVM> GetTrainingPlanIndexVMAsync(List<int> trainingPlanIds, int trainingModuleId);
 
 		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
 		Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVMAsync(int trainingPlanId);
@@ -16,7 +16,7 @@ namespace EliteAthleteApp.Contracts
 		Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? trainingPlanId);
 
 		// GETS THE TRAINING PLAN COPY VM
-		Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds);
+		Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds, int trainingModuleId);
 
 		// GETS THE TRAINING PLAN CHANGE STATUS VM
 		Task<TrainingPlanChangeStatusVM> GetTrainingPlanChangeStatusVMAsync(int trainingPlanId);

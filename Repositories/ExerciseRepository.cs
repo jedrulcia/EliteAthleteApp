@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Contracts.Repositories;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -13,13 +14,22 @@ namespace EliteAthleteApp.Repositories
 		private readonly IMapper mapper;
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly IExerciseCategoryRepository exerciseCategoryRepository;
+		private readonly IExerciseMuscleGroupRepository exerciseMuscleGroupRepository;
 
-		public ExerciseRepository(ApplicationDbContext context, IMapper mapper, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor) : base(context)
+		public ExerciseRepository(ApplicationDbContext context, 
+			IMapper mapper, 
+			UserManager<User> userManager, 
+			IHttpContextAccessor httpContextAccessor, 
+			IExerciseCategoryRepository exerciseCategoryRepository,
+			IExerciseMuscleGroupRepository exerciseMuscleGroupRepository) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.userManager = userManager;
 			this.httpContextAccessor = httpContextAccessor;
+			this.exerciseCategoryRepository = exerciseCategoryRepository;
+			this.exerciseMuscleGroupRepository = exerciseMuscleGroupRepository;
 		}
 
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
@@ -45,15 +55,13 @@ namespace EliteAthleteApp.Repositories
 		// GETS EXERCISE CREATE VIEW MODEL
 		public async Task<ExerciseCreateVM> GetExerciseCreateVMAsync()
 		{
-			var exerciseCreateVM = await GetExerciseCreateSelectListsAsync(null);
-			return exerciseCreateVM;
+			return await GetExerciseCreateSelectListsAsync(null);
 		}
 
 		// GETS EXERCISE EDIT VIEW MODEL
 		public async Task<ExerciseCreateVM> GetExerciseEditVMAsync(int id)
 		{
-			var exerciseCreateVM = await GetExerciseCreateSelectListsAsync(id);
-			return exerciseCreateVM;
+			return await GetExerciseCreateSelectListsAsync(mapper.Map<ExerciseCreateVM>(await GetAsync(id)));
 		}
 
 		// GETS EXERCISE DETAILS VIEW MODEL
@@ -75,15 +83,13 @@ namespace EliteAthleteApp.Repositories
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE
 		public async Task CreateExerciseAsync(ExerciseCreateVM exerciseCreateVM)
 		{
-			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
-			await AddAsync(exercise);
+			await AddAsync(mapper.Map<Exercise>(exerciseCreateVM));
 		}
 
 		// EDITS EXISTING DATABAASE ENTITY IN THE EXERCISE TABLE
 		public async Task EditExerciseAsync(ExerciseCreateVM exerciseCreateVM)
 		{
-			var exercise = mapper.Map<Exercise>(exerciseCreateVM);
-			await UpdateAsync(exercise);
+			await UpdateAsync(mapper.Map<Exercise>(exerciseCreateVM));
 		}
 
 		// PRIVATE METHODS BELOW
@@ -91,27 +97,27 @@ namespace EliteAthleteApp.Repositories
 		// GETS THE CATEGORY AND MUSCLE GROUP ENTITIES VOR EXERCISE VIEW MODEL
 		private async Task<ExerciseVM> GetExerciseForeignEntitiesAsync(ExerciseVM exerciseVM, Exercise exercise)
 		{
-			var category = await context.Set<ExerciseCategory>().FindAsync(exercise.ExerciseCategoryId);
-			exerciseVM.ExerciseCategory = mapper.Map<ExerciseCategoryVM>(category);
-
-			var muscleGroup = await context.Set<ExerciseMuscleGroup>().FindAsync(exercise.ExerciseMuscleGroupId);
-			exerciseVM.ExerciseMuscleGroup = mapper.Map<ExerciseMuscleGroupVM>(muscleGroup);
+			exerciseVM.ExerciseCategory = mapper.Map<ExerciseCategoryVM>(await exerciseCategoryRepository.GetAsync(exercise.ExerciseCategoryId));
+			exerciseVM.ExerciseMuscleGroup = mapper.Map<ExerciseMuscleGroupVM>(await exerciseMuscleGroupRepository.GetAsync(exercise.ExerciseMuscleGroupId));
 
 			return exerciseVM;
 		}
 
 		// GETS EXERCISE SELECT LIST FOR CREATE AND EDIT VIEW MODELS
-		private async Task<ExerciseCreateVM> GetExerciseCreateSelectListsAsync(int? id)
+		private async Task<ExerciseCreateVM> GetExerciseCreateSelectListsAsync(ExerciseCreateVM? exerciseCreateVM)
 		{
-			var exerciseCreateVM = new ExerciseCreateVM();
-			if (id != null)
+			if (exerciseCreateVM == null)
 			{
-				exerciseCreateVM = mapper.Map<ExerciseCreateVM>(await GetAsync(id));
+				exerciseCreateVM = new ExerciseCreateVM();
 			}
 
 			exerciseCreateVM.CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
-			exerciseCreateVM.AvailableCategories = new SelectList(context.ExerciseCategories.OrderBy(e => e.Name), "Id", "Name");
-			exerciseCreateVM.AvailableMuscleGroups = new SelectList(context.ExerciseMuscleGroups.OrderBy(e => e.Name), "Id", "Name");
+			exerciseCreateVM.AvailableCategories = new SelectList(mapper.Map<List<ExerciseCategoryVM>>(await exerciseCategoryRepository
+				.GetAllAsync())
+				.OrderBy(e => e.Name), "Id", "Name");
+			exerciseCreateVM.AvailableMuscleGroups = new SelectList(mapper.Map<List<ExerciseMuscleGroupVM>>(await exerciseMuscleGroupRepository
+				.GetAllAsync())
+				.OrderBy(e => e.Name), "Id", "Name");
 
 			return exerciseCreateVM;
 		}

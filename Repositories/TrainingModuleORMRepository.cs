@@ -16,12 +16,14 @@ namespace EliteAthleteApp.Repositories
 			this.mapper = mapper;
 		}
 
+		// GETS LIST OF TRAINING MODULE ORMs
 		public async Task<List<TrainingModuleORMVM>> GetTrainingModuleORMVMsAsync(string userId)
 		{
 			var trainingModuleORMs = (await GetAllAsync()).Where(tm => tm.UserId == userId);
 			return mapper.Map<List<TrainingModuleORMVM>>(trainingModuleORMs);
 		}
 
+		// GETS TRAINING MODULE ORM CREATE VM
 		public TrainingModuleORMCreateVM GetTrainingModuleORMCreateVM(string userId)
 		{
 			DateTime dateNow = DateTime.Now;
@@ -30,7 +32,7 @@ namespace EliteAthleteApp.Repositories
 			return new TrainingModuleORMCreateVM { DateTime = modifiedDate, UserId = userId };
 		}
 
-		// CREATES NEW ORM
+		// CREATES NEW ORM ENTITY
 		public async Task CreateORMAsync(TrainingModuleORMCreateVM trainingModuleORMCreateVM)
 		{
 			var trainingModuleORM = mapper.Map<TrainingModuleORM>(trainingModuleORMCreateVM);

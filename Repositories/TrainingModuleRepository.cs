@@ -76,6 +76,7 @@ namespace EliteAthleteApp.Repositories
 		public async Task CreateTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			var trainingModule = mapper.Map<TrainingModule>(trainingModuleCreateVM);
+			trainingModule.TrainingPlanIds = new List<int>();
 			List<DateTime> days = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
 
 			await AddAsync(trainingModule);
