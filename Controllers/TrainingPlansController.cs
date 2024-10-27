@@ -30,14 +30,9 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: TrainingPlans/Details
-		public async Task<IActionResult> Details(int? id)
+		public async Task<IActionResult> Details(int id)
 		{
-			var trainingPlan = await trainingPlanRepository.GetAsync(id);
-			if (trainingPlan == null)
-			{
-				return NotFound();
-			}
-			return PartialView("Details", await trainingPlanRepository.GetTrainingPlanDetailsVMAsync(trainingPlan));
+			return PartialView(await trainingPlanRepository.GetTrainingPlanDetailsVMAsync(id));
 		}
 
 		// GET: TrainingPlans/ManageExercises
@@ -50,7 +45,7 @@ namespace EliteAthleteApp.Controllers
 
 		public async Task<IActionResult> ChangeStatus(int trainingPlanId)
 		{
-			return PartialView("ChangeStatus", await trainingPlanRepository.GetTrainingPlanChangeStatusVMAsync(trainingPlanId));
+			return PartialView(await trainingPlanRepository.GetTrainingPlanChangeStatusVMAsync(trainingPlanId));
 		}
 
 		// POST: TrainingPlans/ChangeStatus
@@ -72,7 +67,7 @@ namespace EliteAthleteApp.Controllers
 		// GET: TrainingPlans/ManageExercises/AddExercise
 		public async Task<IActionResult> AddExercise(int trainingPlanId, string coachId)
         {
-            return PartialView("AddExercise", await trainingPlanRepository.GetTrainingPlanAddExerciseVMAsync(trainingPlanId, coachId));
+            return PartialView(await trainingPlanRepository.GetTrainingPlanAddExerciseVMAsync(trainingPlanId, coachId));
         }
 
 		// POST: TrainingPlans/ManageExercises/AddExercise

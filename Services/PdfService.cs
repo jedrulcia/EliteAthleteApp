@@ -30,8 +30,7 @@ namespace EliteAthleteApp.Services
 
             foreach (int id in trainingPlanIds)
             {
-                var trainingPlan = await trainingPlanRepository.GetAsync(id);
-                trainingPlanVMs.Add(await trainingPlanRepository.GetTrainingPlanDetailsVMAsync(trainingPlan));
+                trainingPlanVMs.Add(await trainingPlanRepository.GetTrainingPlanDetailsVMAsync(id));
             }
 
             PdfDocument document = new PdfDocument();

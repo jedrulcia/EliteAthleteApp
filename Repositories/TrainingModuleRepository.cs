@@ -14,24 +14,21 @@ namespace EliteAthleteApp.Repositories
 		private readonly ITrainingPlanRepository trainingPlanRepository;
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
-		private readonly ITrainingModuleORMRepository trainingModuleORMRepository;
 		private readonly ApplicationDbContext context;
 		public TrainingModuleRepository(ApplicationDbContext context, 
 			IMapper mapper, 
 			ITrainingPlanRepository trainingPlanRepository, 
 			UserManager<User> userManager, 
-			IHttpContextAccessor httpContextAccessor,
-			ITrainingModuleORMRepository trainingModuleORMRepository) : base(context)
+			IHttpContextAccessor httpContextAccessor) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
 			this.trainingPlanRepository = trainingPlanRepository;
 			this.userManager = userManager;
 			this.httpContextAccessor = httpContextAccessor;
-			this.trainingModuleORMRepository = trainingModuleORMRepository;
 		}
 
-		// GETS TRAINING MODULE INDEX VIEW MODEL FOR A SPECIFIC USER.
+		// GETS TRAINING MODULE INDEX VIEW MODEL
 		public async Task<TrainingModuleIndexVM> GetTrainingModuleIndexVMAsync(string? userId)
 		{
 			var user = new User();
@@ -49,23 +46,27 @@ namespace EliteAthleteApp.Repositories
 			return new TrainingModuleIndexVM{ UserId = userId, CoachId = coach.Id }; 
 		}
 
+		// GETS LIST OF TRAINING MODULES VIEW MODELS
 		public async Task<List<TrainingModuleVM>> GetTrainingModuleVMsAsync(string userId)
 		{
 			var trainingModules = (await GetAllAsync()).Where(x => x.UserId == userId);
 			return mapper.Map<List<TrainingModuleVM>>(trainingModules);
 		}
 
+		// GETS TRAINING MODULE CREATE VIEW MODEL
 		public TrainingModuleCreateVM GetTrainingModuleCreateVM(string userId, string coachId)
 		{
 			return new TrainingModuleCreateVM { UserId = userId, CoachId = coachId };
 		}
 
+		// GETS TRAINING MODULE EDIT VIEW MODEL
 		public async Task<TrainingModuleCreateVM> GetTrainingModuleEditVMAsync(int trainingModuleId)
 		{
 			var trainingModule = await GetAsync(trainingModuleId);
 			return mapper.Map<TrainingModuleCreateVM>(trainingModule);
 		}
 
+		// GETS TRAINING MODULE DELETE VIEW MODEL
 		public async Task<TrainingModuleDeleteVM> GetTrainingModuleDeleteVM(int trainingModuleId)
 		{
 			return mapper.Map<TrainingModuleDeleteVM>(await GetAsync(trainingModuleId));
@@ -81,7 +82,7 @@ namespace EliteAthleteApp.Repositories
 			await CreateDayInTrainingModuleAsync(days, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
-		// EDITS AN EXISTING TRAINING MODULE, ALLOWING ONLY EXTENSION OF DAYS AND NAME CHANGE.
+		// EDITS EXSITING TRAINING MODULE
 		public async Task EditTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			var trainingModule = await GetAsync(trainingModuleCreateVM.Id);
@@ -102,7 +103,7 @@ namespace EliteAthleteApp.Repositories
 			await CreateDayInTrainingModuleAsync(newDays, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
-		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS.
+		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS
 		public async Task DeleteTrainingModuleAsync(int id)
 		{
 			var trainingModule = await GetAsync(id);
@@ -115,7 +116,7 @@ namespace EliteAthleteApp.Repositories
 
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
-		// GETS A LIST OF DAYS BETWEEN STARTING AND ENDING DATE.
+		// GETS A LIST OF DAYS BETWEEN STARTING AND ENDING DATE
 		private static List<DateTime> GetDaysBetween(DateTime? startDate, DateTime? endDate)
 		{
 			DateTime start = startDate.Value;
@@ -134,7 +135,7 @@ namespace EliteAthleteApp.Repositories
 			return days;
 		}
 
-		// GETS A LIST OF DAYS THAT ARE CONTAINED IN DAYSBEFORE AND NOT CONTAINED IN DAYSAFTER
+		// GETS A LIST OF NEW DAYS IN TRAINING MODULE
 		private static List<DateTime> GetNewDays(List<DateTime> daysBefore, List<DateTime> daysAfter)
 		{
 			List<DateTime> newDays = new List<DateTime>();

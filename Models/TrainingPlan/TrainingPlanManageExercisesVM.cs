@@ -14,6 +14,5 @@ namespace EliteAthleteApp.Models.TrainingPlan
 		public string? CoachId { get; set; }
 
 		public List<TrainingPlanExerciseDetailVM?>? TrainingPlanExerciseDetailVMs { get; set; }
-		public List<TrainingPlanPhaseVM?>? TrainingPlanPhaseVMs { get; set; }
 	}
 }

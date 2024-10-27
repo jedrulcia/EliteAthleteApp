@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EliteAthleteApp.Controllers
 {
-    public class TrainingModuleORMController : Controller
+	public class TrainingModuleORMController : Controller
 	{
 		private readonly ITrainingModuleORMRepository trainingModuleORMRepository;
 

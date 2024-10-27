@@ -11,17 +11,23 @@ namespace EliteAthleteApp.Contracts
 		// GETS LIST OF TRAINING MODULES VIEW MODELS
 		Task<List<TrainingModuleVM>> GetTrainingModuleVMsAsync(string userId);
 
-		// CREATES A NEW TRAINING MODULE.
+		// GETS TRAINING MODULE CREATE VIEW MODEL
+		TrainingModuleCreateVM GetTrainingModuleCreateVM(string userId, string coachId);
+
+		// GETS TRAINING MODULE EDIT VIEW MODEL
+		Task<TrainingModuleCreateVM> GetTrainingModuleEditVMAsync(int trainingModuleId);
+		
+		// GETS TRAINING MODULE DELETE VIEW MODEL
+		Task<TrainingModuleDeleteVM> GetTrainingModuleDeleteVM(int trainingModuleId);
+
+		// CREATES A NEW TRAINING MODULE
 		Task CreateTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM);
 
-		// EDITS AN EXISTING TRAINING MODULE, ALLOWING ONLY EXTENSION OF DAYS AND NAME CHANGE.
+		// EDITS EXSITING TRAINING MODULE
 		Task EditTrainingModuleAsync(TrainingModuleCreateVM trainingModuleCreateVM);
 
-		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS.
+		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS
 		Task DeleteTrainingModuleAsync(int id);
 
-		TrainingModuleCreateVM GetTrainingModuleCreateVM(string userId, string coachId);
-		Task<TrainingModuleCreateVM> GetTrainingModuleEditVMAsync(int trainingModuleId);
-		Task<TrainingModuleDeleteVM> GetTrainingModuleDeleteVM(int trainingModuleId);
 	}
 }
