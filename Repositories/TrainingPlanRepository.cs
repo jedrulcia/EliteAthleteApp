@@ -9,7 +9,7 @@ using Microsoft.Identity.Client;
 using OpenQA.Selenium.DevTools.V125.Page;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.TrainingExercise;
 using EliteAthleteApp.Models.TrainingPlan;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
@@ -24,7 +24,7 @@ namespace EliteAthleteApp.Repositories
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
-		private readonly IExerciseRepository exerciseRepository;
+		private readonly ITrainingExerciseRepository exerciseRepository;
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository;
@@ -32,7 +32,7 @@ namespace EliteAthleteApp.Repositories
 
 		public TrainingPlanRepository(ApplicationDbContext context,
 			IMapper mapper,
-			IExerciseRepository exerciseRepository,
+			ITrainingExerciseRepository exerciseRepository,
 			UserManager<User> userManager,
 			IHttpContextAccessor httpContextAccessor,
 			ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository,
@@ -257,7 +257,7 @@ namespace EliteAthleteApp.Repositories
 			{
 				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await trainingPlanExerciseDetailRepository.GetAsync(id));
 
-				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<ExerciseVM>(await exerciseRepository.GetAsync(trainingPlanExerciseDetailVM.ExerciseId));
+				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<TrainingExerciseVM>(await exerciseRepository.GetAsync(trainingPlanExerciseDetailVM.ExerciseId));
 				trainingPlanExerciseDetailVM.TrainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await trainingPlanPhaseRepository.GetAsync(trainingPlanExerciseDetailVM.TrainingPlanPhaseId));
 				trainingPlanExerciseDetailVMs.Add(trainingPlanExerciseDetailVM);
 			}
@@ -305,7 +305,7 @@ namespace EliteAthleteApp.Repositories
 				trainingPlanAddExerciseVM = new TrainingPlanAddExerciseVM();
 			}
 
-			var availableExerciseVMs = mapper.Map<List<ExerciseVM>>(await exerciseRepository.GetAllAsync()).Where(e => e.CoachId == null || e.CoachId == coachId).OrderBy(e => e.Name);
+			var availableExerciseVMs = mapper.Map<List<TrainingExerciseVM>>(await exerciseRepository.GetAllAsync()).Where(e => e.CoachId == null || e.CoachId == coachId).OrderBy(e => e.Name);
 			var availableTrainingPlanPhaseVMs = mapper.Map<List<TrainingPlanPhaseVM>>(await trainingPlanPhaseRepository.GetAllAsync()).OrderBy(e => e.Id);
 
 			trainingPlanAddExerciseVM.AvailableExercises = new SelectList(availableExerciseVMs, "Id", "Name");

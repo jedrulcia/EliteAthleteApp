@@ -1,11 +1,11 @@
-﻿using EliteAthleteApp.Models.Exercise;
+﻿using EliteAthleteApp.Models.TrainingExercise;
 
 namespace EliteAthleteApp.Models.TrainingPlan
 {
 	public class TrainingPlanExerciseDetailVM
 	{
 		public int Id { get; set; }
-		public ExerciseVM? ExerciseVM { get; set; }
+		public TrainingExerciseVM? ExerciseVM { get; set; }
 		public int? ExerciseId { get; set; }
 		public TrainingPlanPhaseVM? TrainingPlanPhaseVM { get; set; }
 		public int? TrainingPlanPhaseId { get; set; }

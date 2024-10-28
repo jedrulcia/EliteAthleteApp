@@ -24,16 +24,6 @@ namespace EliteAthleteApp.Configurations.Entities
 				{
 					RoleId = "543bced5-375b-5291-0a59-1dc59923d1b2",
 					UserId = "654bced5-375b-5291-0a59-1dc59923d1b2"
-				},
-				new IdentityUserRole<string>
-				{
-					RoleId = "543bced5-375b-5291-0a59-1dc59923d1b3",
-					UserId = "654bced5-375b-5291-0a59-1dc59923d1b3"
-				},
-				new IdentityUserRole<string>
-				{
-					RoleId = "543bced5-375b-5291-0a59-1dc59923d1b4",
-					UserId = "654bced5-375b-5291-0a59-1dc59923d1b4"
 				}
 				);
         }

@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models;
-using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.TrainingExercise;
 using EliteAthleteApp.Models.TrainingModule;
+using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.TrainingPlan;
 
 namespace EliteAthleteApp.Configurations
 {
-	public class MapperConfig : Profile
+    public class MapperConfig : Profile
 	{
 		public MapperConfig()
 		{
@@ -15,13 +16,13 @@ namespace EliteAthleteApp.Configurations
 			CreateMap<User, UserVM>().ReverseMap();
 
 			// EXERCISE MODULE MAPPING
-			CreateMap<Exercise, ExerciseVM>().ReverseMap();
-			CreateMap<Exercise, ExerciseIndexVM>().ReverseMap();
-			CreateMap<Exercise, ExerciseCreateVM>().ReverseMap();
-			CreateMap<Exercise, ExerciseDeleteVM>().ReverseMap();
+			CreateMap<TrainingExercise, TrainingExerciseVM>().ReverseMap();
+			CreateMap<TrainingExercise, TrainingExerciseIndexVM>().ReverseMap();
+			CreateMap<TrainingExercise, TrainingExerciseCreateVM>().ReverseMap();
+			CreateMap<TrainingExercise, TrainingExerciseDeleteVM>().ReverseMap();
 
-			CreateMap<ExerciseCategory, ExerciseCategoryVM>().ReverseMap();
-			CreateMap<ExerciseMuscleGroup, ExerciseMuscleGroupVM>().ReverseMap();
+			CreateMap<TrainingExerciseCategory, TrainingExerciseCategoryVM>().ReverseMap();
+			CreateMap<TrainingExerciseMuscleGroup, TrainingExerciseMuscleGroupVM>().ReverseMap();
 
 			// TRAINING PLAN MODULE MAPPING
 			CreateMap<TrainingPlan, TrainingPlanVM>().ReverseMap();
@@ -40,8 +41,8 @@ namespace EliteAthleteApp.Configurations
 			CreateMap<TrainingModule, TrainingModuleCreateVM>().ReverseMap();
 			CreateMap<TrainingModule, TrainingModuleDeleteVM>().ReverseMap();
 
-			CreateMap<TrainingModuleORM, TrainingModuleORMVM>().ReverseMap();
-			CreateMap<TrainingModuleORM, TrainingModuleORMCreateVM>().ReverseMap();
+			CreateMap<TrainingOrm, TrainingOrmVM>().ReverseMap();
+			CreateMap<TrainingOrm, TrainingOrmCreateVM>().ReverseMap();
 
 /*			// INGREDIENT MODULE MAPPING
 			CreateMap<Ingredient, IngredientVM>().ReverseMap();

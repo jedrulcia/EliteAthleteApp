@@ -9,6 +9,5 @@ namespace EliteAthleteApp.Data
 		public string? LastName { get; set; }
 		public string? DateOfBith {  get; set; }
 		public string? CoachId { get; set; }
-		public string? DieticianId { get; set; }
 	}
 }

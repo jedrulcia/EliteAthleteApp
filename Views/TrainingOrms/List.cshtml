@@ -1,0 +1,51 @@
+﻿@using EliteAthleteApp.Models.TrainingOrm
+
+@model IEnumerable<TrainingOrmVM>
+
+@{
+	ViewData["Title"] = "List";
+}
+
+<table class="table table-dark" style="width:100%">
+	<thead>
+		<tr>
+			<th class="text-start">
+				@Html.DisplayNameFor(model => model.DateTime)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.BenchPressORM)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.OverheadPressORM)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.SquatORM)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.DeadliftORM)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td class="text-start">
+					@Html.DisplayFor(modelItem => item.DateTime)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BenchPressORM)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.OverheadPressORM)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SquatORM)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DeadliftORM)
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
