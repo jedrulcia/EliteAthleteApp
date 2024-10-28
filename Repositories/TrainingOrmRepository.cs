@@ -19,11 +19,10 @@ namespace EliteAthleteApp.Repositories
 		// GETS LIST OF TRAINING ORMs
 		public async Task<List<TrainingOrmVM>> GetTrainingOrmVMsAsync(string userId)
 		{
-			var trainingOrms = (await GetAllAsync()).Where(tm => tm.UserId == userId);
-			return mapper.Map<List<TrainingOrmVM>>(trainingOrms);
+			return mapper.Map<List<TrainingOrmVM>>((await GetAllAsync()).Where(tm => tm.UserId == userId));
 		}
 
-		// GETS TRAINING ORM CREATE VM
+		// GETS TRAINING ORM CREATE VIEW MODEL
 		public TrainingOrmCreateVM GetTrainingOrmCreateVM(string userId)
 		{
 			DateTime dateNow = DateTime.Now;
@@ -32,11 +31,32 @@ namespace EliteAthleteApp.Repositories
 			return new TrainingOrmCreateVM { DateTime = modifiedDate, UserId = userId };
 		}
 
+		// GETS TRAINING ORM EDIT VIEW MODEL
+		public async Task<TrainingOrmCreateVM> GetTrainingOrmEditVM(int trainingOrmId)
+		{
+			return mapper.Map<TrainingOrmCreateVM>(await GetAsync(trainingOrmId));
+		}
+
+		// GETS TRAINING ORM DELETE VIEW MODEL
+		public async Task<TrainingOrmDeleteVM> GetTrainingOrmDeleteVM(int trainingOrmId)
+		{
+			return mapper.Map<TrainingOrmDeleteVM>(await GetAsync(trainingOrmId));
+		}
+
 		// CREATES NEW ORM ENTITY
 		public async Task CreateOrmAsync(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
-			var trainingORM = mapper.Map<TrainingOrm>(trainingOrmCreateVM);
-			await AddAsync(trainingORM);
+			await AddAsync(mapper.Map<TrainingOrm>(trainingOrmCreateVM));
+		}
+
+		public async Task EditOrmAsync(TrainingOrmCreateVM trainingOrmCreateVM)
+		{
+			await UpdateAsync(mapper.Map<TrainingOrm>(trainingOrmCreateVM));
+		}
+
+		public async Task DeleteOrmAsync(TrainingOrmDeleteVM trainingOrmDeleteVM)
+		{
+			await DeleteAsync(trainingOrmDeleteVM.Id);
 		}
 	}
 }

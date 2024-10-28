@@ -145,6 +145,46 @@
 	</div>
 </div>
 
+<!-- MODAL FOR ORM EDIT -->
+<div class="modal fade" id="ormEditModal" tabindex="-1" role="dialog" aria-labelledby="ormEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ormEditModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Edit ORM (One-Rep Max)</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ormEditContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR ORM DELETE -->
+<div class="modal fade" id="ormDeleteModal" tabindex="-1" role="dialog" aria-labelledby="ormDeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ormDeleteModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Delete ORM (One-Rep Max)</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ormDeleteContent">
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Scripts
 {
 	<script>
@@ -158,18 +198,19 @@
 				$(this).closest('.modal').modal('hide');
 			});
 
-			// Handle tab switch with Bootstrap Tabs
+			// HANDLE SWITCHING TABS
 			$('#trainingModuleTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 				e.target // newly activated tab
 				e.relatedTarget // previous tab
 			});
 
+			
 			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
 				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
 			});
 			
-			// Ładowanie zawartości dla "exercisePrivate" po załadowaniu strony
-			var userId = $('#trainingModuleTab').data("userid"); // Pobranie coachId z atrybutu data
+			// SCRIPT TO HANDLE LOADING TRAINING MODULE TAB AFTER OPENING INDEX
+			var userId = $('#trainingModuleTab').data("userid");
 			$.ajax({
 				url: '@Url.Action("List", "TrainingModules")',
 				type: 'GET',
@@ -185,11 +226,10 @@
 				}
 			});
 
-			// Handle tab click for "exercisePrivate" tab
+			// SCRIPT FOR HANDLING TRAINING MODULE TAB
 			$('#trainingModuleTab').on('click', function (e) {
 				e.preventDefault();
 
-				// Pobranie coachId z atrybutu data
 				var userId = $(this).data("userid");
 
 				$.ajax({
@@ -208,11 +248,10 @@
 				});
 			});
 
-			// Handle tab click for "exercisePrivate" tab
+			// SCRIPT FOR HANDLING ORM TAB
 			$('#ormTab').on('click', function (e) {
 				e.preventDefault();
 
-				// Pobranie coachId z atrybutu data
 				var userId = $(this).data("userid");
 
 				$.ajax({
@@ -231,7 +270,7 @@
 				});
 			});
 
-			// AJAX FOR LOADING EXERCISE DELETE MODAL
+			// AJAX FOR LOADING TRAINING MODULE CREATE MODAL
 			$(document).on('click', '.createBtn', function (e) {
 				e.preventDefault();
 
@@ -251,7 +290,7 @@
 				});
 			});
 
-			// AJAX FOR LOADING EXERCISE DELETE MODAL
+			// AJAX FOR LOADING TRAINING MODULE EDIT MODAL
 			$(document).on('click', '.editBtn', function (e) {
 				e.preventDefault();
 
@@ -270,7 +309,7 @@
 				});
 			});
 
-			// AJAX FOR LOADING EXERCISE DELETE MODAL
+			// AJAX FOR LOADING TRAINING MODULE DELETE MODAL
 			$(document).on('click', '.deleteBtn', function (e) {
 				e.preventDefault();
 
@@ -289,7 +328,7 @@
 				});
 			});
 
-			// AJAX FOR LOADING EXERCISE DELETE MODAL
+			// AJAX FOR LOADING TRAINING ORM CREATE MODAL
 			$(document).on('click', '.createOrmBtn', function (e) {
 				e.preventDefault();
 
@@ -303,7 +342,45 @@
 						$('#ormCreateModal').modal('show');
 					},
 					error: function () {
-						alert("An error occurred while loading the ormcreate modal.");
+						alert("An error occurred while loading the orm create modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING ORM EDIT MODAL
+			$(document).on('click', '.editOrmBtn', function (e) {
+				e.preventDefault();
+
+				var trainingOrmId = $(this).data("trainingormid");
+				$.ajax({
+					url: '@Url.Action("Edit", "TrainingOrms")',
+					type: 'GET',
+					data: { trainingOrmId: trainingOrmId },
+					success: function (data) {
+						$('#ormEditContent').html(data);
+						$('#ormEditModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the orm edit modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING ORM Delete MODAL
+			$(document).on('click', '.deleteOrmBtn', function (e) {
+				e.preventDefault();
+
+				var trainingOrmId = $(this).data("trainingormid");
+				$.ajax({
+					url: '@Url.Action("Delete", "TrainingOrms")',
+					type: 'GET',
+					data: { trainingOrmId: trainingOrmId },
+					success: function (data) {
+						$('#ormDeleteContent').html(data);
+						$('#ormDeleteModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the orm delete modal.");
 					}
 				});
 			});

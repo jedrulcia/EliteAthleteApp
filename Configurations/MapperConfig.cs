@@ -41,8 +41,11 @@ namespace EliteAthleteApp.Configurations
 			CreateMap<TrainingModule, TrainingModuleCreateVM>().ReverseMap();
 			CreateMap<TrainingModule, TrainingModuleDeleteVM>().ReverseMap();
 
+
+			// TRAINING ORM MODULE MAPPING
 			CreateMap<TrainingOrm, TrainingOrmVM>().ReverseMap();
 			CreateMap<TrainingOrm, TrainingOrmCreateVM>().ReverseMap();
+			CreateMap<TrainingOrm, TrainingOrmDeleteVM>().ReverseMap();
 
 /*			// INGREDIENT MODULE MAPPING
 			CreateMap<Ingredient, IngredientVM>().ReverseMap();
