@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models;
-using EliteAthleteApp.Models.Diet;
 using EliteAthleteApp.Models.Exercise;
-using EliteAthleteApp.Models.Ingredient;
-using EliteAthleteApp.Models.Meal;
 using EliteAthleteApp.Models.TrainingModule;
 using EliteAthleteApp.Models.TrainingPlan;
 
@@ -46,7 +43,7 @@ namespace EliteAthleteApp.Configurations
 			CreateMap<TrainingModuleORM, TrainingModuleORMVM>().ReverseMap();
 			CreateMap<TrainingModuleORM, TrainingModuleORMCreateVM>().ReverseMap();
 
-			// INGREDIENT MODULE MAPPING
+/*			// INGREDIENT MODULE MAPPING
 			CreateMap<Ingredient, IngredientVM>().ReverseMap();
 			CreateMap<Ingredient, IngredientIndexVM>().ReverseMap();
 			CreateMap<Ingredient, IngredientCreateVM>().ReverseMap();
@@ -64,7 +61,7 @@ namespace EliteAthleteApp.Configurations
 			// DIET MODULE MAPPING
 			CreateMap<Diet, DietIndexVM>().ReverseMap();
 			CreateMap<Diet, DietCreateVM>().ReverseMap();
-			CreateMap<Diet, DietManageMealsVM>().ReverseMap();
+			CreateMap<Diet, DietManageMealsVM>().ReverseMap();*/
 		}
 	}
 }

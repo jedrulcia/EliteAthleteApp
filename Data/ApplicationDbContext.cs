@@ -24,8 +24,8 @@ namespace EliteAthleteApp.Data
 
 			builder.ApplyConfiguration(new TrainingPlanPhaseSeedConfiguration());
 
-			builder.ApplyConfiguration(new IngredientCategorySeedConfiguration());
-			builder.ApplyConfiguration(new MealCategorySeedConfiguration());
+/*			builder.ApplyConfiguration(new IngredientCategorySeedConfiguration());
+			builder.ApplyConfiguration(new MealCategorySeedConfiguration());*/
 
 			base.OnModelCreating(builder);
 		}
@@ -41,12 +41,12 @@ namespace EliteAthleteApp.Data
 		public DbSet<TrainingModule> TrainingModules { get; set; }
 		public DbSet<TrainingModuleORM> TrainingModuleORMs { get; set; }
 
-		public DbSet<Ingredient> Ingredients { get; set; }
+/*		public DbSet<Ingredient> Ingredients { get; set; }
 		public DbSet<IngredientCategory> IngredientCategories { get; set; }
 
 		public DbSet<MealCategory> MealCategories { get; set; }
 
 		public DbSet<Diet> Diets { get; set; }
-		public DbSet<Meal> Meals { get; set; }
+		public DbSet<Meal> Meals { get; set; }*/
 	}
 }

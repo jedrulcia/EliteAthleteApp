@@ -38,11 +38,11 @@ builder.Services.AddScoped<ITrainingPlanPhaseRepository, TrainingPlanPhaseReposi
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddScoped<ITrainingModuleORMRepository, TrainingModuleORMRepository>();
 
-builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+/*builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 
 builder.Services.AddScoped<IMealRepository, MealRepository>();
 
-builder.Services.AddScoped<IDietRepository, DietRepository>();
+builder.Services.AddScoped<IDietRepository, DietRepository>();*/
 
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, containerName));
 builder.Services.AddScoped<IPdfService, PdfService>();
