@@ -27,16 +27,16 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-builder.Services.AddScoped<IExerciseCategoryRepository, ExerciseCategoryRepository>();
-builder.Services.AddScoped<IExerciseMuscleGroupRepository, ExerciseMuscleGroupRepository>();
+builder.Services.AddScoped<ITrainingExerciseRepository, TrainingExerciseRepository>();
+builder.Services.AddScoped<ITrainingExerciseCategoryRepository, TrainingExerciseCategoryRepository>();
+builder.Services.AddScoped<ITrainingExerciseMuscleGroupRepository, TrainingExerciseMuscleGroupRepository>();
 
 builder.Services.AddScoped<ITrainingPlanRepository, TrainingPlanRepository>();
 builder.Services.AddScoped<ITrainingPlanExerciseDetailRepository, TrainingPlanExerciseDetailRepository>();
 builder.Services.AddScoped<ITrainingPlanPhaseRepository, TrainingPlanPhaseRepository>();
 
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
-builder.Services.AddScoped<ITrainingModuleORMRepository, TrainingModuleORMRepository>();
+builder.Services.AddScoped<ITrainingOrmRepository, TrainingOrmRepository>();
 
 /*builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 

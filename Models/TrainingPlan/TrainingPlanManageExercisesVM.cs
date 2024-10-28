@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.TrainingExercise;
 
 namespace EliteAthleteApp.Models.TrainingPlan
 {

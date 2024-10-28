@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using EliteAthleteApp.Models.Exercise;
+using EliteAthleteApp.Models.TrainingExercise;
 using EliteAthleteApp.Models.TrainingPlan;
 
 namespace EliteAthleteApp.Data

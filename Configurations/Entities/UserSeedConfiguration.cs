@@ -24,7 +24,6 @@ namespace EliteAthleteApp.Configurations.Entities
                     PasswordHash = hasher.HashPassword(null, "Admin!2"),
                     EmailConfirmed = true,
 					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-					DieticianId = "654bced5-375b-5291-0a59-1dc59923d1b0"
 				},
                 new User
                 {
@@ -38,25 +37,10 @@ namespace EliteAthleteApp.Configurations.Entities
                     PasswordHash = hasher.HashPassword(null, "Admin!2"),
                     EmailConfirmed = true,
 					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-					DieticianId = "654bced5-375b-5291-0a59-1dc59923d1b0"
 				},
 				new User
 				{
 					Id = "654bced5-375b-5291-0a59-1dc59923d1b2",
-					UserName = "dietician@localhost.com",
-					NormalizedUserName = "DIETICIAN@LOCALHOST.COM",
-					Email = "dietician@localhost.com",
-					NormalizedEmail = "DIETICIAN@LOCALHOST.COM",
-					FirstName = "System",
-					LastName = "Dietician",
-					PasswordHash = hasher.HashPassword(null, "Admin!2"),
-					EmailConfirmed = true,
-					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b4",
-					DieticianId = "654bced5-375b-5291-0a59-1dc59923d1b2"
-				},
-				new User
-				{
-					Id = "654bced5-375b-5291-0a59-1dc59923d1b3",
 					UserName = "coach@localhost.com",
 					NormalizedUserName = "COACH@LOCALHOST.COM",
 					Email = "coach@localhost.com",
@@ -65,22 +49,7 @@ namespace EliteAthleteApp.Configurations.Entities
 					LastName = "Coach",
 					PasswordHash = hasher.HashPassword(null, "Admin!2"),
 					EmailConfirmed = true,
-					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b3",
-					DieticianId = "654bced5-375b-5291-0a59-1dc59923d1b4"
-				},
-				new User
-				{
-					Id = "654bced5-375b-5291-0a59-1dc59923d1b4",
-					UserName = "full@localhost.com",
-					NormalizedUserName = "FULL@LOCALHOST.COM",
-					Email = "full@localhost.com",
-					NormalizedEmail = "FULL@LOCALHOST.COM",
-					FirstName = "System",
-					LastName = "Full",
-					PasswordHash = hasher.HashPassword(null, "Admin!2"),
-					EmailConfirmed = true,
-					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b4",
-					DieticianId = "654bced5-375b-5291-0a59-1dc59923d1b4"
+					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0"
 				}
 				);
         }

@@ -19,34 +19,23 @@ namespace EliteAthleteApp.Data
 			builder.ApplyConfiguration(new UserSeedConfiguration());
 			builder.ApplyConfiguration(new UserRoleSeedConfiguration());
 
-			builder.ApplyConfiguration(new ExerciseCategorySeedConfiguration());
-			builder.ApplyConfiguration(new ExerciseMuscleGroupSeedConfiguration());
+			builder.ApplyConfiguration(new TrainingExerciseCategorySeedConfiguration());
+			builder.ApplyConfiguration(new TrainingExerciseMuscleGroupSeedConfiguration());
 
 			builder.ApplyConfiguration(new TrainingPlanPhaseSeedConfiguration());
-
-/*			builder.ApplyConfiguration(new IngredientCategorySeedConfiguration());
-			builder.ApplyConfiguration(new MealCategorySeedConfiguration());*/
 
 			base.OnModelCreating(builder);
 		}
 
-		public DbSet<Exercise> Exercises { get; set; }
-		public DbSet<ExerciseCategory> ExerciseCategories { get; set; }
-		public DbSet<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; }
+		public DbSet<TrainingExercise> Exercises { get; set; }
+		public DbSet<TrainingExerciseCategory> ExerciseCategories { get; set; }
+		public DbSet<TrainingExerciseMuscleGroup> ExerciseMuscleGroups { get; set; }
 
 		public DbSet<TrainingPlan> TrainingPlans { get; set; }
 		public DbSet<TrainingPlanPhase> TrainingPlanPhases { get; set; }
 		public DbSet<TrainingPlanExerciseDetail> TrainingPlanExerciseDetails { get; set; }
 
 		public DbSet<TrainingModule> TrainingModules { get; set; }
-		public DbSet<TrainingModuleORM> TrainingModuleORMs { get; set; }
-
-/*		public DbSet<Ingredient> Ingredients { get; set; }
-		public DbSet<IngredientCategory> IngredientCategories { get; set; }
-
-		public DbSet<MealCategory> MealCategories { get; set; }
-
-		public DbSet<Diet> Diets { get; set; }
-		public DbSet<Meal> Meals { get; set; }*/
+		public DbSet<TrainingOrm> TrainingOrms { get; set; }
 	}
 }

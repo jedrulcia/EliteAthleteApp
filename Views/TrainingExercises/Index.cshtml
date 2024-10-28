@@ -1,0 +1,277 @@
+﻿@using EliteAthleteApp.Models.TrainingExercise
+
+@model TrainingExerciseIndexVM
+
+@{
+	ViewData["Title"] = "Index";
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
+	</div>
+}
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			<ul class="nav nav-tabs" id="exerciseTabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<a class="nav-link active" id="exercisePrivateTab" data-toggle="tab" data-coachid="@Model.CoachId" href="#exercisePrivate" role="tab" aria-controls="exercisePrivate" aria-selected="true">
+						<i class="bi bi-person">&nbsp;</i><strong>My Exercises</strong>
+					</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" id="exercisePublicTab" data-toggle="tab" href="#exercisePublic" role="tab" aria-controls="exercisePublic" aria-selected="false">
+						<i class="bi bi-people">&nbsp;</i><strong>All Exercises</strong>
+					</a>
+				</li>
+				<li class="nav-item ms-auto" role="presentation">
+					<button class="nav-link createBtn" type="button" id="createExerciseTab" aria-controls="createExercise" aria-selected="false">
+						<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New</strong>
+					</button>
+				</li>
+			</ul>
+			<br />
+			<div class="tab-content" id="exerciseTabsContent">
+				<div class="tab-pane fade show active" id="exercisePrivate" role="tabpanel" aria-labelledby="exercisePrivateTab">
+				</div>
+				<div class="tab-pane fade" id="exercisePublic" role="tabpanel" aria-labelledby="exercisePublicTab">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- MODAL FOR EXERCISE CREATE -->
+<div class="modal fade" id="exerciseCreateModal" tabindex="-1" role="dialog" aria-labelledby="exerciseCreateModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary" id="exerciseCreateModalLabel">
+					<strong>Create New Exercise</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseCreateContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE EDIT -->
+<div class="modal fade" id="exerciseEditModal" tabindex="-1" role="dialog" aria-labelledby="exerciseEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="exerciseCreateModalLabel">
+					<strong>Edit Exercise</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseEditContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE DETAILS -->
+<div class="modal fade" id="exerciseDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exerciseDetailsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="exerciseCreateModalLabel">
+					<strong>Exercise Details</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseDetailsContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE DELETE -->
+<div class="modal fade" id="exerciseDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exerciseDeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="exerciseCreateModalLabel">
+					<strong>Remove Exercise</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseDeleteContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+{
+	<script>
+		$(function () {
+			// DATATABLE INITIALIZE
+			$('.table').DataTable();
+
+
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
+			});
+
+			// Handle tab switch with Bootstrap Tabs
+			$('#exerciseTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				e.target // newly activated tab
+				e.relatedTarget // previous tab
+			});
+
+			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
+			});
+
+			// Ładowanie zawartości dla "exercisePrivate" po załadowaniu strony
+			var coachId = $('#exercisePrivateTab').data("coachid"); // Pobranie coachId z atrybutu data
+			$.ajax({
+				url: '@Url.Action("ExercisePrivate", "TrainingExercises")',
+				type: 'GET',
+				data: { coachId: coachId },
+				success: function (data) {
+					$('#exercisePrivate').html(data);
+					$('.table').DataTable();
+					$('#exercisePrivateTab').tab('show');
+
+				},
+				error: function () {
+					alert("An error occurred while loading 'exercisePrivate' content.");
+				}
+			});
+
+			// AJAX FOR LOADING EXERCISE CREATE MODAL
+			$(document).on('click', '.createBtn', function (e) {
+				e.preventDefault();
+
+				$.ajax({
+					url: '@Url.Action("Create", "TrainingExercises")',
+					type: 'GET',
+					success: function (data) {
+						$('#exerciseCreateContent').html(data);
+						$('#exerciseCreateModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise create modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE DELETE MODAL
+			$(document).on('click', '.deleteBtn', function (e) {
+				e.preventDefault();
+
+				var id = $(this).data("deleteexerciseid");
+				$.ajax({
+					url: '@Url.Action("Delete", "TrainingExercises")',
+					type: 'GET',
+					data: { id: id },
+					success: function (data) {
+						$('#exerciseDeleteContent').html(data);
+						$('#exerciseDeleteModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise delete modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE DETAILS MODAL
+			$(document).on('click', '.detailsBtn', function (e) {
+				e.preventDefault();
+
+				var id = $(this).data("detailsexerciseid");
+				$.ajax({
+					url: '@Url.Action("Details", "TrainingExercises")',
+					type: 'GET',
+					data: { id: id },
+					success: function (data) {
+						$('#exerciseDetailsContent').html(data);
+						$('#exerciseDetailsModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise details modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE EDIT MODAL
+			$(document).on('click', '.editBtn', function (e) {
+				e.preventDefault();
+
+				var id = $(this).data("editexerciseid");
+				$.ajax({
+					url: '@Url.Action("Edit", "TrainingExercises")',
+					type: 'GET',
+					data: { id: id },
+					success: function (data) {
+						$('#exerciseEditContent').html(data);
+						$('#exerciseEditModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise edit modal.");
+					}
+				});
+			});
+
+			// Handle tab click for "exercisePrivate" tab
+			$('#exercisePrivateTab').on('click', function (e) {
+				e.preventDefault();
+
+				// Pobranie coachId z atrybutu data
+				var coachId = $(this).data("coachid");
+
+				$.ajax({
+					url: '@Url.Action("ExercisePrivate", "TrainingExercises")',
+					type: 'GET',
+					data: { coachId: coachId },
+					success: function (data) {
+						$('#exercisePrivate').html(data);
+						$('.table').DataTable();
+						$('#exercisePrivateTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'exercisePrivate' content.");
+					}
+				});
+			});
+
+			// Handle tab click for "exercisePublic" tab
+			$('#exercisePublicTab').on('click', function (e) {
+				e.preventDefault();
+
+				$.ajax({
+					url: '@Url.Action("ExercisePublic", "TrainingExercises")',
+					type: 'GET',
+					success: function (data) {
+						$('#exercisePublic').html(data);
+						$('.table').DataTable();
+						$('#exercisePublicTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'exercisePublic' content.");
+					}
+				});
+			});
+		});
+	</script>
+}

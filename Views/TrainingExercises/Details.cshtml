@@ -1,0 +1,21 @@
+﻿@using EliteAthleteApp.Models.TrainingExercise
+
+@model TrainingExerciseVM
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+
+<h4 class="text-primary-decorative">@Model.Name</h4>
+@{
+	var mainVideoUrl = Model.VideoLink;
+	var mainVideoId = mainVideoUrl.Split(new[] { "v=" }, StringSplitOptions.None)[1];
+	var mainEmbedUrl = "https://www.youtube.com/embed/" + mainVideoId;
+}
+<p class="align-content-center">
+	<iframe width="842" height="473" src="@mainEmbedUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p>
+<strong>Description:</strong><p class="text-white">@Model.Description</p>
+<strong>Category:</strong> <p class ="text-white">@Model.ExerciseCategory.Name</p>
+<strong>Muscle Group:</strong> <p class="text-white">@Model.ExerciseMuscleGroup.Name</p>

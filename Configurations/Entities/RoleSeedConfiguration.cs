@@ -26,20 +26,8 @@ namespace EliteAthleteApp.Configurations.Entities
 				new IdentityRole
 				{
 					Id = "543bced5-375b-5291-0a59-1dc59923d1b2",
-					Name = Roles.Dietician,
-					NormalizedName = Roles.Dietician.ToUpper()
-				},
-				new IdentityRole
-				{
-					Id = "543bced5-375b-5291-0a59-1dc59923d1b3",
 					Name = Roles.Coach,
 					NormalizedName = Roles.Coach.ToUpper()
-				},
-				new IdentityRole
-				{
-					Id = "543bced5-375b-5291-0a59-1dc59923d1b4",
-					Name = Roles.Full,
-					NormalizedName = Roles.Full.ToUpper()
 				}
 				);
         }
