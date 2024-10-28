@@ -47,5 +47,19 @@ namespace EliteAthleteApp.Controllers
 			await trainingOrmRepository.EditOrmAsync(trainingOrmCreateVM);
 			return RedirectToAction(nameof(Index), "TrainingModules", new { userId = trainingOrmCreateVM.UserId });
 		}
+		
+		// GET: TrainingOrm/Delete
+		public async Task<IActionResult> Delete(int trainingOrmId)
+		{
+			return PartialView(await trainingOrmRepository.GetTrainingOrmDeleteVM(trainingOrmId));
+		}
+
+		// POST: TrainingOrm/Delete
+		[HttpPost, ActionName("Delete")]
+		public async Task<IActionResult> Delete(TrainingOrmDeleteVM trainingOrmDeleteVM)
+		{
+			await trainingOrmRepository.DeleteOrmAsync(trainingOrmDeleteVM);
+			return RedirectToAction(nameof(Index), "TrainingModules", new { userId = trainingOrmDeleteVM.UserId });
+		}
 	}
 }

@@ -37,6 +37,12 @@ namespace EliteAthleteApp.Repositories
 			return mapper.Map<TrainingOrmCreateVM>(await GetAsync(trainingOrmId));
 		}
 
+		// GETS TRAINING ORM DELETE VIEW MODEL
+		public async Task<TrainingOrmDeleteVM> GetTrainingOrmDeleteVM(int trainingOrmId)
+		{
+			return mapper.Map<TrainingOrmDeleteVM>(await GetAsync(trainingOrmId));
+		}
+
 		// CREATES NEW ORM ENTITY
 		public async Task CreateOrmAsync(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
@@ -46,6 +52,11 @@ namespace EliteAthleteApp.Repositories
 		public async Task EditOrmAsync(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
 			await UpdateAsync(mapper.Map<TrainingOrm>(trainingOrmCreateVM));
+		}
+
+		public async Task DeleteOrmAsync(TrainingOrmDeleteVM trainingOrmDeleteVM)
+		{
+			await DeleteAsync(trainingOrmDeleteVM.Id);
 		}
 	}
 }
