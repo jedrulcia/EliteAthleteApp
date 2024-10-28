@@ -149,6 +149,20 @@ namespace EliteAthleteApp.Repositories
 			return trainingPlan.Id;
 		}
 
+		// DELETES TRAINING PLAN AND ITS EXERCISE DETAILS
+		public async Task DeleteTrainingPlanAndDetailsAsync(int trainingPlanId)
+		{
+			var trainingPlan = await GetAsync(trainingPlanId);
+			var holder = trainingPlan.TrainingPlanExerciseDetailIds.ToList();
+
+			for (int i = 0; i < holder.Count; i++)
+			{
+				await trainingPlanExerciseDetailRepository.DeleteAsync(holder[i].Value);
+			}
+
+			await DeleteAsync(trainingPlanId);
+		}
+
 		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
 		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{

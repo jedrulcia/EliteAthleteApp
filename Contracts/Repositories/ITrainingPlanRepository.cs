@@ -33,6 +33,9 @@ namespace EliteAthleteApp.Contracts
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM model);
 
+		// DELETES TRAINING PLAN AND ITS EXERCISE DETAILS
+		Task DeleteTrainingPlanAndDetailsAsync(int trainingPlanId);
+
 		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
 		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM);
 

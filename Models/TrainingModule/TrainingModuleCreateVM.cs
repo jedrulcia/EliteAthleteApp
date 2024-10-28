@@ -2,7 +2,7 @@
 
 namespace EliteAthleteApp.Models.TrainingModule
 {
-    public class TrainingModuleCreateVM
+    public class TrainingModuleCreateVM : IValidatableObject
     {
         // IDs
         public int? Id { get; set; }
@@ -25,5 +25,17 @@ namespace EliteAthleteApp.Models.TrainingModule
 		[DataType(DataType.Date)]
 		[Required]
 		public DateTime EndDate { get; set; }
+
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			if (StartDate >= EndDate)
+			{
+				yield return new ValidationResult(
+					"The starting date must be earlier than the ending date.",
+					new[] { nameof(StartDate), nameof(EndDate) }
+				);
+			}
+		}
 	}
 }

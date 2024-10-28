@@ -15,10 +15,10 @@ namespace EliteAthleteApp.Repositories
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ApplicationDbContext context;
-		public TrainingModuleRepository(ApplicationDbContext context, 
-			IMapper mapper, 
-			ITrainingPlanRepository trainingPlanRepository, 
-			UserManager<User> userManager, 
+		public TrainingModuleRepository(ApplicationDbContext context,
+			IMapper mapper,
+			ITrainingPlanRepository trainingPlanRepository,
+			UserManager<User> userManager,
 			IHttpContextAccessor httpContextAccessor) : base(context)
 		{
 			this.context = context;
@@ -43,7 +43,7 @@ namespace EliteAthleteApp.Repositories
 			}
 			var coach = await userManager.FindByIdAsync(user.CoachId);
 
-			return new TrainingModuleIndexVM{ UserId = userId, CoachId = coach.Id }; 
+			return new TrainingModuleIndexVM { UserId = userId, CoachId = coach.Id };
 		}
 
 		// GETS LIST OF TRAINING MODULES VIEW MODELS
@@ -80,7 +80,7 @@ namespace EliteAthleteApp.Repositories
 			List<DateTime> days = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
 
 			await AddAsync(trainingModule);
-			await CreateDayInTrainingModuleAsync(days, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
+			await CreateDaysInTrainingModuleAsync(days, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
 		// EDITS EXSITING TRAINING MODULE
@@ -88,20 +88,18 @@ namespace EliteAthleteApp.Repositories
 		{
 			var trainingModule = await GetAsync(trainingModuleCreateVM.Id);
 
-			if (trainingModuleCreateVM.StartDate > trainingModule.StartDate || trainingModuleCreateVM.EndDate < trainingModule.EndDate)
-			{
-				throw new ArgumentException("New StartDate must be earlier than previous, and EndDate later than previous.");
-			}
-
 			List<DateTime> daysBefore = GetDaysBetween(trainingModule.StartDate, trainingModule.EndDate);
 			List<DateTime> daysAfter = GetDaysBetween(trainingModuleCreateVM.StartDate, trainingModuleCreateVM.EndDate);
 			List<DateTime> newDays = GetNewDays(daysBefore, daysAfter);
+			List<DateTime> oldDays = GetOldDays(daysBefore, daysAfter);
+
 
 			trainingModule.Name = trainingModuleCreateVM.Name;
 			trainingModule.StartDate = trainingModuleCreateVM.StartDate;
 			trainingModule.EndDate = trainingModuleCreateVM.EndDate;
 
-			await CreateDayInTrainingModuleAsync(newDays, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
+			await RemoveDaysFromTrainingModuleAsync(oldDays, trainingModule.Id);
+			await CreateDaysInTrainingModuleAsync(newDays, trainingModuleCreateVM.UserId, trainingModuleCreateVM.CoachId, trainingModule.Id);
 		}
 
 		// DELETES THE TRAINING MODULE AND ALL ASSOCIATED TRAINING PLANS
@@ -117,50 +115,8 @@ namespace EliteAthleteApp.Repositories
 
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
-		// GETS A LIST OF DAYS BETWEEN STARTING AND ENDING DATE
-		private static List<DateTime> GetDaysBetween(DateTime? startDate, DateTime? endDate)
-		{
-			DateTime start = startDate.Value;
-			DateTime end = endDate.Value;
-
-			if (start > end)
-			{
-				throw new ArgumentException("StartDate must be earlier than or equal to EndDate.");
-			}
-
-			List<DateTime> days = new List<DateTime>();
-			for (DateTime date = start; date <= end; date = date.AddDays(1))
-			{
-				days.Add(date);
-			}
-			return days;
-		}
-
-		// GETS A LIST OF NEW DAYS IN TRAINING MODULE
-		private static List<DateTime> GetNewDays(List<DateTime> daysBefore, List<DateTime> daysAfter)
-		{
-			List<DateTime> newDays = new List<DateTime>();
-
-			for (int i = 0; i < daysAfter.Count; i++)
-			{
-				bool isNew = true;
-				for (int j = 0; j < daysBefore.Count; j++)
-				{
-					if (daysAfter[i] == daysBefore[j])
-					{
-						isNew = false;
-					}
-				}
-				if (isNew)
-				{
-					newDays.Add(daysAfter[i]);
-				}
-			}
-			return newDays;
-		}
-
-		// CREATES NEW DAY IN TRAINING MODULE (TRAINING PLAN ENTITY)
-		private async Task CreateDayInTrainingModuleAsync(List<DateTime> days, string userId, string coachId, int trainingModuleId)
+		// CREATES NEW DAYS IN TRAINING MODULE (NEW TRAINING PLAN ENTITIES)
+		private async Task CreateDaysInTrainingModuleAsync(List<DateTime> days, string userId, string coachId, int trainingModuleId)
 		{
 			var trainingModule = await GetAsync(trainingModuleId);
 
@@ -178,6 +134,89 @@ namespace EliteAthleteApp.Repositories
 				trainingModule.TrainingPlanIds.Add(trainingPlanId);
 			}
 			await UpdateAsync(trainingModule);
+		}
+
+		// REMOVES OLD DAYS FROM TRAINING MODULE (OLD TRAINING PLAN ENTITIES)
+		private async Task RemoveDaysFromTrainingModuleAsync(List<DateTime> oldDays, int trainingModuleId)
+		{
+			var trainingModule = await GetAsync(trainingModuleId);
+			var holder = trainingModule.TrainingPlanIds.ToList();
+
+			for (int i = 0; i < holder.Count; i++)
+			{
+				var trainingPlan = await trainingPlanRepository.GetAsync(holder[i]);
+				for (int j = 0; j < oldDays.Count; j++)
+				{
+					if (trainingPlan.Date == oldDays[j])
+					{
+						await trainingPlanRepository.DeleteTrainingPlanAndDetailsAsync(holder[i]);
+						trainingModule.TrainingPlanIds.Remove(holder[i]);
+						break;
+					}
+				}
+			}
+		}
+
+		// GETS A LIST OF DAYS BETWEEN STARTING AND ENDING DATE
+		private static List<DateTime> GetDaysBetween(DateTime? startDate, DateTime? endDate)
+		{
+			DateTime start = startDate.Value;
+			DateTime end = endDate.Value;
+
+			List<DateTime> days = new List<DateTime>();
+			for (DateTime date = start; date <= end; date = date.AddDays(1))
+			{
+				days.Add(date);
+			}
+			return days;
+		}
+
+		// GETS A LIST OF NEW DAYS IN TRAINING MODULE
+		private static List<DateTime> GetNewDays(List<DateTime> daysBefore, List<DateTime> daysAfter)
+		{
+			List<DateTime> newDays = new List<DateTime>();
+
+			foreach (var dayAfter in daysAfter)
+			{
+				bool isNew = true;
+				foreach (var dayBefore in daysBefore)
+				{
+					if (dayAfter == dayBefore)
+					{
+						isNew = false;
+						break;
+					}
+				}
+				if (isNew)
+				{
+					newDays.Add(dayAfter);
+				}
+			}
+			return newDays;
+		}
+
+		// GETS A LIST OF DAYS TO DELETE IN TRAINING MODULE
+		private static List<DateTime> GetOldDays(List<DateTime> daysBefore, List<DateTime> daysAfter)
+		{
+			List<DateTime> oldDays = new List<DateTime>();
+
+			foreach (var dayBefore in daysBefore)
+			{
+				bool toDelete = true;
+				foreach (var dayAfter in daysAfter)
+				{
+					if (dayBefore == dayAfter)
+					{
+						toDelete = false;
+						break;
+					}
+				}
+				if (toDelete)
+				{
+					oldDays.Add(dayBefore);
+				}
+			}
+			return oldDays;
 		}
 	}
 }
