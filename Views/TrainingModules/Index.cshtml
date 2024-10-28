@@ -216,7 +216,7 @@
 				var userId = $(this).data("userid");
 
 				$.ajax({
-					url: '@Url.Action("List", "TrainingModuleORM")',
+					url: '@Url.Action("List", "TrainingOrms")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {
@@ -295,7 +295,7 @@
 
 				var userId = $(this).data("userid");
 				$.ajax({
-					url: '@Url.Action("Create", "TrainingModuleORM")',
+					url: '@Url.Action("Create", "TrainingOrms")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {
