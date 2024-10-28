@@ -11,7 +11,13 @@ namespace EliteAthleteApp.Contracts
 		// GETS TRAINING ORM CREATE VM
 		TrainingOrmCreateVM GetTrainingOrmCreateVM(string userId);
 
+		// GETS TRAINING ORM EDIT VIEW MODEL
+		Task<TrainingOrmCreateVM> GetTrainingOrmEditVM(int trainingOrmId);
+
 		// CREATES NEW ORM ENTITY
 		Task CreateOrmAsync(TrainingOrmCreateVM trainingOrmCreateVM);
+
+		// EDITS EXSITING ORM ENTITY
+		Task EditOrmAsync(TrainingOrmCreateVM trainingOrmCreateVM);
 	}
 }
