@@ -46,6 +46,7 @@ builder.Services.AddScoped<IDietRepository, DietRepository>();*/
 
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, containerName));
 builder.Services.AddScoped<IPdfService, PdfService>();
+builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddControllersWithViews();

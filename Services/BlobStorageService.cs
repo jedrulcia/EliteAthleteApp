@@ -10,7 +10,7 @@ namespace EliteAthleteApp.Services
 
         public BlobStorageService(string blobConnectionString, string containerName)
         {
-            blobServiceClient = new BlobServiceClient(blobConnectionString);
+            this.blobServiceClient = new BlobServiceClient(blobConnectionString);
             this.containerName = containerName;
         }
 

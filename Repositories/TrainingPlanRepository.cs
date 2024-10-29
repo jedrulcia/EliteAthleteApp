@@ -72,7 +72,7 @@ namespace EliteAthleteApp.Repositories
 			var trainingPlan = await GetAsync(trainingPlanid);
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
 
-			trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds);
+			trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlanid);
 
 			return trainingPlanDetailsVM;
 		}
@@ -83,7 +83,7 @@ namespace EliteAthleteApp.Repositories
 			var trainingPlan = await GetAsync(trainingPlanId);
 			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(trainingPlan);
 
-			trainingPlanManageExercisesVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds);
+			trainingPlanManageExercisesVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlanId);
 
 			return trainingPlanManageExercisesVM;
 		}
@@ -249,20 +249,35 @@ namespace EliteAthleteApp.Repositories
 		// METHODS NOT AVAILABLE OUTSIDE OF THE CLASS BELOW
 
 		// GETS A LIST OF TRAINING PLAN EXERCISE DETAIL VM
-		private async Task<List<TrainingPlanExerciseDetailVM>> GetTrainingPlanExerciseDetailVMsAsync(List<int?> trainingPlanExerciseDetailIds)
+		private async Task<List<TrainingPlanExerciseDetailVM>> GetTrainingPlanExerciseDetailVMsAsync(List<int?> trainingPlanExerciseDetailIds, int? trainingPlanId)
 		{
 			var trainingPlanExerciseDetailVMs = new List<TrainingPlanExerciseDetailVM>();
+			List<int?> removedExerciseIds = new List<int?>();
 
 			foreach (var id in trainingPlanExerciseDetailIds)
 			{
 				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await trainingPlanExerciseDetailRepository.GetAsync(id));
-
-				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<TrainingExerciseVM>(await exerciseRepository.GetAsync(trainingPlanExerciseDetailVM.ExerciseId));
+				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<TrainingExerciseVM>(await exerciseRepository.GetExerciseDetailsVMAsync(trainingPlanExerciseDetailVM.ExerciseId.Value));
 				trainingPlanExerciseDetailVM.TrainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await trainingPlanPhaseRepository.GetAsync(trainingPlanExerciseDetailVM.TrainingPlanPhaseId));
-				trainingPlanExerciseDetailVMs.Add(trainingPlanExerciseDetailVM);
+				if (trainingPlanExerciseDetailVM.ExerciseVM != null)
+				{
+					trainingPlanExerciseDetailVMs.Add(trainingPlanExerciseDetailVM);
+				}
+				else
+				{
+					removedExerciseIds.Add(id);
+				}
 			}
 
 			trainingPlanExerciseDetailVMs = SortTrainingPlanExerciseDetailVMs(trainingPlanExerciseDetailVMs);
+
+			if (!removedExerciseIds.IsNullOrEmpty())
+			{
+				foreach (var id in removedExerciseIds)
+				{
+					await RemoveExerciseFromTrainingPlanAsync(new TrainingPlanRemoveExerciseVM { TrainingPlanId = trainingPlanId, Id = id.Value });
+				}
+			}
 
 			return trainingPlanExerciseDetailVMs;
 		}

@@ -5,6 +5,7 @@ using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingExercise;
 using EliteAthleteApp.Contracts.Repositories;
+using EliteAthleteApp.Contracts.Services;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -16,13 +17,15 @@ namespace EliteAthleteApp.Repositories
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ITrainingExerciseCategoryRepository exerciseCategoryRepository;
 		private readonly ITrainingExerciseMuscleGroupRepository exerciseMuscleGroupRepository;
+		private readonly IYoutubeService youTubeService;
 
 		public TrainingExerciseRepository(ApplicationDbContext context, 
 			IMapper mapper, 
 			UserManager<User> userManager, 
 			IHttpContextAccessor httpContextAccessor, 
 			ITrainingExerciseCategoryRepository exerciseCategoryRepository,
-			ITrainingExerciseMuscleGroupRepository exerciseMuscleGroupRepository) : base(context)
+			ITrainingExerciseMuscleGroupRepository exerciseMuscleGroupRepository,
+			IYoutubeService youTubeService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
@@ -30,6 +33,7 @@ namespace EliteAthleteApp.Repositories
 			this.httpContextAccessor = httpContextAccessor;
 			this.exerciseCategoryRepository = exerciseCategoryRepository;
 			this.exerciseMuscleGroupRepository = exerciseMuscleGroupRepository;
+			this.youTubeService = youTubeService;
 		}
 
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
@@ -65,13 +69,21 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS EXERCISE DETAILS VIEW MODEL
-		public async Task<TrainingExerciseVM> GetExerciseDetailsVMAsync(int id)
+		public async Task<TrainingExerciseVM?> GetExerciseDetailsVMAsync(int id)
 		{
 			var exercise = await GetAsync(id);
-			var exerciseVM = mapper.Map<TrainingExerciseVM>(exercise);
-			exerciseVM = await GetExerciseForeignEntitiesAsync(exerciseVM, exercise);
+			if (exercise != null)
+			{
+				var exerciseVM = mapper.Map<TrainingExerciseVM>(exercise);
+				exerciseVM = await GetExerciseForeignEntitiesAsync(exerciseVM, exercise);
 
-			return exerciseVM;
+				if (exerciseVM.VideoLink != null)
+				{
+					exerciseVM.VideoLink = youTubeService.GetEmbeddedYouTubeLink(exerciseVM.VideoLink);
+				}
+				return exerciseVM;
+			}
+			return null;
 		}
 
 		// GETS EXERCISE DELETE VIEW MODEL
