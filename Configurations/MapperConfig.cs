@@ -15,16 +15,19 @@ namespace EliteAthleteApp.Configurations
 			// USER MODULE MAPPING
 			CreateMap<User, UserVM>().ReverseMap();
 
-			// EXERCISE MODULE MAPPING
+			// TRAINING EXERCISE MAPPING
 			CreateMap<TrainingExercise, TrainingExerciseVM>().ReverseMap();
 			CreateMap<TrainingExercise, TrainingExerciseIndexVM>().ReverseMap();
 			CreateMap<TrainingExercise, TrainingExerciseCreateVM>().ReverseMap();
 			CreateMap<TrainingExercise, TrainingExerciseDeleteVM>().ReverseMap();
 
+			CreateMap<TrainingExerciseMedia, TrainingExerciseMediaVM>().ReverseMap();
+			CreateMap<TrainingExerciseMediaVM, TrainingExerciseMediaCreateVM>().ReverseMap();
+
 			CreateMap<TrainingExerciseCategory, TrainingExerciseCategoryVM>().ReverseMap();
 			CreateMap<TrainingExerciseMuscleGroup, TrainingExerciseMuscleGroupVM>().ReverseMap();
 
-			// TRAINING PLAN MODULE MAPPING
+			// TRAINING PLAN MAPPING
 			CreateMap<TrainingPlan, TrainingPlanVM>().ReverseMap();
             CreateMap<TrainingPlan, TrainingPlanIndexVM>().ReverseMap();
 			CreateMap<TrainingPlan, TrainingPlanCreateVM>().ReverseMap();
@@ -36,13 +39,13 @@ namespace EliteAthleteApp.Configurations
 			CreateMap<TrainingPlanExerciseDetail, TrainingPlanExerciseDetailVM>().ReverseMap();
 			CreateMap<TrainingPlanExerciseDetail, TrainingPlanAddExerciseVM>().ReverseMap();
 
-			// TRAINING MODULE MODULE MAPPING
+			// TRAINING MODULE MAPPING
 			CreateMap<TrainingModule, TrainingModuleVM>().ReverseMap();
 			CreateMap<TrainingModule, TrainingModuleCreateVM>().ReverseMap();
 			CreateMap<TrainingModule, TrainingModuleDeleteVM>().ReverseMap();
 
 
-			// TRAINING ORM MODULE MAPPING
+			// TRAINING ORM MAPPING
 			CreateMap<TrainingOrm, TrainingOrmVM>().ReverseMap();
 			CreateMap<TrainingOrm, TrainingOrmCreateVM>().ReverseMap();
 			CreateMap<TrainingOrm, TrainingOrmDeleteVM>().ReverseMap();

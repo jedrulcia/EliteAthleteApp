@@ -12,14 +12,12 @@ namespace EliteAthleteApp.Models.TrainingExercise
 		public int? ExerciseCategoryId { get; set; }
 		[Display(Name = "Muscle Group")]
 		public int? ExerciseMuscleGroupId { get; set; }
+		public int? ExerciseMediaId { get; set; }
 
 		// STRINGS etc.
 		[Display(Name = "Exercise")]
 		[Required]
 		public string Name { get; set; }
-
-		[Display(Name = "Video")]
-		public string? VideoLink { get; set; }
 
 		[Display(Name = "Description")]
 		public string? Description { get; set; }

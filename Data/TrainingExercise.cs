@@ -6,11 +6,10 @@
 		public int Id { get; set; }
 		public int? ExerciseCategoryId { get; set; }
 		public int? ExerciseMuscleGroupId { get; set; }
+		public int? ExerciseMediaId { get; set; }
 		public string? CoachId {  get; set; }
-
 		// STRINGS etc.
 		public string? Name { get; set; }
-		public string? VideoLink { get; set; }
         public string? Description { get; set; }
 
 		// OTHER 

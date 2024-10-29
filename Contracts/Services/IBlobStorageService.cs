@@ -3,12 +3,12 @@
     public interface IBlobStorageService
     {
         // UPLOAD IMAGE TO THE AZURE BLOB STORAGE
-        Task<string> UploadImageAsync(IFormFile file);
+        Task<string> UploadExerciseImageAsync(IFormFile file);
 
         // REMOVES IMAGE FROM THE AZURE BLOB STORAGE
-        Task RemoveImageAsync(string imageUrl);
+        Task RemoveExerciseImageAsync(string imageUrl);
 
         // CHECKS IF BLOB EXSISTS IN THE STORAGE
-        Task<bool> BlobExistsAsync(string blobName);
+        Task<bool> BlobExerciseImageExistsAsync(string blobName);
     }
 }

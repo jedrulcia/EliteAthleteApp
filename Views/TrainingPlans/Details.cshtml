@@ -11,7 +11,7 @@
 {
 	<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name) - @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.ExerciseCategory.Name)</h1>
 	<dd class="col-sm-12">
-		<iframe width="765" height="430" src="@Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.VideoLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		<iframe width="765" height="430" src="@Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.ExerciseMediaVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	</dd>
 	<dd class="col-sm-12">
 		@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Description)

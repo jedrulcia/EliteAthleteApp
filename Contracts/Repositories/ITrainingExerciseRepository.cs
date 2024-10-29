@@ -28,5 +28,8 @@ namespace EliteAthleteApp.Contracts
 
 		// EDITS EXISTING DATABAASE ENTITY IN THE EXERCISE TABLE
 		Task EditExerciseAsync(TrainingExerciseCreateVM exerciseCreateVM);
+
+		// DELETES EXISTING DATABASE ENTITY FROM THE EXERCISE TABLE
+		Task DeleteExerciseAsync(TrainingExerciseDeleteVM trainingExerciseDeleteVM);
 	}
 }

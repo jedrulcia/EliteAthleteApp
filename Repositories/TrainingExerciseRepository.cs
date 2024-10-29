@@ -17,7 +17,7 @@ namespace EliteAthleteApp.Repositories
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ITrainingExerciseCategoryRepository exerciseCategoryRepository;
 		private readonly ITrainingExerciseMuscleGroupRepository exerciseMuscleGroupRepository;
-		private readonly IYoutubeService youTubeService;
+		private readonly ITrainingExerciseMediaRepository exerciseMediaRepository;
 
 		public TrainingExerciseRepository(ApplicationDbContext context, 
 			IMapper mapper, 
@@ -25,7 +25,7 @@ namespace EliteAthleteApp.Repositories
 			IHttpContextAccessor httpContextAccessor, 
 			ITrainingExerciseCategoryRepository exerciseCategoryRepository,
 			ITrainingExerciseMuscleGroupRepository exerciseMuscleGroupRepository,
-			IYoutubeService youTubeService) : base(context)
+			ITrainingExerciseMediaRepository exerciseMediaRepository) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
@@ -33,7 +33,7 @@ namespace EliteAthleteApp.Repositories
 			this.httpContextAccessor = httpContextAccessor;
 			this.exerciseCategoryRepository = exerciseCategoryRepository;
 			this.exerciseMuscleGroupRepository = exerciseMuscleGroupRepository;
-			this.youTubeService = youTubeService;
+			this.exerciseMediaRepository = exerciseMediaRepository;
 		}
 
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
@@ -76,11 +76,6 @@ namespace EliteAthleteApp.Repositories
 			{
 				var exerciseVM = mapper.Map<TrainingExerciseVM>(exercise);
 				exerciseVM = await GetExerciseForeignEntitiesAsync(exerciseVM, exercise);
-
-				if (exerciseVM.VideoLink != null)
-				{
-					exerciseVM.VideoLink = youTubeService.GetEmbeddedYouTubeLink(exerciseVM.VideoLink);
-				}
 				return exerciseVM;
 			}
 			return null;
@@ -95,13 +90,23 @@ namespace EliteAthleteApp.Repositories
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE
 		public async Task CreateExerciseAsync(TrainingExerciseCreateVM exerciseCreateVM)
 		{
+			var trainingExerciseMedia = new TrainingExerciseMedia();
+			await exerciseMediaRepository.AddAsync(trainingExerciseMedia);
+			exerciseCreateVM.ExerciseMediaId = trainingExerciseMedia.Id;
 			await AddAsync(mapper.Map<TrainingExercise>(exerciseCreateVM));
 		}
 
-		// EDITS EXISTING DATABAASE ENTITY IN THE EXERCISE TABLE
+		// EDITS EXISTING DATABASE ENTITY IN THE EXERCISE TABLE
 		public async Task EditExerciseAsync(TrainingExerciseCreateVM exerciseCreateVM)
 		{
 			await UpdateAsync(mapper.Map<TrainingExercise>(exerciseCreateVM));
+		}
+
+		// DELETES EXSITING EXERCUSE FROM THE DATABASE
+		public async Task DeleteExerciseAsync(TrainingExerciseDeleteVM trainingExerciseDeleteVM)
+		{
+			await exerciseMediaRepository.DeleteAsync(trainingExerciseDeleteVM.ExerciseMediaId);
+			await DeleteAsync(trainingExerciseDeleteVM.Id);
 		}
 
 		// PRIVATE METHODS BELOW

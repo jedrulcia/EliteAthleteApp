@@ -6,25 +6,27 @@ namespace EliteAthleteApp.Services
     public class BlobStorageService : IBlobStorageService
     {
         private readonly BlobServiceClient blobServiceClient;
-        private readonly string containerName;
+        private readonly string blobContainerExerciseImage;
+		private readonly string blobContainerExerciseVideo;
 
-        public BlobStorageService(string blobConnectionString, string containerName)
+		public BlobStorageService(string blobConnectionString, string blobContainerExerciseImage, string blobContainerExerciseVideo)
         {
             this.blobServiceClient = new BlobServiceClient(blobConnectionString);
-            this.containerName = containerName;
-        }
+            this.blobContainerExerciseImage = blobContainerExerciseImage;
+			this.blobContainerExerciseVideo = blobContainerExerciseVideo;
+		}
 
-        // UPLOAD IMAGE TO THE AZURE BLOB STORAGE
-        public async Task<string> UploadImageAsync(IFormFile file)
+        // UPLOAD EXERCISE IMAGE TO THE AZURE BLOB STORAGE
+        public async Task<string> UploadExerciseImageAsync(IFormFile file)
         {
             string fileExtension = Path.GetExtension(file.FileName);
             string originalFileName = DateTime.Now.ToString("yyyy-MM-dd");
             string blobName = $"{originalFileName}_{fileExtension}";
             int counter = 0;
 
-            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseImage);
 
-            while (await BlobExistsAsync(blobName))
+            while (await BlobExerciseImageExistsAsync(blobName))
             {
                 blobName = $"{originalFileName}_{counter}{fileExtension}";
                 counter++;
@@ -40,20 +42,20 @@ namespace EliteAthleteApp.Services
         }
 
         // REMOVES IMAGE FROM THE AZURE BLOB STORAGE
-        public async Task RemoveImageAsync(string imageUrl)
+        public async Task RemoveExerciseImageAsync(string imageUrl)
         {
             int index = imageUrl.LastIndexOf('/');
             string blobName = imageUrl.Substring(index + 1);
 
-            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseImage);
             var blobClient = containerClient.GetBlobClient(blobName);
             await blobClient.DeleteIfExistsAsync();
         }
 
         // CHECKS IF BLOB EXSISTS IN THE STORAGE
-        public async Task<bool> BlobExistsAsync(string blobName)
+        public async Task<bool> BlobExerciseImageExistsAsync(string blobName)
         {
-            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseImage);
             try
             {
                 return await containerClient.GetBlobClient(blobName).ExistsAsync();

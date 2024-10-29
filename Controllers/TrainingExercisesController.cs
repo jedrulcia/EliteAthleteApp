@@ -89,9 +89,9 @@ namespace EliteAthleteApp.Controllers
 		// POST: Exercises/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
+		public async Task<IActionResult> DeleteConfirmed(TrainingExerciseDeleteVM trainingExerciseDeleteVM)
 		{
-			await exerciseRepository.DeleteAsync(id);
+			await exerciseRepository.DeleteExerciseAsync(trainingExerciseDeleteVM);
 			return RedirectToAction(nameof(Index));
 		}
 	}

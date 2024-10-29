@@ -13,10 +13,6 @@ namespace EliteAthleteApp.Models.TrainingExercise
 		[Required]
 		public string Name { get; set; }
 
-		[Display(Name = "Video")]
-		[Required]
-		public string? VideoLink { get; set; }
-
 		[Display(Name = "Description")]
 		public string? Description { get; set; }
 
@@ -24,6 +20,7 @@ namespace EliteAthleteApp.Models.TrainingExercise
 		[Display(Name = "Exercise Category")]
 		public TrainingExerciseCategoryVM? ExerciseCategory { get; set; }
 		public TrainingExerciseMuscleGroupVM? ExerciseMuscleGroup { get; set; }
+		public TrainingExerciseMediaVM? ExerciseMediaVM { get; set; }
 		public bool? SetAsPublic { get; set; }
 	}
 }
