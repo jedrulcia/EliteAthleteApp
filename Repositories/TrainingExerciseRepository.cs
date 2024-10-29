@@ -105,7 +105,7 @@ namespace EliteAthleteApp.Repositories
 		// DELETES EXSITING EXERCUSE FROM THE DATABASE
 		public async Task DeleteExerciseAsync(TrainingExerciseDeleteVM trainingExerciseDeleteVM)
 		{
-			await exerciseMediaRepository.DeleteAsync(trainingExerciseDeleteVM.ExerciseMediaId);
+			await exerciseMediaRepository.DeleteExerciseMediaAsync(trainingExerciseDeleteVM.ExerciseMediaId);
 			await DeleteAsync(trainingExerciseDeleteVM.Id);
 		}
 

@@ -2,13 +2,16 @@
 {
     public interface IBlobStorageService
     {
-        // UPLOAD IMAGE TO THE AZURE BLOB STORAGE
+        // UPLOADS IMAGE TO EXERCISE BLOB STORAGE
         Task<string> UploadExerciseImageAsync(IFormFile file);
 
-        // REMOVES IMAGE FROM THE AZURE BLOB STORAGE
-        Task RemoveExerciseImageAsync(string imageUrl);
+        // REMOVES IMAGE FROM EXERCISE BLOB STORAGE
+        Task RemoveExerciseImageAsync(string? imageUrl);
 
-        // CHECKS IF BLOB EXSISTS IN THE STORAGE
-        Task<bool> BlobExerciseImageExistsAsync(string blobName);
+		// UPLOADS VIDEO TO EXERCISE BLOB STORAGE
+		Task<string> UploadExerciseVideoAsync(IFormFile file);
+
+		// REMOVES VIDEO FROM EXERCISE BLOB STORAGE
+		Task RemoveExerciseVideoAsync(string? videoUrl);
     }
 }
