@@ -117,6 +117,24 @@
 	</div>
 </div>
 
+<!-- MODAL FOR EXERCISE EDIT -->
+<div class="modal fade" id="exerciseEditMediaModal" tabindex="-1" role="dialog" aria-labelledby="exerciseEditMediaModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="exerciseEditMediaModalLabel">
+					<strong>Edit Exercise Media</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseEditMediaContent">
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Scripts
 {
 	<script>
@@ -272,6 +290,28 @@
 					}
 				});
 			});
+
+			// AJAX FOR LOADING EXERCISE EDIT MEDIA MODAL
+			$(document).on('click', '.editMediaBtn', function (e) {
+				e.preventDefault();
+
+				var exerciseMediaId = $(this).data("exercisemediaid");
+				$.ajax({
+					url: '@Url.Action("Edit", "TrainingExerciseMedias")',
+					type: 'GET',
+					data: { exerciseMediaId, exerciseMediaId },
+					success: function (data) {
+						$('#exerciseEditMediaContent').html(data);
+						$('#exerciseEditMediaModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise edit media modal.");
+					}
+				});
+			});
+
+
+
 		});
 	</script>
 }

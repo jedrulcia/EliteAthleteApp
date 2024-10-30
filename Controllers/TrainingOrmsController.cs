@@ -30,7 +30,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Create(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
 			await trainingOrmRepository.CreateOrmAsync(trainingOrmCreateVM);
-			return RedirectToAction(nameof(Index), "TrainingModules", new { userId = trainingOrmCreateVM.UserId });
+			return RedirectToAction(nameof(Index), "TrainingModules");
 		}
 
 		// GET: TrainingOrm/Edit

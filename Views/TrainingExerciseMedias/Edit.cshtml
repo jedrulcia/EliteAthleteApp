@@ -1,5 +1,90 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using EliteAthleteApp.Models.TrainingExercise
+
+@model TrainingExerciseMediaCreateVM
+
 @{
+    ViewData["Title"] = "Edit";
 }
+@* 
+<form asp-action="Edit" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" /> *@
+
+    <div class="row">
+        <!-- Pole do wgrywania Video -->
+        <div class="col-md-3">
+            <div class="media-upload-box">
+                @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                {
+                    <input type="hidden" asp-for="VideoUrl" />
+                    <video controls width="100%" src="@Model.VideoUrl"></video>
+                    <form asp-action="DeleteVideo">
+                        <input type="hidden" asp-for="VideoUrl" />
+                        <input type="hidden" asp-for="Id" />
+                        <button type="submit" class="remove-media">X</button>
+                    </form>
+                }
+                else
+                {
+                    <label for="videoUpload" class="upload-icon">⬆</label>
+                    <input type="file" name="videoUpload" id="videoUpload" class="d-none" accept="video/*" />
+                }
+            </div>
+        </div>
+
+        <!-- Pole do wgrywania pierwszego zdjęcia -->
+        <div class="col-md-3">
+            <div class="media-upload-box">
+                @if (!string.IsNullOrEmpty(Model.ImageUrlFirst))
+                {
+                    <img src="@Model.ImageUrlFirst" alt="First Image" class="img-thumbnail" />
+                    <button type="button" class="remove-media" onclick="removeMedia('firstImage')">X</button>
+                    <input type="hidden" asp-for="ImageUrlFirst" />
+                }
+                else
+                {
+                    <label for="imageUploadFirst" class="upload-icon">⬆</label>
+                    <input type="file" name="imageUploadFirst" id="imageUploadFirst" class="d-none" accept="image/*" />
+                }
+            </div>
+        </div>
+
+        <!-- Pole do wgrywania drugiego zdjęcia -->
+        <div class="col-md-3">
+            <div class="media-upload-box">
+                @if (!string.IsNullOrEmpty(Model.ImageUrlSecond))
+                {
+                    <img src="@Model.ImageUrlSecond" alt="Second Image" class="img-thumbnail" />
+                    <button type="button" class="remove-media" onclick="removeMedia('secondImage')">X</button>
+                    <input type="hidden" asp-for="ImageUrlSecond" />
+                }
+                else
+                {
+                    <label for="imageUploadSecond" class="upload-icon">⬆</label>
+                    <input type="file" name="imageUploadSecond" id="imageUploadSecond" class="d-none" accept="image/*" />
+                }
+            </div>
+        </div>
+
+        <!-- Pole do wgrywania trzeciego zdjęcia -->
+        <div class="col-md-3">
+            <div class="media-upload-box">
+                @if (!string.IsNullOrEmpty(Model.ImageUrlThird))
+                {
+                    <img src="@Model.ImageUrlThird" alt="Third Image" class="img-thumbnail" />
+                    <button type="button" class="remove-media" onclick="removeMedia('thirdImage')">X</button>
+                    <input type="hidden" asp-for="ImageUrlThird" />
+                }
+                else
+                {
+                    <label for="imageUploadThird" class="upload-icon">⬆</label>
+                    <input type="file" name="imageUploadThird" id="imageUploadThird" class="d-none" accept="image/*" />
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Przycisk zapisu -->
+    <div class="form-group col-md-2 text-end mt-3">
+        <button type="submit" class="btn btn-outline-primary-a"><strong>Save</strong></button>
+    </div>
+@* </form> *@

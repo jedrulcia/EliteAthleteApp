@@ -116,6 +116,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			exerciseVM.ExerciseCategory = mapper.Map<TrainingExerciseCategoryVM>(await exerciseCategoryRepository.GetAsync(exercise.ExerciseCategoryId));
 			exerciseVM.ExerciseMuscleGroup = mapper.Map<TrainingExerciseMuscleGroupVM>(await exerciseMuscleGroupRepository.GetAsync(exercise.ExerciseMuscleGroupId));
+			exerciseVM.ExerciseMediaVM = mapper.Map<TrainingExerciseMediaVM>(await exerciseMediaRepository.GetAsync(exercise.ExerciseMediaId));
 
 			return exerciseVM;
 		}

@@ -21,8 +21,12 @@ namespace EliteAthleteApp.Repositories
 
 		public async Task<TrainingExerciseMediaCreateVM> GetTrainingExerciseMediaEditVMAsync(int trainingExerciseMediaId)
 		{
-			// GET IMAGES AND VIDEO FROM BLOB SERVICE
 			return mapper.Map<TrainingExerciseMediaCreateVM>(await GetAsync(trainingExerciseMediaId));
+		}
+
+		public async Task EditTrainingExerciseMediaAsync(TrainingExerciseMediaCreateVM trainingExerciseMediaCreateVM)
+		{
+			await UpdateAsync(mapper.Map<TrainingExerciseMedia>(trainingExerciseMediaCreateVM));
 		}
 
 		public async Task DeleteExerciseMediaAsync(int? trainingExerciseMediaId)
