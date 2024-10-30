@@ -17,9 +17,9 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Exercises
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int? exerciseMediaId)
 		{
-			return View(await exerciseRepository.GetExerciseIndexVMAsync());
+			return View(await exerciseRepository.GetExerciseIndexVMAsync(exerciseMediaId));
 		}
 
 		// GET: Exercises/ExercisePublic

@@ -22,7 +22,7 @@ namespace EliteAthleteApp.Configurations
 			CreateMap<TrainingExercise, TrainingExerciseDeleteVM>().ReverseMap();
 
 			CreateMap<TrainingExerciseMedia, TrainingExerciseMediaVM>().ReverseMap();
-			CreateMap<TrainingExerciseMedia, TrainingExerciseMediaCreateVM>().ReverseMap();
+			CreateMap<TrainingExerciseMedia, TrainingExerciseMediaEditImagesVM>().ReverseMap();
 
 			CreateMap<TrainingExerciseCategory, TrainingExerciseCategoryVM>().ReverseMap();
 			CreateMap<TrainingExerciseMuscleGroup, TrainingExerciseMuscleGroupVM>().ReverseMap();

@@ -6,5 +6,6 @@ namespace EliteAthleteApp.Models.TrainingExercise
     public class TrainingExerciseIndexVM
 	{
 		public string CoachId { get; set; }
+        public int? ExerciseMediaId { get; set; }
     }
 }

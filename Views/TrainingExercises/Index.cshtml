@@ -175,6 +175,23 @@
 				}
 			});
 
+			// Sprawdzenie, czy ExerciseMediaId jest różne od null i załadowanie modalu
+			var exerciseMediaId = @Html.Raw(Model.ExerciseMediaId != null ? Model.ExerciseMediaId : "null");
+			if (exerciseMediaId !== null) {
+				$.ajax({
+					url: '@Url.Action("EditImages", "TrainingExerciseMedias")',
+					type: 'GET',
+					data: { exerciseMediaId: exerciseMediaId },
+					success: function (data) {
+						$('#exerciseEditMediaContent').html(data);
+						$('#exerciseEditMediaModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise edit media modal.");
+					}
+				});
+			}
+
 			// AJAX FOR LOADING EXERCISE CREATE MODAL
 			$(document).on('click', '.createBtn', function (e) {
 				e.preventDefault();
@@ -297,7 +314,7 @@
 
 				var exerciseMediaId = $(this).data("exercisemediaid");
 				$.ajax({
-					url: '@Url.Action("Edit", "TrainingExerciseMedias")',
+					url: '@Url.Action("EditImages", "TrainingExerciseMedias")',
 					type: 'GET',
 					data: { exerciseMediaId, exerciseMediaId },
 					success: function (data) {
@@ -309,7 +326,6 @@
 					}
 				});
 			});
-
 
 
 		});

@@ -6,6 +6,7 @@ using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingExercise;
 using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Contracts.Services;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -37,9 +38,9 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
-		public async Task<TrainingExerciseIndexVM> GetExerciseIndexVMAsync()
+		public async Task<TrainingExerciseIndexVM> GetExerciseIndexVMAsync(int? exerciseMediaId)
 		{
-			return new TrainingExerciseIndexVM { CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id };
+			return new TrainingExerciseIndexVM { CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id, ExerciseMediaId = exerciseMediaId};
 		}
 
 		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
@@ -90,7 +91,8 @@ namespace EliteAthleteApp.Repositories
 		// CREATES A NEW DATABASE ENTITY IN THE EXERCISE TABLE
 		public async Task CreateExerciseAsync(TrainingExerciseCreateVM exerciseCreateVM)
 		{
-			var trainingExerciseMedia = new TrainingExerciseMedia();
+			List<string?> imageUrls = [null, null, null];
+			var trainingExerciseMedia = new TrainingExerciseMedia{ ImageUrls = imageUrls };
 			await exerciseMediaRepository.AddAsync(trainingExerciseMedia);
 			exerciseCreateVM.ExerciseMediaId = trainingExerciseMedia.Id;
 			await AddAsync(mapper.Map<TrainingExercise>(exerciseCreateVM));

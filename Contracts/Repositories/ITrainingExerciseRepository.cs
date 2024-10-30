@@ -6,7 +6,7 @@ namespace EliteAthleteApp.Contracts
 	public interface ITrainingExerciseRepository : IGenericRepository<TrainingExercise>
 	{
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
-		Task<TrainingExerciseIndexVM> GetExerciseIndexVMAsync();
+		Task<TrainingExerciseIndexVM> GetExerciseIndexVMAsync(int? exerciseMediaId);
 
 		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
 		Task<List<TrainingExerciseVM>> GetExerciseVMsAsync(string? coachId);
