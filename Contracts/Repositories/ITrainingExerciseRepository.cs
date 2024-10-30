@@ -6,7 +6,7 @@ namespace EliteAthleteApp.Contracts
 	public interface ITrainingExerciseRepository : IGenericRepository<TrainingExercise>
 	{
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
-		Task<TrainingExerciseIndexVM> GetExerciseIndexVMAsync();
+		Task<TrainingExerciseIndexVM> GetExerciseIndexVMAsync(int? exerciseMediaId);
 
 		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
 		Task<List<TrainingExerciseVM>> GetExerciseVMsAsync(string? coachId);
@@ -18,7 +18,7 @@ namespace EliteAthleteApp.Contracts
 		Task<TrainingExerciseDeleteVM> GetExerciseDeleteVMAsync(int id);
 
 		// GETS EXERCISE DETAILS VIEW MODEL
-		Task<TrainingExerciseVM> GetExerciseDetailsVMAsync(int id);
+		Task<TrainingExerciseVM?> GetExerciseDetailsVMAsync(int id);
 
 		// GETS EXERCISE EDIT VIEW MODEL
 		Task<TrainingExerciseCreateVM> GetExerciseEditVMAsync(int id);
@@ -28,5 +28,8 @@ namespace EliteAthleteApp.Contracts
 
 		// EDITS EXISTING DATABAASE ENTITY IN THE EXERCISE TABLE
 		Task EditExerciseAsync(TrainingExerciseCreateVM exerciseCreateVM);
+
+		// DELETES EXISTING DATABASE ENTITY FROM THE EXERCISE TABLE
+		Task DeleteExerciseAsync(TrainingExerciseDeleteVM trainingExerciseDeleteVM);
 	}
 }

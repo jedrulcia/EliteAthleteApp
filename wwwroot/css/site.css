@@ -502,7 +502,6 @@ table.dataTable .btn-action {
 
 
 /*=====================================================MODAL=====================================================*/
-/*=====================================================MODAL=====================================================*/
 .modal-content {
     background: linear-gradient(to bottom, #000000 0%, #000000 2%, #3f3f3f 100%); /* Background gradient */
     color: white; /* Kolor tekstu */
@@ -619,3 +618,42 @@ table.dataTable .btn-action {
         color: #ffffff !important; /* Use !important to override autofill */
     }
 
+
+/*=====================================================MEDIA=====================================================*/
+
+.media-upload-box {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .media-upload-box img, .media-upload-box video {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+.upload-icon {
+    font-size: 48px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.remove-media {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    line-height: 20px;
+}

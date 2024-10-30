@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 string blobConnectionString = builder.Configuration.GetValue<string>("BlobConnectionString");
-string containerName = builder.Configuration.GetValue<string>("BlobContainerName");
+string blobContainerExerciseImage = builder.Configuration.GetValue<string>("BlobContainerExerciseImage");
+string blobContainerExerciseVideo = builder.Configuration.GetValue<string>("BlobContainerExerciseVideo");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
@@ -28,6 +29,7 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddScoped<ITrainingExerciseRepository, TrainingExerciseRepository>();
+builder.Services.AddScoped<ITrainingExerciseMediaRepository, TrainingExerciseMediaRepository>();
 builder.Services.AddScoped<ITrainingExerciseCategoryRepository, TrainingExerciseCategoryRepository>();
 builder.Services.AddScoped<ITrainingExerciseMuscleGroupRepository, TrainingExerciseMuscleGroupRepository>();
 
@@ -44,8 +46,9 @@ builder.Services.AddScoped<IMealRepository, MealRepository>();
 
 builder.Services.AddScoped<IDietRepository, DietRepository>();*/
 
-builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, containerName));
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo));
 builder.Services.AddScoped<IPdfService, PdfService>();
+builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddControllersWithViews();

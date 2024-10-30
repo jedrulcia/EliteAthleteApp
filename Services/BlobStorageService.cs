@@ -6,25 +6,29 @@ namespace EliteAthleteApp.Services
     public class BlobStorageService : IBlobStorageService
     {
         private readonly BlobServiceClient blobServiceClient;
-        private readonly string containerName;
+        private readonly string blobContainerExerciseImage;
+		private readonly string blobContainerExerciseVideo;
 
-        public BlobStorageService(string blobConnectionString, string containerName)
+		public BlobStorageService(string blobConnectionString, string blobContainerExerciseImage, string blobContainerExerciseVideo)
         {
-            blobServiceClient = new BlobServiceClient(blobConnectionString);
-            this.containerName = containerName;
-        }
+            this.blobServiceClient = new BlobServiceClient(blobConnectionString);
+            this.blobContainerExerciseImage = blobContainerExerciseImage;
+			this.blobContainerExerciseVideo = blobContainerExerciseVideo;
+		}
 
-        // UPLOAD IMAGE TO THE AZURE BLOB STORAGE
-        public async Task<string> UploadImageAsync(IFormFile file)
+		// EXERCISE IMAGES
+
+		// UPLOADS IMAGE TO EXERCISE BLOB STORAGE
+		public async Task<string> UploadExerciseImageAsync(IFormFile file)
         {
             string fileExtension = Path.GetExtension(file.FileName);
             string originalFileName = DateTime.Now.ToString("yyyy-MM-dd");
             string blobName = $"{originalFileName}_{fileExtension}";
             int counter = 0;
 
-            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseImage);
 
-            while (await BlobExistsAsync(blobName))
+            while (await BlobExerciseImageExistsAsync(blobName))
             {
                 blobName = $"{originalFileName}_{counter}{fileExtension}";
                 counter++;
@@ -39,21 +43,24 @@ namespace EliteAthleteApp.Services
             return blobClient.Uri.AbsoluteUri;
         }
 
-        // REMOVES IMAGE FROM THE AZURE BLOB STORAGE
-        public async Task RemoveImageAsync(string imageUrl)
+		// REMOVES IMAGE FROM EXERCISE BLOB STORAGE
+		public async Task RemoveExerciseImageAsync(string? imageUrl)
         {
-            int index = imageUrl.LastIndexOf('/');
-            string blobName = imageUrl.Substring(index + 1);
+			if (imageUrl != null)
+			{
+				int index = imageUrl.LastIndexOf('/');
+				string blobName = imageUrl.Substring(index + 1);
 
-            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
-            var blobClient = containerClient.GetBlobClient(blobName);
-            await blobClient.DeleteIfExistsAsync();
+				var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseImage);
+				var blobClient = containerClient.GetBlobClient(blobName);
+				await blobClient.DeleteIfExistsAsync();
+			}
         }
 
-        // CHECKS IF BLOB EXSISTS IN THE STORAGE
-        public async Task<bool> BlobExistsAsync(string blobName)
+		// CHECKS IF EXERCISE IMAGE EXISTS IN BLOB STORAGE
+		private async Task<bool> BlobExerciseImageExistsAsync(string blobName)
         {
-            var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseImage);
             try
             {
                 return await containerClient.GetBlobClient(blobName).ExistsAsync();
@@ -62,6 +69,61 @@ namespace EliteAthleteApp.Services
             {
                 return false;
             }
-        }
-    }
+		}
+
+		// EXERCISE VIDEOS
+
+		// UPLOADS VIDEO TO EXERCISE BLOB STORAGE
+		public async Task<string> UploadExerciseVideoAsync(IFormFile file)
+		{
+			string fileExtension = Path.GetExtension(file.FileName);
+			string originalFileName = DateTime.Now.ToString("yyyy-MM-dd");
+			string blobName = $"{originalFileName}_{fileExtension}";
+			int counter = 0;
+
+			var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseVideo);
+
+			while (await BlobExerciseVideoExistsAsync(blobName))
+			{
+				blobName = $"{originalFileName}_{counter}{fileExtension}";
+				counter++;
+			}
+
+			var blobClient = containerClient.GetBlobClient(blobName);
+			await using (var data = file.OpenReadStream())
+			{
+				await blobClient.UploadAsync(data);
+			}
+
+			return blobClient.Uri.AbsoluteUri;
+		}
+
+		// REMOVES VIDEO FROM EXERCISE BLOB STORAGE
+		public async Task RemoveExerciseVideoAsync(string? videoUrl)
+		{
+            if (videoUrl != null)
+			{
+				int index = videoUrl.LastIndexOf('/');
+				string blobName = videoUrl.Substring(index + 1);
+
+				var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseVideo);
+				var blobClient = containerClient.GetBlobClient(blobName);
+				await blobClient.DeleteIfExistsAsync();
+			}
+		}
+
+		// CHECKS IF EXERCISE VIDEO EXISTS IN BLOB STORAGE
+		private async Task<bool> BlobExerciseVideoExistsAsync(string blobName)
+		{
+			var containerClient = blobServiceClient.GetBlobContainerClient(blobContainerExerciseVideo);
+			try
+			{
+				return await containerClient.GetBlobClient(blobName).ExistsAsync();
+			}
+			catch
+			{
+				return false;
+			}
+		}
+	}
 }

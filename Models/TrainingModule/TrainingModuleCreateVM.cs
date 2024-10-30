@@ -29,7 +29,7 @@ namespace EliteAthleteApp.Models.TrainingModule
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
-			if (StartDate >= EndDate)
+			if (StartDate > EndDate)
 			{
 				yield return new ValidationResult(
 					"The starting date must be earlier than the ending date.",

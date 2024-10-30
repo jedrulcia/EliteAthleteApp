@@ -17,9 +17,9 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Exercises
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(int? exerciseMediaId)
 		{
-			return View(await exerciseRepository.GetExerciseIndexVMAsync());
+			return View(await exerciseRepository.GetExerciseIndexVMAsync(exerciseMediaId));
 		}
 
 		// GET: Exercises/ExercisePublic
@@ -89,9 +89,9 @@ namespace EliteAthleteApp.Controllers
 		// POST: Exercises/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteConfirmed(int id)
+		public async Task<IActionResult> DeleteConfirmed(TrainingExerciseDeleteVM trainingExerciseDeleteVM)
 		{
-			await exerciseRepository.DeleteAsync(id);
+			await exerciseRepository.DeleteExerciseAsync(trainingExerciseDeleteVM);
 			return RedirectToAction(nameof(Index));
 		}
 	}
