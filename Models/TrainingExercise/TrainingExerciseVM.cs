@@ -15,6 +15,7 @@ namespace EliteAthleteApp.Models.TrainingExercise
 
 		[Display(Name = "Description")]
 		public string? Description { get; set; }
+		public string? YoutubeLink { get; set; }
 
 		// OTHER
 		[Display(Name = "Exercise Category")]

@@ -117,7 +117,7 @@
 	</div>
 </div>
 
-<!-- MODAL FOR EXERCISE EDIT -->
+<!-- MODAL FOR EXERCISE MEDIA EDIT -->
 <div class="modal fade" id="exerciseEditMediaModal" tabindex="-1" role="dialog" aria-labelledby="exerciseEditMediaModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
@@ -179,7 +179,7 @@
 			var exerciseMediaId = @Html.Raw(Model.ExerciseMediaId != null ? Model.ExerciseMediaId : "null");
 			if (exerciseMediaId !== null) {
 				$.ajax({
-					url: '@Url.Action("EditImages", "TrainingExerciseMedias")',
+					url: '@Url.Action("EditMedia", "TrainingExerciseMedias")',
 					type: 'GET',
 					data: { exerciseMediaId: exerciseMediaId },
 					success: function (data) {
@@ -187,7 +187,7 @@
 						$('#exerciseEditMediaModal').modal('show');
 					},
 					error: function () {
-						alert("An error occurred while loading the exercise edit media modal.");
+						alert("An error occurred while loading the exercise edit Media modal.");
 					}
 				});
 			}
@@ -314,7 +314,7 @@
 
 				var exerciseMediaId = $(this).data("exercisemediaid");
 				$.ajax({
-					url: '@Url.Action("EditImages", "TrainingExerciseMedias")',
+					url: '@Url.Action("EditMedia", "TrainingExerciseMedias")',
 					type: 'GET',
 					data: { exerciseMediaId, exerciseMediaId },
 					success: function (data) {
@@ -322,11 +322,39 @@
 						$('#exerciseEditMediaModal').modal('show');
 					},
 					error: function () {
-						alert("An error occurred while loading the exercise edit media modal.");
+						alert("An error occurred while loading the exercise edit Media modal.");
 					}
 				});
 			});
 
+			$(document).ready(function () {
+				// Function to preview image files
+				$(document).on('change', 'input[type="file"][name="imageUpload"]', function () {
+					var index = $(this).data("index"); // Pobierz indeks przypisany do inputa
+					if (this.files && this.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							$('#previewImg_' + index)
+								.attr('src', e.target.result)
+								.removeClass('d-none');
+						};
+						reader.readAsDataURL(this.files[0]);
+					}
+				});
+
+				// Function to preview video files
+				$(document).on('change', 'input[type="file"][name="videoUpload"]', function () {
+					if (this.files && this.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							$('#previewVideo')
+								.attr('src', e.target.result)
+								.removeClass('d-none');
+						};
+						reader.readAsDataURL(this.files[0]);
+					}
+				});
+			});
 
 		});
 	</script>

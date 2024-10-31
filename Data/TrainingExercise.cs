@@ -11,6 +11,7 @@
 		// STRINGS etc.
 		public string? Name { get; set; }
         public string? Description { get; set; }
+		public string? YoutubeLink { get; set; }
 
 		// OTHER 
 		public bool SetAsPublic { get; set; }

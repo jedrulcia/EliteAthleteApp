@@ -22,12 +22,12 @@ namespace EliteAthleteApp.Controllers
         }
 
         // GET: TrainingExerciseMedia/Edit
-        public async Task<IActionResult> EditImages(int exerciseMediaId)
+        public async Task<IActionResult> EditMedia(int exerciseMediaId)
         {
-            return PartialView(mapper.Map<TrainingExerciseMediaEditImagesVM>(await trainingExerciseMediaRepository.GetAsync(exerciseMediaId)));
+            return PartialView(mapper.Map<TrainingExerciseMediaEditVM>(await trainingExerciseMediaRepository.GetAsync(exerciseMediaId)));
         }
 
-        // POST: TrainingExerciseMedia/Edit
+        // POST: TrainingExerciseMedia/EditImages/UploadImage
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadImage(int index, int id)
@@ -41,10 +41,10 @@ namespace EliteAthleteApp.Controllers
                 await trainingExerciseMediaRepository.UpdateAsync(trainingExerciseMedia);
             }
 
-
             return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
         }
 
+        // POST: TrainingExerciseMedia/EditImages/DeleteImage
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteImage(int index, int id)
@@ -56,5 +56,35 @@ namespace EliteAthleteApp.Controllers
 
             return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
         }
-    }
+
+		// POST: TrainingExerciseMedia/EditVideos/UploadVideo
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UploadVideo(int id)
+		{
+			var videoFile = Request.Form.Files[$"videoUpload"];
+
+			if (videoFile != null && videoFile.Length > 0)
+			{
+				var trainingExerciseMedia = await trainingExerciseMediaRepository.GetAsync(id);
+				trainingExerciseMedia.VideoUrl = await blobStorageService.UploadExerciseVideoAsync(videoFile);
+				await trainingExerciseMediaRepository.UpdateAsync(trainingExerciseMedia);
+			}
+
+			return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
+		}
+
+		// POST: TrainingExerciseMedia/EditVideos/DeleteVideo
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteVideo(int id)
+		{
+			var trainingExerciseMedia = await trainingExerciseMediaRepository.GetAsync(id);
+			await blobStorageService.RemoveExerciseImageAsync(trainingExerciseMedia.VideoUrl);
+			trainingExerciseMedia.VideoUrl = null;
+			await trainingExerciseMediaRepository.UpdateAsync(trainingExerciseMedia);
+
+			return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
+		}
+	}
 }
