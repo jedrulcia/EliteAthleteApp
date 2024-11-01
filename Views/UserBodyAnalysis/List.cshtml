@@ -1,6 +1,6 @@
-﻿@using EliteAthleteApp.Models.TrainingOrm
+﻿@using EliteAthleteApp.Models.UserBodyAnalysis
 
-@model IEnumerable<TrainingOrmVM>
+@model IEnumerable<UserBodyAnalysisVM>
 
 @{
 	ViewData["Title"] = "List";
@@ -13,16 +13,16 @@
 				@Html.DisplayNameFor(model => model.DateTime)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.BenchPressORM)
+				@Html.DisplayNameFor(model => model.Weight)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.OverheadPressORM)
+				@Html.DisplayNameFor(model => model.FatPercentage)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.SquatORM)
+				@Html.DisplayNameFor(model => model.MusclePercentage)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.DeadliftORM)
+				@Html.DisplayNameFor(model => model.WaterPercentage)
 			</th>
 			<th>
 			</th>
@@ -36,16 +36,16 @@
 					@Html.DisplayFor(modelItem => item.DateTime)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.BenchPressORM)
+					@Html.DisplayFor(modelItem => item.Weight)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.OverheadPressORM)
+					@Html.DisplayFor(modelItem => item.FatPercentage)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.SquatORM)
+					@Html.DisplayFor(modelItem => item.MusclePercentage)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.DeadliftORM)
+					@Html.DisplayFor(modelItem => item.WaterPercentage)
 				</td>
 				<td class="text-end">
 					<div class="dropdown">
@@ -54,14 +54,14 @@
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<li>
-								<button data-trainingormid="@item.Id"
-										class="dropdown-item editOrmBtn">
+								<button data-editubaid="@item.Id"
+										class="dropdown-item editUbaBtn">
 									<i class="bi bi-pencil">&nbsp;</i>Edit
 								</button>
 							</li>
 							<li>
-								<button data-trainingormid="@item.Id"
-										class="dropdown-item deleteOrmBtn">
+								<button data-deleteubaid="@item.Id"
+										class="dropdown-item deleteUbaBtn">
 									<i class="bi bi-trash">&nbsp;</i>Delete
 								</button>
 							</li>

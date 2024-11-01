@@ -1,6 +1,6 @@
-﻿@using EliteAthleteApp.Models.TrainingOrm
+﻿@using EliteAthleteApp.Models.UserMedicalTest
 
-@model TrainingOrmCreateVM
+@model UserMedicalTestCreateVM
 
 @{
 	ViewData["Title"] = "Edit";
@@ -12,32 +12,21 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3 form-group">
-				<strong><label asp-for="BenchPressORM" class="control-label"></label></strong>
-				<input asp-for="BenchPressORM" class="form-control" />
-				<span asp-validation-for="BenchPressORM" class="text-danger"></span>
+				<div>
+					<strong><label asp-for="Name" class="control-label"></label></strong>
+					<input asp-for="Name" class="form-control" />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div>
+					<strong><label asp-for="DateTime" class="control-label"></label></strong>
+					<input asp-for="DateTime" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+					<span asp-validation-for="DateTime" class="text-danger"></span>
+				</div>
 			</div>
-			<div class="col-md-3 form-group">
-				<strong><label asp-for="OverheadPressORM" class="control-label"></label></strong>
-				<input asp-for="OverheadPressORM" class="form-control" />
-				<span asp-validation-for="OverheadPressORM" class="text-danger"></span>
-			</div>
-			<div class="col-md-3 form-group">
-				<strong><label asp-for="SquatORM" class="control-label"></label></strong>
-				<input asp-for="SquatORM" class="form-control" />
-				<span asp-validation-for="SquatORM" class="text-danger"></span>
-			</div>
-			<div class="col-md-3 form-group">
-				<strong><label asp-for="DeadliftORM" class="control-label"></label></strong>
-				<input asp-for="DeadliftORM" class="form-control" />
-				<span asp-validation-for="DeadliftORM" class="text-danger"></span>
+			<div class="col-md-9 form-group">
 			</div>
 		</div>
 		<div class="row align-items-end">
-			<div class="form-group col-md-8">
-				<strong><label asp-for="DateTime" class="control-label"></label></strong>
-				<input asp-for="DateTime" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-				<span asp-validation-for="DateTime" class="text-danger"></span>
-			</div>
 			<div class="form-group col-md-4 text-end">
 				<button type="submit" class="btn btn-outline-primary-a"><strong>Save</strong></button>
 			</div>

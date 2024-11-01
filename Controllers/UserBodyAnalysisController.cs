@@ -2,6 +2,7 @@
 using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.UserBodyAnalysis;
+using EliteAthleteApp.Models.UserBodyAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,82 +27,52 @@ namespace EliteAthleteApp.Controllers
 			this.userBodyAnalysisRepository = userBodyAnalysisRepository;
 		}
 
+		// GET: UserBodyAnalysis/List
 		public async Task<IActionResult> List(string? userId)
 		{
-			var bodyAnalysisVMs = mapper.Map<UserBodyAnalysisVM>((await userBodyAnalysisRepository.GetAllAsync())
-				.ToList()
-				.Where(x => x.UserId == userId));
-
-			return PartialView(bodyAnalysisVMs);
+			return PartialView(await userBodyAnalysisRepository.GetUserBodyAnalysisVMsAsync(userId));
 		}
 
-		// GET: UserBodyAnalysisController/Details/5
-		public ActionResult Details(int id)
+		// GET: UserBodyAnalysis/Create
+		public IActionResult Create(string userId)
 		{
-			return View();
+			return PartialView(userBodyAnalysisRepository.GetUserBodyAnalysisCreateVM(userId));
 		}
 
-		// GET: UserBodyAnalysisController/Create
-		public ActionResult Create()
+		// POST: UserBodyAnalysis/Create
+		[HttpPost, ActionName("Create")]
+		public async Task<IActionResult> Create(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
 		{
-			return View();
+			await userBodyAnalysisRepository.CreateUserBodyAnalysisAsync(userBodyAnalysisCreateVM);
+			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 		}
 
-		// POST: UserBodyAnalysisController/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
+		// GET: UserBodyAnalysis/Edit
+		public async Task<IActionResult> Edit(int bodyAnalysisId)
 		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
+			return PartialView(await userBodyAnalysisRepository.GeUserBodyAnalysisEditVM(bodyAnalysisId));
 		}
 
-		// GET: UserBodyAnalysisController/Edit/5
-		public ActionResult Edit(int id)
+		// POST: UserBodyAnalysis/Edit
+		[HttpPost, ActionName("Edit")]
+		public async Task<IActionResult> Edit(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
 		{
-			return View();
+			await userBodyAnalysisRepository.EditUserBodyAnalysisAsync(userBodyAnalysisCreateVM);
+			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 		}
 
-		// POST: UserBodyAnalysisController/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
+		// GET: UserBodyAnalysis/Delete
+		public async Task<IActionResult> Delete(int bodyAnalysisId)
 		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
+			return PartialView(await userBodyAnalysisRepository.GetUserBodyAnalysisDeleteVM(bodyAnalysisId));
 		}
 
-		// GET: UserBodyAnalysisController/Delete/5
-		public ActionResult Delete(int id)
+		// POST: UserBodyAnalysis/Delete
+		[HttpPost, ActionName("Delete")]
+		public async Task<IActionResult> Delete(UserBodyAnalysisDeleteVM userBodyAnalysisDeleteVM)
 		{
-			return View();
-		}
-
-		// POST: UserBodyAnalysisController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
+			await userBodyAnalysisRepository.DeleteUserBodyAnalysisAsync(userBodyAnalysisDeleteVM);
+			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisDeleteVM.UserId });
 		}
 	}
 }

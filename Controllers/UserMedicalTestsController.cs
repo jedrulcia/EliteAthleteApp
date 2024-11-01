@@ -2,6 +2,7 @@
 using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.UserMedicalTest;
+using EliteAthleteApp.Models.UserMedicalTest;
 using EliteAthleteApp.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EliteAthleteApp.Controllers
 {
-    public class UserMedicalTestsController : Controller
+	public class UserMedicalTestsController : Controller
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;
@@ -27,82 +28,52 @@ namespace EliteAthleteApp.Controllers
 			this.userMedicalTestRepository = userMedicalTestRepository;
 		}
 
+		// GET: UserMedicalTest/List
 		public async Task<IActionResult> List(string? userId)
 		{
-			var medicalTestVMs = mapper.Map<UserMedicalTestVM>((await userMedicalTestRepository.GetAllAsync())
-				.ToList()
-				.Where(x => x.UserId == userId));
-
-			return PartialView(medicalTestVMs);
+			return PartialView(await userMedicalTestRepository.GetUserMedicalTestVMsAsync(userId));
 		}
 
-		// GET: UserMedicalTestsController/Details/5
-		public ActionResult Details(int id)
+		// GET: UserMedicalTest/Create
+		public IActionResult Create(string userId)
 		{
-			return View();
+			return PartialView(userMedicalTestRepository.GetUserMedicalTestCreateVM(userId));
 		}
 
-		// GET: UserMedicalTestsController/Create
-		public ActionResult Create()
+		// POST: UserMedicalTest/Create
+		[HttpPost, ActionName("Create")]
+		public async Task<IActionResult> Create(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
-			return View();
+			await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM);
+			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
-		// POST: UserMedicalTestsController/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
+		// GET: UserMedicalTest/Edit
+		public async Task<IActionResult> Edit(int medicalTestId)
 		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
+			return PartialView(await userMedicalTestRepository.GeUserMedicalTestEditVM(medicalTestId));
 		}
 
-		// GET: UserMedicalTestsController/Edit/5
-		public ActionResult Edit(int id)
+		// POST: UserMedicalTest/Edit
+		[HttpPost, ActionName("Edit")]
+		public async Task<IActionResult> Edit(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
-			return View();
+			await userMedicalTestRepository.EditUserMedicalTestAsync(userMedicalTestCreateVM);
+			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
-		// POST: UserMedicalTestsController/Edit/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
+		// GET: UserMedicalTest/Delete
+		public async Task<IActionResult> Delete(int medicalTestId)
 		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
+			return PartialView(await userMedicalTestRepository.GetUserMedicalTestDeleteVM(medicalTestId));
 		}
 
-		// GET: UserMedicalTestsController/Delete/5
-		public ActionResult Delete(int id)
+		// POST: UserMedicalTest/Delete
+		[HttpPost, ActionName("Delete")]
+		public async Task<IActionResult> Delete(UserMedicalTestDeleteVM userMedicalTestDeleteVM)
 		{
-			return View();
-		}
-
-		// POST: UserMedicalTestsController/Delete/5
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
-		{
-			try
-			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
-			}
+			await userMedicalTestRepository.DeleteUserMedicalTestAsync(userMedicalTestDeleteVM);
+			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestDeleteVM.UserId });
 		}
 	}
 }

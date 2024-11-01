@@ -40,6 +40,20 @@
 							<strong>Add New UBM</strong>
 						</button>
 					</li>
+					<li class="nav-item" role="presentation">
+						<button data-userid="@Model.Id"
+								class="nav-link createUmtBtn" type="button" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i>
+							<strong>Add New UMT</strong>
+						</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button data-userid="@Model.Id"
+								class="nav-link createUbaBtn" type="button" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i>
+							<strong>Add New UBA</strong>
+						</button>
+					</li>
 				</ul>
 				<br />
 			</div>
@@ -69,6 +83,18 @@
 							<strong>UBMs</strong>
 						</a>
 					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="umtTab" data-toggle="tab" data-userid="@Model.Id" href="#umt" role="tab" aria-controls="umt" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>UMTs</strong>
+						</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="ubaTab" data-toggle="tab" data-userid="@Model.Id" href="#uba" role="tab" aria-controls="uba" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>UBAs</strong>
+						</a>
+					</li>
 				</ul>
 				<br />
 				<div class="tab-content" id="userPanelTabsContent">
@@ -83,6 +109,12 @@
 					</div>
 					<div class="tab-pane fade" id="ubm" role="tabpanel" aria-labelledby="ubmTab">
 						<h1><span class="badge bg-black d-block w-100"><strong>My UBMs</strong></span></h1>
+					</div>
+					<div class="tab-pane fade" id="umt" role="tabpanel" aria-labelledby="umtTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>My UMTs</strong></span></h1>
+					</div>
+					<div class="tab-pane fade" id="uba" role="tabpanel" aria-labelledby="ubaTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>My UBAs</strong></span></h1>
 					</div>
 				</div>
 			</div>
@@ -270,6 +302,126 @@
 	</div>
 </div>
 
+<!-- MODAL FOR UMT CREATE -->
+<div class="modal fade" id="umtCreateModal" tabindex="-1" role="dialog" aria-labelledby="umtCreateModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="umtCreateModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Create New User Medical Tests</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="umtCreateContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UMT EDIT -->
+<div class="modal fade" id="umtEditModal" tabindex="-1" role="dialog" aria-labelledby="umtEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="umtEditModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Edit User Medical Tests</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="umtEditContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UMT DELETE -->
+<div class="modal fade" id="umtDeleteModal" tabindex="-1" role="dialog" aria-labelledby="umtDeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="umtDeleteModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Delete User Medical Tests</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="umtDeleteContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UBA CREATE -->
+<div class="modal fade" id="ubaCreateModal" tabindex="-1" role="dialog" aria-labelledby="ubaCreateModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ubaCreateModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Create New User Body Analysis</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ubaCreateContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UBA EDIT -->
+<div class="modal fade" id="ubaEditModal" tabindex="-1" role="dialog" aria-labelledby="ubaEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ubaEditModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Edit User Body Analysis</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ubaEditContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UBA DELETE -->
+<div class="modal fade" id="ubaDeleteModal" tabindex="-1" role="dialog" aria-labelledby="ubaDeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ubaDeleteModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Delete User Body Analysis</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ubaDeleteContent">
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Scripts
 {
 	<script>
@@ -293,6 +445,8 @@
 			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
 				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
 			});
+
+			// ********************************************************************TABS********************************************************************
 
 			// SCRIPT TO HANDLE LOADING TRAINING MODULE TAB AFTER OPENING INDEX
 			var userId = $('#trainingModuleTab').data("userid");
@@ -377,6 +531,50 @@
 				});
 			});
 
+			// SCRIPT FOR HANDLING UMT TAB
+			$('#umtTab').on('click', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+
+				$.ajax({
+					url: '@Url.Action("List", "UserMedicalTests")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#umt').html(data);
+						$('.table').DataTable();
+						$('#umtTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'umt' content.");
+					}
+				});
+			});
+
+			// SCRIPT FOR HANDLING UBA TAB
+			$('#ubaTab').on('click', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+
+				$.ajax({
+					url: '@Url.Action("List", "UserBodyAnalysis")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#uba').html(data);
+						$('.table').DataTable();
+						$('#ubaTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'uba' content.");
+					}
+				});
+			});
+
 			// SCRIPT FOR HANDLING USER INFO TAB
 			$('#userInfoTab').on('click', function (e) {
 				e.preventDefault();
@@ -396,6 +594,8 @@
 					}
 				});
 			});
+
+			// ********************************************************************MODALS********************************************************************
 
 			// AJAX FOR LOADING TRAINING MODULE CREATE MODAL
 			$(document).on('click', '.createBtn', function (e) {
@@ -565,6 +765,120 @@
 					},
 					error: function () {
 						alert("An error occurred while loading the ubm delete modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UMT CREATE MODAL
+			$(document).on('click', '.createUmtBtn', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+				$.ajax({
+					url: '@Url.Action("Create", "UserMedicalTests")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#umtCreateContent').html(data);
+						$('#umtCreateModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the umt create modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UMT EDIT MODAL
+			$(document).on('click', '.editUmtBtn', function (e) {
+				e.preventDefault();
+
+				var medicalTestId = $(this).data("editumtid");
+				$.ajax({
+					url: '@Url.Action("Edit", "UserMedicalTests")',
+					type: 'GET',
+					data: { medicalTestId: medicalTestId },
+					success: function (data) {
+						$('#umtEditContent').html(data);
+						$('#umtEditModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the umt edit modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UMT Delete MODAL
+			$(document).on('click', '.deleteUmtBtn', function (e) {
+				e.preventDefault();
+
+				var medicalTestId = $(this).data("deleteumtid");
+				$.ajax({
+					url: '@Url.Action("Delete", "UserMedicalTests")',
+					type: 'GET',
+					data: { medicalTestId: medicalTestId },
+					success: function (data) {
+						$('#umtDeleteContent').html(data);
+						$('#umtDeleteModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the umt delete modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UBA CREATE MODAL
+			$(document).on('click', '.createUbaBtn', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+				$.ajax({
+					url: '@Url.Action("Create", "UserBodyAnalysis")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#ubaCreateContent').html(data);
+						$('#ubaCreateModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the uba create modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UBA EDIT MODAL
+			$(document).on('click', '.editUbaBtn', function (e) {
+				e.preventDefault();
+
+				var bodyAnalysisId = $(this).data("editubaid");
+				$.ajax({
+					url: '@Url.Action("Edit", "UserBodyAnalysis")',
+					type: 'GET',
+					data: { bodyAnalysisId: bodyAnalysisId },
+					success: function (data) {
+						$('#ubaEditContent').html(data);
+						$('#ubaEditModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the uba edit modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UBA Delete MODAL
+			$(document).on('click', '.deleteUbaBtn', function (e) {
+				e.preventDefault();
+
+				var bodyAnalysisId = $(this).data("deleteubaid");
+				$.ajax({
+					url: '@Url.Action("Delete", "UserBodyAnalysis")',
+					type: 'GET',
+					data: { bodyAnalysisId: bodyAnalysisId },
+					success: function (data) {
+						$('#ubaDeleteContent').html(data);
+						$('#ubaDeleteModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the uba delete modal.");
 					}
 				});
 			});

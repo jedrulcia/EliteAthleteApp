@@ -1,6 +1,6 @@
-﻿@using EliteAthleteApp.Models.TrainingOrm
+﻿@using EliteAthleteApp.Models.UserBodyAnalysis
 
-@model TrainingOrmCreateVM
+@model UserBodyAnalysisCreateVM
 
 @{
 	ViewData["Title"] = "Edit";
@@ -12,24 +12,24 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-3 form-group">
-				<strong><label asp-for="BenchPressORM" class="control-label"></label></strong>
-				<input asp-for="BenchPressORM" class="form-control" />
-				<span asp-validation-for="BenchPressORM" class="text-danger"></span>
+				<strong><label asp-for="Weight" class="control-label"></label></strong>
+				<input asp-for="Weight" class="form-control" />
+				<span asp-validation-for="Weight" class="text-danger"></span>
 			</div>
 			<div class="col-md-3 form-group">
-				<strong><label asp-for="OverheadPressORM" class="control-label"></label></strong>
-				<input asp-for="OverheadPressORM" class="form-control" />
-				<span asp-validation-for="OverheadPressORM" class="text-danger"></span>
+				<strong><label asp-for="FatPercentage" class="control-label"></label></strong>
+				<input asp-for="FatPercentage" class="form-control" />
+				<span asp-validation-for="FatPercentage" class="text-danger"></span>
 			</div>
 			<div class="col-md-3 form-group">
-				<strong><label asp-for="SquatORM" class="control-label"></label></strong>
-				<input asp-for="SquatORM" class="form-control" />
-				<span asp-validation-for="SquatORM" class="text-danger"></span>
+				<strong><label asp-for="MusclePercentage" class="control-label"></label></strong>
+				<input asp-for="MusclePercentage" class="form-control" />
+				<span asp-validation-for="MusclePercentage" class="text-danger"></span>
 			</div>
 			<div class="col-md-3 form-group">
-				<strong><label asp-for="DeadliftORM" class="control-label"></label></strong>
-				<input asp-for="DeadliftORM" class="form-control" />
-				<span asp-validation-for="DeadliftORM" class="text-danger"></span>
+				<strong><label asp-for="WaterPercentage" class="control-label"></label></strong>
+				<input asp-for="WaterPercentage" class="form-control" />
+				<span asp-validation-for="WaterPercentage" class="text-danger"></span>
 			</div>
 		</div>
 		<div class="row align-items-end">
