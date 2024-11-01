@@ -1,6 +1,6 @@
 ﻿namespace EliteAthleteApp.Models.TrainingExercise
 {
-    public class TrainingExerciseMediaEditVM
+    public class TrainingExerciseMediaCreateVM
     {
         public int? Id { get; set; }
         public List<string?>? ImageUrls { get; set; }
