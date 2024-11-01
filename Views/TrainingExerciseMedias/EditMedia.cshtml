@@ -1,0 +1,62 @@
+﻿@using EliteAthleteApp.Models.TrainingExercise
+@model TrainingExerciseMediaCreateVM
+
+@{
+    ViewData["Title"] = "EditMedia";
+}
+
+<div class="row">
+    @for (int i = 0; i < Model.ImageUrls.Count; i++)
+    {
+        <div class="col-md-3">
+            <div class="media-upload-box">
+                @if (string.IsNullOrEmpty(Model.ImageUrls[i]))
+                {
+                    <form asp-action="UploadImage" enctype="multipart/form-data">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="index" value="@i" />
+                        <label for="imageUpload_@i" class="upload-icon">⬆</label>
+                        <input type="file" name="imageUpload" id="imageUpload_@i" class="d-none" accept="image/*" data-index="@i" />
+                        <div class="preview-thumbnail">
+                            <img id="previewImg_@i" data-index="@i" src="" class="img-thumbnail d-none" />
+                        </div>
+                        <button type="submit" class="remove-media">O</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="DeleteImage">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="index" value="@i" />
+                        <img src="@Model.ImageUrls[i]" class="img-thumbnail" />
+                        <button type="submit" class="remove-media">X</button>
+                    </form>
+                }
+            </div>
+        </div>
+    }
+    <div class="col-md-3">
+        <div class="media-upload-box">
+            @if (string.IsNullOrEmpty(Model.VideoUrl))
+            {
+                <form asp-action="UploadVideo" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <label for="videoUpload" class="upload-icon">⬆</label>
+                    <input type="file" name="videoUpload" id="videoUpload" class="d-none" accept="video/*" onchange="previewVideo(this)" />
+                    <div class="preview-thumbnail">
+                        <video id="previewVideo" class="d-none" controls width="100%"></video>
+                    </div>
+                    <button type="submit" class="remove-media">O</button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="DeleteVideo">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <video controls width="100%" src="@Model.VideoUrl"></video>
+                    <button type="submit" class="remove-media">X</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>
