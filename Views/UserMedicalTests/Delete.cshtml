@@ -1,0 +1,16 @@
+﻿@using EliteAthleteApp.Models.UserMedicalTest
+
+@model UserMedicalTestDeleteVM
+
+@{
+	ViewData["Title"] = "Delete";
+}
+
+<form asp-action="Delete">
+	<input type="hidden" asp-for="Id" />
+	<input type="hidden" asp-for=FileUrl />
+	<p>Are you sure you want to delete this UMT?</p>
+	<div class="text-end">
+		<button type="submit" class="btn btn-outline-danger-a"><strong>Delete</strong></button>
+	</div>
+</form>

@@ -4,6 +4,7 @@ using EliteAthleteApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EliteAthleteApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241101124231_AddingUserImageUrl")]
+    partial class AddingUserImageUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -526,7 +529,7 @@ namespace EliteAthleteApp.Migrations
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
                             CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-                            ConcurrencyStamp = "da81f3d6-1653-4147-b357-cba5069eac64",
+                            ConcurrencyStamp = "34b278fd-26de-4b3f-9bb7-0eea254d41c3",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -534,9 +537,9 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKhyyrgR+XeDCedCM40O86r2C9YUvdyCowGaRUQuVOZ2NARoEGumm9oOht8soydZCw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGNCLQZBrurXwaH/ej1BAbPyLvd9yPQSDUOLp/0HTkwj3g4fs4rWBTWB1BBLAxap7Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d673ecbe-a698-40b9-9f7a-a3f7565ec050",
+                            SecurityStamp = "ee502a7d-6fb3-40ab-8e47-93e3541bb501",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -545,7 +548,7 @@ namespace EliteAthleteApp.Migrations
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
                             CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-                            ConcurrencyStamp = "20d151e8-ae6a-4734-a69c-39a2df54f1ea",
+                            ConcurrencyStamp = "da0c0a62-e5f2-400a-add2-11a11c187ce7",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -553,9 +556,9 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPzst17pL4MPJhalv65ZF4DEdNllLii9lvJrPFoXg9Ewk/iBRqcDp6Olt0cHu8sXSw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL9IRt6nXDwyVIMsD1TRAP3xIjbr7YTUmd7L9h10NGmyO5HxNQ+uOh4egjCTmphscg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "08e176b6-b645-44a4-9655-2bf962e3422d",
+                            SecurityStamp = "1fee53bf-8759-40d8-9ef4-0aac3b3a7452",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         },
@@ -564,7 +567,7 @@ namespace EliteAthleteApp.Migrations
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b2",
                             AccessFailedCount = 0,
                             CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-                            ConcurrencyStamp = "f2a8e3d6-b1b2-4638-8c47-860310a731e9",
+                            ConcurrencyStamp = "e89c7ae0-58e4-46fc-83dc-1fc8ea531bf9",
                             Email = "coach@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -572,105 +575,12 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "COACH@LOCALHOST.COM",
                             NormalizedUserName = "COACH@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJxjMmeDbiQV91VPIUpWiNG2qhc9zio8eEPHwZgPFG0mXrAH0cJC2ImLxHgTMHgKeQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIWhSYLOs7Tkpz+t8oOHI4jeTgaYigb4ecXtBIyYt4hZ1pSpGeuOq7pgYxvyTwhIGQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "86f3070e-0022-49e9-b2fc-c4d98ad1fd80",
+                            SecurityStamp = "9002e2a7-2e71-42ef-83fa-41210b62fed6",
                             TwoFactorEnabled = false,
                             UserName = "coach@localhost.com"
                         });
-                });
-
-            modelBuilder.Entity("EliteAthleteApp.Data.UserBodyAnalysis", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("FatPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("MusclePercentage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("WaterPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Weight")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserBodyAnalysis");
-                });
-
-            modelBuilder.Entity("EliteAthleteApp.Data.UserBodyMeasurements", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
-
-                    b.Property<int?>("Arms")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Chest")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("Hips")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Thighs")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Waist")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserBodyMeasurements");
-                });
-
-            modelBuilder.Entity("EliteAthleteApp.Data.UserMedicalTest", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
-
-                    b.Property<DateTime?>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserMedicalTests");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

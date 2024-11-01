@@ -30,7 +30,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Create(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
 			await trainingOrmRepository.CreateOrmAsync(trainingOrmCreateVM);
-			return RedirectToAction(nameof(Index), "TrainingModules");
+			return RedirectToAction("Panel", "Users", new { userId = trainingOrmCreateVM.UserId });
 		}
 
 		// GET: TrainingOrm/Edit
@@ -45,7 +45,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Edit(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
 			await trainingOrmRepository.EditOrmAsync(trainingOrmCreateVM);
-			return RedirectToAction(nameof(Index), "TrainingModules", new { userId = trainingOrmCreateVM.UserId });
+			return RedirectToAction("Panel", "Users", new { userId = trainingOrmCreateVM.UserId });
 		}
 		
 		// GET: TrainingOrm/Delete
@@ -59,7 +59,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Delete(TrainingOrmDeleteVM trainingOrmDeleteVM)
 		{
 			await trainingOrmRepository.DeleteOrmAsync(trainingOrmDeleteVM);
-			return RedirectToAction(nameof(Index), "TrainingModules", new { userId = trainingOrmDeleteVM.UserId });
+			return RedirectToAction("Panel", "Users", new { userId = trainingOrmDeleteVM.UserId });
 		}
 	}
 }

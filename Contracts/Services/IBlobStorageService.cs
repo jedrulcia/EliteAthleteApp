@@ -13,5 +13,14 @@
 
 		// REMOVES VIDEO FROM EXERCISE BLOB STORAGE
 		Task RemoveExerciseVideoAsync(string? videoUrl);
-    }
+
+        Task<string> UploadUserImageAsync(IFormFile file);
+        Task RemoveUserImageAsync(string? imageUrl);
+
+		Task<string> UploadMedicalTestFileAsync(IFormFile file);
+		Task RemoveMedicalTestFileAsync(string? imageUrl);
+
+		Task<string> UploadBodyAnalysisFileAsync(IFormFile file);
+		Task RemoveBodyAnalysisFileAsync(string? imageUrl);
+	}
 }

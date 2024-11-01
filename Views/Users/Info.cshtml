@@ -1,0 +1,36 @@
+﻿@using EliteAthleteApp.Models.User
+
+@model UserInfoVM
+
+<div class="row">
+	<div class="col-md-3">
+		<div class="media-upload-box">
+			@if (string.IsNullOrEmpty(Model.ImageUrl))
+			{
+				<form asp-action="UploadImage" enctype="multipart/form-data">
+					<input type="hidden" name="userId" value="@Model.Id" />
+					<label for="imageUpload" class="upload-icon">⬆</label>
+					<input type="file" name="imageUpload" id="imageUpload" class="d-none" accept="image/*" />
+					<div class="preview-thumbnail">
+						<img id="previewImg" src="" class="img-thumbnail d-none" />
+					</div>
+					<button type="submit" class="remove-media">O</button>
+				</form>
+			}
+			else
+			{
+				<form asp-action="DeleteImage">
+					<input type="hidden" name="userId" value="@Model.Id" />
+					<img src="@Model.ImageUrl" class="img-thumbnail" />
+					<button type="submit" class="remove-media">X</button>
+				</form>
+			}
+		</div>
+	</div>
+	<div class="col-md-3">
+		<strong>First Name:</strong><p class="text-white">@Model.FirstName</p>
+		<strong>Last Name:</strong> <p class="text-white">@Model.LastName</p>
+		<strong>Date of Birth:</strong> <p class="text-white">@Model.DateOfBirth</p>
+		<strong>Coach:</strong> <p class="text-white">@Model.CoachFullName</p>
+	</div>
+</div>

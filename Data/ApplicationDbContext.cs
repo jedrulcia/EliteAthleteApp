@@ -27,6 +27,10 @@ namespace EliteAthleteApp.Data
 			base.OnModelCreating(builder);
 		}
 
+		public DbSet<UserBodyAnalysis> UserBodyAnalysis { get; set; }
+		public DbSet<UserBodyMeasurements> UserBodyMeasurements { get; set; }
+		public DbSet<UserMedicalTest> UserMedicalTests { get; set; }
+
 		public DbSet<TrainingExercise> TrainingExercises { get; set; }
 		public DbSet<TrainingExerciseCategory> TrainingExerciseCategories { get; set; }
 		public DbSet<TrainingExerciseMuscleGroup> TrainingExerciseMuscleGroups { get; set; }
