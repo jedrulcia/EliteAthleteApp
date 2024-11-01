@@ -21,11 +21,17 @@
 		<h3 class="text-gradient-primary">@Model.FirstName @Model.LastName Panel</h3>
 		<div class="row justify-content-center">
 			<div class="col-md-12">
-				<ul class="nav nav-tabs" id="trainingModuleTabs" role="tablist">
+				<ul class="nav nav-tabs" id="userPanelTabs" role="tablist">
 					<li class="nav-item" role="presentation">
 						<a class="nav-link active" id="trainingModuleTab" data-toggle="tab" data-userid="@Model.Id" href="#trainingModule" role="tab" aria-controls="trainingModule" aria-selected="true">
 							<i class="bi bi-person">&nbsp;</i>
 							<strong>Training Modules</strong>
+						</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="userInfoTab" data-toggle="tab" data-userid="@Model.Id" href="#userInfo" role="tab" aria-controls="userInfo" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>Info</strong>
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
@@ -51,10 +57,12 @@
 					}
 				</ul>
 				<br />
-				<div class="tab-content" id="trainingModuleTabsContent">
+				<div class="tab-content" id="userPanelTabsContent">
 					<div class="tab-pane fade show active" id="trainingModule" role="tabpanel" aria-labelledby="trainingModuleTab">
 						<h1><span class="badge bg-black d-block w-100"><strong>Training Modules</strong></span></h1>
-
+					</div>
+					<div class="tab-pane fade" id="userInfo" role="tabpanel" aria-labelledby="userInfoTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>Info</strong></span></h1>
 					</div>
 					<div class="tab-pane fade" id="orm" role="tabpanel" aria-labelledby="ormTab">
 						<h1><span class="badge bg-black d-block w-100"><strong>My ORMs (One-Rep Max)</strong></span></h1>
@@ -199,7 +207,7 @@
 			});
 
 			// HANDLE SWITCHING TABS
-			$('#trainingModuleTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			$('#userPanelTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 				e.target // newly activated tab
 				e.relatedTarget // previous tab
 			});
@@ -266,6 +274,26 @@
 					},
 					error: function () {
 						alert("An error occurred while loading 'orm' content.");
+					}
+				});
+			});
+
+			// SCRIPT FOR HANDLING USER INFO TAB
+			$('#userInfoTab').on('click', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+
+				$.ajax({
+					url: '@Url.Action("Info", "Users")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#userInfo').html(data);
+						$('#userInfoTab').tab('show');
+					},
+					error: function () {
+						alert("An error occurred while loading user info content.");
 					}
 				});
 			});

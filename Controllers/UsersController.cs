@@ -7,6 +7,8 @@ using EliteAthleteApp.Constants;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.User;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using EliteAthleteApp.Repositories;
+using EliteAthleteApp.Contracts.Repositories;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -16,12 +18,14 @@ namespace EliteAthleteApp.Controllers
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
 		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly IUserRepository userRepository;
 
-		public UsersController(UserManager<User> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+		public UsersController(UserManager<User> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
         {
             this.userManager = userManager;
             this.mapper = mapper;
 			this.httpContextAccessor = httpContextAccessor;
+			this.userRepository = userRepository;
 		}
 
 		// GET: Users/Index
@@ -41,52 +45,34 @@ namespace EliteAthleteApp.Controllers
             return View(mapper.Map<UserVM>(await userManager.FindByIdAsync(userId)));
         }
 
-        // GET: UsersController/Details
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Info(string? userId)
         {
-            return View();
+			var user = await userManager.FindByIdAsync(userId);
+			var userVM = mapper.Map<UserInfoVM>(user);
+			var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
+			userVM.CoachFullName = coachVM.FirstName + " " + coachVM.LastName;
+			return PartialView(userVM);
         }
 
-        // GET: UsersController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+		// POST: TrainingExerciseMedia/EditMedia/UploadImage
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UploadImage(string userId)
+		{
+			var imageFile = Request.Form.Files[$"imageUpload"];
+			await userRepository.UploadImageAsync(userId, imageFile);
+			return RedirectToAction(nameof(Panel), "Users", new { userId = userId });
+		}
 
-        // POST: UsersController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteImage(string userId)
+		{
+			await userRepository.DeleteImageAsync(userId);
+			return RedirectToAction(nameof(Panel), "Users", new { userId = userId });
+		}
 
-        // GET: UsersController/Edit
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        // POST: UsersController/Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-    }
+	}
 }

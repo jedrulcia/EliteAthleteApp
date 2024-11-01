@@ -28,6 +28,7 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 	.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<ITrainingExerciseRepository, TrainingExerciseRepository>();
 builder.Services.AddScoped<ITrainingExerciseMediaRepository, TrainingExerciseMediaRepository>();

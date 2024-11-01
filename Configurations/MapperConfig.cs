@@ -5,6 +5,7 @@ using EliteAthleteApp.Models.TrainingModule;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.TrainingPlan;
 using EliteAthleteApp.Models.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace EliteAthleteApp.Configurations
 {
@@ -13,7 +14,9 @@ namespace EliteAthleteApp.Configurations
 		public MapperConfig()
 		{
 			// USER MODULE MAPPING
+			CreateMap<User, IdentityUser>().ReverseMap();
 			CreateMap<User, UserVM>().ReverseMap();
+			CreateMap<User, UserInfoVM>().ReverseMap();
 
 			// TRAINING EXERCISE MAPPING
 			CreateMap<TrainingExercise, TrainingExerciseVM>().ReverseMap();

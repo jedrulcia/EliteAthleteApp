@@ -56,24 +56,6 @@ namespace EliteAthleteApp.Services
 			await RemoveFileAsync(imageUrl, blobContainerUserImage);
 		}
 
-		// CHECKS IF EXERCISE IMAGE EXISTS IN BLOB STORAGE
-		private async Task<bool> BlobExerciseImageExistsAsync(string blobName)
-        {
-			return await BlobFileExistsAsync(blobName, blobContainerExerciseImage);
-		}
-
-		// CHECKS IF EXERCISE VIDEO EXISTS IN BLOB STORAGE
-		private async Task<bool> BlobExerciseVideoExistsAsync(string blobName)
-		{
-			return await BlobFileExistsAsync(blobName, blobContainerExerciseVideo);
-		}
-
-		// CHECKS IF EXERCISE VIDEO EXISTS IN BLOB STORAGE
-		private async Task<bool> BlobUserImageExistsAsync(string blobName)
-		{
-			return await BlobFileExistsAsync(blobName, blobContainerUserImage);
-		}
-
 		// PRIVATE METHODS BELOW
 
 		// UPLOADS FILE TO BLOB STORAGE
@@ -86,7 +68,7 @@ namespace EliteAthleteApp.Services
 
 			var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
-			while (await BlobExerciseImageExistsAsync(blobName))
+			while (await BlobFileExistsAsync(blobName, containerName))
 			{
 				blobName = $"{originalFileName}_{counter}{fileExtension}";
 				counter++;

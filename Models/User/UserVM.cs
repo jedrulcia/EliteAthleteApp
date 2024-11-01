@@ -16,7 +16,8 @@ namespace EliteAthleteApp.Models.User
 
         [Display(Name = "Email")]
         public string Email { get; set; }
-
+        public string? DateOfBirth { get; set; }
         public string? CoachId { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }
