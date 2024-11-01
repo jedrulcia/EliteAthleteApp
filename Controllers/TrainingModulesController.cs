@@ -17,12 +17,6 @@ namespace EliteAthleteApp.Controllers
 			this.trainingOrmRepository = trainingOrmRepository;
 		}
 
-		// GET: TrainingModules
-		public async Task<IActionResult> Index(string userId)
-		{
-			return View(await trainingModuleRepository.GetTrainingModuleIndexVMAsync(userId));
-		}
-
 		// GET: TrainingModules/TrainingModuleList
 		public async Task<IActionResult> List(string userId)
 		{

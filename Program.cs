@@ -16,6 +16,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 string blobConnectionString = builder.Configuration.GetValue<string>("BlobConnectionString");
 string blobContainerExerciseImage = builder.Configuration.GetValue<string>("BlobContainerExerciseImage");
 string blobContainerExerciseVideo = builder.Configuration.GetValue<string>("BlobContainerExerciseVideo");
+string blobContainerUserImage = builder.Configuration.GetValue<string>("BlobContainerUserImage");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
@@ -46,7 +47,7 @@ builder.Services.AddScoped<IMealRepository, MealRepository>();
 
 builder.Services.AddScoped<IDietRepository, DietRepository>();*/
 
-builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo));
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, blobContainerUserImage));
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 

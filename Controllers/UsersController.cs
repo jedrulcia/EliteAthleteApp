@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using EliteAthleteApp.Constants;
 using EliteAthleteApp.Data;
-using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.User;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -14,18 +15,30 @@ namespace EliteAthleteApp.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
-        public UsersController(UserManager<User> userManager, IMapper mapper)
+		public UsersController(UserManager<User> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.userManager = userManager;
             this.mapper = mapper;
-        }
+			this.httpContextAccessor = httpContextAccessor;
+		}
 
-        // GET: UsersController
-        public ActionResult Index()
+		// GET: Users/Index
+		public ActionResult Index()
+		{
+			var userListVM = mapper.Map<List<UserVM>>(userManager.Users.ToList());
+			return View(userListVM);
+		}
+
+		// GET: Users/Index/Panel
+		public async Task <IActionResult> Panel(string? userId)
         {
-            var userListVM = mapper.Map<List<UserVM>>(userManager.Users.ToList());
-            return View(userListVM);
+            if (userId == null)
+            {
+                return View (mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)));
+			}
+            return View(mapper.Map<UserVM>(await userManager.FindByIdAsync(userId)));
         }
 
         // GET: UsersController/Details

@@ -1,7 +1,7 @@
 ﻿@using EliteAthleteApp.Constants
-@using EliteAthleteApp.Models.TrainingModule
+@using EliteAthleteApp.Models.User
 
-@model TrainingModuleIndexVM
+@model UserVM
 
 
 @{
@@ -17,51 +17,51 @@
 	</div>
 }
 <body>
-
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-12">
-			<ul class="nav nav-tabs" id="trainingModuleTabs" role="tablist">
-				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="trainingModuleTab" data-toggle="tab" data-userid="@Model.UserId" href="#trainingModule" role="tab" aria-controls="trainingModule" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
-						<strong>My Training Modules</strong>
-					</a>
-				</li>
-				<li class="nav-item" role="presentation">
-						<a class="nav-link" id="ormTab" data-toggle="tab" data-userid="@Model.UserId" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
-						<strong>My ORMs</strong>
-					</a>
-				</li>
-				<li class="nav-item ms-auto" role="presentation">
-					<button class="nav-link createBtn" type="button" id="createTab" data-userid="@Model.UserId" data-coachid="@Model.CoachId" aria-controls="createTab" aria-selected="false">
-						<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New Training Module</strong>
-					</button>
-				</li>
-				@if (User.IsInRole(Roles.Administrator))
-				{
+	<div class="container">
+		<h3 class="text-gradient-primary">@Model.FirstName @Model.LastName Panel</h3>
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+				<ul class="nav nav-tabs" id="trainingModuleTabs" role="tablist">
 					<li class="nav-item" role="presentation">
-							<button data-userid="@Model.UserId"
-								class="nav-link createOrmBtn" type="button" id="createOrmTab" aria-controls="createOrmTab" aria-selected="false">
-							<i class="bi bi-plus-square-fill">&nbsp;</i>
-							<strong>Add New ORM</strong>
+						<a class="nav-link active" id="trainingModuleTab" data-toggle="tab" data-userid="@Model.Id" href="#trainingModule" role="tab" aria-controls="trainingModule" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>Training Modules</strong>
+						</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="ormTab" data-toggle="tab" data-userid="@Model.Id" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>ORMs</strong>
+						</a>
+					</li>
+					<li class="nav-item ms-auto" role="presentation">
+						<button class="nav-link createBtn" type="button" id="createTab" data-userid="@Model.Id" data-coachid="@Model.CoachId" aria-controls="createTab" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New Training Module</strong>
 						</button>
 					</li>
-				}
-			</ul>
-			<br />
-			<div class="tab-content" id="trainingModuleTabsContent">
-				<div class="tab-pane fade show active" id="trainingModule" role="tabpanel" aria-labelledby="trainingModuleTab" >
-					<h1><span class="badge bg-black d-block w-100"><strong>Training Modules</strong></span></h1>
-					
-				</div>
-				<div class="tab-pane fade" id="orm" role="tabpanel" aria-labelledby="ormTab">
-					<h1><span class="badge bg-black d-block w-100"><strong>My ORMs (One-Rep Max)</strong></span></h1>
+					@if (User.IsInRole(Roles.Administrator))
+					{
+						<li class="nav-item" role="presentation">
+							<button data-userid="@Model.Id"
+									class="nav-link createOrmBtn" type="button" id="createOrmTab" aria-controls="createOrmTab" aria-selected="false">
+								<i class="bi bi-plus-square-fill">&nbsp;</i>
+								<strong>Add New ORM</strong>
+							</button>
+						</li>
+					}
+				</ul>
+				<br />
+				<div class="tab-content" id="trainingModuleTabsContent">
+					<div class="tab-pane fade show active" id="trainingModule" role="tabpanel" aria-labelledby="trainingModuleTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>Training Modules</strong></span></h1>
+
+					</div>
+					<div class="tab-pane fade" id="orm" role="tabpanel" aria-labelledby="ormTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>My ORMs (One-Rep Max)</strong></span></h1>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 </body>
 
@@ -91,13 +91,13 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h3 class="modal-title w-100" id="trainingModuleEditModalLabel">
-				<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-					<strong>Edit Training Module</strong>
-					<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</span>
-			</h3>
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Edit Training Module</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
 			</div>
 			<div class="modal-body" id="trainingModuleEditContent">
 			</div>
@@ -204,11 +204,11 @@
 				e.relatedTarget // previous tab
 			});
 
-			
+
 			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
 				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
 			});
-			
+
 			// SCRIPT TO HANDLE LOADING TRAINING MODULE TAB AFTER OPENING INDEX
 			var userId = $('#trainingModuleTab').data("userid");
 			$.ajax({
@@ -317,7 +317,7 @@
 				$.ajax({
 					url: '@Url.Action("Delete", "TrainingModules")',
 					type: 'GET',
-					data: { trainingModuleId: trainingModuleId},
+					data: { trainingModuleId: trainingModuleId },
 					success: function (data) {
 						$('#trainingModuleDeleteContent').html(data);
 						$('#trainingModuleDeleteModal').modal('show');

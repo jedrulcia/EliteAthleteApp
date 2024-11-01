@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Data;
-using EliteAthleteApp.Models;
 using EliteAthleteApp.Models.TrainingExercise;
 using EliteAthleteApp.Models.TrainingModule;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.TrainingPlan;
+using EliteAthleteApp.Models.User;
 
 namespace EliteAthleteApp.Configurations
 {

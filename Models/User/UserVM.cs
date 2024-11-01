@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EliteAthleteApp.Models
+namespace EliteAthleteApp.Models.User
 {
     public class UserVM
     {
@@ -11,10 +11,12 @@ namespace EliteAthleteApp.Models
         [Display(Name = "First name")]
         public string FirstName { get; set; }
 
-		[Display(Name = "Last name")]
-		public string LastName { get; set; }
+        [Display(Name = "Last name")]
+        public string LastName { get; set; }
 
         [Display(Name = "Email")]
-        public string Email { get; set;}
+        public string Email { get; set; }
+
+        public string? CoachId { get; set; }
     }
 }

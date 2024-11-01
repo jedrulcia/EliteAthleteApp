@@ -1,4 +1,4 @@
-﻿@using EliteAthleteApp.Models
+﻿@using EliteAthleteApp.Models.User
 @model IEnumerable<UserVM>
 
 @{
@@ -35,7 +35,7 @@
 					@Html.DisplayFor(modelItem => item.Email)
 				</td>
 				<td class="text-end">
-					<a asp-action="Index" class="btn btn-secondary" asp-controller="TrainingModules" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> View training modules</a>
+					<a asp-action="Panel" class="btn btn-secondary" asp-controller="Users" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> User Panel</a>
 				</td>
 			</tr>
 		}

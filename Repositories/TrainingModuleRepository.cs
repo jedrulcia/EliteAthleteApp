@@ -28,24 +28,6 @@ namespace EliteAthleteApp.Repositories
 			this.httpContextAccessor = httpContextAccessor;
 		}
 
-		// GETS TRAINING MODULE INDEX VIEW MODEL
-		public async Task<TrainingModuleIndexVM> GetTrainingModuleIndexVMAsync(string? userId)
-		{
-			var user = new User();
-			if (userId == null)
-			{
-				user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-				userId = user.Id;
-			}
-			else
-			{
-				user = await userManager.FindByIdAsync(userId);
-			}
-			var coach = await userManager.FindByIdAsync(user.CoachId);
-
-			return new TrainingModuleIndexVM { UserId = userId, CoachId = coach.Id };
-		}
-
 		// GETS LIST OF TRAINING MODULES VIEW MODELS
 		public async Task<List<TrainingModuleVM>> GetTrainingModuleVMsAsync(string userId)
 		{
