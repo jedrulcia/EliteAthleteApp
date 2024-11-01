@@ -16,5 +16,11 @@
 
         Task<string> UploadUserImageAsync(IFormFile file);
         Task RemoveUserImageAsync(string? imageUrl);
-    }
+
+		Task<string> UploadMedicalTestImageAsync(IFormFile file);
+		Task RemoveMedicalTestImageAsync(string? imageUrl);
+
+		Task<string> UploadBodyAnalysisImageAsync(IFormFile file);
+		Task RemoveBodyAnalysisImageAsync(string? imageUrl);
+	}
 }

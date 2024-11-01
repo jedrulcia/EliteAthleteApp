@@ -5,10 +5,9 @@
 
 
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "Panel";
 	var errorMessage = TempData["ErrorMessage"] as string;
 }
-
 
 @if (!string.IsNullOrEmpty(errorMessage))
 {
@@ -20,6 +19,30 @@
 	<div class="container">
 		<h3 class="text-gradient-primary">@Model.FirstName @Model.LastName Panel</h3>
 		<div class="row justify-content-center">
+			<div class="col-md-12">
+				<ul class="nav nav-tabs" id="actionPanelTabs" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link createBtn" type="button" data-userid="@Model.Id" data-coachid="@Model.CoachId" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New Training Module</strong>
+						</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button data-userid="@Model.Id"
+								class="nav-link createOrmBtn" type="button" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i>
+							<strong>Add New ORM</strong>
+						</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button data-userid="@Model.Id"
+								class="nav-link createUbmBtn" type="button" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i>
+							<strong>Add New UBM</strong>
+						</button>
+					</li>
+				</ul>
+				<br />
+			</div>
 			<div class="col-md-12">
 				<ul class="nav nav-tabs" id="userPanelTabs" role="tablist">
 					<li class="nav-item" role="presentation">
@@ -40,21 +63,12 @@
 							<strong>ORMs</strong>
 						</a>
 					</li>
-					<li class="nav-item ms-auto" role="presentation">
-						<button class="nav-link createBtn" type="button" id="createTab" data-userid="@Model.Id" data-coachid="@Model.CoachId" aria-controls="createTab" aria-selected="false">
-							<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New Training Module</strong>
-						</button>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="ubmTab" data-toggle="tab" data-userid="@Model.Id" href="#ubm" role="tab" aria-controls="ubm" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>UBMs</strong>
+						</a>
 					</li>
-					@if (User.IsInRole(Roles.Administrator))
-					{
-						<li class="nav-item" role="presentation">
-							<button data-userid="@Model.Id"
-									class="nav-link createOrmBtn" type="button" id="createOrmTab" aria-controls="createOrmTab" aria-selected="false">
-								<i class="bi bi-plus-square-fill">&nbsp;</i>
-								<strong>Add New ORM</strong>
-							</button>
-						</li>
-					}
 				</ul>
 				<br />
 				<div class="tab-content" id="userPanelTabsContent">
@@ -66,6 +80,9 @@
 					</div>
 					<div class="tab-pane fade" id="orm" role="tabpanel" aria-labelledby="ormTab">
 						<h1><span class="badge bg-black d-block w-100"><strong>My ORMs (One-Rep Max)</strong></span></h1>
+					</div>
+					<div class="tab-pane fade" id="ubm" role="tabpanel" aria-labelledby="ubmTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>My UBMs</strong></span></h1>
 					</div>
 				</div>
 			</div>
@@ -193,6 +210,66 @@
 	</div>
 </div>
 
+<!-- MODAL FOR UBM CREATE -->
+<div class="modal fade" id="ubmCreateModal" tabindex="-1" role="dialog" aria-labelledby="ubmCreateModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ubmCreateModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Create New User Body Measurements</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ubmCreateContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UBM EDIT -->
+<div class="modal fade" id="ubmEditModal" tabindex="-1" role="dialog" aria-labelledby="ubmEditModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ubmEditModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Edit User Body Measurements</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ubmEditContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UBM DELETE -->
+<div class="modal fade" id="ubmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="ubmDeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="ubmDeleteModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Delete User Body Measurements</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="ubmDeleteContent">
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Scripts
 {
 	<script>
@@ -274,6 +351,28 @@
 					},
 					error: function () {
 						alert("An error occurred while loading 'orm' content.");
+					}
+				});
+			});
+
+			// SCRIPT FOR HANDLING UBM TAB
+			$('#ubmTab').on('click', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+
+				$.ajax({
+					url: '@Url.Action("List", "UserBodyMeasurements")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#ubm').html(data);
+						$('.table').DataTable();
+						$('#ubmTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'ubm' content.");
 					}
 				});
 			});
@@ -409,6 +508,63 @@
 					},
 					error: function () {
 						alert("An error occurred while loading the orm delete modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UBM CREATE MODAL
+			$(document).on('click', '.createUbmBtn', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+				$.ajax({
+					url: '@Url.Action("Create", "UserBodyMeasurements")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#ubmCreateContent').html(data);
+						$('#ubmCreateModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the ubm create modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UBM EDIT MODAL
+			$(document).on('click', '.editUbmBtn', function (e) {
+				e.preventDefault();
+
+				var bodyMeasurementId = $(this).data("editubmid");
+				$.ajax({
+					url: '@Url.Action("Edit", "UserBodyMeasurements")',
+					type: 'GET',
+					data: { bodyMeasurementId: bodyMeasurementId },
+					success: function (data) {
+						$('#ubmEditContent').html(data);
+						$('#ubmEditModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the ubm edit modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UBM Delete MODAL
+			$(document).on('click', '.deleteUbmBtn', function (e) {
+				e.preventDefault();
+
+				var bodyMeasurementId = $(this).data("deleteubmid");
+				$.ajax({
+					url: '@Url.Action("Delete", "UserBodyMeasurements")',
+					type: 'GET',
+					data: { bodyMeasurementId: bodyMeasurementId },
+					success: function (data) {
+						$('#ubmDeleteContent').html(data);
+						$('#ubmDeleteModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the ubm delete modal.");
 					}
 				});
 			});

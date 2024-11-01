@@ -1,0 +1,15 @@
+﻿@using EliteAthleteApp.Models.UserBodyMeasurements
+
+@model UserBodyMeasurementsDeleteVM
+
+@{
+	ViewData["Title"] = "Delete";
+}
+
+<form asp-action="Delete">
+	<input type="hidden" asp-for="Id" />
+	<p>Are you sure you want to delete this Body Measurement record?</p>
+	<div class="text-end">
+		<button type="submit" class="btn btn-outline-danger-a"><strong>Delete</strong></button>
+	</div>
+</form>

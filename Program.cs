@@ -17,6 +17,8 @@ string blobConnectionString = builder.Configuration.GetValue<string>("BlobConnec
 string blobContainerExerciseImage = builder.Configuration.GetValue<string>("BlobContainerExerciseImage");
 string blobContainerExerciseVideo = builder.Configuration.GetValue<string>("BlobContainerExerciseVideo");
 string blobContainerUserImage = builder.Configuration.GetValue<string>("BlobContainerUserImage");
+string blobContainerMedicalTestImage = builder.Configuration.GetValue<string>("BlobContainerMedicalTestImage");
+string blobContainerBodyAnalysisImage = builder.Configuration.GetValue<string>("BlobContainerBodyAnalysisImage");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
@@ -30,6 +32,10 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IUserBodyMeasurementsRepository, UserBodyMeasurementsRepository>();
+builder.Services.AddScoped<IUserMedicalTestRepository, UserMedicalTestRepository>();
+builder.Services.AddScoped<IUserBodyAnalysisRepository, UserBodyAnalysisRepository>();
+
 builder.Services.AddScoped<ITrainingExerciseRepository, TrainingExerciseRepository>();
 builder.Services.AddScoped<ITrainingExerciseMediaRepository, TrainingExerciseMediaRepository>();
 builder.Services.AddScoped<ITrainingExerciseCategoryRepository, TrainingExerciseCategoryRepository>();
@@ -42,13 +48,7 @@ builder.Services.AddScoped<ITrainingPlanPhaseRepository, TrainingPlanPhaseReposi
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddScoped<ITrainingOrmRepository, TrainingOrmRepository>();
 
-/*builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
-
-builder.Services.AddScoped<IMealRepository, MealRepository>();
-
-builder.Services.AddScoped<IDietRepository, DietRepository>();*/
-
-builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, blobContainerUserImage));
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, blobContainerUserImage, blobContainerMedicalTestImage, blobContainerBodyAnalysisImage));
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 

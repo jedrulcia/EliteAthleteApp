@@ -20,7 +20,10 @@ namespace EliteAthleteApp.Controllers
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly IUserRepository userRepository;
 
-		public UsersController(UserManager<User> userManager, IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
+		public UsersController(UserManager<User> userManager, 
+			IMapper mapper, 
+			IHttpContextAccessor httpContextAccessor, 
+			IUserRepository userRepository)
         {
             this.userManager = userManager;
             this.mapper = mapper;
@@ -45,6 +48,8 @@ namespace EliteAthleteApp.Controllers
             return View(mapper.Map<UserVM>(await userManager.FindByIdAsync(userId)));
         }
 
+
+		// GET: Users/Index/Panel/Info
         public async Task<IActionResult> Info(string? userId)
         {
 			var user = await userManager.FindByIdAsync(userId);
@@ -60,7 +65,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> UploadImage(string userId)
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
-			await userRepository.UploadImageAsync(userId, imageFile);
+			await userRepository.UploadUserImageAsync(userId, imageFile);
 			return RedirectToAction(nameof(Panel), "Users", new { userId = userId });
 		}
 
@@ -69,7 +74,7 @@ namespace EliteAthleteApp.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteImage(string userId)
 		{
-			await userRepository.DeleteImageAsync(userId);
+			await userRepository.DeleteUserImageAsync(userId);
 			return RedirectToAction(nameof(Panel), "Users", new { userId = userId });
 		}
 

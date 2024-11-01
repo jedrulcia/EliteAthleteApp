@@ -21,7 +21,7 @@ namespace EliteAthleteApp.Repositories
 			this.userManager = userManager;
 		}
 		// UPLOADS IMAGE TO AZURE BLOB STORAGE AND SAVES URL IN USER MEDIA ENTITY
-		public async Task UploadImageAsync(string userId, IFormFile imageFile)
+		public async Task UploadUserImageAsync(string userId, IFormFile imageFile)
 		{
 			if (imageFile != null && imageFile.Length > 0)
 			{
@@ -32,7 +32,7 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// REMOVES IMAGE FROM AZURE BLOB STORAGE AND URL FROM EXERCISE MEDIA ENTITY
-		public async Task DeleteImageAsync(string userId)
+		public async Task DeleteUserImageAsync(string userId)
 		{
 			var user = await userManager.FindByIdAsync(userId);
 			await blobStorageService.RemoveExerciseImageAsync(user.ImageUrl);
