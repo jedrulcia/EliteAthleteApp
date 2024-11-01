@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Contracts.Repositories;
+using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.UserBodyAnalysis;
 using EliteAthleteApp.Models.UserMedicalTest;
 
 namespace EliteAthleteApp.Repositories
@@ -9,11 +11,13 @@ namespace EliteAthleteApp.Repositories
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
+		private readonly IBlobStorageService blobStorageService;
 
-		public UserMedicalTestRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+		public UserMedicalTestRepository(ApplicationDbContext context, IMapper mapper, IBlobStorageService blobStorageService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
+			this.blobStorageService = blobStorageService;
 		}
 
 		// GETS LIST OF USER BODY MEASUREMENTS
@@ -44,20 +48,34 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// CREATES NEW USER BODY MEASUREMENTS ENTITY
-		public async Task CreateUserMedicalTestAsync(UserMedicalTestCreateVM userMedicalTestCreateVM)
+		public async Task CreateUserMedicalTestAsync(UserMedicalTestCreateVM userMedicalTestCreateVM, IFormFile? file)
 		{
+			if (file != null)
+			{
+				var fileUrl = await blobStorageService.UploadMedicalTestFileAsync(file);
+				userMedicalTestCreateVM.FileUrl = fileUrl;
+			}
 			await AddAsync(mapper.Map<UserMedicalTest>(userMedicalTestCreateVM));
 		}
 
 		// EDITS EXSITING USER BODY MEASUREMENTS ENTITY
-		public async Task EditUserMedicalTestAsync(UserMedicalTestCreateVM userMedicalTestCreateVM)
+		public async Task EditUserMedicalTestAsync(UserMedicalTestCreateVM userMedicalTestCreateVM, IFormFile? file)
 		{
+			if (file != null)
+			{
+				var fileUrl = await blobStorageService.UploadMedicalTestFileAsync(file);
+				userMedicalTestCreateVM.FileUrl = fileUrl;
+			}
 			await UpdateAsync(mapper.Map<UserMedicalTest>(userMedicalTestCreateVM));
 		}
 
 		// DELETES USER BODY MEASUREMENTS ENTITY
 		public async Task DeleteUserMedicalTestAsync(UserMedicalTestDeleteVM userMedicalTestDeleteVM)
 		{
+			if (userMedicalTestDeleteVM.FileUrl != null)
+			{
+				await blobStorageService.RemoveMedicalTestFileAsync(userMedicalTestDeleteVM.FileUrl);
+			}
 			await DeleteAsync(userMedicalTestDeleteVM.Id);
 		}
 	}

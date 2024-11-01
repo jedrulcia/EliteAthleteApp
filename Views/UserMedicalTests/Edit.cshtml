@@ -6,7 +6,7 @@
 	ViewData["Title"] = "Edit";
 }
 
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
 	<input type="hidden" asp-for="UserId" />
 	<input type="hidden" asp-for="Id" />
 	<div class="container">
@@ -24,6 +24,13 @@
 				</div>
 			</div>
 			<div class="col-md-9 form-group">
+				<div class="media-upload-box">
+					@if (string.IsNullOrEmpty(Model.FileUrl))
+					{
+						<label for="fileUpload" class="upload-icon">⬆</label>
+						<input type="file" name="fileUpload" id="fileUpload" class="d-none" accept="image/*,application/pdf" />
+					}
+				</div>
 			</div>
 		</div>
 		<div class="row align-items-end">

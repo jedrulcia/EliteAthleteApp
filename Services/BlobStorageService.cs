@@ -66,25 +66,25 @@ namespace EliteAthleteApp.Services
 		}
 
 		// UPLOADS IMAGE TO USER BLOB STORAGE
-		public async Task<string> UploadMedicalTestImageAsync(IFormFile file)
+		public async Task<string> UploadMedicalTestFileAsync(IFormFile file)
 		{
 			return await UploadFileAsync(file, blobContainerMedicalTestImage);
 		}
 
 		// REMOVES IMAGE FROM USER BLOB STORAGE
-		public async Task RemoveMedicalTestImageAsync(string? imageUrl)
+		public async Task RemoveMedicalTestFileAsync(string? imageUrl)
 		{
 			await RemoveFileAsync(imageUrl, blobContainerMedicalTestImage);
 		}
 
 		// UPLOADS IMAGE TO USER BLOB STORAGE
-		public async Task<string> UploadBodyAnalysisImageAsync(IFormFile file)
+		public async Task<string> UploadBodyAnalysisFileAsync(IFormFile file)
 		{
 			return await UploadFileAsync(file, blobContainerBodyAnalysisImage);
 		}
 
 		// REMOVES IMAGE FROM USER BLOB STORAGE
-		public async Task RemoveBodyAnalysisImageAsync(string? imageUrl)
+		public async Task RemoveBodyAnalysisFileAsync(string? imageUrl)
 		{
 			await RemoveFileAsync(imageUrl, blobContainerBodyAnalysisImage);
 		}

@@ -11,11 +11,13 @@ namespace EliteAthleteApp.Repositories
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
+		private readonly IBlobStorageService blobStorageService;
 
-		public UserBodyAnalysisRepository(ApplicationDbContext context, IMapper mapper) : base(context)
+		public UserBodyAnalysisRepository(ApplicationDbContext context, IMapper mapper, IBlobStorageService blobStorageService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
+			this.blobStorageService = blobStorageService;
 		}
 
 		// GETS LIST OF USER BODY ANALYSIS
@@ -46,20 +48,34 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// CREATES NEW USER BODY ANALYSIS ENTITY
-		public async Task CreateUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
+		public async Task CreateUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM, IFormFile? file)
 		{
+			if (file != null)
+			{
+				var fileUrl = await blobStorageService.UploadBodyAnalysisFileAsync(file);
+				userBodyAnalysisCreateVM.FileUrl = fileUrl;
+			}
 			await AddAsync(mapper.Map<UserBodyAnalysis>(userBodyAnalysisCreateVM));
 		}
 
 		// EDITS EXSITING USER BODY ANALYSIS ENTITY
-		public async Task EditUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
+		public async Task EditUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM, IFormFile? file)
 		{
+			if (file != null)
+			{
+				var fileUrl = await blobStorageService.UploadBodyAnalysisFileAsync(file);
+				userBodyAnalysisCreateVM.FileUrl = fileUrl;
+			}
 			await UpdateAsync(mapper.Map<UserBodyAnalysis>(userBodyAnalysisCreateVM));
 		}
 
 		// DELETES USER BODY ANALYSIS ENTITY
 		public async Task DeleteUserBodyAnalysisAsync(UserBodyAnalysisDeleteVM userBodyAnalysisDeleteVM)
 		{
+			if (userBodyAnalysisDeleteVM.FileUrl != null)
+			{
+				await blobStorageService.RemoveBodyAnalysisFileAsync(userBodyAnalysisDeleteVM.FileUrl);
+			}
 			await DeleteAsync(userBodyAnalysisDeleteVM.Id);
 		}
 	}

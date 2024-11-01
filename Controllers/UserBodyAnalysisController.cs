@@ -43,7 +43,8 @@ namespace EliteAthleteApp.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<IActionResult> Create(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
 		{
-			await userBodyAnalysisRepository.CreateUserBodyAnalysisAsync(userBodyAnalysisCreateVM);
+			var file = Request.Form.Files[$"fileUpload"];
+			await userBodyAnalysisRepository.CreateUserBodyAnalysisAsync(userBodyAnalysisCreateVM, file);
 			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 		}
 
@@ -57,7 +58,8 @@ namespace EliteAthleteApp.Controllers
 		[HttpPost, ActionName("Edit")]
 		public async Task<IActionResult> Edit(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
 		{
-			await userBodyAnalysisRepository.EditUserBodyAnalysisAsync(userBodyAnalysisCreateVM);
+			var file = Request.Form.Files[$"fileUpload"];
+			await userBodyAnalysisRepository.EditUserBodyAnalysisAsync(userBodyAnalysisCreateVM, file);
 			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 		}
 

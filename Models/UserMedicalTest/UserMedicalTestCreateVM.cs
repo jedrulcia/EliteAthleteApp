@@ -9,6 +9,6 @@ namespace EliteAthleteApp.Models.UserMedicalTest
         public string? Name { get; set; }
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? DateTime { get; set; }
-        public string? ImageUrl { get; set; }
+        public string? FileUrl { get; set; }
     }
 }

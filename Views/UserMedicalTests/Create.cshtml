@@ -6,7 +6,7 @@
 	ViewData["Title"] = "Create";
 }
 
-<form asp-action="Create">
+<form asp-action="Create" enctype="multipart/form-data">
 	<input type="hidden" asp-for="UserId" />
 	<div class="container">
 		<div class="row">
@@ -23,7 +23,10 @@
 				</div>
 			</div>
 			<div class="col-md-9 form-group">
-
+				<div class="media-upload-box">
+					<label for="fileUpload" class="upload-icon">⬆</label>
+					<input type="file" name="fileUpload" id="fileUpload" class="d-none" accept="image/*,application/pdf" />
+				</div>
 			</div>
 		</div>
 		<div class="row align-items-end">

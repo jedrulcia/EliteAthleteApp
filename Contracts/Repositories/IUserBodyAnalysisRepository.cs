@@ -18,10 +18,10 @@ namespace EliteAthleteApp.Contracts.Repositories
 		Task<UserBodyAnalysisDeleteVM> GetUserBodyAnalysisDeleteVM(int bodyAnalysisId);
 
 		// CREATES NEW USER BODY ANALYSIS ENTITY
-		Task CreateUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM);
+		Task CreateUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM, IFormFile? file);
 
 		// EDITS EXSITING USER BODY ANALYSIS ENTITY
-		Task EditUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM);
+		Task EditUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM, IFormFile? file);
 
 		// DELETES USER BODY ANALYSIS ENTITY
 		Task DeleteUserBodyAnalysisAsync(UserBodyAnalysisDeleteVM userBodyAnalysisDeleteVM);

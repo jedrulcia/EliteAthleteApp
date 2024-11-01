@@ -44,7 +44,8 @@ namespace EliteAthleteApp.Controllers
 		[HttpPost, ActionName("Create")]
 		public async Task<IActionResult> Create(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
-			await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM);
+			var file = Request.Form.Files[$"fileUpload"];
+			await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM, file);
 			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
@@ -58,7 +59,8 @@ namespace EliteAthleteApp.Controllers
 		[HttpPost, ActionName("Edit")]
 		public async Task<IActionResult> Edit(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
-			await userMedicalTestRepository.EditUserMedicalTestAsync(userMedicalTestCreateVM);
+			var file = Request.Form.Files[$"fileUpload"];
+			await userMedicalTestRepository.EditUserMedicalTestAsync(userMedicalTestCreateVM, file);
 			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
