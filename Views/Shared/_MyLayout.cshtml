@@ -57,10 +57,40 @@
 							</ul>
 						}
 					</div>
-					<ul class="navbar-nav text-primary">
-						<strong>
-							<partial name="_LoginPartial" />
-						</strong>
+					<ul class="navbar-nav text-black">
+						<li class="nav-item">
+							<div class="dropdown">
+								<button class="btn btn-outline-primary-a btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+									<strong>User</strong>
+								</button>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+								@if (SignInManager.IsSignedIn(User))
+								{
+										<li>
+											<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="~/">
+												<button type="submit" class="dropdown-item text-black">
+													<i class="bi bi-person-circle"></i>&nbsp; <strong>L O G O U T</strong>
+												</button>
+											</form>
+										</li>
+								}
+								else
+								{
+									<li>
+											<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-circle"></i>&nbsp; R E G I S T E R</a>
+									</li>
+									<li>
+											<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-person-circle"></i>&nbsp; L O G I N</a>
+									</li>
+								}
+								<li>
+									<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+										<i class="bi bi-gear">&nbsp;</i>S E T T I N G S
+									</a>
+								</li>
+								</ul>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
