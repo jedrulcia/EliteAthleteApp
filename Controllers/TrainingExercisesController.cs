@@ -6,7 +6,6 @@ using EliteAthleteApp.Models.TrainingExercise;
 
 namespace EliteAthleteApp.Controllers
 {
-	[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 	public class TrainingExercisesController : Controller
 	{
 		private readonly ITrainingExerciseRepository exerciseRepository;

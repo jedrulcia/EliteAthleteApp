@@ -32,7 +32,6 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingModules/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 		public async Task<IActionResult> Create(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -53,7 +52,6 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingModules/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 		public async Task<IActionResult> Edit(TrainingModuleCreateVM trainingModuleCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -74,7 +72,6 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingModules/Delete
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 		public async Task<IActionResult> Delete(TrainingModuleDeleteVM trainingModuleDeleteVM)
 		{
 			await trainingModuleRepository.DeleteTrainingModuleAsync(trainingModuleDeleteVM.Id);

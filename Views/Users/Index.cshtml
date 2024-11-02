@@ -5,6 +5,14 @@
 	ViewData["Title"] = "Index";
 }
 
+<form asp-action="AddAthlete" asp-controller="Users" method="post">
+	<div class="form-group">
+		<label for="inviteCode">Invite Code</label>
+		<input type="text" class="form-control" id="inviteCode" name="InviteCode" required />
+	</div>
+	<button type="submit" class="btn btn-primary mt-2">Add</button>
+</form>
+
 <h1>Athletes</h1>
 <table class="table">
 	<thead>
