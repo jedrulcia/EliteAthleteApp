@@ -8,17 +8,23 @@ using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Services;
 using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Contracts.Repositories;
+using Microsoft.Build.Execution;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-string blobConnectionString = builder.Configuration.GetValue<string>("BlobConnectionString");
-string blobContainerExerciseImage = builder.Configuration.GetValue<string>("BlobContainerExerciseImage");
-string blobContainerExerciseVideo = builder.Configuration.GetValue<string>("BlobContainerExerciseVideo");
-string blobContainerUserImage = builder.Configuration.GetValue<string>("BlobContainerUserImage");
-string blobContainerMedicalTestImage = builder.Configuration.GetValue<string>("BlobContainerMedicalTestImage");
-string blobContainerBodyAnalysisImage = builder.Configuration.GetValue<string>("BlobContainerBodyAnalysisImage");
+var connectionString = builder.Configuration.GetConnectionString("DataBaseConnectionString") ?? throw new InvalidOperationException("Connection string 'DataBaseConnectionString' not found.");
+string blobConnectionString = builder.Configuration.GetConnectionString("BlobConnectionString");
+string sendGridConnectionString = builder.Configuration.GetConnectionString("SendGridConnectionString");
+
+string blobContainerExerciseImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerExerciseImage"];
+string blobContainerExerciseVideo = builder.Configuration.GetSection("ContainerNames")["BlobContainerExerciseVideo"];
+string blobContainerUserImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerUserImage"];
+string blobContainerMedicalTestImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerMedicalTestImage"];
+string blobContainerBodyAnalysisImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerBodyAnalysisImage"];
+
+string sendFromEmailAddress = builder.Configuration.GetValue<string>("Email");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
@@ -51,6 +57,7 @@ builder.Services.AddScoped<ITrainingOrmRepository, TrainingOrmRepository>();
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, blobContainerUserImage, blobContainerMedicalTestImage, blobContainerBodyAnalysisImage));
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IYoutubeService, YoutubeService>();
+builder.Services.AddTransient<IEmailSender, EmailSenderService>(provider => new EmailSenderService(sendGridConnectionString, sendFromEmailAddress));
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddControllersWithViews();

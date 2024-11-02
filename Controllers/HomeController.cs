@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using EliteAthleteApp.Models;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -9,12 +10,12 @@ namespace EliteAthleteApp.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
 
-		public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger)
 		{
 			_logger = logger;
-		}
+        }
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
 			return View();
 		}
