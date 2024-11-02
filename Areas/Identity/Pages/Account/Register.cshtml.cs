@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using EliteAthleteApp.Constants;
 using EliteAthleteApp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace EliteAthleteApp.Areas.Identity.Pages.Account
 {
@@ -108,6 +109,8 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Display(Name = "I am a coach.")]
+            public bool RegisterAsCoach { get; set; }
         }
 
 
@@ -131,13 +134,28 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
                 user.LastName = Input.LastName;
                 user.DateOfBith = Input.DateOfBith;
 
-                var result = await _userManager.CreateAsync(user, Input.Password);
+				string inviteCode;
+				do
+				{
+					inviteCode = Guid.NewGuid().ToString("N").Substring(0, 8);
+				} while (await _userManager.Users.AnyAsync(u => u.InviteCode == inviteCode));
+
+				user.InviteCode = inviteCode;
+
+				var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-
-                   await _userManager.AddToRoleAsync(user, Roles.User);
+                    if(Input.RegisterAsCoach)
+                    {
+                        _logger.LogInformation("Coach created a new account with password.");
+                        await _userManager.AddToRoleAsync(user, Roles.Coach);
+                    }
+                    else
+                    {
+                        _logger.LogInformation("User created a new account with password.");
+                        await _userManager.AddToRoleAsync(user, Roles.User);
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -36,7 +36,6 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: TrainingPlans/ManageExercises
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 
 		public async Task<IActionResult> ManageExercises(int? id)
 		{
@@ -73,7 +72,6 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingPlans/ManageExercises/AddExercise
 		[HttpPost, ActionName("AddExercise")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 		public async Task<IActionResult> AddExercise(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			if (ModelState.IsValid)
@@ -95,7 +93,6 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingPlans/ManageExercises/EditExercise
 		[HttpPost, ActionName("EditExercise")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 		public async Task<IActionResult> EditExercise(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			if (ModelState.IsValid)
@@ -117,7 +114,6 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingPlans/ManageExercises/RemoveExercise
 		[HttpPost, ActionName("RemoveExercise")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 		public async Task<IActionResult> RemoveExercise(TrainingPlanRemoveExerciseVM trainingPlanRemoveExerciseVM)
 		{
 			await trainingPlanRepository.RemoveExerciseFromTrainingPlanAsync(trainingPlanRemoveExerciseVM);
@@ -133,7 +129,6 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingPlans/ManageExercises/CopyTrainingPlan
 		[HttpPost, ActionName("Copy")]
 		[ValidateAntiForgeryToken]
-		[Authorize(Roles = Roles.Administrator + "," + Roles.Coach)]
 		public async Task<IActionResult> Copy(int copyFromId, int copyToId, int trainingModuleId)
 		{
 			await trainingPlanRepository.CopyTrainingPlanAsync(copyFromId, copyToId);

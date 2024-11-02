@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DataBaseConnectionString") ?? throw new InvalidOperationException("Connection string 'DataBaseConnectionString' not found.");
 string blobConnectionString = builder.Configuration.GetConnectionString("BlobConnectionString");
 string sendGridConnectionString = builder.Configuration.GetConnectionString("SendGridConnectionString");
@@ -57,6 +56,7 @@ builder.Services.AddScoped<ITrainingOrmRepository, TrainingOrmRepository>();
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, blobContainerUserImage, blobContainerMedicalTestImage, blobContainerBodyAnalysisImage));
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IYoutubeService, YoutubeService>();
+
 builder.Services.AddTransient<IEmailSender, EmailSenderService>(provider => new EmailSenderService(sendGridConnectionString, sendFromEmailAddress));
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));

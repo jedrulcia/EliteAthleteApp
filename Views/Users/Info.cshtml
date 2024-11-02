@@ -31,6 +31,13 @@
 		<strong>First Name:</strong><p class="text-white">@Model.FirstName</p>
 		<strong>Last Name:</strong> <p class="text-white">@Model.LastName</p>
 		<strong>Date of Birth:</strong> <p class="text-white">@Model.DateOfBirth</p>
-		<strong>Coach:</strong> <p class="text-white">@Model.CoachFullName</p>
+		@if (Model.CoachFullName == null)
+		{
+			<strong>Invite Code:</strong> <p class="text-white">@Model.InviteCode</p>
+		}
+		else
+		{
+			<strong>Coach:</strong> <p class="text-white">@Model.CoachFullName</p>
+		}
 	</div>
 </div>

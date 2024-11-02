@@ -10,5 +10,6 @@ namespace EliteAthleteApp.Data
 		public string? DateOfBith {  get; set; }
 		public string? CoachId { get; set; }
 		public string? ImageUrl { get; set; }
+		public string? InviteCode { get; set; }
 	}
 }
