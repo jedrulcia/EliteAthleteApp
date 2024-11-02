@@ -4,6 +4,7 @@ using EliteAthleteApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EliteAthleteApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241102230419_DateOfBirth")]
+    partial class DateOfBirth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -484,9 +487,6 @@ namespace EliteAthleteApp.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("NewCoachId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -532,7 +532,7 @@ namespace EliteAthleteApp.Migrations
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
                             CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-                            ConcurrencyStamp = "32bb2c8f-021b-43b5-ba92-cc2168d7302d",
+                            ConcurrencyStamp = "b6ae743a-e301-4336-bde5-3ae102f50b57",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -540,9 +540,9 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECUd7eAc/eqvDPHFLWbA7UoVy6li2tsZuMNh6sa1n9yBksJVC+CwAUHr6H3OJwBBmA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEINpRTB+mfPMr75hbVQ/tGXjpfRFrHvaFo5iwkXmsmhA1LfuTz536HEnBPZ3qRcv3w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bfd4ed39-b360-4e78-a003-367d5b201a54",
+                            SecurityStamp = "31661984-8fcd-4335-b55a-44097b8d7d8b",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         },
@@ -551,7 +551,7 @@ namespace EliteAthleteApp.Migrations
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
                             CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-                            ConcurrencyStamp = "e37814da-6715-44ec-947e-4e9732792bab",
+                            ConcurrencyStamp = "792263e4-8305-4667-b066-843255c4f942",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -559,9 +559,9 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBobYYEJp1srUDAFrEp+weRz9cFGm/Rb6BrtAEdUe1H3oAYKRv7sOf/h6fnnPqAUYg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMql1zVNAndJValghR5dflKheu2k8kDwh4+KrMDKinwqLvU3Ewix9vbUhAl4BvYYMQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "97e55180-aa10-477c-ab74-078ee5c1d308",
+                            SecurityStamp = "c056d196-bf58-43a3-a6a1-0760790507e5",
                             TwoFactorEnabled = false,
                             UserName = "user@localhost.com"
                         },
@@ -570,7 +570,7 @@ namespace EliteAthleteApp.Migrations
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b2",
                             AccessFailedCount = 0,
                             CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-                            ConcurrencyStamp = "7679bab0-2189-4d1c-a86c-30bed052d32a",
+                            ConcurrencyStamp = "865afac3-79bc-4a56-ab75-158756b3c892",
                             Email = "coach@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "System",
@@ -578,9 +578,9 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "COACH@LOCALHOST.COM",
                             NormalizedUserName = "COACH@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPeyhjtJGk8ihOLqtihsnS+UmOHWpYFgNQxJanF2tlDP3Ht+ksg2wLjH0ej4YUAaHg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECDODRm3CnGUmrGdySYYWl1Vts/m0FXFWoi+QGSeR6/FVWgV2xDVZoG75y82ymxrnA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f2e9d716-23b6-468e-af7d-39e26f36b51a",
+                            SecurityStamp = "5ccec8d5-9696-41f4-9a36-d712d8499a79",
                             TwoFactorEnabled = false,
                             UserName = "coach@localhost.com"
                         });

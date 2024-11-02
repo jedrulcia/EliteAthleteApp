@@ -31,13 +31,25 @@
 		<strong>First Name:</strong><p class="text-white">@Model.FirstName</p>
 		<strong>Last Name:</strong> <p class="text-white">@Model.LastName</p>
 		<strong>Date of Birth:</strong> <p class="text-white">@Model.DateOfBirth</p>
-		@if (Model.CoachFullName == null)
+		<strong>Invite Code:</strong> <p class="text-white">
+			@Model.InviteCode
+			<a asp-action="ResetInviteCode" class="btn btn-sm btn-danger">Reset Code</a>
+		</p>
+		@if (Model.CoachFullName != null)
 		{
-			<strong>Invite Code:</strong> <p class="text-white">@Model.InviteCode</p>
+			<strong>Coach:</strong> <p class="text-white">
+				@Model.CoachFullName
+				<a asp-action="DeleteCoach" class="btn btn-sm btn-danger">Delete Coach</a>
+			</p>
 		}
-		else
+		@if (Model.NewCoachFullName != null)
 		{
-			<strong>Coach:</strong> <p class="text-white">@Model.CoachFullName</p>
+			<strong>You were invited by:</strong>
+			<p class="text-white">
+				@Model.NewCoachFullName
+				<a asp-action="AcceptInvite" class="btn btn-sm btn-success me-2">Accept</a>
+				<a asp-action="DeclineInvite" class="btn btn-sm btn-danger">Decline</a>
+			</p>
 		}
 	</div>
 </div>

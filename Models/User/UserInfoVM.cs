@@ -14,6 +14,7 @@ namespace EliteAthleteApp.Models.User
 		public string? DateOfBirth { get; set; }
 		public string? ImageUrl { get; set; }
 		public string? CoachFullName { get; set; }
+		public string? NewCoachFullName { get; set; }
 		public string? InviteCode { get; set; }
 	}
 }

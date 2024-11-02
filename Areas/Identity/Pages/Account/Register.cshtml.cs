@@ -89,7 +89,7 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
             public string? LastName { get; set; }
             [DataType(DataType.Date)]
             [Display(Name = "Date of birth")]
-            public string? DateOfBith { get; set; }
+            public string? DateOfBirth { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -132,7 +132,7 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.DateOfBith = Input.DateOfBith;
+                user.DateOfBirth = Input.DateOfBirth;
 
 				string inviteCode;
 				do
