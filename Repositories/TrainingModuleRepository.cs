@@ -38,7 +38,11 @@ namespace EliteAthleteApp.Repositories
 		// GETS TRAINING MODULE CREATE VIEW MODEL
 		public TrainingModuleCreateVM GetTrainingModuleCreateVM(string userId, string coachId)
 		{
-			return new TrainingModuleCreateVM { UserId = userId, CoachId = coachId };
+			var latestEndDate = context.TrainingModules
+				.Where(tm => tm.UserId == userId)
+				.Select(tm => tm.EndDate)
+				.Max();
+			return new TrainingModuleCreateVM { UserId = userId, CoachId = coachId, LatestEndDate = latestEndDate };
 		}
 
 		// GETS TRAINING MODULE EDIT VIEW MODEL

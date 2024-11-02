@@ -9,6 +9,7 @@ using EliteAthleteApp.Models.User;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Contracts.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -59,6 +60,11 @@ namespace EliteAthleteApp.Controllers
 				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
 				userVM.CoachFullName = coachVM.FirstName + " " + coachVM.LastName;
 			}
+			if (user.NewCoachId != null)
+			{
+				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.NewCoachId));
+				userVM.NewCoachFullName = coachVM.FirstName + " " + coachVM.LastName;
+			}
 			return PartialView(userVM);
 		}
 
@@ -88,10 +94,52 @@ namespace EliteAthleteApp.Controllers
 				.Where(u => u.InviteCode == inviteCode)
 				.FirstOrDefault();
 
-			user.CoachId = coach.Id;
+			user.NewCoachId = coach.Id;
 			await userRepository.UpdateAsync(user);
 
 			return RedirectToAction(nameof(Index), "Users");
+		}
+
+		public async Task<IActionResult> AcceptInvite()
+		{
+			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			user.CoachId = user.NewCoachId;
+			user.NewCoachId = null;
+			await userRepository.UpdateAsync(user);
+
+			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+		}
+
+		public async Task<IActionResult> DeclineInvite()
+		{
+			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			user.NewCoachId = null;
+			await userRepository.UpdateAsync(user);
+
+			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+		}
+
+		public async Task<IActionResult> DeleteCoach()
+		{
+			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			user.CoachId = null;
+			await userRepository.UpdateAsync(user);
+
+			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+		}
+
+		public async Task<IActionResult> ResetInviteCode()
+		{
+			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			string inviteCode;
+			do
+			{
+				inviteCode = Guid.NewGuid().ToString("N").Substring(0, 8);
+			} while (await userManager.Users.AnyAsync(u => u.InviteCode == inviteCode));
+
+			user.InviteCode = inviteCode;
+			await userRepository.UpdateAsync(user);
+			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
 		}
 	}
 }
