@@ -1,19 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EliteAthleteApp.Configurations;
-using EliteAthleteApp.Configurations.Entities;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Services;
 using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Contracts.Repositories;
-using Microsoft.Build.Execution;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DataBaseConnectionString") ?? throw new InvalidOperationException("Connection string 'DataBaseConnectionString' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DatabaseConnectionString") ?? throw new InvalidOperationException("Connection string 'DataBaseConnectionString' not found.");
 string blobConnectionString = builder.Configuration.GetConnectionString("BlobConnectionString");
 string sendGridConnectionString = builder.Configuration.GetConnectionString("SendGridConnectionString");
 
@@ -62,6 +60,8 @@ builder.Services.AddTransient<IEmailSender, EmailSenderService>(provider => new 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -82,6 +82,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints => { endpoints.MapHub<ChatHub>("/chat"); });
 
 app.MapControllerRoute(
 	name: "default",

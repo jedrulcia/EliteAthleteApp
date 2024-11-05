@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EliteAthleteApp.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdatedNomenclature : Migration
+    public partial class AddingDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,8 +34,11 @@ namespace EliteAthleteApp.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateOfBith = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CoachId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InviteCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NewCoachId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,7 +60,7 @@ namespace EliteAthleteApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExerciseCategories",
+                name: "TrainingExerciseCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -66,11 +69,25 @@ namespace EliteAthleteApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExerciseCategories", x => x.Id);
+                    table.PrimaryKey("PK_TrainingExerciseCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExerciseMuscleGroups",
+                name: "TrainingExerciseMedias",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageUrls = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingExerciseMedias", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrainingExerciseMuscleGroups",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -79,26 +96,27 @@ namespace EliteAthleteApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExerciseMuscleGroups", x => x.Id);
+                    table.PrimaryKey("PK_TrainingExerciseMuscleGroups", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Exercises",
+                name: "TrainingExercises",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ExerciseCategoryId = table.Column<int>(type: "int", nullable: true),
                     ExerciseMuscleGroupId = table.Column<int>(type: "int", nullable: true),
+                    ExerciseMediaId = table.Column<int>(type: "int", nullable: true),
                     CoachId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VideoLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    YoutubeLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SetAsPublic = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                    table.PrimaryKey("PK_TrainingExercises", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -190,6 +208,60 @@ namespace EliteAthleteApp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TrainingPlans", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserBodyAnalysis",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Weight = table.Column<int>(type: "int", nullable: true),
+                    FatPercentage = table.Column<int>(type: "int", nullable: true),
+                    MusclePercentage = table.Column<int>(type: "int", nullable: true),
+                    WaterPercentage = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserBodyAnalysis", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserBodyMeasurements",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Chest = table.Column<int>(type: "int", nullable: true),
+                    Arms = table.Column<int>(type: "int", nullable: true),
+                    Waist = table.Column<int>(type: "int", nullable: true),
+                    Thighs = table.Column<int>(type: "int", nullable: true),
+                    Hips = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserBodyMeasurements", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserMedicalTests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FileUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMedicalTests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -310,16 +382,16 @@ namespace EliteAthleteApp.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "CoachId", "ConcurrencyStamp", "DateOfBith", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "CoachId", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "ImageUrl", "InviteCode", "LastName", "LockoutEnabled", "LockoutEnd", "NewCoachId", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "654bced5-375b-5291-0a59-1dc59923d1b0", 0, "654bced5-375b-5291-0a59-1dc59923d1b0", "b7b44d33-d842-4c4e-a5ab-baf8f024e0a5", null, "admin@localhost.com", true, "System", "Admin", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEDV9PYTWlUTVfMBhGKUzgQV6hpv0SzsPKIzsE7SD3uvG0wC7xL0e+LfNR5CxHrUoCg==", null, false, "523fc6e9-4d07-41e4-b9b2-dfa3820bb474", false, "admin@localhost.com" },
-                    { "654bced5-375b-5291-0a59-1dc59923d1b1", 0, "654bced5-375b-5291-0a59-1dc59923d1b0", "ebf886a9-ec0a-4c07-a5c6-5eeb42388401", null, "user@localhost.com", true, "System", "User", false, null, "USER@LOCALHOST.COM", "USER@LOCALHOST.COM", "AQAAAAIAAYagAAAAELqS3kLr2b6w6hVQx4p3XZcCIp7Hu+3XJ4OgcOIWn3c+t9S4B8amuaNQ0jsGyIGAkA==", null, false, "73183961-3c3b-49dc-a7c8-1535d2c6e9a3", false, "user@localhost.com" },
-                    { "654bced5-375b-5291-0a59-1dc59923d1b2", 0, "654bced5-375b-5291-0a59-1dc59923d1b0", "be771aa7-2c7f-428f-b310-1887bccfbce8", null, "coach@localhost.com", true, "System", "Coach", false, null, "COACH@LOCALHOST.COM", "COACH@LOCALHOST.COM", "AQAAAAIAAYagAAAAEKJ2z8xF5TXtw4dL3IVkHk/CEmAhUzal/0ubE3vuoQwsiRBAf2pL+3Jw1MQU5bIFtQ==", null, false, "82c8409f-0711-4273-8554-c5911eaed05f", false, "coach@localhost.com" }
+                    { "654bced5-375b-5291-0a59-1dc59923d1b0", 0, "654bced5-375b-5291-0a59-1dc59923d1b0", "c0a10896-b0b3-44ff-8d02-8de9b8e4702e", null, "admin@localhost.com", true, "System", null, null, "Admin", false, null, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAEIipUPUiqtxmEcRl/s0t0OVqCMxwUkS8V51B0Dm0EMjyA6NXBvXVdNIXxLv53h1X/Q==", null, false, "b57cd55c-8dcf-4e21-834c-5fed3c85f963", false, "admin@localhost.com" },
+                    { "654bced5-375b-5291-0a59-1dc59923d1b1", 0, "654bced5-375b-5291-0a59-1dc59923d1b0", "45c5436a-02b3-4276-b72d-0f3c72829536", null, "user@localhost.com", true, "System", null, null, "User", false, null, null, "USER@LOCALHOST.COM", "USER@LOCALHOST.COM", "AQAAAAIAAYagAAAAEIx5c3n8h/Ggwc9pw14co2tpTabVxi2aPOWZOMr5ctjGCpWcL4m7spkz0O4mJAwxjA==", null, false, "07376558-c943-47ac-be49-1ca4c26519ac", false, "user@localhost.com" },
+                    { "654bced5-375b-5291-0a59-1dc59923d1b2", 0, "654bced5-375b-5291-0a59-1dc59923d1b0", "467c212d-5301-4fb2-8791-f42161c43fb0", null, "coach@localhost.com", true, "System", null, null, "Coach", false, null, null, "COACH@LOCALHOST.COM", "COACH@LOCALHOST.COM", "AQAAAAIAAYagAAAAELBaMGTmg1Jn0b50PjeHtWvjDVimYS+KNdI5LfvM/Jbgurve6v6yWPuDyOOSsvgOuQ==", null, false, "6bd5a1a6-595e-4284-88f0-b451e47fe25c", false, "coach@localhost.com" }
                 });
 
             migrationBuilder.InsertData(
-                table: "ExerciseCategories",
+                table: "TrainingExerciseCategories",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -333,7 +405,7 @@ namespace EliteAthleteApp.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "ExerciseMuscleGroups",
+                table: "TrainingExerciseMuscleGroups",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
@@ -440,13 +512,16 @@ namespace EliteAthleteApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ExerciseCategories");
+                name: "TrainingExerciseCategories");
 
             migrationBuilder.DropTable(
-                name: "ExerciseMuscleGroups");
+                name: "TrainingExerciseMedias");
 
             migrationBuilder.DropTable(
-                name: "Exercises");
+                name: "TrainingExerciseMuscleGroups");
+
+            migrationBuilder.DropTable(
+                name: "TrainingExercises");
 
             migrationBuilder.DropTable(
                 name: "TrainingModules");
@@ -462,6 +537,15 @@ namespace EliteAthleteApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "TrainingPlans");
+
+            migrationBuilder.DropTable(
+                name: "UserBodyAnalysis");
+
+            migrationBuilder.DropTable(
+                name: "UserBodyMeasurements");
+
+            migrationBuilder.DropTable(
+                name: "UserMedicalTests");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
