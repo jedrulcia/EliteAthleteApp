@@ -11,13 +11,15 @@ namespace EliteAthleteApp.Services
 		private readonly string blobContainerUserImage;
 		private readonly string blobContainerMedicalTestImage;
 		private readonly string blobContainerBodyAnalysisImage;
+		private readonly string blobContainerChatJson;
 
 		public BlobStorageService(string blobConnectionString, 
 			string blobContainerExerciseImage, 
 			string blobContainerExerciseVideo, 
 			string blobContainerUserImage, 
 			string blobContainerMedicalTestImage, 
-			string blobContainerBodyAnalysisImage)
+			string blobContainerBodyAnalysisImage,
+			string blobContainerChatJson)
         {
             this.blobServiceClient = new BlobServiceClient(blobConnectionString);
             this.blobContainerExerciseImage = blobContainerExerciseImage;
@@ -25,6 +27,7 @@ namespace EliteAthleteApp.Services
 			this.blobContainerUserImage = blobContainerUserImage;
 			this.blobContainerMedicalTestImage = blobContainerMedicalTestImage;
 			this.blobContainerBodyAnalysisImage = blobContainerBodyAnalysisImage;
+			this.blobContainerChatJson = blobContainerChatJson;
 		}
 
 		// EXERCISE IMAGES
@@ -89,6 +92,12 @@ namespace EliteAthleteApp.Services
 			await RemoveFileAsync(imageUrl, blobContainerBodyAnalysisImage);
 		}
 
+		// UPLOADS JSON TO USER CHAT BLOB STORAGE
+		public async Task<string> UploadUserChatFileAsync(IFormFile file)
+		{
+			return await UploadFileAsync(file, blobContainerChatJson);
+		}
+
 		// PRIVATE METHODS BELOW
 
 		// UPLOADS FILE TO BLOB STORAGE
@@ -143,6 +152,5 @@ namespace EliteAthleteApp.Services
 				return false;
 			}
 		}
-
 	}
 }

@@ -1,0 +1,97 @@
+﻿@using EliteAthleteApp.Models.UserChat
+@model UserChatVM
+
+@{
+	ViewData["Title"] = "Chat";
+}
+
+<div class="container">
+	<!-- Wyświetlanie starych wiadomości -->
+	@foreach (var message in Model.UserChatMessageVMs)
+	{
+		<div class="message">
+			@if (message.UserId == Model.ViewerId)
+			{
+				<div class="text-end">
+					<strong>@message.Timestamp</strong>: @message.Content @message.UserId
+				</div>
+			}
+			else
+			{
+				<div class="text-start">
+					<strong>@message.Timestamp</strong>: @message.Content
+				</div>
+			}
+		</div>
+	}
+	<div class="mt-3">
+		<ul id="discussion"></ul>
+	</div>
+
+	<div class="mt-5">
+		<input type="text" id="message" />
+		<input type="button" id="sendmessage" value="Send" />
+	</div>
+</div>
+
+
+@section Scripts
+ {
+	<script>
+		$(document).ready(function () {
+			console.log("SignalR initialization starting...");
+
+			// Inicjalizacja połączenia SignalR
+			var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+
+			// Rozpoczęcie połączenia
+			connection.start()
+				.then(function () {
+					console.log("Połączenie SignalR nawiązane.");
+				})
+				.catch(function (err) {
+					console.error("Połączenie z SignalR nieudane: ", err.toString());
+				});
+
+			// Obsługa wysyłania wiadomości
+			document.getElementById("sendmessage").addEventListener("click", function (event) {
+				var message = document.getElementById("message").value;
+				var coachId = '@Model.CoachVM.Id';  // Coach ID jako string
+				var userId = '@Model.UserVM.Id';    // User ID jako string
+				var senderId = '@Model.ViewerId'
+
+				// Wywołanie metody SignalR do wysłania wiadomości, przekazując userId, coachId i wiadomość
+				connection.invoke("SendMessage", message, userId, coachId, senderId)
+					.catch(function (err) {
+						console.error("Błąd wysyłania wiadomości: ", err.toString());
+					});
+
+				event.preventDefault();
+			});
+
+			// Odbiór wiadomości i aktualizacja listy wiadomości na stronie
+			connection.on("ReceiveMessage", function (message, userId, timestamp) {
+				console.log("Nowa wiadomość: ", message);  // Zobaczmy, co otrzymujemy
+
+				// Tworzenie nowego elementu <div> dla wiadomości
+				var divMessage = document.createElement("div");
+				divMessage.classList.add("message");
+
+				// Sprawdzenie, czy wiadomość pochodzi od użytkownika (viewer)
+				var divContent = document.createElement("div");
+				if (userId === '@Model.ViewerId') {
+					divContent.classList.add("text-end");
+				} else {
+					divContent.classList.add("text-start");
+				}
+
+				// Wstawienie treści wiadomości i jej znacznika czasowego
+				divContent.innerHTML = `<strong>${timestamp}</strong>: ${message}`;
+
+				// Dodanie wiadomości do sekcji "discussion"
+				divMessage.appendChild(divContent);
+				document.getElementById("discussion").appendChild(divMessage);
+			});
+		});
+	</script>
+}

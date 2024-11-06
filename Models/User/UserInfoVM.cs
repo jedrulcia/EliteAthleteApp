@@ -13,8 +13,8 @@ namespace EliteAthleteApp.Models.User
 		public string LastName { get; set; }
 		public string? DateOfBirth { get; set; }
 		public string? ImageUrl { get; set; }
-		public string? CoachFullName { get; set; }
-		public string? NewCoachFullName { get; set; }
+		public UserVM? CoachVM { get; set; }
+		public UserVM? NewCoachVM { get; set; }
 		public string? InviteCode { get; set; }
 	}
 }

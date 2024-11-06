@@ -35,18 +35,19 @@
 			@Model.InviteCode
 			<a asp-action="ResetInviteCode" class="btn btn-sm btn-danger">Reset Code</a>
 		</p>
-		@if (Model.CoachFullName != null)
+		@if (Model.CoachVM != null)
 		{
 			<strong>Coach:</strong> <p class="text-white">
-				@Model.CoachFullName
+				@Model.CoachVM.FirstName @Model.CoachVM.LastName
 				<a asp-action="DeleteCoach" class="btn btn-sm btn-danger">Delete Coach</a>
+				<a asp-action="Chat" asp-route-userId="@Model.CoachVM.Id" asp-controller="Users" class="btn btn-sm btn-danger">Chat</a>
 			</p>
 		}
-		@if (Model.NewCoachFullName != null)
+		@if (Model.NewCoachVM != null)
 		{
 			<strong>You were invited by:</strong>
 			<p class="text-white">
-				@Model.NewCoachFullName
+				@Model.NewCoachVM.FirstName @Model.NewCoachVM.LastName
 				<a asp-action="AcceptInvite" class="btn btn-sm btn-success me-2">Accept</a>
 				<a asp-action="DeclineInvite" class="btn btn-sm btn-danger">Decline</a>
 			</p>

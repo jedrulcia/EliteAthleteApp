@@ -22,5 +22,6 @@
 
 		Task<string> UploadBodyAnalysisFileAsync(IFormFile file);
 		Task RemoveBodyAnalysisFileAsync(string? imageUrl);
+		Task<string> UploadUserChatFileAsync(IFormFile file);
 	}
 }

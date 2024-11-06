@@ -10,6 +10,12 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Azure.Storage.Blobs;
+using EliteAthleteApp.Models.UserChat;
+using EliteAthleteApp.Services;
+using System.Text.Json;
+using System.Text;
+using EliteAthleteApp.Contracts.Services;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -19,16 +25,22 @@ namespace EliteAthleteApp.Controllers
 		private readonly IMapper mapper;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly IUserRepository userRepository;
+		private readonly IBlobStorageService blobStorageService;
+		private readonly ApplicationDbContext context;
 
 		public UsersController(UserManager<User> userManager,
 			IMapper mapper,
 			IHttpContextAccessor httpContextAccessor,
-			IUserRepository userRepository)
+			IUserRepository userRepository,
+			IBlobStorageService blobStorageService,
+			ApplicationDbContext context)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
 			this.httpContextAccessor = httpContextAccessor;
 			this.userRepository = userRepository;
+			this.blobStorageService = blobStorageService;
+			this.context = context;
 		}
 
 		// GET: Users/Index
@@ -58,12 +70,12 @@ namespace EliteAthleteApp.Controllers
 			if (user.CoachId != null)
 			{
 				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
-				userVM.CoachFullName = coachVM.FirstName + " " + coachVM.LastName;
+				userVM.CoachVM = coachVM;
 			}
 			if (user.NewCoachId != null)
 			{
-				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.NewCoachId));
-				userVM.NewCoachFullName = coachVM.FirstName + " " + coachVM.LastName;
+				var newCoachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.NewCoachId));
+				userVM.NewCoachVM = newCoachVM;
 			}
 			return PartialView(userVM);
 		}
@@ -140,6 +152,63 @@ namespace EliteAthleteApp.Controllers
 			user.InviteCode = inviteCode;
 			await userRepository.UpdateAsync(user);
 			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+		}
+
+		public async Task<IActionResult> Chat(string? userId)
+		{
+			var viewerId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
+			var user1 = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var user2 = await userManager.FindByIdAsync(userId);
+
+			var coachVM = new UserVM();
+			var userVM = new UserVM();
+
+			if (User.IsInRole("Coach"))
+			{
+				coachVM = mapper.Map<UserVM>(user1);
+				userVM = mapper.Map<UserVM>(user2);
+			}
+			else
+			{
+				coachVM = mapper.Map<UserVM>(user2);
+				userVM = mapper.Map<UserVM>(user1);
+			}
+
+			var chat = await context.Set<UserChat>().Where(uc => uc.UserId == userVM.Id && uc.CoachId == coachVM.Id).FirstOrDefaultAsync();
+			var stream = new MemoryStream();
+
+			if (chat == null)
+			{
+				var emptyChat = new List<UserChatMessageVM>();
+				string jsonContent = JsonSerializer.Serialize(emptyChat, new JsonSerializerOptions { WriteIndented = true });
+				stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+				var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
+				string jsonUrl = await blobStorageService.UploadUserChatFileAsync(chatFile);
+
+				chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
+				await context.AddAsync(chat);
+				await context.SaveChangesAsync();
+			}
+
+			var blobClient = new BlobClient(new Uri(chat.ChatUrl));
+
+			stream = new MemoryStream();
+			await blobClient.DownloadToAsync(stream);
+			stream.Position = 0;
+			var chatMessages = await JsonSerializer.DeserializeAsync<List<UserChatMessageVM>>(stream);
+
+
+
+			var chatVM = new UserChatVM
+			{
+				Id = chat.Id,
+				CoachVM = coachVM,
+				UserVM = userVM,
+				UserChatMessageVMs = chatMessages,
+				ViewerId = viewerId
+			};
+
+			return View(chatVM);
 		}
 	}
 }

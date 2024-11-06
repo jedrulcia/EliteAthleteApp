@@ -30,6 +30,7 @@ namespace EliteAthleteApp.Data
 		public DbSet<UserBodyAnalysis> UserBodyAnalysis { get; set; }
 		public DbSet<UserBodyMeasurements> UserBodyMeasurements { get; set; }
 		public DbSet<UserMedicalTest> UserMedicalTests { get; set; }
+		public DbSet<UserChat> UserChats { get; set; }
 
 		public DbSet<TrainingExercise> TrainingExercises { get; set; }
 		public DbSet<TrainingExerciseCategory> TrainingExerciseCategories { get; set; }

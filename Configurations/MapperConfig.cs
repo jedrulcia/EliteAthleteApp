@@ -7,6 +7,7 @@ using EliteAthleteApp.Models.TrainingPlan;
 using EliteAthleteApp.Models.User;
 using EliteAthleteApp.Models.UserBodyAnalysis;
 using EliteAthleteApp.Models.UserBodyMeasurements;
+using EliteAthleteApp.Models.UserChat;
 using EliteAthleteApp.Models.UserMedicalTest;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,6 +20,8 @@ namespace EliteAthleteApp.Configurations
 			// USER MODULE MAPPING
 			CreateMap<User, UserVM>().ReverseMap();
 			CreateMap<User, UserInfoVM>().ReverseMap();
+
+			CreateMap<UserChat, UserChatVM>().ReverseMap();
 
 			CreateMap<UserBodyAnalysis, UserBodyAnalysisVM>().ReverseMap();
 			CreateMap<UserBodyAnalysis, UserBodyAnalysisCreateVM>().ReverseMap();
