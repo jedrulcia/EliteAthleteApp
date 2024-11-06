@@ -11,7 +11,6 @@ using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Azure.Storage.Blobs;
-using EliteAthleteApp.Models.UserChat;
 using EliteAthleteApp.Services;
 using System.Text.Json;
 using System.Text;
@@ -19,7 +18,7 @@ using EliteAthleteApp.Contracts.Services;
 
 namespace EliteAthleteApp.Controllers
 {
-	public class UsersController : Controller
+    public class UsersController : Controller
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;

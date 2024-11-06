@@ -7,7 +7,6 @@ using EliteAthleteApp.Models.TrainingPlan;
 using EliteAthleteApp.Models.User;
 using EliteAthleteApp.Models.UserBodyAnalysis;
 using EliteAthleteApp.Models.UserBodyMeasurements;
-using EliteAthleteApp.Models.UserChat;
 using EliteAthleteApp.Models.UserMedicalTest;
 using Microsoft.AspNetCore.Identity;
 

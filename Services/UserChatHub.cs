@@ -1,12 +1,12 @@
 ﻿using Azure.Storage.Blobs;
 using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.UserChat;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using EliteAthleteApp.Models.User;
 
 public class UserChatHub : Hub
 {
@@ -47,6 +47,8 @@ public class UserChatHub : Hub
 			Content = message
 		};
 
+		var formattedTimestamp = timestamp.ToString("HH:mm");
+
 		// Dodaj nową wiadomość do listy
 		chatMessages.Add(newMessage);
 
@@ -63,7 +65,7 @@ public class UserChatHub : Hub
 		await context.SaveChangesAsync();
 
 		// Powiadomienie wszystkich klientów o nowej wiadomości
-		await Clients.User(userId).SendAsync("ReceiveMessage", message, userId, timestamp);
-		await Clients.User(coachId).SendAsync("ReceiveMessage", message, userId, timestamp);
+		await Clients.User(userId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
+		await Clients.User(coachId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
 	}
 }
