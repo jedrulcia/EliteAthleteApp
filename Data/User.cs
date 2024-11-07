@@ -12,5 +12,6 @@ namespace EliteAthleteApp.Data
 		public string? ImageUrl { get; set; }
 		public string? InviteCode { get; set; }
 		public string? NewCoachId { get; set; }
+		public int? UserSubscriptionId { get; set; }
 	}
 }

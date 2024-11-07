@@ -34,17 +34,23 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: UserBodyAnalysis/Create
-		public IActionResult Create(string userId)
+		public async Task<IActionResult> Create(string userId)
 		{
-			return PartialView(userBodyAnalysisRepository.GetUserBodyAnalysisCreateVM(userId));
+			return PartialView(await userBodyAnalysisRepository.GetUserBodyAnalysisCreateVM(userId));
 		}
 
 		// POST: UserBodyAnalysis/Create
 		[HttpPost, ActionName("Create")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
 		{
-			var file = Request.Form.Files[$"fileUpload"];
-			await userBodyAnalysisRepository.CreateUserBodyAnalysisAsync(userBodyAnalysisCreateVM, file);
+			if (ModelState.IsValid)
+			{
+				var file = Request.Form.Files[$"fileUpload"];
+				await userBodyAnalysisRepository.CreateUserBodyAnalysisAsync(userBodyAnalysisCreateVM, file);
+				return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
+			}
+			TempData["ErrorMessage"] = $"Error while creating the UBA. Please try again.";
 			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 		}
 

@@ -34,9 +34,9 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Exercises/Create
-		public async Task<IActionResult> Create()
+		public async Task<IActionResult> Create(int? privateExerciseCount)
 		{
-			return PartialView(await exerciseRepository.GetExerciseCreateVMAsync());
+			return PartialView(await exerciseRepository.GetExerciseCreateVMAsync(privateExerciseCount));
 		}
 
 		// POST: Exercises/Create

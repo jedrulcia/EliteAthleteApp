@@ -36,16 +36,22 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: UserBodyMeasurements/Create
-		public IActionResult Create(string userId)
+		public async Task<IActionResult> Create(string userId)
 		{
-			return PartialView(userBodyMeasurementsRepository.GetUserBodyMeasurementCreateVM(userId));
+			return PartialView(await userBodyMeasurementsRepository.GetUserBodyMeasurementCreateVM(userId));
 		}
 
 		// POST: UserBodyMeasurements/Create
 		[HttpPost, ActionName("Create")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(UserBodyMeasurementsCreateVM userBodyMeasurementsCreateVM)
 		{
-			await userBodyMeasurementsRepository.CreateUserBodyMeasurementAsync(userBodyMeasurementsCreateVM);
+			if (ModelState.IsValid)
+			{
+				await userBodyMeasurementsRepository.CreateUserBodyMeasurementAsync(userBodyMeasurementsCreateVM);
+				return RedirectToAction("Panel", "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
+			}
+			TempData["ErrorMessage"] = $"Error while creating UBM. Please try again.";
 			return RedirectToAction("Panel", "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 		}
 

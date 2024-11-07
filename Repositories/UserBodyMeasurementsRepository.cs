@@ -2,6 +2,7 @@
 using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.UserBodyMeasurements;
+using EliteAthleteApp.Models.UserMedicalTest;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -23,12 +24,18 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS USER BODY MEASUREMENTS CREATE VM
-		public UserBodyMeasurementsCreateVM GetUserBodyMeasurementCreateVM(string userId)
+		public async Task<UserBodyMeasurementsCreateVM> GetUserBodyMeasurementCreateVM(string userId)
 		{
-			DateTime dateNow = DateTime.Now;
-			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 0, 0, 0);
+			var formattedDate = DateTime.Now.ToString("yyyy-MM-dd");
+			var userBm = (await GetAllAsync())
+				.Where(ubm => ubm.UserId == userId && ubm.CreationDate.ToString("yyyy-MM-dd") == formattedDate)
+				.FirstOrDefault();
+			if (userBm != null)
+			{
+				return new UserBodyMeasurementsCreateVM { UserId = userId, CreatedToday = true };
+			}
 
-			return new UserBodyMeasurementsCreateVM { DateTime = modifiedDate, UserId = userId };
+			return new UserBodyMeasurementsCreateVM { UserId = userId, CreatedToday = false };
 		}
 
 		// GETS USER BODY MEASUREMENTS EDIT VIEW MODEL

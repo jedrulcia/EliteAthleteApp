@@ -4,6 +4,7 @@ using EliteAthleteApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EliteAthleteApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241107175712_AddingCreationDate")]
+    partial class AddingCreationDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -517,9 +520,6 @@ namespace EliteAthleteApp.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("UserSubscriptionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -538,7 +538,7 @@ namespace EliteAthleteApp.Migrations
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b0",
                             AccessFailedCount = 0,
                             CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
-                            ConcurrencyStamp = "4310709a-1fcd-4633-a71e-c3901eea6bd8",
+                            ConcurrencyStamp = "4eed8878-2e96-482c-be3b-b1587027a6dc",
                             Email = "admin@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -546,18 +546,18 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOFgKjpw/5bL6HFj/GS7GXDN/oi5t13x/EWHNMCaiZ8xsxKGKIcdxJMTBWAczxIjgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFzfCl2txqN3f4xIyZISVseJGkqX7cfmBTqqx/jciEi7Q170glP6AA4faIWW3PSiOQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "452af9e9-ceeb-4b88-a33f-ee38438c768e",
+                            SecurityStamp = "2096bcac-8e26-40b8-ae32-cf3acd223649",
                             TwoFactorEnabled = false,
-                            UserName = "admin@localhost.com",
-                            UserSubscriptionId = 4
+                            UserName = "admin@localhost.com"
                         },
                         new
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c8c51f70-3bc1-4aca-9ad9-746302d793e6",
+                            CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
+                            ConcurrencyStamp = "5485afaa-5df9-4891-8b47-b3df30a5b39b",
                             Email = "user@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "User",
@@ -565,19 +565,18 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
                             NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENuotjqqaeQ+dnKXl1dwcTNlxsS12PD1zZdsUHgyGh5m1dF5lK+FxQsJz0u8xFx9nA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGR6z+oVMsxdVmwZlSw3sRyAryKU+6tAGGIUvsZ1J0QMM9qTFEJkha8QYI/j2EXHdg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "49554d23-9a37-444d-afce-ba53b69a392d",
+                            SecurityStamp = "79400491-ab33-4967-a126-3c6cfd05cbb4",
                             TwoFactorEnabled = false,
-                            UserName = "user@localhost.com",
-                            UserSubscriptionId = 1
+                            UserName = "user@localhost.com"
                         },
                         new
                         {
                             Id = "654bced5-375b-5291-0a59-1dc59923d1b2",
                             AccessFailedCount = 0,
-                            CoachId = "654bced5-375b-5291-0a59-1dc59923d1b2",
-                            ConcurrencyStamp = "35fb2b92-f7b3-42f0-b4f5-c6e3af640ec0",
+                            CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
+                            ConcurrencyStamp = "07c8dfbe-025e-407a-a761-e34d2d2f6ba3",
                             Email = "coach@localhost.com",
                             EmailConfirmed = true,
                             FirstName = "Coach",
@@ -585,12 +584,11 @@ namespace EliteAthleteApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "COACH@LOCALHOST.COM",
                             NormalizedUserName = "COACH@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFdsCJiwkIC9sGTMQf7vA66ObxF733KWBODMHEroLxNYKU1YR3LtD1SLWJIzHE0UvQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMt6Z8quJCT3dAd7VZJpMVKWrP+w5uzI5ywkqUqSS10lZE0syiqdwLu3su5AH07A2A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a7233be8-cfc5-4062-8e9f-06c1a4cf0a53",
+                            SecurityStamp = "db1dded7-6584-40d1-8889-de9e072a0f69",
                             TwoFactorEnabled = false,
-                            UserName = "coach@localhost.com",
-                            UserSubscriptionId = 3
+                            UserName = "coach@localhost.com"
                         });
                 });
 
@@ -716,59 +714,6 @@ namespace EliteAthleteApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserMedicalTests");
-                });
-
-            modelBuilder.Entity("EliteAthleteApp.Data.UserSubscription", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AthleteLimit")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PrivateExerciseLimit")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserSubscriptions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AthleteLimit = 0,
-                            Name = "Athlete",
-                            PrivateExerciseLimit = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AthleteLimit = 3,
-                            Name = "Free",
-                            PrivateExerciseLimit = 5
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AthleteLimit = 10,
-                            Name = "Basic",
-                            PrivateExerciseLimit = 20
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AthleteLimit = 200,
-                            Name = "Premium",
-                            PrivateExerciseLimit = 200
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

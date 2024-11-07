@@ -6,7 +6,6 @@
 }
 
 <div class="container">
-	<!-- Wyświetlanie starych wiadomości -->
 	@for (int i = 0; i < Model.UserChatMessageVMs.Count(); i++)
 	{
 		if (i > 0)
@@ -68,10 +67,8 @@
 		$(document).ready(function () {
 			console.log("SignalR initialization starting...");
 
-			// Inicjalizacja połączenia SignalR
 			var connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
 
-			// Rozpoczęcie połączenia
 			connection.start()
 				.then(function () {
 					console.log("Połączenie SignalR nawiązane.");
@@ -80,14 +77,12 @@
 					console.error("Połączenie z SignalR nieudane: ", err.toString());
 				});
 
-			// Obsługa wysyłania wiadomości
 			document.getElementById("sendmessage").addEventListener("click", function (event) {
 				var message = document.getElementById("message").value;
-				var coachId = '@Model.CoachVM.Id';  // Coach ID jako string
-				var userId = '@Model.UserVM.Id';    // User ID jako string
+				var coachId = '@Model.CoachVM.Id';
+				var userId = '@Model.UserVM.Id';
 				var senderId = '@Model.ViewerId'
 
-				// Wywołanie metody SignalR do wysłania wiadomości, przekazując userId, coachId i wiadomość
 				connection.invoke("SendMessage", message, userId, coachId, senderId)
 					.catch(function (err) {
 						console.error("Błąd wysyłania wiadomości: ", err.toString());
@@ -96,19 +91,15 @@
 				event.preventDefault();
 			});
 
-			// Odbiór wiadomości i aktualizacja listy wiadomości na stronie
 			connection.on("ReceiveMessage", function (message, senderId, timestamp) {
-				console.log("Nowa wiadomość: ", message);  // Zobaczmy, co otrzymujemy
+				console.log("Nowa wiadomość: ", message);
 
-				// Tworzenie nowego elementu <div> dla wiadomości
 				var divMessage = document.createElement("div");
 				divMessage.classList.add("message");
 
-				// Tworzenie wewnętrznego <div> z układem w wierszu
 				var divRow = document.createElement("div");
 				divRow.classList.add("row");
 
-				// Sprawdzenie, czy wiadomość pochodzi od użytkownika (viewer)
 				var divContent = document.createElement("div");
 				if (senderId === '@Model.ViewerId') {
 					divContent.classList.add("text-end");
@@ -116,10 +107,8 @@
 					divContent.classList.add("text-start");
 				}
 
-				// Wstawienie treści wiadomości i jej znacznika czasowego
 				divContent.innerHTML = `${message}`;
 
-				// Dodanie wiadomości do sekcji "discussion"
 				divMessage.appendChild(divContent);
 				divMessage.appendChild(divRow);
 

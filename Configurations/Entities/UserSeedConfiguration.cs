@@ -24,6 +24,8 @@ namespace EliteAthleteApp.Configurations.Entities
                     PasswordHash = hasher.HashPassword(null, "Admin!2"),
                     EmailConfirmed = true,
 					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
+                    UserSubscriptionId = 4,
+                    InviteCode = "1b0"
 				},
                 new User
                 {
@@ -36,7 +38,8 @@ namespace EliteAthleteApp.Configurations.Entities
                     LastName = "System",
                     PasswordHash = hasher.HashPassword(null, "Admin!2"),
                     EmailConfirmed = true,
-					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0",
+                    UserSubscriptionId = 1,
+					InviteCode = "1b1"
 				},
 				new User
 				{
@@ -49,7 +52,9 @@ namespace EliteAthleteApp.Configurations.Entities
 					LastName = "System",
 					PasswordHash = hasher.HashPassword(null, "Admin!2"),
 					EmailConfirmed = true,
-					CoachId = "654bced5-375b-5291-0a59-1dc59923d1b0"
+                    CoachId = "654bced5-375b-5291-0a59-1dc59923d1b2",
+                    UserSubscriptionId = 2,
+					InviteCode = "1b2"
 				}
 				);
         }

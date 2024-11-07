@@ -20,16 +20,22 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: TrainingOrm/Create
-		public IActionResult Create(string userId)
+		public async Task<IActionResult> Create(string userId)
 		{
-			return PartialView(trainingOrmRepository.GetTrainingOrmCreateVM(userId));
+			return PartialView(await trainingOrmRepository.GetTrainingOrmCreateVM(userId));
 		}
 
 		// POST: TrainingOrm/Create
 		[HttpPost, ActionName("Create")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
-			await trainingOrmRepository.CreateOrmAsync(trainingOrmCreateVM);
+			if (ModelState.IsValid)
+			{
+				await trainingOrmRepository.CreateOrmAsync(trainingOrmCreateVM);
+				return RedirectToAction("Panel", "Users", new { userId = trainingOrmCreateVM.UserId });
+			}
+			TempData["ErrorMessage"] = $"Error while creating ORM. Please try again.";
 			return RedirectToAction("Panel", "Users", new { userId = trainingOrmCreateVM.UserId });
 		}
 

@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
 using EliteAthleteApp.Models;
 using EliteAthleteApp.Contracts.Repositories;
+using EliteAthleteApp.Models.User;
+using EliteAthleteApp.Models.UserMedicalTest;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -66,12 +68,12 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVMAsync(int trainingPlanid)
+		public async Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVMAsync(int trainingPlanId)
 		{
-			var trainingPlan = await GetAsync(trainingPlanid);
+			var trainingPlan = await GetAsync(trainingPlanId);
 			var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
 
-			trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlanid);
+			trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlanId);
 
 			return trainingPlanDetailsVM;
 		}
@@ -113,7 +115,15 @@ namespace EliteAthleteApp.Repositories
 
 		public async Task<TrainingPlanAddExerciseVM> GetTrainingPlanAddExerciseVMAsync(int trainingPlanId, string coachId)
 		{
-			return await GetTrainingPlanAddExerciseSelectListsAsync(trainingPlanId, coachId, null);
+			var trainingPlan = await GetAsync(trainingPlanId);
+			var trainingPlanAddExerciseVM = await GetTrainingPlanAddExerciseSelectListsAsync(trainingPlanId, coachId, null);
+
+			if (trainingPlan.TrainingPlanExerciseDetailIds.Count >= 30)
+			{
+				trainingPlanAddExerciseVM.ReachedExerciseLimit = true;
+			}
+
+			return trainingPlanAddExerciseVM;
 		}
 
 		public async Task<TrainingPlanAddExerciseVM> GetTrainingPlanEditExerciseVMAsync(int trainingPlanId, string coachId, int trainingPlanExerciseDetailId)

@@ -18,6 +18,7 @@ namespace EliteAthleteApp.Data
 			builder.ApplyConfiguration(new RoleSeedConfiguration());
 			builder.ApplyConfiguration(new UserSeedConfiguration());
 			builder.ApplyConfiguration(new UserRoleSeedConfiguration());
+			builder.ApplyConfiguration(new UserSubscriptionSeedConfiguration());
 
 			builder.ApplyConfiguration(new TrainingExerciseCategorySeedConfiguration());
 			builder.ApplyConfiguration(new TrainingExerciseMuscleGroupSeedConfiguration());
@@ -30,6 +31,7 @@ namespace EliteAthleteApp.Data
 		public DbSet<UserBodyAnalysis> UserBodyAnalysis { get; set; }
 		public DbSet<UserBodyMeasurements> UserBodyMeasurements { get; set; }
 		public DbSet<UserMedicalTest> UserMedicalTests { get; set; }
+		public DbSet<UserSubscription> UserSubscriptions { get; set; }
 		public DbSet<UserChat> UserChats { get; set; }
 
 		public DbSet<TrainingExercise> TrainingExercises { get; set; }

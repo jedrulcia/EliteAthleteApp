@@ -23,12 +23,17 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS TRAINING ORM CREATE VIEW MODEL
-		public TrainingOrmCreateVM GetTrainingOrmCreateVM(string userId)
+		public async Task<TrainingOrmCreateVM> GetTrainingOrmCreateVM(string userId)
 		{
-			DateTime dateNow = DateTime.Now;
-			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 0, 0, 0);
-
-			return new TrainingOrmCreateVM { DateTime = modifiedDate, UserId = userId };
+			var formattedDate = DateTime.Now.ToString("yyyy-MM-dd");
+			var trainingOrm = (await GetAllAsync())
+				.Where(tm => tm.UserId == userId && tm.CreationDate.ToString("yyyy-MM-dd") == formattedDate)
+				.FirstOrDefault();
+			if (trainingOrm != null)
+			{
+				return new TrainingOrmCreateVM { UserId = userId, CreatedToday = true};
+			}
+			return new TrainingOrmCreateVM { UserId = userId, CreatedToday = false };
 		}
 
 		// GETS TRAINING ORM EDIT VIEW MODEL

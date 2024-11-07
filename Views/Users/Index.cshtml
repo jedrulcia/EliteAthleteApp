@@ -1,12 +1,22 @@
 ﻿@using EliteAthleteApp.Models.User
-@model IEnumerable<UserVM>
+@model List<UserVM>
 
 @{
 	ViewData["Title"] = "Index";
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
+	</div>
 }
 
 <form asp-action="AddAthlete" asp-controller="Users" method="post">
 	<div class="form-group">
+		<input type="hidden" id="athleteCount" value="@Model.Count" />
+		<input type="hidden" id="athleteCount" name="athleteCount" value="@Model.Count" />
 		<label for="inviteCode">Invite Code</label>
 		<input type="text" class="form-control" id="inviteCode" name="InviteCode" required />
 	</div>
@@ -18,13 +28,13 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.FirstName)
+				@Html.DisplayNameFor(model => model.First().FirstName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.LastName)
+				@Html.DisplayNameFor(model => model.First().LastName)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Email)
+				@Html.DisplayNameFor(model => model.First().Email)
 			</th>
 			<th></th>
 		</tr>

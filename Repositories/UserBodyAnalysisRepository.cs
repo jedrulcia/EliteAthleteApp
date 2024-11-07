@@ -2,6 +2,7 @@
 using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.UserBodyAnalysis;
 using Microsoft.AspNetCore.Identity;
 
@@ -27,12 +28,18 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS USER BODY ANALYSIS CREATE VM
-		public UserBodyAnalysisCreateVM GetUserBodyAnalysisCreateVM(string userId)
+		public async Task<UserBodyAnalysisCreateVM> GetUserBodyAnalysisCreateVM(string userId)
 		{
-			DateTime dateNow = DateTime.Now;
-			DateTime modifiedDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 0, 0, 0);
+			var formattedDate = DateTime.Now.ToString("yyyy-MM-dd");
+			var userBa = (await GetAllAsync())
+				.Where(uba => uba.UserId == userId && uba.CreationDate.ToString("yyyy-MM-dd") == formattedDate)
+				.FirstOrDefault();
+			if (userBa != null)
+			{
+				return new UserBodyAnalysisCreateVM { UserId = userId, CreatedToday = true };
+			}
 
-			return new UserBodyAnalysisCreateVM { DateTime = modifiedDate, UserId = userId };
+			return new UserBodyAnalysisCreateVM { UserId = userId, CreatedToday = false };
 		}
 
 		// GETS USER BODY ANALYSIS EDIT VIEW MODEL

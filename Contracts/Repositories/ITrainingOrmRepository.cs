@@ -9,7 +9,7 @@ namespace EliteAthleteApp.Contracts
 		Task<List<TrainingOrmVM>> GetTrainingOrmVMsAsync(string userId);
 
 		// GETS TRAINING ORM CREATE VM
-		TrainingOrmCreateVM GetTrainingOrmCreateVM(string userId);
+		Task<TrainingOrmCreateVM> GetTrainingOrmCreateVM(string userId);
 
 		// GETS TRAINING ORM EDIT VIEW MODEL
 		Task<TrainingOrmCreateVM> GetTrainingOrmEditVM(int trainingOrmId);

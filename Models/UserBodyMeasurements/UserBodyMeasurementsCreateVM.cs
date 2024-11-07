@@ -2,7 +2,7 @@
 
 namespace EliteAthleteApp.Models.UserBodyMeasurements
 {
-    public class UserBodyMeasurementsCreateVM
+    public class UserBodyMeasurementsCreateVM : IValidatableObject
     {
         public int? Id { get; set; }
         public string? UserId { get; set; }
@@ -13,5 +13,18 @@ namespace EliteAthleteApp.Models.UserBodyMeasurements
         public int? Waist { get; set; }
         public int? Thighs { get; set; }
         public int? Hips { get; set; }
-    }
+		public DateTime? CreationDate { get; set; }
+		public bool CreatedToday { get; set; }
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			if (CreatedToday == true)
+			{
+				yield return new ValidationResult(
+					"You have already created UBM today.",
+					new[] { nameof(CreationDate) }
+				);
+			}
+		}
+	}
 }
