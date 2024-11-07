@@ -20,6 +20,8 @@ namespace EliteAthleteApp.Configurations
 			CreateMap<User, UserVM>().ReverseMap();
 			CreateMap<User, UserInfoVM>().ReverseMap();
 
+			CreateMap<UserChat, UserChatVM>().ReverseMap();
+
 			CreateMap<UserBodyAnalysis, UserBodyAnalysisVM>().ReverseMap();
 			CreateMap<UserBodyAnalysis, UserBodyAnalysisCreateVM>().ReverseMap();
 			CreateMap<UserBodyAnalysis, UserBodyAnalysisDeleteVM>().ReverseMap();

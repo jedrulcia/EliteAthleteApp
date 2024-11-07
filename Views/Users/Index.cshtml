@@ -44,6 +44,7 @@
 				</td>
 				<td class="text-end">
 					<a asp-action="Panel" class="btn btn-secondary" asp-controller="Users" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> User Panel</a>
+					<a asp-action="Chat" asp-route-userId="@item.Id" asp-controller="Users" class="btn btn-sm btn-danger">Chat</a>
 				</td>
 			</tr>
 		}

@@ -20,6 +20,7 @@ string blobContainerExerciseVideo = builder.Configuration.GetSection("ContainerN
 string blobContainerUserImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerUserImage"];
 string blobContainerMedicalTestImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerMedicalTestImage"];
 string blobContainerBodyAnalysisImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerBodyAnalysisImage"];
+string blobContainerChatJson = builder.Configuration.GetSection("ContainerNames")["BlobContainerChatJson"];
 
 string sendFromEmailAddress = builder.Configuration.GetValue<string>("Email");
 
@@ -51,7 +52,10 @@ builder.Services.AddScoped<ITrainingPlanPhaseRepository, TrainingPlanPhaseReposi
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddScoped<ITrainingOrmRepository, TrainingOrmRepository>();
 
-builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, blobContainerUserImage, blobContainerMedicalTestImage, blobContainerBodyAnalysisImage));
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	
+new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, 
+blobContainerUserImage, blobContainerMedicalTestImage, blobContainerBodyAnalysisImage, blobContainerChatJson));
+
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 
@@ -83,7 +87,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints => { endpoints.MapHub<ChatHub>("/chat"); });
+app.UseEndpoints(endpoints => { endpoints.MapHub<UserChatHub>("/chat"); });
 
 app.MapControllerRoute(
 	name: "default",
