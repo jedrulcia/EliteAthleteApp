@@ -79,7 +79,6 @@ namespace EliteAthleteApp.Controllers
 				await trainingPlanRepository.AddExerciseToTrainingPlanAsync(trainingPlanAddExerciseVM);
 				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
-
 			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 		}

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EliteAthleteApp.Models.TrainingPlan
 {
-	public class TrainingPlanAddExerciseVM
+	public class TrainingPlanAddExerciseVM : IValidatableObject
 	{
 		public int? TrainingPlanId { get; set; }
 		public int? Id { get; set; }
@@ -19,8 +19,21 @@ namespace EliteAthleteApp.Models.TrainingPlan
 		public string? RestTime { get; set; }
 		public string? Note { get; set; }
 
-
         public SelectList? AvailableTrainingPlanPhases { get; set; }
         public SelectList? AvailableExercises { get; set; }
-    }
+
+		public bool ReachedExerciseLimit { get; set; } = false;
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			if (ReachedExerciseLimit)
+			{
+				yield return new ValidationResult(
+					"You have reached the limit of 30 exercises in the training plan.",
+					new[] { nameof(ReachedExerciseLimit) }
+				);
+			}
+		}
+
+	}
 }
