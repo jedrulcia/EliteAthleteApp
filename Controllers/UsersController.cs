@@ -98,9 +98,17 @@ namespace EliteAthleteApp.Controllers
 			return RedirectToAction(nameof(Panel), "Users", new { userId = userId });
 		}
 
-		public async Task<IActionResult> AddAthlete(string? inviteCode)
+		public async Task<IActionResult> AddAthlete(string? inviteCode, int athleteCount)
 		{
 			var coach = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var subscription = await context.Set<UserSubscription>().FindAsync(coach.UserSubscriptionId);
+
+			if (athleteCount >= subscription.AthleteLimit)
+			{
+				TempData["ErrorMessage"] = $"You have reached the limit of athletes in your subscription.";
+				return RedirectToAction(nameof(Index), "Users");
+			}
+
 			var user = (await userRepository.GetAllAsync())
 				.Where(u => u.InviteCode == inviteCode)
 				.FirstOrDefault();

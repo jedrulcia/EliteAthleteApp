@@ -28,7 +28,7 @@
 					</a>
 				</li>
 				<li class="nav-item ms-auto" role="presentation">
-					<button class="nav-link createBtn" type="button" id="createExerciseTab" aria-controls="createExercise" aria-selected="false">
+					<button class="nav-link createBtn" data-exercisecount="@Model.PrivateExerciseCount" type="button" id="createExerciseTab" aria-controls="createExercise" aria-selected="false">
 						<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New</strong>
 					</button>
 				</li>
@@ -196,9 +196,11 @@
 			$(document).on('click', '.createBtn', function (e) {
 				e.preventDefault();
 
+				var privateExerciseCount = $(this).data("exercisecount");
 				$.ajax({
 					url: '@Url.Action("Create", "TrainingExercises")',
 					type: 'GET',
+					data: { privateExerciseCount: privateExerciseCount },
 					success: function (data) {
 						$('#exerciseCreateContent').html(data);
 						$('#exerciseCreateModal').modal('show');

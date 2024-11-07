@@ -40,7 +40,10 @@ namespace EliteAthleteApp.Repositories
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
 		public async Task<TrainingExerciseIndexVM> GetExerciseIndexVMAsync(int? exerciseMediaId)
 		{
-			return new TrainingExerciseIndexVM { CoachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id, ExerciseMediaId = exerciseMediaId};
+			var coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
+			var privateExerciseCount = (await GetExerciseVMsAsync(coachId)).Count();
+
+			return new TrainingExerciseIndexVM { CoachId = coachId, ExerciseMediaId = exerciseMediaId, PrivateExerciseCount = privateExerciseCount};
 		}
 
 		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
@@ -58,9 +61,18 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS EXERCISE CREATE VIEW MODEL
-		public async Task<TrainingExerciseCreateVM> GetExerciseCreateVMAsync()
+		public async Task<TrainingExerciseCreateVM> GetExerciseCreateVMAsync(int? privateExerciseCount)
 		{
-			return await GetExerciseCreateSelectListsAsync(null);
+			var trainingExerciseCreateVM = await GetExerciseCreateSelectListsAsync(null);
+			var coach = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var subscription = await context.Set<UserSubscription>().FindAsync(coach.UserSubscriptionId);
+
+			if (privateExerciseCount >= subscription.PrivateExerciseLimit)
+			{
+				trainingExerciseCreateVM.ReachedExerciseLimit = true;
+			}
+
+			return trainingExerciseCreateVM;
 		}
 
 		// GETS EXERCISE EDIT VIEW MODEL

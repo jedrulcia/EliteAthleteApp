@@ -12,7 +12,7 @@ namespace EliteAthleteApp.Contracts
 		Task<List<TrainingExerciseVM>> GetExerciseVMsAsync(string? coachId);
 
 		// GETS EXERCISE CREATE VIEW MODEL
-		Task<TrainingExerciseCreateVM> GetExerciseCreateVMAsync();
+		Task<TrainingExerciseCreateVM> GetExerciseCreateVMAsync(int? privateExerciseCount);
 
 		// GETS EXERCISE DELETE VIEW MODEL
 		Task<TrainingExerciseDeleteVM> GetExerciseDeleteVMAsync(int id);

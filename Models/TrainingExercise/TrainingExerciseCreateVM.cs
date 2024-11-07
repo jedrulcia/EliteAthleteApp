@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EliteAthleteApp.Models.TrainingExercise
 {
-	public class TrainingExerciseCreateVM
+	public class TrainingExerciseCreateVM : IValidatableObject
 	{
 		// IDs
 		public int? Id { get; set; }
@@ -31,5 +31,17 @@ namespace EliteAthleteApp.Models.TrainingExercise
 
 		// OTHER 
 		public bool SetAsPublic { get; set; }
+		public bool ReachedExerciseLimit { get; set; } = false;
+
+		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+		{
+			if (ReachedExerciseLimit)
+			{
+				yield return new ValidationResult(
+					"You have reached the limit.",
+					new[] { nameof(ReachedExerciseLimit) }
+				);
+			}
+		}
 	}
 }
