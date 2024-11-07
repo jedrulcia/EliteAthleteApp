@@ -33,8 +33,9 @@ namespace EliteAthleteApp.Repositories
 			var formattedDate = DateTime.Now.ToString("yyyy-MM-dd");
 			var userMt = (await GetAllAsync())
 				.Where(umt => umt.UserId == userId && umt.CreationDate.ToString("yyyy-MM-dd") == formattedDate)
-				.FirstOrDefault();
-			if (userMt != null)
+				.ToList();
+
+			if (userMt.Count >= 3)
 			{
 				return new UserMedicalTestCreateVM { UserId = userId, CreatedToday = true };
 			}
