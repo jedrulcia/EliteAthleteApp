@@ -9,7 +9,7 @@ namespace EliteAthleteApp.Contracts.Repositories
 		Task<List<UserBodyMeasurementsVM>> GetUserBodyMeasurementsVMsAsync(string userId);
 
 		// GETS USER BODY MEASUREMENTS CREATE VM
-		UserBodyMeasurementsCreateVM GetUserBodyMeasurementCreateVM(string userId);
+		Task<UserBodyMeasurementsCreateVM> GetUserBodyMeasurementCreateVM(string userId);
 
 		// GETS USER BODY MEASUREMENTS EDIT VIEW MODEL
 		Task<UserBodyMeasurementsCreateVM> GeUserBodyMeasurementEditVM(int bodyMeasurementId);

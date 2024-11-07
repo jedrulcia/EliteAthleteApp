@@ -98,6 +98,11 @@ namespace EliteAthleteApp.Services
 			return await UploadFileAsync(file, blobContainerChatJson);
 		}
 
+		public async Task RemoveUserChatFileAsync(string? fileUrl)
+		{
+			await RemoveFileAsync(fileUrl, blobContainerChatJson);
+		}
+
 		// PRIVATE METHODS BELOW
 
 		// UPLOADS FILE TO BLOB STORAGE

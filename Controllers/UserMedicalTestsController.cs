@@ -35,17 +35,23 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: UserMedicalTest/Create
-		public IActionResult Create(string userId)
+		public async Task<IActionResult> Create(string userId)
 		{
-			return PartialView(userMedicalTestRepository.GetUserMedicalTestCreateVM(userId));
+			return PartialView(await userMedicalTestRepository.GetUserMedicalTestCreateVM(userId));
 		}
 
 		// POST: UserMedicalTest/Create
 		[HttpPost, ActionName("Create")]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Create(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
-			var file = Request.Form.Files[$"fileUpload"];
-			await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM, file);
+			if (ModelState.IsValid)
+			{
+				var file = Request.Form.Files[$"fileUpload"];
+				await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM, file);
+				return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
+			}
+			TempData["ErrorMessage"] = $"Error while creating UMT. Please try again.";
 			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 

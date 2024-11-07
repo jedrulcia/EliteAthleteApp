@@ -11,5 +11,6 @@ namespace EliteAthleteApp.Data
 		public int? DeadliftORM { get; set; }
 		public int? SquatORM { get; set; }
 		public DateTime DateTime { get; set; }
+		public DateTime CreationDate {  get; set; }
 	}
 }

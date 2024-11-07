@@ -10,5 +10,6 @@
 		public int? Waist { get; set; }
 		public int? Thighs { get; set; }
 		public int? Hips { get; set; }
+		public DateTime CreationDate { get; set; }
 	}
 }

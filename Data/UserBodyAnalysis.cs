@@ -10,5 +10,6 @@
 		public int? FatPercentage {  get; set; }
 		public int? MusclePercentage { get; set; }
 		public int? WaterPercentage {  get; set; }
+		public DateTime CreationDate { get; set; }
 	}
 }
