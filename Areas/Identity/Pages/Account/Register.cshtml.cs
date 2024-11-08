@@ -137,7 +137,7 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
 
 				if (Input.RegisterAsCoach)
 				{
-					user.UserSubscriptionId = 2;
+					user.UserSubscriptionId = 3;
 				}
 
 				string inviteCode;
