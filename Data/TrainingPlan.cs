@@ -12,12 +12,14 @@ namespace EliteAthleteApp.Data
         public int? TrainingModuleId {  get; set; }
 		public List<int?>? TrainingPlanExerciseDetailIds { get; set; }
 
-        // STRINGS etc.
+        // STRINGS
         public string? Name { get; set; }
-        public DateTime? Date { get; set; }
 		public string? Raport {  get; set; }
 
-		// OTHER
+		// DATES
+		public DateTime? Date { get; set; }
+
+		// BOOLEANS
 		public bool? IsCompleted { get; set; }
 		public bool IsEmpty { get; set; }
 	}
