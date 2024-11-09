@@ -42,16 +42,16 @@ namespace EliteAthleteApp.Controllers
 			this.context = context;
 		}
 
-		// GET: Users/Index
-		public async Task<IActionResult> Index()
+		// GET: Users/List
+		public async Task<IActionResult> List()
 		{
 			string coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
 			var userListVM = mapper.Map<List<UserVM>>((await userRepository.GetAllAsync()).Where(u => u.CoachId == coachId));
 			return View(userListVM);
 		}
 
-		// GET: Users/Index/Panel
-		public async Task<IActionResult> Panel(string? userId)
+		// GET: Users/List/Index
+		public async Task<IActionResult> Index(string? userId)
 		{
 			if (userId == null)
 			{
@@ -61,7 +61,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 
-		// GET: Users/Index/Panel/Info
+		// GET: Users/List/Index/Info
 		public async Task<IActionResult> Info(string? userId)
 		{
 			var user = await userManager.FindByIdAsync(userId);
@@ -86,7 +86,7 @@ namespace EliteAthleteApp.Controllers
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
 			await userRepository.UploadUserImageAsync(userId, imageFile);
-			return RedirectToAction(nameof(Panel), "Users", new { userId = userId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = userId });
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
@@ -95,7 +95,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> DeleteImage(string userId)
 		{
 			await userRepository.DeleteUserImageAsync(userId);
-			return RedirectToAction(nameof(Panel), "Users", new { userId = userId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = userId });
 		}
 
 		public async Task<IActionResult> AddAthlete(string? inviteCode, int athleteCount)
@@ -106,7 +106,7 @@ namespace EliteAthleteApp.Controllers
 			if (athleteCount >= subscription.AthleteLimit)
 			{
 				TempData["ErrorMessage"] = $"You have reached the limit of athletes in your subscription.";
-				return RedirectToAction(nameof(Index), "Users");
+				return RedirectToAction(nameof(List), "Users");
 			}
 
 			var user = (await userRepository.GetAllAsync())
@@ -116,7 +116,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = coach.Id;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(Index), "Users");
+			return RedirectToAction(nameof(List), "Users");
 		}
 
 		public async Task<IActionResult> AcceptInvite()
@@ -126,7 +126,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> DeclineInvite()
@@ -135,7 +135,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> DeleteCoach()
@@ -144,7 +144,7 @@ namespace EliteAthleteApp.Controllers
 			user.CoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> ResetInviteCode()
@@ -158,7 +158,7 @@ namespace EliteAthleteApp.Controllers
 
 			user.InviteCode = inviteCode;
 			await userRepository.UpdateAsync(user);
-			return RedirectToAction(nameof(Panel), "Users", new { userId = user.Id });
+			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> Chat(string? userId)
