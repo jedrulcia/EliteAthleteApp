@@ -9,19 +9,21 @@ namespace EliteAthleteApp.Models.TrainingPlan
         // IDs
         public int? Id { get; set; }
         public int? TrainingModuleId {  get; set; }
-
-        [Display(Name = "Athlete")]
         public string? UserId { get; set; }
 		public string? CoachId { get; set; }
 
-		// STRINGS etc.
-		[Display(Name = "Training Plan name")]
-        [Required]
+		// STRINGS
+
+		[Required]
+		[Display(Name = "Training Plan Name")]
         public string? Name { get; set; }
 
-        [Display(Name = "Start date")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+
+        // DATES
+
+        [Display(Name = "Date")]
         [DataType(DataType.Date)]
-        public DateTime? Date { get; set; }
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
+		public DateTime? Date { get; set; }
     }
 }

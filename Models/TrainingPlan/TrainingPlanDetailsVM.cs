@@ -9,15 +9,15 @@ namespace EliteAthleteApp.Models.TrainingPlan
         // IDs
         public int? Id { get; set; }
 		public int? TrainingModuleId { get; set; }
-
-		[Display(Name = "Athlete")]
         public string? UserId { get; set; }
 		public string? CoachId { get; set; }
 
-		// STRINGS etc.
+		// OBJECTS
+		public List<TrainingPlanExerciseDetailVM?>? TrainingPlanExerciseDetailVMs { get; set; }
+
+		// STRINGS
 		[Display(Name = "Training Plan")]
         public string? Name { get; set; }
 
-		public List<TrainingPlanExerciseDetailVM?>? TrainingPlanExerciseDetailVMs { get; set; }
 	}
 }
