@@ -10,7 +10,7 @@ namespace EliteAthleteApp.Data
 		public int? ExerciseId { get; set; }
 		public int? TrainingPlanPhaseId { get; set; }
 		public string? Index { get; set; }
-		public int? Sets { get; set; }
+		public string? Sets { get; set; }
 		public string? Units { get; set; }
 		public string? Weight { get; set; }
 		public string? RestTime { get; set; }

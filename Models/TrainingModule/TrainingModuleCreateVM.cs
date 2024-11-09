@@ -9,30 +9,31 @@ namespace EliteAthleteApp.Models.TrainingModule
         public string? UserId { get; set; }
 		public string CoachId {  get; set; }
 
-        // STRINGS etc.
-        [Display(Name="Training Module")]
-        [Required]
+		// STRINGS
+
+		[Required]
+		[Display(Name="Training Module")]
         public string Name { get; set; }
 
+		// DATES
+
+		[Required]
+		[DataType(DataType.Date)]
 		[Display(Name = "Starting Date")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
-		[DataType(DataType.Date)]
-		[Required]
 		public DateTime StartDate { get; set; }
 
+		[Required]
+		[DataType(DataType.Date)]
 		[Display(Name = "Ending Date")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
-		[DataType(DataType.Date)]
-		[Required]
 		public DateTime EndDate { get; set; }
 
-
-		[Display(Name = "Ending Date")]
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
 		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
 		public DateTime? LatestEndDate { get; set; }
 
-
+		// VALIDATION
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			if (StartDate > EndDate)

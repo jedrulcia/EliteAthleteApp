@@ -10,18 +10,20 @@ namespace EliteAthleteApp.Models.TrainingModule
 		public string UserId { get; set; }
 		public string CoachId { get; set; }
 
-		// STRINGS etc.
+		// STRINGS
 		[Display(Name = "Training Module")]
 		public string Name { get; set; }
 
+		// DATES
+
+		[DataType(DataType.Date)]
 		[Display(Name = "Starting Date")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
-		[DataType(DataType.Date)]
 		public DateTime StartDate { get; set; }
 
+		[DataType(DataType.Date)]
 		[Display(Name = "Ending Date")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
-		[DataType(DataType.Date)]
 		public DateTime EndDate { get; set; }
 	}
 }

@@ -6,18 +6,23 @@ namespace EliteAthleteApp.Models.User
     {
         // IDs
         public string Id { get; set; }
+		public string? CoachId { get; set; }
 
-        // STRINGS etc.
-        [Display(Name = "First name")]
+        // URLs
+		public string? ImageUrl { get; set; }
+
+		// STRINGS
+
+		[Display(Name = "First Name")]
         public string FirstName { get; set; }
 
-        [Display(Name = "Last name")]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Display(Name = "Email")]
         public string Email { get; set; }
-        public string? DateOfBirth { get; set; }
-        public string? CoachId { get; set; }
-        public string? ImageUrl { get; set; }
+
+		[Display(Name = "Date of Birth")]
+		public string? DateOfBirth { get; set; }
     }
 }

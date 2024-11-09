@@ -4,17 +4,25 @@ namespace EliteAthleteApp.Models.User
 {
 	public class UserInfoVM
 	{
+		// IDs
 		public string? Id { get; set; }
-		// STRINGS etc.
-		[Display(Name = "First name")]
-		public string FirstName { get; set; }
+		public string? InviteCode { get; set; }
 
-		[Display(Name = "Last name")]
-		public string LastName { get; set; }
-		public string? DateOfBirth { get; set; }
+		// URLS
 		public string? ImageUrl { get; set; }
+
+		// OBJECTS
 		public UserVM? CoachVM { get; set; }
 		public UserVM? NewCoachVM { get; set; }
-		public string? InviteCode { get; set; }
+
+
+		// STRINGS
+
+		[Display(Name = "First Name")]
+		public string FirstName { get; set; }
+
+		[Display(Name = "Last Name")]
+		public string LastName { get; set; }
+		public string? DateOfBirth { get; set; }
 	}
 }
