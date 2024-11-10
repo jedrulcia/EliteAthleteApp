@@ -13,6 +13,7 @@ namespace EliteAthleteApp.Models.TrainingPlan
 		public string? UserId { get; set; }
 		public string? CoachId { get; set; }
 
+		// OBJECTS
 		public List<TrainingPlanExerciseDetailVM?>? TrainingPlanExerciseDetailVMs { get; set; }
 	}
 }

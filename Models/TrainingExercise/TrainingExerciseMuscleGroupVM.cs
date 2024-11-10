@@ -7,9 +7,10 @@ namespace EliteAthleteApp.Models.TrainingExercise
 		// IDs
 		public int Id { get; set; }
 
-		// STRINGS etc.
-		[Display(Name = "Muscle Group")]
+		// STRINGS
+
 		[Required]
+		[Display(Name = "Muscle Group")]
 		public string Name { get; set; }
 	}
 }

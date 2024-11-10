@@ -60,6 +60,20 @@ namespace EliteAthleteApp.Repositories
 			return exerciseVMs;
 		}
 
+		// GETS LIST OF PRIVATE EXERCISES SET TO PUBLIC
+		public async Task<List<TrainingExerciseVM>> GetAdminExerciseVMsAsync()
+		{
+			var exercises = (await GetAllAsync()).Where(e => e.CoachId != null && e.SetAsPublic == true).ToList();
+			var exerciseVMs = mapper.Map<List<TrainingExerciseVM>>(exercises);
+
+			for (int i = 0; i < exerciseVMs.Count; i++)
+			{
+				exerciseVMs[i] = await GetExerciseForeignEntitiesAsync(exerciseVMs[i], exercises[i]);
+			}
+
+			return exerciseVMs;
+		}
+
 		// GETS EXERCISE CREATE VIEW MODEL
 		public async Task<TrainingExerciseCreateVM> GetExerciseCreateVMAsync(int? privateExerciseCount)
 		{

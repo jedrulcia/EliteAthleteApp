@@ -1,0 +1,68 @@
+﻿@using EliteAthleteApp.Models.Admin
+@model AdminUserVM
+
+@{
+	ViewData["Title"] = "List";
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+<h1>Athletes</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				User
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.UserVMs.First().Email)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.UserVMs.First().Id)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.UserVMs)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Email)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Id)
+				</td>
+				<td class="text-end">
+					<div class="dropdown">
+						<button class="btn btn-outline-primary-a btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+							<strong>Actions</strong>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<li>
+								<button data-userid="@item.Id"
+										class="dropdown-item sendEmailBtn">
+									<i class="bi bi-images">&nbsp;</i>Send Email
+								</button>
+							</li>
+							<li>
+								<button data-userid="@item.Id"
+										class="dropdown-item deleteUserBtn">
+									<i class="bi bi-images">&nbsp;</i>Delete User
+								</button>
+							</li>
+							<li>
+								<button data-userid="@item.Id"
+										class="dropdown-item lockoutUserBtn">
+									<i class="bi bi-images">&nbsp;</i>Lockout User
+								</button>
+							</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

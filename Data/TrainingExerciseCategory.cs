@@ -5,7 +5,7 @@
 		// IDs
 		public int Id { get; set; }
 
-		// STRINGS etc.
+		// STRINGS
 		public string Name { get; set; }
 	}
 }

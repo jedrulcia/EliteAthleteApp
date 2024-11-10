@@ -8,7 +8,8 @@
 		public int? ExerciseMuscleGroupId { get; set; }
 		public int? ExerciseMediaId { get; set; }
 		public string? CoachId {  get; set; }
-		// STRINGS etc.
+
+		// STRINGS
 		public string? Name { get; set; }
         public string? Description { get; set; }
 		public string? YoutubeLink { get; set; }

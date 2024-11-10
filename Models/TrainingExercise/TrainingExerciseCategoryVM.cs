@@ -4,9 +4,12 @@ namespace EliteAthleteApp.Models.TrainingExercise
 {
     public class TrainingExerciseCategoryVM
     {
+        // IDs
         public int Id { get; set; }
-        // STRINGS etc.
-        [Display(Name="Exercise Category")]
+
+        // STRINGS
+
+        [Display(Name="Category")]
         public string Name { get; set; }
     }
 }

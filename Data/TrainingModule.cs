@@ -10,9 +10,11 @@ namespace EliteAthleteApp.Data
         public string CoachId { get; set; }
 		public List<int>? TrainingPlanIds { get; set; }
 
-        // STRINGS etc.
+        // STRINGS
 		public string Name { get; set; }
         public string? Description { get; set; }
+
+        // DATES
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }
