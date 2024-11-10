@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using EliteAthleteApp.Services;
 using EliteAthleteApp.Models.User;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -19,7 +20,7 @@ namespace EliteAthleteApp.Controllers
 		private readonly ITrainingExerciseRepository trainingExerciseRepository;
 		private readonly IMapper mapper;
 		private readonly IUserRepository userRepository;
-		private readonly EmailSenderService emailSender;
+		private readonly IEmailSender emailSender;
 
 		public AdminController(ApplicationDbContext context, 
 			UserManager<User> userManager, 
@@ -27,7 +28,7 @@ namespace EliteAthleteApp.Controllers
 			ITrainingExerciseRepository trainingExerciseRepository,
 			IMapper mapper,
 			IUserRepository userRepository,
-			EmailSenderService emailSender) 
+			IEmailSender emailSender) 
 		{
 			this.context = context;
 			this.userManager = userManager;

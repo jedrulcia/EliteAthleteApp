@@ -38,9 +38,17 @@
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<div class="flex-grow-1 d-flex justify-content-center">
-						@if (User.IsInRole("Administrator") || User.IsInRole("Coach"))
-						{
-							<ul class="navbar-nav">
+						<ul class="navbar-nav">
+							@if (User.IsInRole("Administrator") || User.IsInRole("Coach"))
+							{
+								<li class="nav-item text-primary mx-2">
+									<strong>
+										<a class="nav-link text-white" asp-area="" asp-controller="Admin" asp-action="Index">A D M I N</a>
+									</strong>
+								</li>
+							}
+							@if (User.IsInRole("Administrator") || User.IsInRole("Coach"))
+							{
 								<li class="nav-item text-primary mx-2">
 									<strong>
 										<a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="List">A T H L E T E S</a>
@@ -56,18 +64,16 @@
 										<a class="nav-link text-white" asp-area="" asp-controller="TrainingExercises" asp-action="Index">E X E R C I S E S</a>
 									</strong>
 								</li>
-							</ul>
-						}
-						@if (User.IsInRole("User"))
-						{
-							<ul class="navbar-nav">
+							}
+							@if (User.IsInRole("User"))
+							{
 								<li class="nav-item text-primary mx-2">
 									<strong>
 										<a class="nav-link text-white" asp-controller="Users" asp-action="Panel">M Y &nbsp; P A N E L</a>
 									</strong>
 								</li>
-							</ul>
-						}
+							}
+						</ul>
 					</div>
 					<ul class="navbar-nav text-black">
 						<li class="nav-item">
@@ -75,9 +81,9 @@
 								<button class="btn btn-outline-primary-a btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
 									<strong>User</strong>
 								</button>
-							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-								@if (SignInManager.IsSignedIn(User))
-								{
+								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+									@if (SignInManager.IsSignedIn(User))
+									{
 										<li>
 											<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="~/">
 												<button type="submit" class="dropdown-item text-black">
@@ -85,21 +91,21 @@
 												</button>
 											</form>
 										</li>
-								}
-								else
-								{
-									<li>
+									}
+									else
+									{
+										<li>
 											<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-circle"></i>&nbsp; R E G I S T E R</a>
-									</li>
-									<li>
+										</li>
+										<li>
 											<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-person-circle"></i>&nbsp; L O G I N</a>
+										</li>
+									}
+									<li>
+										<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+											<i class="bi bi-gear">&nbsp;</i>S E T T I N G S
+										</a>
 									</li>
-								}
-								<li>
-									<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-										<i class="bi bi-gear">&nbsp;</i>S E T T I N G S
-									</a>
-								</li>
 								</ul>
 							</div>
 						</li>
