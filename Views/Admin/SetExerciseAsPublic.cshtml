@@ -1,5 +1,16 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using EliteAthleteApp.Models.Admin
+
+@model AdminSetExerciseAsPublicVM
+
 @{
+	ViewData["Title"] = "SetExerciseAsPublic";
 }
+
+<form asp-action="SetExerciseAsPublic">
+	<input type="hidden" asp-for="@Model.TrainingExerciseVM.Id" name="trainingExerciseId" />
+	<p>Are you sure you want to set this exercise as public?</p>
+	<h5>@Model.TrainingExerciseVM.Name</h5>
+	<div class="text-end">
+		<button type="submit" class="btn btn-outline-primary-a btn-sm"><strong>Accept</strong></button>
+	</div>
+</form>

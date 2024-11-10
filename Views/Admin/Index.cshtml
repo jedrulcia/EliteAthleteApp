@@ -70,21 +70,91 @@
 	</div>
 </body>
 
-<!-- MODAL FOR TRAINING MODULE CREATE -->
-<div class="modal fade" id="trainingModuleCreateModal" tabindex="-1" role="dialog" aria-labelledby="trainingModuleCreateModalLabel" aria-hidden="true">
+<!-- MODAL FOR EXERCISE EDIT -->
+<div class="modal fade" id="exerciseEditModal" tabindex="-1" role="dialog" aria-labelledby="exerciseEditModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="trainingModuleCreateModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Create New Training Module</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="exerciseCreateModalLabel">
+					<strong>Edit Exercise</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<div class="modal-body" id="trainingModuleCreateContent">
+			<div class="modal-body" id="exerciseEditContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE DETAILS -->
+<div class="modal fade" id="exerciseDetailsModal" tabindex="-1" role="dialog" aria-labelledby="exerciseDetailsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="exerciseCreateModalLabel">
+					<strong>Exercise Details</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseDetailsContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE DELETE -->
+<div class="modal fade" id="exerciseDeleteModal" tabindex="-1" role="dialog" aria-labelledby="exerciseDeleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="exerciseCreateModalLabel">
+					<strong>Remove Exercise</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseDeleteContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE MEDIA EDIT -->
+<div class="modal fade" id="exerciseEditMediaModal" tabindex="-1" role="dialog" aria-labelledby="exerciseEditMediaModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="exerciseEditMediaModalLabel">
+					<strong>Edit Exercise Media</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="exerciseEditMediaContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE SET AS PUBLIC -->
+<div class="modal fade" id="setExerciseAsPublicModal" tabindex="-1" role="dialog" aria-labelledby="setExerciseAsPublicModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="setExerciseAsPublicModalLabel">
+					<strong>Set Exercise As Public</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="setExerciseAsPublicContent">
 			</div>
 		</div>
 	</div>
@@ -156,8 +226,8 @@
 				});
 			});
 
-			// SCRIPT FOR HANDLING EXERCISE LIST TAB
-			$('#privateExerciseList').on('click', function (e) {
+			// SCRIPT FOR HANDLING LOGS LIST TAB
+			$('#privateExerciseListTab').on('click', function (e) {
 				e.preventDefault();
 
 				var adminId = $('#privateExerciseListTab').data("adminid");
@@ -173,7 +243,7 @@
 
 					},
 					error: function () {
-						alert("An error occurred while loading 'privateExercise' content.");
+						alert("An error occurred while loading 'privateExerciseList' content.");
 					}
 				});
 			});
@@ -202,25 +272,129 @@
 
 			// ********************************************************************MODALS********************************************************************
 
-			// AJAX FOR LOADING TRAINING MODULE CREATE MODAL
-			$(document).on('click', '.createBtn', function (e) {
+			// AJAX FOR LOADING EXERCISE DELETE MODAL
+			$(document).on('click', '.deleteExerciseBtn', function (e) {
 				e.preventDefault();
 
-				var userId = $(this).data("userid");
-				var coachId = $(this).data("coachid");
+				var id = $(this).data("deleteexerciseid");
 				$.ajax({
-					url: '@Url.Action("Create", "TrainingModules")',
+					url: '@Url.Action("Delete", "TrainingExercises")',
 					type: 'GET',
-					data: { userId: userId, coachId: coachId },
+					data: { id: id },
 					success: function (data) {
-						$('#trainingModuleCreateContent').html(data);
-						$('#trainingModuleCreateModal').modal('show');
+						$('#exerciseDeleteContent').html(data);
+						$('#exerciseDeleteModal').modal('show');
 					},
 					error: function () {
-						alert("An error occurred while loading the trainingModuleCreate modal.");
+						alert("An error occurred while loading the exercise delete modal.");
 					}
 				});
 			});
+
+			// AJAX FOR LOADING EXERCISE DETAILS MODAL
+			$(document).on('click', '.detailsExerciseBtn', function (e) {
+				e.preventDefault();
+
+				var id = $(this).data("detailsexerciseid");
+				$.ajax({
+					url: '@Url.Action("Details", "TrainingExercises")',
+					type: 'GET',
+					data: { id: id },
+					success: function (data) {
+						$('#exerciseDetailsContent').html(data);
+						$('#exerciseDetailsModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise details modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE EDIT MODAL
+			$(document).on('click', '.editExerciseBtn', function (e) {
+				e.preventDefault();
+
+				var id = $(this).data("editexerciseid");
+				$.ajax({
+					url: '@Url.Action("Edit", "TrainingExercises")',
+					type: 'GET',
+					data: { id: id },
+					success: function (data) {
+						$('#exerciseEditContent').html(data);
+						$('#exerciseEditModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise edit modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE EDIT MEDIA MODAL
+			$(document).on('click', '.editMediaBtn', function (e) {
+				e.preventDefault();
+
+				var exerciseMediaId = $(this).data("exercisemediaid");
+				$.ajax({
+					url: '@Url.Action("EditMedia", "TrainingExerciseMedias")',
+					type: 'GET',
+					data: { exerciseMediaId, exerciseMediaId },
+					success: function (data) {
+						$('#exerciseEditMediaContent').html(data);
+						$('#exerciseEditMediaModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the exercise edit Media modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE ACCEPT MODAL
+			$(document).on('click', '.acceptExerciseBtn', function (e) {
+				e.preventDefault();
+
+				var trainingExerciseId = $(this).data("acceptexerciseid");
+				$.ajax({
+					url: '@Url.Action("SetExerciseAsPublic", "Admin")',
+					type: 'GET',
+					data: { trainingExerciseId: trainingExerciseId },
+					success: function (data) {
+						$('#setExerciseAsPublicContent').html(data);
+						$('#setExerciseAsPublicModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the setExerciseAsPublic modal.");
+					}
+				});
+			});
+
+			$(document).ready(function () {
+				// Function to preview image files
+				$(document).on('change', 'input[type="file"][name="imageUpload"]', function () {
+					var index = $(this).data("index");
+					if (this.files && this.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							$('#previewImg_' + index)
+								.attr('src', e.target.result)
+								.removeClass('d-none');
+						};
+						reader.readAsDataURL(this.files[0]);
+					}
+				});
+
+				// Function to preview video files
+				$(document).on('change', 'input[type="file"][name="videoUpload"]', function () {
+					if (this.files && this.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function (e) {
+							$('#previewVideo')
+								.attr('src', e.target.result)
+								.removeClass('d-none');
+						};
+						reader.readAsDataURL(this.files[0]);
+					}
+				});
+			})
 		});
 	</script>
 }

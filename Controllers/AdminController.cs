@@ -49,8 +49,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> PrivateExerciseList()
 		{
 			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			var exercises = (await trainingExerciseRepository.GetAllAsync()).Where(te => te.SetAsPublic == true && te.CoachId != null).ToList();
-			var exerciseVMs = mapper.Map<List<TrainingExerciseVM>>(exercises);
+			var exerciseVMs = await trainingExerciseRepository.GetAdminExerciseVMsAsync();
 
 			return PartialView(new AdminExerciseVM { AdminId = admin.Id, PrivateExerciseVMs = exerciseVMs });
 		}
@@ -64,11 +63,11 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// POST: Admin/Index/SetExerciseAsPublic
-		[HttpPost]
+		[HttpPost, ActionName("SetExerciseAsPublic")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> SetExerciseAsPublic(TrainingExerciseVM trainingExerciseVM)
+		public async Task<IActionResult> SetExercisAsPublic(int trainingExerciseId)
 		{
-			var exercise = mapper.Map<TrainingExercise>(trainingExerciseVM);
+			var exercise = await trainingExerciseRepository.GetAsync(trainingExerciseId);
 			exercise.CoachId = null;
 			exercise.SetAsPublic = true;
 			await trainingExerciseRepository.UpdateAsync(exercise);

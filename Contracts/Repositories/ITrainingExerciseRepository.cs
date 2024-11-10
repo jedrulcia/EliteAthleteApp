@@ -11,6 +11,9 @@ namespace EliteAthleteApp.Contracts
 		// GETS LIST OF PUBLIC OR PRIVATE EXERCISES
 		Task<List<TrainingExerciseVM>> GetExerciseVMsAsync(string? coachId);
 
+		// GETS LIST OF PRIVATE EXERCISES SET TO PUBLIC
+		Task<List<TrainingExerciseVM>> GetAdminExerciseVMsAsync();
+
 		// GETS EXERCISE CREATE VIEW MODEL
 		Task<TrainingExerciseCreateVM> GetExerciseCreateVMAsync(int? privateExerciseCount);
 
