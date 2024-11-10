@@ -3,16 +3,23 @@ using Microsoft.AspNetCore.Mvc;
 using EliteAthleteApp.Constants;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.TrainingExercise;
+using AutoMapper;
+using EliteAthleteApp.Models.Admin;
+using EliteAthleteApp.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace EliteAthleteApp.Controllers
 {
 	public class TrainingExercisesController : Controller
 	{
 		private readonly ITrainingExerciseRepository exerciseRepository;
+		private readonly IMapper mapper;
 
-		public TrainingExercisesController(ITrainingExerciseRepository exerciseRepository)
+		public TrainingExercisesController(ITrainingExerciseRepository exerciseRepository, IMapper mapper)
 		{
 			this.exerciseRepository = exerciseRepository;
+			this.mapper = mapper;
 		}
 
 		// GET: Exercises
@@ -31,6 +38,33 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> ExercisePrivate(string coachId)
 		{
 			return PartialView(await exerciseRepository.GetExerciseVMsAsync(coachId));
+		}
+
+		// GET: Admin/Index/ExerciseAdmin
+		public async Task<IActionResult> ExerciseAdmin()
+		{
+			var exerciseVMs = await exerciseRepository.GetAdminExerciseVMsAsync();
+
+			return PartialView(exerciseVMs);
+		}
+
+		// GET: Admin/Index/ExerciseAsPublic
+		public async Task<IActionResult> ExerciseAsPublic(int trainingExerciseId)
+		{
+			var exerciseVM = mapper.Map<TrainingExerciseVM>(await exerciseRepository.GetAsync(trainingExerciseId));
+			return PartialView(new AdminSetExerciseAsPublicVM { TrainingExerciseVM = exerciseVM });
+		}
+
+		// POST: Admin/Index/SetExerciseAsPublic
+		[HttpPost, ActionName("ExerciseAsPublic")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ExercisAsPublic(int trainingExerciseId)
+		{
+			var exercise = await exerciseRepository.GetAsync(trainingExerciseId);
+			exercise.CoachId = null;
+			exercise.SetAsPublic = true;
+			await exerciseRepository.UpdateAsync(exercise);
+			return RedirectToAction(nameof(Index), "Admin");
 		}
 
 		// GET: Exercises/Create

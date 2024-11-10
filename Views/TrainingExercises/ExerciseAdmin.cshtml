@@ -1,28 +1,28 @@
-﻿@using EliteAthleteApp.Models.Admin
+﻿@using EliteAthleteApp.Models.TrainingExercise
 
-@model AdminExerciseVM
+@model IEnumerable<TrainingExerciseVM>
 
 @{
-	ViewData["Title"] = "PrivateExerciseList";
+	ViewData["Title"] = "ExerciseAdmin";
 }
 
 <table class="table text-white table-dark">
 	<thead>
 		<tr>
 			<th style="width:50%">
-				<strong>@Html.DisplayNameFor(model => model.PrivateExerciseVMs.First().Name)</strong>
+				<strong>@Html.DisplayNameFor(model => model.First().Name)</strong>
 			</th>
 			<th style="width:20%">
-				<strong>@Html.DisplayNameFor(model => model.PrivateExerciseVMs.First().ExerciseCategory.Name)</strong>
+				<strong>@Html.DisplayNameFor(model => model.First().ExerciseCategory.Name)</strong>
 			</th>
 			<th style="width:20%">
-				<strong>@Html.DisplayNameFor(model => model.PrivateExerciseVMs.First().ExerciseMuscleGroup.Name)</strong>
+				<strong>@Html.DisplayNameFor(model => model.First().ExerciseMuscleGroup.Name)</strong>
 			</th>
 			<th style="width:10%"></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.PrivateExerciseVMs)
+		@foreach (var item in Model)
 		{
 			<tr>
 				<td>

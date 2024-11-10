@@ -233,7 +233,7 @@
 				var adminId = $('#privateExerciseListTab').data("adminid");
 
 				$.ajax({
-					url: '@Url.Action("PrivateExerciseList", "Admin")',
+					url: '@Url.Action("ExerciseAdmin", "TrainingExercises")',
 					type: 'GET',
 					data: { adminId: adminId },
 					success: function (data) {
@@ -354,7 +354,7 @@
 
 				var trainingExerciseId = $(this).data("acceptexerciseid");
 				$.ajax({
-					url: '@Url.Action("SetExerciseAsPublic", "Admin")',
+					url: '@Url.Action("ExerciseAsPublic", "TrainingExercises")',
 					type: 'GET',
 					data: { trainingExerciseId: trainingExerciseId },
 					success: function (data) {

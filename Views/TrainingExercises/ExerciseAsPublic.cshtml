@@ -3,10 +3,10 @@
 @model AdminSetExerciseAsPublicVM
 
 @{
-	ViewData["Title"] = "SetExerciseAsPublic";
+	ViewData["Title"] = "ExerciseAsPublic";
 }
 
-<form asp-action="SetExerciseAsPublic">
+<form asp-action="ExerciseAsPublic">
 	<input type="hidden" asp-for="@Model.TrainingExerciseVM.Id" name="trainingExerciseId" />
 	<p>Are you sure you want to set this exercise as public?</p>
 	<h5>@Model.TrainingExerciseVM.Name</h5>
