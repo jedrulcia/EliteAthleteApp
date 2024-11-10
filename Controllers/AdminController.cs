@@ -45,7 +45,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Admin/Index/PrivateExercise
-		public async Task<IActionResult> PrivateExercise()
+		public async Task<IActionResult> PrivateExerciseList()
 		{
 			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			var exercises = (await trainingExerciseRepository.GetAllAsync()).Where(te => te.SetAsPublic == true && te.CoachId != null).ToList();
@@ -75,7 +75,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Admin/Index/User
-		public async Task<IActionResult> User()
+		public async Task<IActionResult> UserList()
 		{
 			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			var users = await userRepository.GetAllAsync();

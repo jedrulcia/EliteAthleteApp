@@ -1,5 +1,226 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using EliteAthleteApp.Models.Admin;
+
+@model AdminIndexVM
+
 @{
+	ViewData["Title"] = "Index";
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
+	</div>
+}
+<body>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+				<ul class="nav nav-tabs" id="actionPanelTabs" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link emailBtn" type="button" data-adminid="@Model.AdminId" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Send Global Email</strong>
+						</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button data-adminid="@Model.AdminId" class="nav-link pauseBtn" type="button" aria-selected="false">
+							<i class="bi bi-plus-square-fill">&nbsp;</i>
+							<strong>New One Repetition Max</strong>
+						</button>
+					</li>
+				</ul>
+				<br />
+			</div>
+			<div class="col-md-12">
+				<ul class="nav nav-tabs" id="adminPanelTabs" role="tablist">
+					<li class="nav-item" role="presentation">
+						<a class="nav-link active" id="userListTab" data-toggle="tab" data-adminid="@Model.AdminId" href="#userList" role="tab" aria-controls="userList" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>Users</strong>
+						</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="privateExerciseListTab" data-toggle="tab" data-adminid="@Model.AdminId" href="#privateExerciseList" role="tab" aria-controls="privateExerciseList" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>Exercises</strong>
+						</a>
+					</li>
+					<li class="nav-item" role="presentation">
+						<a class="nav-link" id="logListTab" data-toggle="tab" data-adminid="@Model.AdminId" href="#logList" role="tab" aria-controls="logList" aria-selected="true">
+							<i class="bi bi-person">&nbsp;</i>
+							<strong>Logs</strong>
+						</a>
+					</li>
+				</ul>
+				<br />
+				<div class="tab-content" id="adminPanelTabsContent">
+					<div class="tab-pane fade show active" id="userList" role="tabpanel" aria-labelledby="userListTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>Users</strong></span></h1>
+					</div>
+					<div class="tab-pane fade" id="privateExerciseList" role="tabpanel" aria-labelledby="privateExerciseListTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>Exercises</strong></span></h1>
+					</div>
+					<div class="tab-pane fade" id="logList" role="tabpanel" aria-labelledby="logListTab">
+						<h1><span class="badge bg-black d-block w-100"><strong>Logs</strong></span></h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+<!-- MODAL FOR TRAINING MODULE CREATE -->
+<div class="modal fade" id="trainingModuleCreateModal" tabindex="-1" role="dialog" aria-labelledby="trainingModuleCreateModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="trainingModuleCreateModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Create New Training Module</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="trainingModuleCreateContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+
+@section Scripts
+{
+	<script>
+		$(function () {
+
+			// DATATABLE INITIALIZE
+			$('.table').DataTable();
+
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
+			});
+
+			// HANDLE SWITCHING TABS
+			$('#adminPanelTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				e.target // newly activated tab
+				e.relatedTarget // previous tab
+			});
+
+
+			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
+			});
+
+			// ********************************************************************TABS********************************************************************
+
+			// SCRIPT TO HANDLE LOADING TAB AFTER OPENING INDEX
+			var adminId = $('#userListTab').data("adminid");
+			$.ajax({
+				url: '@Url.Action("UserList", "Admin")',
+				type: 'GET',
+				data: { adminId: adminId },
+				success: function (data) {
+					$('#userList').html(data);
+					$('.table').DataTable();
+					$('#userListTab').tab('show');
+
+				},
+				error: function () {
+					alert("An error occurred while loading 'user' content.");
+				}
+			});
+
+			// SCRIPT FOR HANDLING USER LIST TAB
+			$('#userListTab').on('click', function (e) {
+				e.preventDefault();
+
+				var adminId = $('#userListTab').data("adminid");
+
+				$.ajax({
+					url: '@Url.Action("UserList", "Admin")',
+					type: 'GET',
+					data: { adminId: adminId },
+					success: function (data) {
+						$('#userList').html(data);
+						$('.table').DataTable();
+						$('#userListTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'userList' content.");
+					}
+				});
+			});
+
+			// SCRIPT FOR HANDLING EXERCISE LIST TAB
+			$('#privateExerciseList').on('click', function (e) {
+				e.preventDefault();
+
+				var adminId = $('#privateExerciseListTab').data("adminid");
+
+				$.ajax({
+					url: '@Url.Action("PrivateExerciseList", "Admin")',
+					type: 'GET',
+					data: { adminId: adminId },
+					success: function (data) {
+						$('#privateExerciseList').html(data);
+						$('.table').DataTable();
+						$('#privateExerciseListTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'privateExercise' content.");
+					}
+				});
+			});
+
+			// SCRIPT FOR HANDLING LOGS LIST TAB
+			$('#logList').on('click', function (e) {
+				e.preventDefault();
+
+				var adminId = $('#logListTab').data("adminid");
+
+				$.ajax({
+					url: '@Url.Action("Logs", "Admin")',
+					type: 'GET',
+					data: { adminId: adminId },
+					success: function (data) {
+						$('#logList').html(data);
+						$('.table').DataTable();
+						$('#logListTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'log' content.");
+					}
+				});
+			});
+
+			// ********************************************************************MODALS********************************************************************
+
+			// AJAX FOR LOADING TRAINING MODULE CREATE MODAL
+			$(document).on('click', '.createBtn', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+				var coachId = $(this).data("coachid");
+				$.ajax({
+					url: '@Url.Action("Create", "TrainingModules")',
+					type: 'GET',
+					data: { userId: userId, coachId: coachId },
+					success: function (data) {
+						$('#trainingModuleCreateContent').html(data);
+						$('#trainingModuleCreateModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the trainingModuleCreate modal.");
+					}
+				});
+			});
+		});
+	</script>
 }
