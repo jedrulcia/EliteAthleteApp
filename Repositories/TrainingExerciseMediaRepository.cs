@@ -9,13 +9,13 @@ namespace EliteAthleteApp.Repositories
 	public class TrainingExerciseMediaRepository : GenericRepository<TrainingExerciseMedia>, ITrainingExerciseMediaRepository
 	{
 		private readonly ApplicationDbContext context;
-		private readonly IBlobStorageService blobStorageService;
+		private readonly IGoogleDriveService googleDriveService;
 		private readonly IMapper mapper;
 
-		public TrainingExerciseMediaRepository(ApplicationDbContext context, IBlobStorageService blobStorageService, IMapper mapper) : base(context) 
+		public TrainingExerciseMediaRepository(ApplicationDbContext context, IGoogleDriveService googleDriveService, IMapper mapper) : base(context) 
 		{
 			this.context = context;
-			this.blobStorageService = blobStorageService;
+			this.googleDriveService = googleDriveService;
 			this.mapper = mapper;
 		}
 
@@ -31,7 +31,7 @@ namespace EliteAthleteApp.Repositories
 			if (imageFile != null && imageFile.Length > 0)
 			{
 				var trainingExerciseMedia = await GetAsync(id);
-				trainingExerciseMedia.ImageUrls[index] = await blobStorageService.UploadExerciseImageAsync(imageFile);
+				trainingExerciseMedia.ImageUrls[index] = await googleDriveService.UploadExerciseImageAsync(imageFile);
 				await UpdateAsync(trainingExerciseMedia);
 			}
 		}
@@ -42,7 +42,7 @@ namespace EliteAthleteApp.Repositories
 			if (videoFile != null && videoFile.Length > 0)
 			{
 				var trainingExerciseMedia = await GetAsync(id);
-				trainingExerciseMedia.VideoUrl = await blobStorageService.UploadExerciseVideoAsync(videoFile);
+				trainingExerciseMedia.VideoUrl = await googleDriveService.UploadExerciseVideoAsync(videoFile);
 				await UpdateAsync(trainingExerciseMedia);
 			}
 		}
@@ -51,7 +51,7 @@ namespace EliteAthleteApp.Repositories
 		public async Task DeleteImageAsync(int id, int index)
 		{
 			var trainingExerciseMedia = await GetAsync(id);
-			await blobStorageService.RemoveExerciseImageAsync(trainingExerciseMedia.ImageUrls[index]);
+			await googleDriveService.RemoveFileAsync(trainingExerciseMedia.ImageUrls[index]);
 			trainingExerciseMedia.ImageUrls[index] = null;
 			await UpdateAsync(trainingExerciseMedia);
 		}
@@ -60,7 +60,7 @@ namespace EliteAthleteApp.Repositories
 		public async Task DeleteVideoAsync(int id)
 		{
 			var trainingExerciseMedia = await GetAsync(id);
-			await blobStorageService.RemoveExerciseImageAsync(trainingExerciseMedia.VideoUrl);
+			await googleDriveService.RemoveFileAsync(trainingExerciseMedia.VideoUrl);
 			trainingExerciseMedia.VideoUrl = null;
 			await UpdateAsync(trainingExerciseMedia);
 		}
@@ -71,9 +71,9 @@ namespace EliteAthleteApp.Repositories
 			var trainingExerciseMedia = await GetAsync(trainingExerciseMediaId);
 			foreach (var imageUrl in trainingExerciseMedia.ImageUrls)
 			{
-				await blobStorageService.RemoveExerciseImageAsync(imageUrl);
+				await googleDriveService.RemoveFileAsync(imageUrl);
 			}
-			await blobStorageService.RemoveExerciseVideoAsync(trainingExerciseMedia.VideoUrl);
+			await googleDriveService.RemoveFileAsync(trainingExerciseMedia.VideoUrl);
 			await DeleteAsync(trainingExerciseMediaId.Value);
 		}
 	}

@@ -12,13 +12,13 @@ namespace EliteAthleteApp.Repositories
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
-		private readonly IBlobStorageService blobStorageService;
+		private readonly IGoogleDriveService googleDriveService;
 
-		public UserBodyAnalysisRepository(ApplicationDbContext context, IMapper mapper, IBlobStorageService blobStorageService) : base(context)
+		public UserBodyAnalysisRepository(ApplicationDbContext context, IMapper mapper, IGoogleDriveService googleDriveService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
-			this.blobStorageService = blobStorageService;
+			this.googleDriveService = googleDriveService;
 		}
 
 		// GETS LIST OF USER BODY ANALYSIS
@@ -59,7 +59,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			if (file != null)
 			{
-				var fileUrl = await blobStorageService.UploadBodyAnalysisFileAsync(file);
+				var fileUrl = await googleDriveService.UploadBodyAnalysisFileAsync(file);
 				userBodyAnalysisCreateVM.FileUrl = fileUrl;
 			}
 			await AddAsync(mapper.Map<UserBodyAnalysis>(userBodyAnalysisCreateVM));
@@ -70,7 +70,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			if (file != null)
 			{
-				var fileUrl = await blobStorageService.UploadBodyAnalysisFileAsync(file);
+				var fileUrl = await googleDriveService.UploadBodyAnalysisFileAsync(file);
 				userBodyAnalysisCreateVM.FileUrl = fileUrl;
 			}
 			await UpdateAsync(mapper.Map<UserBodyAnalysis>(userBodyAnalysisCreateVM));
@@ -81,7 +81,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			if (userBodyAnalysisDeleteVM.FileUrl != null)
 			{
-				await blobStorageService.RemoveBodyAnalysisFileAsync(userBodyAnalysisDeleteVM.FileUrl);
+				await googleDriveService.RemoveFileAsync(userBodyAnalysisDeleteVM.FileUrl);
 			}
 			await DeleteAsync(userBodyAnalysisDeleteVM.Id);
 		}

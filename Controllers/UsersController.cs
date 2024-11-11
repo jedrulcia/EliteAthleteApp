@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Azure.Storage.Blobs;
 using EliteAthleteApp.Services;
 using System.Text.Json;
 using System.Text;
@@ -24,22 +23,22 @@ namespace EliteAthleteApp.Controllers
 		private readonly IMapper mapper;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly IUserRepository userRepository;
-		private readonly IBlobStorageService blobStorageService;
 		private readonly ApplicationDbContext context;
+		private readonly IGoogleDriveService googleDriveService;
 
 		public UsersController(UserManager<User> userManager,
 			IMapper mapper,
 			IHttpContextAccessor httpContextAccessor,
 			IUserRepository userRepository,
-			IBlobStorageService blobStorageService,
-			ApplicationDbContext context)
+			ApplicationDbContext context,
+			IGoogleDriveService googleDriveService)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
 			this.httpContextAccessor = httpContextAccessor;
 			this.userRepository = userRepository;
-			this.blobStorageService = blobStorageService;
 			this.context = context;
+			this.googleDriveService = googleDriveService;
 		}
 
 		// GET: Users/List
@@ -65,18 +64,19 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Info(string? userId)
 		{
 			var user = await userManager.FindByIdAsync(userId);
-			var userVM = mapper.Map<UserInfoVM>(user);
+
+			var userInfoVM = new UserInfoVM { UserVM = mapper.Map<UserVM>(user) };
 			if (user.CoachId != null)
 			{
 				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
-				userVM.CoachVM = coachVM;
+				userInfoVM.CoachVM = coachVM;
 			}
 			if (user.NewCoachId != null)
 			{
 				var newCoachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.NewCoachId));
-				userVM.NewCoachVM = newCoachVM;
+				userInfoVM.NewCoachVM = newCoachVM;
 			}
-			return PartialView(userVM);
+			return PartialView(userInfoVM);
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/UploadImage
@@ -190,17 +190,17 @@ namespace EliteAthleteApp.Controllers
 				string jsonContent = JsonSerializer.Serialize(emptyChat, new JsonSerializerOptions { WriteIndented = true });
 				stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
 				var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
-				string jsonUrl = await blobStorageService.UploadUserChatFileAsync(chatFile);
+				string jsonUrl = await googleDriveService.UploadUserChatFileAsync(chatFile);
 
 				chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
 				await context.AddAsync(chat);
 				await context.SaveChangesAsync();
 			}
 
-			var blobClient = new BlobClient(new Uri(chat.ChatUrl));
+/*			var blobClient = new BlobClient(new Uri(chat.ChatUrl));
 
 			stream = new MemoryStream();
-			await blobClient.DownloadToAsync(stream);
+			await blobClient.DownloadToAsync(stream);*/
 			stream.Position = 0;
 			var chatMessages = await JsonSerializer.DeserializeAsync<List<UserChatMessageVM>>(stream);
 

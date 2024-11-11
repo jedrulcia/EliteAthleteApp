@@ -12,13 +12,13 @@ namespace EliteAthleteApp.Repositories
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
-		private readonly IBlobStorageService blobStorageService;
+		private readonly IGoogleDriveService googleDriveService;
 
-		public UserMedicalTestRepository(ApplicationDbContext context, IMapper mapper, IBlobStorageService blobStorageService) : base(context)
+		public UserMedicalTestRepository(ApplicationDbContext context, IMapper mapper, IGoogleDriveService googleDriveService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
-			this.blobStorageService = blobStorageService;
+			this.googleDriveService = googleDriveService;
 		}
 
 		// GETS LIST OF USER BODY MEASUREMENTS
@@ -59,7 +59,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			if (file != null)
 			{
-				var fileUrl = await blobStorageService.UploadMedicalTestFileAsync(file);
+				var fileUrl = await googleDriveService.UploadMedicalTestFileAsync(file);
 				userMedicalTestCreateVM.FileUrl = fileUrl;
 			}
 			await AddAsync(mapper.Map<UserMedicalTest>(userMedicalTestCreateVM));
@@ -70,7 +70,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			if (file != null)
 			{
-				var fileUrl = await blobStorageService.UploadMedicalTestFileAsync(file);
+				var fileUrl = await googleDriveService.UploadMedicalTestFileAsync(file);
 				userMedicalTestCreateVM.FileUrl = fileUrl;
 			}
 			await UpdateAsync(mapper.Map<UserMedicalTest>(userMedicalTestCreateVM));
@@ -81,7 +81,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			if (userMedicalTestDeleteVM.FileUrl != null)
 			{
-				await blobStorageService.RemoveMedicalTestFileAsync(userMedicalTestDeleteVM.FileUrl);
+				await googleDriveService.RemoveFileAsync(userMedicalTestDeleteVM.FileUrl);
 			}
 			await DeleteAsync(userMedicalTestDeleteVM.Id);
 		}
