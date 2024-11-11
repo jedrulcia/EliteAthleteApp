@@ -33,7 +33,7 @@ namespace EliteAthleteApp.Repositories
 			{
 				return new TrainingOrmCreateVM { UserId = userId, CreatedToday = true};
 			}
-			return new TrainingOrmCreateVM { UserId = userId, CreatedToday = false };
+			return new TrainingOrmCreateVM { UserId = userId};
 		}
 
 		// GETS TRAINING ORM EDIT VIEW MODEL

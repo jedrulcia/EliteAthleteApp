@@ -49,10 +49,13 @@ namespace EliteAthleteApp.Controllers
 			{
 				var file = Request.Form.Files[$"fileUpload"];
 				await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM, file);
-				return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
+				return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = $"Error while creating UMT. Please try again.";
-			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while creating User Mdeical Test. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
 		// GET: UserMedicalTest/Edit
@@ -65,9 +68,17 @@ namespace EliteAthleteApp.Controllers
 		[HttpPost, ActionName("Edit")]
 		public async Task<IActionResult> Edit(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
-			var file = Request.Form.Files[$"fileUpload"];
-			await userMedicalTestRepository.EditUserMedicalTestAsync(userMedicalTestCreateVM, file);
-			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestCreateVM.UserId });
+			if (ModelState.IsValid)
+			{
+				var file = Request.Form.Files[$"fileUpload"];
+				await userMedicalTestRepository.EditUserMedicalTestAsync(userMedicalTestCreateVM, file);
+				return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
+			}
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while editing User Mdeical Test. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
 		// GET: UserMedicalTest/Delete
@@ -81,7 +92,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Delete(UserMedicalTestDeleteVM userMedicalTestDeleteVM)
 		{
 			await userMedicalTestRepository.DeleteUserMedicalTestAsync(userMedicalTestDeleteVM);
-			return RedirectToAction("Panel", "Users", new { userId = userMedicalTestDeleteVM.UserId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestDeleteVM.UserId });
 		}
 	}
 }

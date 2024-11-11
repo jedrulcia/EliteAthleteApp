@@ -70,7 +70,7 @@ namespace EliteAthleteApp.Controllers
         }
 
 		// POST: TrainingPlans/ManageExercises/AddExercise
-		[HttpPost, ActionName("AddExercise")]
+		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddExercise(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
@@ -79,7 +79,10 @@ namespace EliteAthleteApp.Controllers
 				await trainingPlanRepository.AddExerciseToTrainingPlanAsync(trainingPlanAddExerciseVM);
 				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
-			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while adding Exercise. Please try again.";
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 
@@ -99,7 +102,10 @@ namespace EliteAthleteApp.Controllers
 				await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM);
 				return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
-			TempData["ErrorMessage"] = $"Error while adding the exercise. Index and Exercise fields are required. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while editing Exercise. Please try again.";
 			return RedirectToAction(nameof(ManageExercises), new { id = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 

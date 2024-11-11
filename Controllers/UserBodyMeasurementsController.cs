@@ -49,10 +49,13 @@ namespace EliteAthleteApp.Controllers
 			if (ModelState.IsValid)
 			{
 				await userBodyMeasurementsRepository.CreateUserBodyMeasurementAsync(userBodyMeasurementsCreateVM);
-				return RedirectToAction("Panel", "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
+				return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = $"Error while creating UBM. Please try again.";
-			return RedirectToAction("Panel", "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while creating User Body Measruements. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 		}
 
 		// GET: UserBodyMeasurements/Edit
@@ -65,8 +68,16 @@ namespace EliteAthleteApp.Controllers
 		[HttpPost, ActionName("Edit")]
 		public async Task<IActionResult> Edit(UserBodyMeasurementsCreateVM userBodyMeasurementsCreateVM)
 		{
-			await userBodyMeasurementsRepository.EditUserBodyMeasurementAsync(userBodyMeasurementsCreateVM);
-			return RedirectToAction("Panel", "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
+			if (ModelState.IsValid)
+			{
+				await userBodyMeasurementsRepository.EditUserBodyMeasurementAsync(userBodyMeasurementsCreateVM);
+				return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
+			}
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while editing User Body Measruements. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 		}
 
 		// GET: UserBodyMeasurements/Delete
@@ -80,7 +91,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Delete(UserBodyMeasurementsDeleteVM userBodyMeasurementsDeleteVM)
 		{
 			await userBodyMeasurementsRepository.DeleteUserBodyMeasurementAsync(userBodyMeasurementsDeleteVM);
-			return RedirectToAction("Panel", "Users", new { userId = userBodyMeasurementsDeleteVM.UserId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsDeleteVM.UserId });
 		}
 	}
 }

@@ -44,7 +44,7 @@ namespace EliteAthleteApp.Models.TrainingPlan
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
-			if (ReachedExerciseLimit)
+			if (ReachedExerciseLimit == true)
 			{
 				yield return new ValidationResult(
 					"You have reached the limit of 30 exercises in the training plan.",
