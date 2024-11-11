@@ -58,7 +58,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: Admin/Index/SetExerciseAsPublic
 		[HttpPost, ActionName("ExerciseAsPublic")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ExercisAsPublic(int trainingExerciseId)
+		public async Task<IActionResult> ExerciseAsPublicPost(int trainingExerciseId)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingExerciseId);
 			exercise.CoachId = null;

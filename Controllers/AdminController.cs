@@ -118,6 +118,8 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// POST: Admin/Index/UserLockout
+		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> UserLockout(AdminUserLockoutVM adminUserLockoutVM)
 		{
 			var user = await userManager.FindByIdAsync(adminUserLockoutVM.UserVM.Id);
