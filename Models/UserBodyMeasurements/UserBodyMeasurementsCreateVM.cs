@@ -36,7 +36,7 @@ namespace EliteAthleteApp.Models.UserBodyMeasurements
 			if (CreatedToday == true)
 			{
 				yield return new ValidationResult(
-					"You have already created UBM today.",
+					"You have already created User Body Measurements today.",
 					new[] { nameof(CreationDate) }
 				);
 			}

@@ -12,6 +12,7 @@ namespace EliteAthleteApp.Models.UserMedicalTest
 		public string? FileUrl { get; set; }
 
 		// STRINGS
+		[Required]
 		public string? Name { get; set; }
 
 		// DATES
@@ -34,7 +35,7 @@ namespace EliteAthleteApp.Models.UserMedicalTest
 			if (CreatedToday == true)
 			{
 				yield return new ValidationResult(
-					"You have already created UMT today.",
+					"You have already created three User Medical Tests today.",
 					new[] { nameof(CreationDate) }
 				);
 			}
