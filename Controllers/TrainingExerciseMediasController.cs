@@ -11,13 +11,11 @@ namespace EliteAthleteApp.Controllers
     public class TrainingExerciseMediasController : Controller
     {
         private readonly ITrainingExerciseMediaRepository trainingExerciseMediaRepository;
-        private readonly IBlobStorageService blobStorageService;
         private readonly IMapper mapper;
 
-        public TrainingExerciseMediasController(ITrainingExerciseMediaRepository trainingExerciseMediaRepository, IBlobStorageService blobStorageService, IMapper mapper)
+        public TrainingExerciseMediasController(ITrainingExerciseMediaRepository trainingExerciseMediaRepository, IMapper mapper)
         {
             this.trainingExerciseMediaRepository = trainingExerciseMediaRepository;
-            this.blobStorageService = blobStorageService;
             this.mapper = mapper;
         }
 

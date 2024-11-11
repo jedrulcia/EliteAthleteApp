@@ -8,22 +8,12 @@ using EliteAthleteApp.Services;
 using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Contracts.Repositories;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnectionString") ?? throw new InvalidOperationException("Connection string 'DataBaseConnectionString' not found.");
-string blobConnectionString = builder.Configuration.GetConnectionString("BlobConnectionString");
 string sendGridConnectionString = builder.Configuration.GetConnectionString("SendGridConnectionString");
-
-string blobContainerExerciseImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerExerciseImage"];
-string blobContainerExerciseVideo = builder.Configuration.GetSection("ContainerNames")["BlobContainerExerciseVideo"];
-string blobContainerUserImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerUserImage"];
-string blobContainerMedicalTestImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerMedicalTestImage"];
-string blobContainerBodyAnalysisImage = builder.Configuration.GetSection("ContainerNames")["BlobContainerBodyAnalysisImage"];
-string blobContainerChatJson = builder.Configuration.GetSection("ContainerNames")["BlobContainerChatJson"];
-
-string sendFromEmailAddress = builder.Configuration.GetValue<string>("Email");
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
@@ -52,13 +42,28 @@ builder.Services.AddScoped<ITrainingPlanPhaseRepository, TrainingPlanPhaseReposi
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddScoped<ITrainingOrmRepository, TrainingOrmRepository>();
 
-builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	
-new BlobStorageService(blobConnectionString, blobContainerExerciseImage, blobContainerExerciseVideo, 
-blobContainerUserImage, blobContainerMedicalTestImage, blobContainerBodyAnalysisImage, blobContainerChatJson));
+
+builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService>(provider =>
+{
+	// Przeka¿ je do konstruktora GoogleDriveService
+	return new GoogleDriveService(
+		builder.Configuration["GoogleFolders:userimage"],
+		builder.Configuration["GoogleFolders:exerciseimage"],
+		builder.Configuration["GoogleFolders:exercisevideo"],
+		builder.Configuration["GoogleFolders:medicaltestimage"],
+		builder.Configuration["GoogleFolders:bodyanalysisimage"],
+		builder.Configuration["GoogleFolders:chatjson"]
+	);
+});
+
+/*string blobConnectionString = builder.Configuration.GetConnectionString("BlobConnectionString");
+string blobContainer = builder.Configuration.GetSection("ContainerNames")["BlobContainer"];
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	new BlobStorageService(blobConnectionString, blobContainer));*/
 
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 
+string sendFromEmailAddress = builder.Configuration.GetValue<string>("Email");
 builder.Services.AddTransient<IEmailSender, EmailSenderService>(provider => new EmailSenderService(sendGridConnectionString, sendFromEmailAddress));
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));

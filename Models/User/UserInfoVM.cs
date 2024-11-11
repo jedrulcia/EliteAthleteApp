@@ -5,7 +5,6 @@ namespace EliteAthleteApp.Models.User
 	public class UserInfoVM
 	{
 		// IDs
-		public string? Id { get; set; }
 		public string? InviteCode { get; set; }
 
 		// URLS
@@ -14,15 +13,6 @@ namespace EliteAthleteApp.Models.User
 		// OBJECTS
 		public UserVM? CoachVM { get; set; }
 		public UserVM? NewCoachVM { get; set; }
-
-
-		// STRINGS
-
-		[Display(Name = "First Name")]
-		public string FirstName { get; set; }
-
-		[Display(Name = "Last Name")]
-		public string LastName { get; set; }
-		public string? DateOfBirth { get; set; }
+		public UserVM? UserVM { get; set; }
 	}
 }

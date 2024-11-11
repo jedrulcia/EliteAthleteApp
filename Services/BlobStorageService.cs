@@ -6,102 +6,26 @@ namespace EliteAthleteApp.Services
     public class BlobStorageService : IBlobStorageService
     {
         private readonly BlobServiceClient blobServiceClient;
-        private readonly string blobContainerExerciseImage;
-		private readonly string blobContainerExerciseVideo;
-		private readonly string blobContainerUserImage;
-		private readonly string blobContainerMedicalTestImage;
-		private readonly string blobContainerBodyAnalysisImage;
-		private readonly string blobContainerChatJson;
+        private readonly string blobContainer;
 
 		public BlobStorageService(string blobConnectionString, 
-			string blobContainerExerciseImage, 
-			string blobContainerExerciseVideo, 
-			string blobContainerUserImage, 
-			string blobContainerMedicalTestImage, 
-			string blobContainerBodyAnalysisImage,
-			string blobContainerChatJson)
+			string blobContainer)
         {
             this.blobServiceClient = new BlobServiceClient(blobConnectionString);
-            this.blobContainerExerciseImage = blobContainerExerciseImage;
-			this.blobContainerExerciseVideo = blobContainerExerciseVideo;
-			this.blobContainerUserImage = blobContainerUserImage;
-			this.blobContainerMedicalTestImage = blobContainerMedicalTestImage;
-			this.blobContainerBodyAnalysisImage = blobContainerBodyAnalysisImage;
-			this.blobContainerChatJson = blobContainerChatJson;
+            this.blobContainer = blobContainer;
 		}
 
-		// EXERCISE IMAGES
-
 		// UPLOADS IMAGE TO EXERCISE BLOB STORAGE
-		public async Task<string> UploadExerciseImageAsync(IFormFile file)
+/*		public async Task<string> UploadImageAsync(IFormFile file)
         {
-            return await UploadFileAsync(file, blobContainerExerciseImage);
+            return await UploadFileAsync(file, blobContainer);
 		}
 
 		// REMOVES IMAGE FROM EXERCISE BLOB STORAGE
-		public async Task RemoveExerciseImageAsync(string? imageUrl)
+		public async Task RemoveImageAsync(string? imageUrl)
 		{
-			await RemoveFileAsync(imageUrl, blobContainerExerciseImage);
-		}
-
-		// UPLOADS VIDEO TO EXERCISE BLOB STORAGE
-		public async Task<string> UploadExerciseVideoAsync(IFormFile file)
-		{
-			return await UploadFileAsync(file, blobContainerExerciseVideo);
-		}
-
-		// REMOVES VIDEO FROM EXERCISE BLOB STORAGE
-		public async Task RemoveExerciseVideoAsync(string? videoUrl)
-		{
-			await RemoveFileAsync(videoUrl, blobContainerExerciseVideo);
-		}
-
-		// UPLOADS IMAGE TO USER BLOB STORAGE
-		public async Task<string> UploadUserImageAsync(IFormFile file)
-		{
-			return await UploadFileAsync(file, blobContainerUserImage);
-		}
-
-		// REMOVES IMAGE FROM USER BLOB STORAGE
-		public async Task RemoveUserImageAsync(string? imageUrl)
-		{
-			await RemoveFileAsync(imageUrl, blobContainerUserImage);
-		}
-
-		// UPLOADS IMAGE TO USER BLOB STORAGE
-		public async Task<string> UploadMedicalTestFileAsync(IFormFile file)
-		{
-			return await UploadFileAsync(file, blobContainerMedicalTestImage);
-		}
-
-		// REMOVES IMAGE FROM USER BLOB STORAGE
-		public async Task RemoveMedicalTestFileAsync(string? imageUrl)
-		{
-			await RemoveFileAsync(imageUrl, blobContainerMedicalTestImage);
-		}
-
-		// UPLOADS IMAGE TO USER BLOB STORAGE
-		public async Task<string> UploadBodyAnalysisFileAsync(IFormFile file)
-		{
-			return await UploadFileAsync(file, blobContainerBodyAnalysisImage);
-		}
-
-		// REMOVES IMAGE FROM USER BLOB STORAGE
-		public async Task RemoveBodyAnalysisFileAsync(string? imageUrl)
-		{
-			await RemoveFileAsync(imageUrl, blobContainerBodyAnalysisImage);
-		}
-
-		// UPLOADS JSON TO USER CHAT BLOB STORAGE
-		public async Task<string> UploadUserChatFileAsync(IFormFile file)
-		{
-			return await UploadFileAsync(file, blobContainerChatJson);
-		}
-
-		public async Task RemoveUserChatFileAsync(string? fileUrl)
-		{
-			await RemoveFileAsync(fileUrl, blobContainerChatJson);
-		}
+			await RemoveFileAsync(imageUrl, blobContainer);
+		}*/
 
 		// PRIVATE METHODS BELOW
 

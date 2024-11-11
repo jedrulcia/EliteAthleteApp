@@ -16,8 +16,5 @@ namespace EliteAthleteApp.Data
 		// STRINGS
 		public string? FirstName {  get; set; }
 		public string? LastName { get; set; }
-
-		// DATES
-		public DateTime? DateOfBirth { get; set; }
 	}
 }

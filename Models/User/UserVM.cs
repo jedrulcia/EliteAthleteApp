@@ -22,9 +22,6 @@ namespace EliteAthleteApp.Models.User
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-		[Display(Name = "Date of Birth")]
-		public string? DateOfBirth { get; set; }
-
 		// OTHER
 
 		public DateTimeOffset? LockoutEnd { get; set; }

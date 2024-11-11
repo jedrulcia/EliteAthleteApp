@@ -1,5 +1,4 @@
-﻿using Azure.Storage.Blobs;
-using EliteAthleteApp.Contracts.Services;
+﻿using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
@@ -7,16 +6,17 @@ using System.Text.Json;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using EliteAthleteApp.Models.User;
+using Google.Apis.Drive.v3;
 
 public class UserChatHub : Hub
 {
-	private readonly IBlobStorageService blobStorageService;
+	private readonly IGoogleDriveService googleDriveService;
 	private readonly ApplicationDbContext context;
 	private readonly UserManager<User> userManager;
 
-	public UserChatHub(IBlobStorageService blobStorageService, ApplicationDbContext context, UserManager<User> userManager)
+	public UserChatHub(IGoogleDriveService googleDriveService, ApplicationDbContext context, UserManager<User> userManager)
 	{
-		this.blobStorageService = blobStorageService;
+		this.googleDriveService = googleDriveService;
 		this.context = context;
 		this.userManager = userManager;
 	}
@@ -30,13 +30,15 @@ public class UserChatHub : Hub
 		if (chat == null)
 			throw new InvalidOperationException("Chat does not exist or invalid chat");
 
-		var blobClient = new BlobClient(new Uri(chat.ChatUrl));
-		var stream = new MemoryStream();
-		await blobClient.DownloadToAsync(stream);
-		stream.Position = 0;
-		var chatMessages = await JsonSerializer.DeserializeAsync<List<UserChatMessageVM>>(stream) ?? new List<UserChatMessageVM>();
+		// Pobranie ID pliku z Google Drive
+		string fileLink = chat.ChatUrl;
+		var fileId = new Uri(fileLink).Segments.Last();
+
+		// Pobranie zawartości pliku z Google Drive
+		var chatMessages = await googleDriveService.GetChatMessagesAsync(fileId);
 		var timestamp = DateTime.UtcNow;
 
+		// Tworzenie nowej wiadomości
 		var newMessage = new UserChatMessageVM
 		{
 			Timestamp = timestamp,
@@ -44,20 +46,24 @@ public class UserChatHub : Hub
 			Content = message
 		};
 
-		var formattedTimestamp = timestamp.ToString("HH:mm");
-
+		// Dodanie nowej wiadomości do listy
 		chatMessages.Add(newMessage);
 
+		// Formatowanie czasu
+		var formattedTimestamp = timestamp.ToString("HH:mm");
+
+		// Serializacja zaktualizowanej listy wiadomości
 		string jsonContent = JsonSerializer.Serialize(chatMessages, new JsonSerializerOptions { WriteIndented = true });
 		var updatedStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
 
-		var chatFile = new FormFile(updatedStream, 0, updatedStream.Length, "chatFile", "chatFile.json");
-		await blobStorageService.RemoveUserChatFileAsync(chat.ChatUrl);
-		string jsonUrl = await blobStorageService.UploadUserChatFileAsync(chatFile);
+		// Upload zaktualizowanego pliku do Google Drive
+		string updatedFileLink = await googleDriveService.UploadUpdatedChatFileAsync(updatedStream, fileId);
 
-		chat.ChatUrl = jsonUrl;
+		// Aktualizacja URL chatu w bazie danych
+		chat.ChatUrl = updatedFileLink;
 		await context.SaveChangesAsync();
 
+		// Wysyłanie wiadomości do użytkownika i trenera
 		await Clients.User(userId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
 		await Clients.User(coachId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
 	}
