@@ -48,10 +48,13 @@ namespace EliteAthleteApp.Controllers
 			{
 				var file = Request.Form.Files[$"fileUpload"];
 				await userBodyAnalysisRepository.CreateUserBodyAnalysisAsync(userBodyAnalysisCreateVM, file);
-				return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
+				return RedirectToAction(nameof(Index), "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = $"Error while creating the UBA. Please try again.";
-			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while creating User Body Analysis. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 		}
 
 		// GET: UserBodyAnalysis/Edit
@@ -64,9 +67,17 @@ namespace EliteAthleteApp.Controllers
 		[HttpPost, ActionName("Edit")]
 		public async Task<IActionResult> Edit(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM)
 		{
-			var file = Request.Form.Files[$"fileUpload"];
-			await userBodyAnalysisRepository.EditUserBodyAnalysisAsync(userBodyAnalysisCreateVM, file);
-			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisCreateVM.UserId });
+			if (ModelState.IsValid)
+			{
+				var file = Request.Form.Files[$"fileUpload"];
+				await userBodyAnalysisRepository.EditUserBodyAnalysisAsync(userBodyAnalysisCreateVM, file);
+				return RedirectToAction(nameof(Index), "Users", new { userId = userBodyAnalysisCreateVM.UserId });
+			}
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while editing User Body Analysis. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyAnalysisCreateVM.UserId });
 		}
 
 		// GET: UserBodyAnalysis/Delete
@@ -80,7 +91,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Delete(UserBodyAnalysisDeleteVM userBodyAnalysisDeleteVM)
 		{
 			await userBodyAnalysisRepository.DeleteUserBodyAnalysisAsync(userBodyAnalysisDeleteVM);
-			return RedirectToAction("Panel", "Users", new { userId = userBodyAnalysisDeleteVM.UserId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyAnalysisDeleteVM.UserId });
 		}
 	}
 }

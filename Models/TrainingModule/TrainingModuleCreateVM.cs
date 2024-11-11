@@ -39,7 +39,7 @@ namespace EliteAthleteApp.Models.TrainingModule
 			if (StartDate > EndDate)
 			{
 				yield return new ValidationResult(
-					"The starting date must be earlier than the ending date.",
+					"The Starting Date must be earlier than the Ending Date.",
 					new[] { nameof(StartDate), nameof(EndDate) }
 				);
 			}

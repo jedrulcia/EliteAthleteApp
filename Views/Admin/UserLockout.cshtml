@@ -1,5 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using EliteAthleteApp.Models.Admin
+
+@model AdminUserLockoutVM
+
 @{
+	ViewData["Title"] = "UserLockout";
 }
+
+<form asp-action="UserLockout">
+	<input type="hidden" asp-for="@Model.UserVM.Id" value="@Model.UserVM.Id" />
+	<p>Are you sure you want to lockout this user?</p>
+	<h5>@Model.UserVM.FirstName @Model.UserVM.LastName</h5>
+	<div class="form-group col-md-12">
+		<strong><label asp-for="LockoutDate" class="control-label"></label></strong>
+		<input asp-for="LockoutDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+		<span asp-validation-for="LockoutDate" class="text-danger"></span>
+	</div>
+	<div class="text-end">
+		<button type="submit" class="btn btn-outline-danger-a"><strong>Lockout User</strong></button>
+	</div>
+</form>

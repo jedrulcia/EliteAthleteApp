@@ -33,10 +33,13 @@ namespace EliteAthleteApp.Controllers
 			if (ModelState.IsValid)
 			{
 				await trainingOrmRepository.CreateOrmAsync(trainingOrmCreateVM);
-				return RedirectToAction("Panel", "Users", new { userId = trainingOrmCreateVM.UserId });
+				return RedirectToAction(nameof(Index), "Users", new { userId = trainingOrmCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = $"Error while creating ORM. Please try again.";
-			return RedirectToAction("Panel", "Users", new { userId = trainingOrmCreateVM.UserId });
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while creating the ORM. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = trainingOrmCreateVM.UserId });
 		}
 
 		// GET: TrainingOrm/Edit
@@ -51,7 +54,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Edit(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
 			await trainingOrmRepository.EditOrmAsync(trainingOrmCreateVM);
-			return RedirectToAction("Panel", "Users", new { userId = trainingOrmCreateVM.UserId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = trainingOrmCreateVM.UserId });
 		}
 		
 		// GET: TrainingOrm/Delete
@@ -65,7 +68,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Delete(TrainingOrmDeleteVM trainingOrmDeleteVM)
 		{
 			await trainingOrmRepository.DeleteOrmAsync(trainingOrmDeleteVM);
-			return RedirectToAction("Panel", "Users", new { userId = trainingOrmDeleteVM.UserId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = trainingOrmDeleteVM.UserId });
 		}
 	}
 }

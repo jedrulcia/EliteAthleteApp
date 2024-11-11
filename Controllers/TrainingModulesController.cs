@@ -37,10 +37,13 @@ namespace EliteAthleteApp.Controllers
 			if (ModelState.IsValid)
 			{
 				await trainingModuleRepository.CreateTrainingModuleAsync(trainingModuleCreateVM);
-				return RedirectToAction("Panel", "Users", new { userId = trainingModuleCreateVM.UserId });
+				return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = $"Error while creating the training module. Please try again.";
-			return RedirectToAction("Panel", "Users", new { userId = trainingModuleCreateVM.UserId });
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while creating the Training Module. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 		}
 
 		// GET: TrainingModules/Edit
@@ -57,10 +60,13 @@ namespace EliteAthleteApp.Controllers
 			if (ModelState.IsValid)
 			{
 				await trainingModuleRepository.EditTrainingModuleAsync(trainingModuleCreateVM);
-				return RedirectToAction("Panel", "Users", new { userId = trainingModuleCreateVM.UserId });
+				return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = $"Error while editing the training module. Please try again.";
-			return RedirectToAction("Panel", "Users", new { userId = trainingModuleCreateVM.UserId });
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while editing the Training Module. Please try again.";
+			return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 		}
 
 		// GET: TrainingModules/Delete
@@ -75,7 +81,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Delete(TrainingModuleDeleteVM trainingModuleDeleteVM)
 		{
 			await trainingModuleRepository.DeleteTrainingModuleAsync(trainingModuleDeleteVM.Id);
-			return RedirectToAction("Panel", "Users", new { userId = trainingModuleDeleteVM.UserId });
+			return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleDeleteVM.UserId });
 		}
 	}
 }

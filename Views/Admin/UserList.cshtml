@@ -2,8 +2,7 @@
 @model AdminUserVM
 
 @{
-	ViewData["Title"] = "List";
-	var errorMessage = TempData["ErrorMessage"] as string;
+	ViewData["Title"] = "UserList";
 }
 
 <h1>Athletes</h1>
@@ -12,6 +11,9 @@
 		<tr>
 			<th>
 				User
+			</th>
+			<th>
+				Lockout End
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.UserVMs.First().Email)
@@ -28,6 +30,23 @@
 			<tr>
 				<td>
 					@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+				</td>
+				<td>
+					@if (item.LockoutEnd != null)
+					{
+						@if (item.LockoutEnd?.UtcDateTime > DateTime.UtcNow)
+						{
+							<span class="badge bg-danger">
+								@Html.DisplayFor(modelItem => item.LockoutEnd)
+							</span>
+						}
+						else
+						{
+							<span class="badge bg-secondary">
+								@Html.DisplayFor(modelItem => item.LockoutEnd)
+							</span>
+						}
+					}
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Email)

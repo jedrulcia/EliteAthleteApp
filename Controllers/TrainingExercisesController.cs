@@ -52,13 +52,13 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> ExerciseAsPublic(int trainingExerciseId)
 		{
 			var exerciseVM = mapper.Map<TrainingExerciseVM>(await exerciseRepository.GetAsync(trainingExerciseId));
-			return PartialView(new AdminSetExerciseAsPublicVM { TrainingExerciseVM = exerciseVM });
+			return PartialView(new TrainingExerciseAsPublicVM { TrainingExerciseVM = exerciseVM });
 		}
 
 		// POST: Admin/Index/SetExerciseAsPublic
 		[HttpPost, ActionName("ExerciseAsPublic")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ExercisAsPublic(int trainingExerciseId)
+		public async Task<IActionResult> ExerciseAsPublicPost(int trainingExerciseId)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingExerciseId);
 			exercise.CoachId = null;
@@ -83,7 +83,10 @@ namespace EliteAthleteApp.Controllers
 				await exerciseRepository.CreateExerciseAsync(exerciseCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
-			TempData["ErrorMessage"] = $"Error while creating the exercise. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while creating the Exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -103,7 +106,10 @@ namespace EliteAthleteApp.Controllers
 				await exerciseRepository.EditExerciseAsync(exerciseCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
-			TempData["ErrorMessage"] = $"Error while editing the exercise. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values
+				.SelectMany(v => v.Errors)
+				.Select(e => e.ErrorMessage)
+				.FirstOrDefault() ?? "Error while editing the Exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 

@@ -31,7 +31,7 @@ namespace EliteAthleteApp.Models.TrainingOrm
 			if (CreatedToday == true)
 			{
 				yield return new ValidationResult(
-					"You have already created ORM today.",
+					"You have already created One-Repetition Max today.",
 					new[] { nameof(CreationDate) }
 				);
 			}

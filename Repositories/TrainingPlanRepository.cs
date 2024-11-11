@@ -128,6 +128,7 @@ namespace EliteAthleteApp.Repositories
 
 		public async Task<TrainingPlanAddExerciseVM> GetTrainingPlanEditExerciseVMAsync(int trainingPlanId, string coachId, int trainingPlanExerciseDetailId)
 		{
+			var trainingPlan = await GetAsync(trainingPlanId);
 			var trainingPlanAddExerciseVM = mapper.Map<TrainingPlanAddExerciseVM>(await trainingPlanExerciseDetailRepository.GetAsync(trainingPlanExerciseDetailId));
 			var trainingPlanAddExerciseSelectLists = await GetTrainingPlanAddExerciseSelectListsAsync(trainingPlanId, coachId, trainingPlanAddExerciseVM);
 

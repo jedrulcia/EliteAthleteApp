@@ -9,9 +9,11 @@ namespace EliteAthleteApp.Models.TrainingExercise
 		public int? Id { get; set; }
 		public string? CoachId { get; set; }
 
+		[Required]
 		[Display(Name = "Category")]
 		public int? ExerciseCategoryId { get; set; }
 
+		[Required]
 		[Display(Name = "Muscle Group")]
 		public int? ExerciseMuscleGroupId { get; set; }
 		public int? ExerciseMediaId { get; set; }

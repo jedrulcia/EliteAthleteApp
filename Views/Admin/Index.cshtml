@@ -160,6 +160,60 @@
 	</div>
 </div>
 
+<!-- MODAL FOR SENDING EMAILS -->
+<div class="modal fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-labelledby="sendEmailModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="sendEmailModalLabel">
+					<strong>Send Email</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="sendEmailContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR LOCKING USERS -->
+<div class="modal fade" id="lockoutUserModal" tabindex="-1" role="dialog" aria-labelledby="lockoutUserModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="lockoutUserModalLabel">
+					<strong>Lockout User</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="lockoutUserContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR DELETEING USER -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="deleteUserModalLabel">
+					<strong>Delete User</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="deleteUserContent">
+			</div>
+		</div>
+	</div>
+</div>
+
 
 @section Scripts
 {
@@ -363,6 +417,63 @@
 					},
 					error: function () {
 						alert("An error occurred while loading the setExerciseAsPublic modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING SEND EMAIL MODAL
+			$(document).on('click', '.sendEmailBtn', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+				$.ajax({
+					url: '@Url.Action("SendEmail", "Admin")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#sendEmailContent').html(data);
+						$('#sendEmailModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the sendEmail modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING LOCKOUT USER MODAL
+			$(document).on('click', '.lockoutUserBtn', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+				$.ajax({
+					url: '@Url.Action("UserLockout", "Admin")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#lockoutUserContent').html(data);
+						$('#lockoutUserModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the lockoutUser modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING DELETE USER MODAL
+			$(document).on('click', '.deleteUserBtn', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+				$.ajax({
+					url: '@Url.Action("UserDelete", "Admin")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#deleteUserContent').html(data);
+						$('#deleteUserModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the deleteUser modal.");
 					}
 				});
 			});

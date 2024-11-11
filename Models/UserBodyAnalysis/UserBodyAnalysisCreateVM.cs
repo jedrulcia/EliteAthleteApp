@@ -30,14 +30,14 @@ namespace EliteAthleteApp.Models.UserBodyAnalysis
         public int? WaterPercentage { get; set; }
 
 		// VALIDATION
-		public bool CreatedToday { get; set; }
+		public bool CreatedToday { get; set; } = false;
 
 		public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 		{
 			if (CreatedToday == true)
 			{
 				yield return new ValidationResult(
-					"You have already created ORM today.",
+					"You have already created User Body Analysis today.",
 					new[] { nameof(CreationDate) }
 				);
 			}

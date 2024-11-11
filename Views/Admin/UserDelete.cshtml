@@ -1,5 +1,16 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using EliteAthleteApp.Models.Admin
+
+@model AdminUserDeleteVM
+
 @{
+	ViewData["Title"] = "UserDelete";
 }
+
+<form asp-action="UserDelete">
+	<input type="hidden" asp-for="@Model.UserVM.Id" value="@Model.UserVM.Id" />
+	<p>Are you sure you want to delete this user?</p>
+	<h5>@Model.UserVM.FirstName @Model.UserVM.LastName</h5>
+	<div class="text-end">
+		<button type="submit" class="btn btn-outline-danger-a"><strong>Delete</strong></button>
+	</div>
+</form>
