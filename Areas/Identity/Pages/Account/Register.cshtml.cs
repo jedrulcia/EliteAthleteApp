@@ -25,7 +25,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EliteAthleteApp.Areas.Identity.Pages.Account
 {
 	public class RegisterModel : PageModel
-	{
+    {
 		private readonly SignInManager<User> _signInManager;
 		private readonly UserManager<User> _userManager;
 		private readonly IUserStore<User> _userStore;
@@ -71,7 +71,7 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
 		///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
 		///     directly from your code. This API may change or be removed in future releases.
 		/// </summary>
-		public class InputModel
+		public class InputModel : IValidatableObject
 		{
 			/// <summary>
 			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -87,9 +87,6 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
 			[Required]
 			[Display(Name = "Last name")]
 			public string? LastName { get; set; }
-			[DataType(DataType.Date)]
-			[Display(Name = "Date of birth")]
-			public DateTime? DateOfBirth { get; set; }
 
 			/// <summary>
 			///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -109,9 +106,29 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
 			[Display(Name = "Confirm password")]
 			[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
 			public string ConfirmPassword { get; set; }
-			[Display(Name = "I am a coach.")]
 			public bool RegisterAsCoach { get; set; }
-		}
+            public bool AcceptedRodo { get; set; }
+            public bool AcceptedPrivacy {  get; set; }
+
+
+            public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+            {
+                if (AcceptedRodo != true)
+                {
+                    yield return new ValidationResult(
+                        "To proceed, you must accept the required consents for data processing.",
+                        new[] { nameof(AcceptedRodo) }
+                    );
+				}
+				if (AcceptedPrivacy != true)
+				{
+					yield return new ValidationResult(
+						"To proceed, you must agree to the Privacy Policy and Terms of Service.",
+						new[] { nameof(AcceptedPrivacy) }
+					);
+				}
+			}
+        }
 
 
 		public async Task OnGetAsync(string returnUrl = null)
@@ -132,7 +149,6 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
 				await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 				user.FirstName = Input.FirstName;
 				user.LastName = Input.LastName;
-				user.DateOfBirth = (Input.DateOfBirth);
 				user.UserSubscriptionId = 1;
 
 				if (Input.RegisterAsCoach)
