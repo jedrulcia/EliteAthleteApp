@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="media-upload-box">
-			@if (string.IsNullOrEmpty(Model.ImageUrl))
+			@if (string.IsNullOrEmpty(Model.UserVM.ImageUrl))
 			{
 				<form asp-action="UploadImage" enctype="multipart/form-data">
 					<input type="hidden" name="userId" value="@Model.UserVM.Id" />
@@ -21,7 +21,7 @@
 			{
 				<form asp-action="DeleteImage">
 					<input type="hidden" name="userId" value="@Model.UserVM.Id" />
-					<img src="@Model.ImageUrl" class="img-thumbnail" />
+					<img src="@Model.UserVM.ImageUrl" class="img-thumbnail" style="width: 100%; height: auto;" alt="User uploaded image" />
 					<button type="submit" class="remove-media">X</button>
 				</form>
 			}

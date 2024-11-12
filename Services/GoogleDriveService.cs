@@ -173,13 +173,23 @@ public class GoogleDriveService : IGoogleDriveService
 		request.Fields = "id, webViewLink"; // Zwróć zarówno ID jak i link do pliku
 		var fileResponse = await request.UploadAsync();
 
+
+		var permission = new Permission
+		{
+			Type = "anyone",
+			Role = "reader"
+		};
+
+		// Dodanie uprawnienia do pliku
+		await driveService.Permissions.Create(permission, request.ResponseBody.Id).ExecuteAsync();
+
 		if (fileResponse.Status != Google.Apis.Upload.UploadStatus.Completed)
 		{
 			throw new Exception("File upload failed.");
 		}
 
 		// Zwróć link do pliku
-		return request.ResponseBody.WebViewLink;
+		return request.ResponseBody.Id;
 	}
 
 	// CHECKS IF FILE EXISTS IN GOOGLE DRIVE

@@ -64,8 +64,12 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Info(string? userId)
 		{
 			var user = await userManager.FindByIdAsync(userId);
-
-			var userInfoVM = new UserInfoVM { UserVM = mapper.Map<UserVM>(user) };
+			var userVM = mapper.Map<UserVM>(user);
+			if (userVM.ImageUrl != null)
+			{
+				userVM.ImageUrl = "https://drive.google.com/thumbnail?authuser=0&sz=w320&id=" + userVM.ImageUrl;
+			}
+			var userInfoVM = new UserInfoVM { UserVM = userVM };
 			if (user.CoachId != null)
 			{
 				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
