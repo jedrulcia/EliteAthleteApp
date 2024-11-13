@@ -5,7 +5,7 @@
 <div class="row">
 	<div class="col-md-3">
 		<div class="media-upload-box">
-			@if (string.IsNullOrEmpty(Model.ImageUrl))
+			@if (string.IsNullOrEmpty(Model.UserVM.ImageUrl))
 			{
 				<form asp-action="UploadImage" enctype="multipart/form-data">
 					<input type="hidden" name="userId" value="@Model.UserVM.Id" />
@@ -21,7 +21,7 @@
 			{
 				<form asp-action="DeleteImage">
 					<input type="hidden" name="userId" value="@Model.UserVM.Id" />
-					<img src="@Model.ImageUrl" class="img-thumbnail" />
+					<img src="https://drive.google.com/thumbnail?authuser=0&sz=w320&id=@Model.UserVM.ImageUrl" class="img-thumbnail" style="width: 100%; height: auto;" alt="User uploaded image" />
 					<button type="submit" class="remove-media">X</button>
 				</form>
 			}
@@ -39,7 +39,7 @@
 			<strong>Coach:</strong> <p class="text-white">
 				@Model.CoachVM.FirstName @Model.CoachVM.LastName
 				<a asp-action="DeleteCoach" class="btn btn-sm btn-danger">Delete Coach</a>
-				<a asp-action="Chat" asp-route-userId="@Model.CoachVM.Id" asp-controller="Users" class="btn btn-sm btn-danger">Chat</a>
+				<a asp-action="Chat" asp-route-userId="@Model.CoachVM.Id" asp-controller="UserChats" class="btn btn-sm btn-danger">Chat</a>
 			</p>
 		}
 		@if (Model.NewCoachVM != null)

@@ -28,7 +28,7 @@
                     <form asp-action="DeleteImage">
                         <input type="hidden" name="id" value="@Model.Id" />
                         <input type="hidden" name="index" value="@i" />
-                        <img src="@Model.ImageUrls[i]" class="img-thumbnail" />
+                        <img src="https://drive.google.com/thumbnail?authuser=0&sz=w320&id=@Model.ImageUrls[i]" class="img-thumbnail" />
                         <button type="submit" class="remove-media">X</button>
                     </form>
                 }
@@ -49,11 +49,11 @@
                     <button type="submit" class="remove-media">O</button>
                 </form>
             }
-            else
+            else 
             {
                 <form asp-action="DeleteVideo">
                     <input type="hidden" name="id" value="@Model.Id" />
-                    <video controls width="100%" src="@Model.VideoUrl"></video>
+                    <iframe src="https://drive.google.com/file/d/@Model.VideoUrl/preview" width="640" height="480" allow="autoplay"></iframe>
                     <button type="submit" class="remove-media">X</button>
                 </form>
             }

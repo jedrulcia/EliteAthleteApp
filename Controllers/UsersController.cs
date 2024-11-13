@@ -3,17 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using EliteAthleteApp.Constants;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.User;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using EliteAthleteApp.Repositories;
-using EliteAthleteApp.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
 using EliteAthleteApp.Services;
 using System.Text.Json;
 using System.Text;
-using EliteAthleteApp.Contracts.Services;
+using EliteAthleteApp.Contracts;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -64,8 +62,8 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> Info(string? userId)
 		{
 			var user = await userManager.FindByIdAsync(userId);
-
-			var userInfoVM = new UserInfoVM { UserVM = mapper.Map<UserVM>(user) };
+			var userVM = mapper.Map<UserVM>(user);
+			var userInfoVM = new UserInfoVM { UserVM = userVM };
 			if (user.CoachId != null)
 			{
 				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
@@ -160,62 +158,5 @@ namespace EliteAthleteApp.Controllers
 			await userRepository.UpdateAsync(user);
 			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
 		}
-
-		public async Task<IActionResult> Chat(string? userId)
-		{
-			var viewerId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
-			var user1 = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			var user2 = await userManager.FindByIdAsync(userId);
-
-			var coachVM = new UserVM();
-			var userVM = new UserVM();
-
-			if (User.IsInRole("Coach"))
-			{
-				coachVM = mapper.Map<UserVM>(user1);
-				userVM = mapper.Map<UserVM>(user2);
-			}
-			else
-			{
-				coachVM = mapper.Map<UserVM>(user2);
-				userVM = mapper.Map<UserVM>(user1);
-			}
-
-			var chat = await context.Set<UserChat>().Where(uc => uc.UserId == userVM.Id && uc.CoachId == coachVM.Id).FirstOrDefaultAsync();
-			var stream = new MemoryStream();
-
-			if (chat == null)
-			{
-				var emptyChat = new List<UserChatMessageVM>();
-				string jsonContent = JsonSerializer.Serialize(emptyChat, new JsonSerializerOptions { WriteIndented = true });
-				stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
-				var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
-				string jsonUrl = await googleDriveService.UploadUserChatFileAsync(chatFile);
-
-				chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
-				await context.AddAsync(chat);
-				await context.SaveChangesAsync();
-			}
-
-/*			var blobClient = new BlobClient(new Uri(chat.ChatUrl));
-
-			stream = new MemoryStream();
-			await blobClient.DownloadToAsync(stream);*/
-			stream.Position = 0;
-			var chatMessages = await JsonSerializer.DeserializeAsync<List<UserChatMessageVM>>(stream);
-
-
-
-			var chatVM = new UserChatVM
-			{
-				Id = chat.Id,
-				CoachVM = coachVM,
-				UserVM = userVM,
-				UserChatMessageVMs = chatMessages,
-				ViewerId = viewerId
-			};
-
-			return View(chatVM);
-		}
-	}
+    }
 }

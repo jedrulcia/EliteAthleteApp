@@ -7,9 +7,6 @@ namespace EliteAthleteApp.Models.User
 		// IDs
 		public string? InviteCode { get; set; }
 
-		// URLS
-		public string? ImageUrl { get; set; }
-
 		// OBJECTS
 		public UserVM? CoachVM { get; set; }
 		public UserVM? NewCoachVM { get; set; }

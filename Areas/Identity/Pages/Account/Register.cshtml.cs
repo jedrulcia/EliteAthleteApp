@@ -18,13 +18,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using EliteAthleteApp.Constants;
 using EliteAthleteApp.Data;
 using Microsoft.EntityFrameworkCore;
+using EliteAthleteApp.Configurations.Constants;
 
 namespace EliteAthleteApp.Areas.Identity.Pages.Account
 {
-	public class RegisterModel : PageModel
+    public class RegisterModel : PageModel
     {
 		private readonly SignInManager<User> _signInManager;
 		private readonly UserManager<User> _userManager;

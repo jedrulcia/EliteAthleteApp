@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EliteAthleteApp.Constants;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.TrainingModule;
 

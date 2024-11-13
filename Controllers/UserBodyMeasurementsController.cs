@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.UserBodyMeasurements;

@@ -15,13 +15,12 @@ using PdfSharp.Drawing;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.IdentityModel.Tokens;
 using EliteAthleteApp.Models;
-using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Models.User;
 using EliteAthleteApp.Models.UserMedicalTest;
 
 namespace EliteAthleteApp.Repositories
 {
-	public class TrainingPlanRepository : GenericRepository<TrainingPlan>, ITrainingPlanRepository
+    public class TrainingPlanRepository : GenericRepository<TrainingPlan>, ITrainingPlanRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;

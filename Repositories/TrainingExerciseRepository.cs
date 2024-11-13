@@ -4,13 +4,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingExercise;
-using EliteAthleteApp.Contracts.Repositories;
-using EliteAthleteApp.Contracts.Services;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace EliteAthleteApp.Repositories
 {
-	public class TrainingExerciseRepository : GenericRepository<TrainingExercise>, ITrainingExerciseRepository
+    public class TrainingExerciseRepository : GenericRepository<TrainingExercise>, ITrainingExerciseRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;
