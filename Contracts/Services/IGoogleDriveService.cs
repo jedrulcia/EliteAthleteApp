@@ -1,8 +1,8 @@
-﻿using EliteAthleteApp.Models.User;
+﻿using EliteAthleteApp.Models.UserChat;
 
 namespace EliteAthleteApp.Contracts.Services
 {
-	public interface IGoogleDriveService
+    public interface IGoogleDriveService
 	{
 		// UPLOADS IMAGE TO GOOGLE DRIVE
 		Task<string> UploadExerciseImageAsync(IFormFile file);
@@ -19,16 +19,7 @@ namespace EliteAthleteApp.Contracts.Services
 		// UPLOADS IMAGE TO GOOGLE DRIVE
 		Task<string> UploadBodyAnalysisFileAsync(IFormFile file);
 
-		// UPLOADS JSON TO GOOGLE DRIVE 
-		Task<string> UploadUserChatFileAsync(IFormFile file);
-
 		// REMOVES FILE FROM GOOGLE DRIVE
 		Task RemoveFileAsync(string fileLink);
-
-		// CHAT HANDLING
-		Task<string> UploadUpdatedChatFileAsync(MemoryStream updatedStream, string fileId);
-
-		Task<List<UserChatMessageVM>> GetChatMessagesAsync(string fileId);
-
 	}
 }

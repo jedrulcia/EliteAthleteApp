@@ -21,7 +21,7 @@
 			{
 				<form asp-action="DeleteImage">
 					<input type="hidden" name="userId" value="@Model.UserVM.Id" />
-					<img src="@Model.UserVM.ImageUrl" class="img-thumbnail" style="width: 100%; height: auto;" alt="User uploaded image" />
+					<img src="https://drive.google.com/thumbnail?authuser=0&sz=w320&id=@Model.UserVM.ImageUrl" class="img-thumbnail" style="width: 100%; height: auto;" alt="User uploaded image" />
 					<button type="submit" class="remove-media">X</button>
 				</form>
 			}

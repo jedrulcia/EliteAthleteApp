@@ -51,8 +51,7 @@ builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService>(provider =>
 		builder.Configuration["GoogleFolders:exerciseimage"],
 		builder.Configuration["GoogleFolders:exercisevideo"],
 		builder.Configuration["GoogleFolders:medicaltestimage"],
-		builder.Configuration["GoogleFolders:bodyanalysisimage"],
-		builder.Configuration["GoogleFolders:chatjson"]
+		builder.Configuration["GoogleFolders:bodyanalysisimage"]
 	);
 });
 
