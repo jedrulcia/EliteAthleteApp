@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Contracts.Repositories;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.Admin;
 using EliteAthleteApp.Models.TrainingExercise;
@@ -12,7 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace EliteAthleteApp.Controllers
 {
-	public class AdminController : Controller
+    public class AdminController : Controller
 	{
 		private readonly ApplicationDbContext context;
 		private readonly UserManager<User> userManager;

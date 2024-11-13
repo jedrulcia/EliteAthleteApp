@@ -5,8 +5,6 @@ using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Repositories;
 using EliteAthleteApp.Services;
-using EliteAthleteApp.Contracts.Services;
-using EliteAthleteApp.Contracts.Repositories;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 

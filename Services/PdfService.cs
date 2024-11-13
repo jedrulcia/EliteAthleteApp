@@ -6,7 +6,6 @@ using EliteAthleteApp.Models.TrainingPlan;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using Microsoft.IdentityModel.Tokens;
-using EliteAthleteApp.Contracts.Services;
 
 namespace EliteAthleteApp.Services
 {

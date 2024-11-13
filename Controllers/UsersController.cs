@@ -3,17 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using EliteAthleteApp.Constants;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.User;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using EliteAthleteApp.Repositories;
-using EliteAthleteApp.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
 using EliteAthleteApp.Services;
 using System.Text.Json;
 using System.Text;
-using EliteAthleteApp.Contracts.Services;
+using EliteAthleteApp.Contracts;
 
 namespace EliteAthleteApp.Controllers
 {

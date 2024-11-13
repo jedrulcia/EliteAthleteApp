@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using EliteAthleteApp.Constants;
+using EliteAthleteApp.Configurations.Constants;
 
 namespace EliteAthleteApp.Configurations.Entities
 {
     // SEED CONFIGURATION FOR INITIAL USER ROLES IN THE DATABASE, INCLUDING ADMIN AND USER ROLES.
-	public class RoleSeedConfiguration : IEntityTypeConfiguration<IdentityRole>
+    public class RoleSeedConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {

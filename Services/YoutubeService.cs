@@ -1,8 +1,8 @@
-﻿using EliteAthleteApp.Contracts.Services;
+﻿using EliteAthleteApp.Contracts;
 
 namespace EliteAthleteApp.Services
 {
-	public class YoutubeService : IYoutubeService
+    public class YoutubeService : IYoutubeService
 	{
 		public YoutubeService()
 		{

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EliteAthleteApp.Contracts.Repositories;
+using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.UserMedicalTest;
 using EliteAthleteApp.Models.UserMedicalTest;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EliteAthleteApp.Controllers
 {
-	public class UserMedicalTestsController : Controller
+    public class UserMedicalTestsController : Controller
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;

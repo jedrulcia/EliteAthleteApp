@@ -37,6 +37,8 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="Models\Home\" />
+    <Folder Include="Models\Shared\" />
   </ItemGroup>
 
 </Project>

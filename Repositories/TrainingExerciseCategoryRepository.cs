@@ -1,9 +1,9 @@
 ﻿using EliteAthleteApp.Data;
-using EliteAthleteApp.Contracts.Repositories;
+using EliteAthleteApp.Contracts;
 
 namespace EliteAthleteApp.Repositories
 {
-	public class TrainingExerciseCategoryRepository : GenericRepository<TrainingExerciseCategory>, ITrainingExerciseCategoryRepository
+    public class TrainingExerciseCategoryRepository : GenericRepository<TrainingExerciseCategory>, ITrainingExerciseCategoryRepository
 	{
 		private readonly ApplicationDbContext context;
 

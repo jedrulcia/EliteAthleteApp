@@ -1,6 +1,6 @@
 ﻿using EliteAthleteApp.Repositories;
 
-namespace EliteAthleteApp.Contracts.Services
+namespace EliteAthleteApp.Contracts
 {
     public interface IPdfService
     {

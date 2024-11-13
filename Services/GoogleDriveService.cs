@@ -1,4 +1,4 @@
-﻿using EliteAthleteApp.Contracts.Services;
+﻿using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.UserChat;
 using Google;
 using Google.Apis.Auth.OAuth2;

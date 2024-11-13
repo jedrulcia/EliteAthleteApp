@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using EliteAthleteApp.Contracts.Repositories;
-using EliteAthleteApp.Contracts.Services;
+using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.UserBodyAnalysis;
@@ -8,7 +7,7 @@ using EliteAthleteApp.Models.UserMedicalTest;
 
 namespace EliteAthleteApp.Repositories
 {
-	public class UserMedicalTestRepository : GenericRepository<UserMedicalTest>, IUserMedicalTestRepository
+    public class UserMedicalTestRepository : GenericRepository<UserMedicalTest>, IUserMedicalTestRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;

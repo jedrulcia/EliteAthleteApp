@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using EliteAthleteApp.Constants
+@using EliteAthleteApp.Configurations.Constants
 @using EliteAthleteApp.Data
 @using System.Security.Claims
 @inject SignInManager<User> SignInManager
@@ -65,7 +65,7 @@
 									</strong>
 								</li>
 							}
-							@if (User.IsInRole("User"))
+							@if (User.IsInRole(Roles.User))
 							{
 								<li class="nav-item text-primary mx-2">
 									<strong>

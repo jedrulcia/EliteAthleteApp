@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using EliteAthleteApp.Contracts.Services;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.User;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using EliteAthleteApp.Contracts;
 
 namespace EliteAthleteApp.Controllers
 {

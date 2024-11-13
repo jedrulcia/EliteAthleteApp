@@ -1,5 +1,4 @@
-﻿using EliteAthleteApp.Contracts.Services;
-using EliteAthleteApp.Data;
+﻿using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.UserChat;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
@@ -9,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EliteAthleteApp.Models.User;
 using Google.Apis.Drive.v3;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using EliteAthleteApp.Contracts;
 
 public class UserChatHub : Hub
 {

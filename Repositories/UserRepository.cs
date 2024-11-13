@@ -1,12 +1,11 @@
 ﻿using EliteAthleteApp.Data;
-using EliteAthleteApp.Contracts.Repositories;
 using AutoMapper;
-using EliteAthleteApp.Contracts.Services;
 using Microsoft.AspNetCore.Identity;
+using EliteAthleteApp.Contracts;
 
 namespace EliteAthleteApp.Repositories
 {
-	public class UserRepository : GenericRepository<User>, IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IMapper mapper;

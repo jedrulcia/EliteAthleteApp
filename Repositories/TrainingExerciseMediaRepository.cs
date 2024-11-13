@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using EliteAthleteApp.Contracts.Repositories;
-using EliteAthleteApp.Contracts.Services;
+using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingExercise;
 
 namespace EliteAthleteApp.Repositories
 {
-	public class TrainingExerciseMediaRepository : GenericRepository<TrainingExerciseMedia>, ITrainingExerciseMediaRepository
+    public class TrainingExerciseMediaRepository : GenericRepository<TrainingExerciseMedia>, ITrainingExerciseMediaRepository
 	{
 		private readonly ApplicationDbContext context;
 		private readonly IGoogleDriveService googleDriveService;
