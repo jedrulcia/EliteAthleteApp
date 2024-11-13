@@ -89,7 +89,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints => { endpoints.MapHub<UserChatHub>("/chat"); });
+app.UseEndpoints(endpoints => { endpoints.MapHub<UserChatHubService>("/chat"); });
 
 app.MapControllerRoute(
 	name: "default",
