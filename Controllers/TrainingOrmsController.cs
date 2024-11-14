@@ -22,7 +22,7 @@ namespace EliteAthleteApp.Controllers
 		// GET: TrainingOrm/Create
 		public async Task<IActionResult> Create(string userId)
 		{
-			return PartialView(await trainingOrmRepository.GetTrainingOrmCreateVM(userId));
+			return PartialView(await trainingOrmRepository.GetTrainingOrmCreateVMAsync(userId));
 		}
 
 		// POST: TrainingOrm/Create
@@ -45,7 +45,7 @@ namespace EliteAthleteApp.Controllers
 		// GET: TrainingOrm/Edit
 		public async Task<IActionResult> Edit(int trainingOrmId)
 		{
-			var trainingOrm = await trainingOrmRepository.GetTrainingOrmEditVM(trainingOrmId);
+			var trainingOrm = await trainingOrmRepository.GetTrainingOrmEditVMAsync(trainingOrmId);
 			return PartialView(trainingOrm);
 		}
 
@@ -60,7 +60,7 @@ namespace EliteAthleteApp.Controllers
 		// GET: TrainingOrm/Delete
 		public async Task<IActionResult> Delete(int trainingOrmId)
 		{
-			return PartialView(await trainingOrmRepository.GetTrainingOrmDeleteVM(trainingOrmId));
+			return PartialView(await trainingOrmRepository.GetTrainingOrmDeleteVMAsync(trainingOrmId));
 		}
 
 		// POST: TrainingOrm/Delete

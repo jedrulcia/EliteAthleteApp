@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
+using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.Charts;
 using EliteAthleteApp.Models.UserBodyMeasurements;
 using EliteAthleteApp.Models.UserMedicalTest;
 
@@ -48,6 +50,25 @@ namespace EliteAthleteApp.Repositories
 		public async Task<UserBodyMeasurementsDeleteVM> GetUserBodyMeasurementDeleteVM(int bodyMeasurementId)
 		{
 			return mapper.Map<UserBodyMeasurementsDeleteVM>(await GetAsync(bodyMeasurementId));
+		}
+		
+		// GETS UBM CHART VM
+		public async Task<UserBodyMeasurementChartVM> GetUserBodyMeasurementsChartVMAsync(string userId)
+		{
+			var userBodyMeasurementVMs = (await GetUserBodyMeasurementsVMsAsync(userId)).OrderBy(t => t.DateTime).ToList();
+			var userBodyMeasurementChartVM = new UserBodyMeasurementChartVM();
+
+			foreach (var ubm in userBodyMeasurementVMs)
+			{
+				var date = ubm.DateTime;
+				userBodyMeasurementChartVM.ChestDataPointVMs.Add(new DataPointVM { Date = date, Value = ubm.Chest });
+				userBodyMeasurementChartVM.WaistDataPointVMs.Add(new DataPointVM { Date = date, Value = ubm.Waist });
+				userBodyMeasurementChartVM.HipsDataPointVMs.Add(new DataPointVM { Date = date, Value = ubm.Hips });
+				userBodyMeasurementChartVM.ArmsDataPointVMs.Add(new DataPointVM { Date = date, Value = ubm.Arms });
+				userBodyMeasurementChartVM.ThighsDataPointVMs.Add(new DataPointVM { Date = date, Value = ubm.Thighs });
+			}
+
+			return userBodyMeasurementChartVM;
 		}
 
 		// CREATES NEW USER BODY MEASUREMENTS ENTITY

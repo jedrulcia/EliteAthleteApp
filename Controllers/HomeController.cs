@@ -3,21 +3,41 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using EliteAthleteApp.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using EliteAthleteApp.Contracts;
+using Microsoft.AspNetCore.Identity;
+using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Home;
+using AutoMapper;
+using EliteAthleteApp.Models.User;
 
 namespace EliteAthleteApp.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
+		private readonly IUserChartService userChartService;
+		private readonly UserManager<User> userManager;
+		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly IMapper mapper;
 
-        public HomeController(ILogger<HomeController> logger)
+		public HomeController(IUserChartService userChartService, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IMapper mapper)
 		{
-			_logger = logger;
-        }
+			this.userChartService = userChartService;
+			this.userManager = userManager;
+			this.httpContextAccessor = httpContextAccessor;
+			this.mapper = mapper;
+		}
 
 		public async Task<IActionResult> Index()
 		{
-			return View();
+			var homeIndexVM = new HomeIndexVM();
+			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			if (user != null)
+			{
+				homeIndexVM.UserVM = mapper.Map<UserVM>(user);
+				homeIndexVM.UserChartsVM = await userChartService.GetUserCharts(user.Id);
+				homeIndexVM.IsLoggedIn = true;
+			}
+			return View(homeIndexVM);
 		}
 
 		public IActionResult Privacy()

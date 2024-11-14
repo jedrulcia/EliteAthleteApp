@@ -10,13 +10,13 @@ using Google.Apis.Drive.v3;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using EliteAthleteApp.Contracts;
 
-public class UserChatHub : Hub
+public class UserChatHubService : Hub
 {
 	private readonly IGoogleDriveService googleDriveService;
 	private readonly ApplicationDbContext context;
 	private readonly UserManager<User> userManager;
 
-	public UserChatHub(IGoogleDriveService googleDriveService, ApplicationDbContext context, UserManager<User> userManager)
+	public UserChatHubService(IGoogleDriveService googleDriveService, ApplicationDbContext context, UserManager<User> userManager)
 	{
 		this.googleDriveService = googleDriveService;
 		this.context = context;

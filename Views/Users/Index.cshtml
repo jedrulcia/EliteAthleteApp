@@ -1,7 +1,7 @@
 ﻿@using EliteAthleteApp.Configurations.Constants
 @using EliteAthleteApp.Models.User
 
-@model UserVM
+@model UserPanelVM
 
 
 @{
@@ -17,38 +17,38 @@
 }
 <body>
 	<div class="container">
-		<h3 class="text-gradient-primary">@Model.FirstName @Model.LastName Panel</h3>
+		<h3 class="text-gradient-primary">@Model.UserVM.FirstName @Model.UserVM.LastName Panel</h3>
 		<div class="row justify-content-center">
 			<div class="col-md-12">
 				<ul class="nav nav-tabs" id="actionPanelTabs" role="tablist">
 					<li class="nav-item" role="presentation">
-						<button class="nav-link createBtn" type="button" data-userid="@Model.Id" data-coachid="@Model.CoachId" aria-selected="false">
+						<button class="nav-link createBtn" type="button" data-userid="@Model.UserVM.Id" data-coachid="@Model.UserVM.CoachId" aria-selected="false">
 							<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New Training Module</strong>
 						</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button data-userid="@Model.Id"
+						<button data-userid="@Model.UserVM.Id"
 								class="nav-link createOrmBtn" type="button" aria-selected="false">
 							<i class="bi bi-plus-square-fill">&nbsp;</i>
 							<strong>New One Repetition Max</strong>
 						</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button data-userid="@Model.Id"
+						<button data-userid="@Model.UserVM.Id"
 								class="nav-link createUbmBtn" type="button" aria-selected="false">
 							<i class="bi bi-plus-square-fill">&nbsp;</i>
 							<strong>New Body Meassurement</strong>
 						</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button data-userid="@Model.Id"
+						<button data-userid="@Model.UserVM.Id"
 								class="nav-link createUmtBtn" type="button" aria-selected="false">
 							<i class="bi bi-plus-square-fill">&nbsp;</i>
 							<strong>New Medical Test</strong>
 						</button>
 					</li>
 					<li class="nav-item" role="presentation">
-						<button data-userid="@Model.Id"
+						<button data-userid="@Model.UserVM.Id"
 								class="nav-link createUbaBtn" type="button" aria-selected="false">
 							<i class="bi bi-plus-square-fill">&nbsp;</i>
 							<strong>New Body Analysis</strong>
@@ -60,37 +60,37 @@
 			<div class="col-md-12">
 				<ul class="nav nav-tabs" id="userPanelTabs" role="tablist">
 					<li class="nav-item" role="presentation">
-						<a class="nav-link active" id="trainingModuleTab" data-toggle="tab" data-userid="@Model.Id" href="#trainingModule" role="tab" aria-controls="trainingModule" aria-selected="true">
+						<a class="nav-link active" id="trainingModuleTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#trainingModule" role="tab" aria-controls="trainingModule" aria-selected="true">
 							<i class="bi bi-person">&nbsp;</i>
 							<strong>Training Modules</strong>
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
-						<a class="nav-link" id="userInfoTab" data-toggle="tab" data-userid="@Model.Id" href="#userInfo" role="tab" aria-controls="userInfo" aria-selected="true">
+						<a class="nav-link" id="userInfoTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#userInfo" role="tab" aria-controls="userInfo" aria-selected="true">
 							<i class="bi bi-person">&nbsp;</i>
 							<strong>User Info</strong>
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
-						<a class="nav-link" id="ormTab" data-toggle="tab" data-userid="@Model.Id" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
+						<a class="nav-link" id="ormTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
 							<i class="bi bi-person">&nbsp;</i>
 							<strong>One Repetition Max</strong>
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
-						<a class="nav-link" id="ubmTab" data-toggle="tab" data-userid="@Model.Id" href="#ubm" role="tab" aria-controls="ubm" aria-selected="true">
+						<a class="nav-link" id="ubmTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#ubm" role="tab" aria-controls="ubm" aria-selected="true">
 							<i class="bi bi-person">&nbsp;</i>
 							<strong>Body Measurements</strong>
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
-						<a class="nav-link" id="umtTab" data-toggle="tab" data-userid="@Model.Id" href="#umt" role="tab" aria-controls="umt" aria-selected="true">
+						<a class="nav-link" id="umtTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#umt" role="tab" aria-controls="umt" aria-selected="true">
 							<i class="bi bi-person">&nbsp;</i>
 							<strong>Medical Tests</strong>
 						</a>
 					</li>
 					<li class="nav-item" role="presentation">
-						<a class="nav-link" id="ubaTab" data-toggle="tab" data-userid="@Model.Id" href="#uba" role="tab" aria-controls="uba" aria-selected="true">
+						<a class="nav-link" id="ubaTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#uba" role="tab" aria-controls="uba" aria-selected="true">
 							<i class="bi bi-person">&nbsp;</i>
 							<strong>Body Analysis</strong>
 						</a>
@@ -487,50 +487,6 @@
 				});
 			});
 
-			// SCRIPT FOR HANDLING ORM TAB
-			$('#ormTab').on('click', function (e) {
-				e.preventDefault();
-
-				var userId = $(this).data("userid");
-
-				$.ajax({
-					url: '@Url.Action("List", "TrainingOrms")',
-					type: 'GET',
-					data: { userId: userId },
-					success: function (data) {
-						$('#orm').html(data);
-						$('.table').DataTable();
-						$('#ormTab').tab('show');
-
-					},
-					error: function () {
-						alert("An error occurred while loading 'orm' content.");
-					}
-				});
-			});
-
-			// SCRIPT FOR HANDLING UBM TAB
-			$('#ubmTab').on('click', function (e) {
-				e.preventDefault();
-
-				var userId = $(this).data("userid");
-
-				$.ajax({
-					url: '@Url.Action("List", "UserBodyMeasurements")',
-					type: 'GET',
-					data: { userId: userId },
-					success: function (data) {
-						$('#ubm').html(data);
-						$('.table').DataTable();
-						$('#ubmTab').tab('show');
-
-					},
-					error: function () {
-						alert("An error occurred while loading 'ubm' content.");
-					}
-				});
-			});
-
 			// SCRIPT FOR HANDLING UMT TAB
 			$('#umtTab').on('click', function (e) {
 				e.preventDefault();
@@ -553,28 +509,6 @@
 				});
 			});
 
-			// SCRIPT FOR HANDLING UBA TAB
-			$('#ubaTab').on('click', function (e) {
-				e.preventDefault();
-
-				var userId = $(this).data("userid");
-
-				$.ajax({
-					url: '@Url.Action("List", "UserBodyAnalysis")',
-					type: 'GET',
-					data: { userId: userId },
-					success: function (data) {
-						$('#uba').html(data);
-						$('.table').DataTable();
-						$('#ubaTab').tab('show');
-
-					},
-					error: function () {
-						alert("An error occurred while loading 'uba' content.");
-					}
-				});
-			});
-
 			// SCRIPT FOR HANDLING USER INFO TAB
 			$('#userInfoTab').on('click', function (e) {
 				e.preventDefault();
@@ -591,6 +525,418 @@
 					},
 					error: function () {
 						alert("An error occurred while loading user info content.");
+					}
+				});
+			});
+
+			// Funkcja do inicjalizacji wykresu dla analizy ciała użytkownika (UserBodyAnalysisChartVM)
+			function initializeUbaChart() {
+				const labels = [
+		@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WeightDataPointVMs)
+		{
+			@: '@point.Date?.ToString("yyyy-MM-dd")',
+		}
+			];
+
+				const weightData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WeightDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const fatPercentageData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.FatPercentageDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const musclePercentageData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.MusclePercentageDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const waterPercentageData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WaterPercentageDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const data = {
+					labels: labels,
+					datasets: [
+						{
+							label: 'Waga',
+							data: weightData,
+							borderColor: 'rgba(255, 99, 132, 1)',
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Procent tłuszczu',
+							data: fatPercentageData,
+							borderColor: 'rgba(54, 162, 235, 1)',
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Procent mięśni',
+							data: musclePercentageData,
+							borderColor: 'rgba(75, 192, 192, 1)',
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Procent wody',
+							data: waterPercentageData,
+							borderColor: 'rgba(153, 102, 255, 1)',
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							fill: false
+						}
+					]
+				};
+
+				const config = {
+					type: 'line',
+					data: data,
+					options: {
+						responsive: true,
+						plugins: {
+							tooltip: {
+								mode: 'index',
+								intersect: false,
+							},
+							legend: {
+								display: true
+							}
+						},
+						scales: {
+							x: {
+								type: 'category',
+								title: {
+									display: true,
+									text: 'Data'
+								}
+							},
+							y: {
+								title: {
+									display: true,
+									text: 'Wartość'
+								}
+							}
+						}
+					}
+				};
+
+				// Inicjalizacja wykresu
+				const ctx = document.getElementById('ubaChart').getContext('2d');
+				const ubaChart = new Chart(ctx, config);
+			}
+
+			// SCRIPT FOR HANDLING UBA TAB
+			$('#ubaTab').on('click', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+
+				$.ajax({
+					url: '@Url.Action("List", "UserBodyAnalysis")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#uba').html(data);
+						$('.table').DataTable();
+						initializeUbaChart();  // Inicjalizacja wykresu po załadowaniu danych
+						$('#ubaTab').tab('show');
+					},
+					error: function () {
+						alert("An error occurred while loading 'uba' content.");
+					}
+				});
+			});
+
+			// Funkcja do inicjalizacji wykresu dla pomiarów ciała użytkownika (UserBodyMeasurementChartVM)
+			function initializeUbmChart() {
+				const labels = [
+		@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ChestDataPointVMs)
+		{
+			@: '@point.Date?.ToString("yyyy-MM-dd")',
+		}
+			];
+
+				const chestData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ChestDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const armsData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ArmsDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const waistData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.WaistDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const thighsData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ThighsDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const hipsData = [
+		@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.HipsDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const data = {
+					labels: labels,
+					datasets: [
+						{
+							label: 'Klatka piersiowa',
+							data: chestData,
+							borderColor: 'rgba(255, 99, 132, 1)',
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Ramiona',
+							data: armsData,
+							borderColor: 'rgba(54, 162, 235, 1)',
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Talia',
+							data: waistData,
+							borderColor: 'rgba(75, 192, 192, 1)',
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Uda',
+							data: thighsData,
+							borderColor: 'rgba(153, 102, 255, 1)',
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Biodra',
+							data: hipsData,
+							borderColor: 'rgba(255, 159, 64, 1)',
+							backgroundColor: 'rgba(255, 159, 64, 0.2)',
+							fill: false
+						}
+					]
+				};
+
+				const config = {
+					type: 'line',
+					data: data,
+					options: {
+						responsive: true,
+						plugins: {
+							tooltip: {
+								mode: 'index',
+								intersect: false,
+							},
+							legend: {
+								display: true
+							}
+						},
+						scales: {
+							x: {
+								type: 'category',
+								title: {
+									display: true,
+									text: 'Data'
+								}
+							},
+							y: {
+								title: {
+									display: true,
+									text: 'Wartość'
+								}
+							}
+						}
+					}
+				};
+
+				// Inicjalizacja wykresu
+				const ctx = document.getElementById('ubmChart').getContext('2d');
+				const ubmChart = new Chart(ctx, config);
+			}
+
+			// SCRIPT FOR HANDLING UBM TAB
+			$('#ubmTab').on('click', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+
+				$.ajax({
+					url: '@Url.Action("List", "UserBodyMeasurements")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						$('#ubm').html(data);
+						$('.table').DataTable();
+						initializeUbmChart();  // Inicjalizacja wykresu po załadowaniu danych
+						$('#ubmTab').tab('show');
+					},
+					error: function () {
+						alert("An error occurred while loading 'ubm' content.");
+					}
+				});
+			});
+
+			// Funkcja do inicjalizacji wykresu
+			function initializeOrmChart() {
+				// Przygotowanie danych dla wykresu
+				const labels = [
+		@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.BenchPressDataPointVMs)
+		{
+			@: '@point.Date?.ToString("yyyy-MM-dd")',
+		}
+			];
+
+				const benchPressData = [
+		@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.BenchPressDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const overheadPressData = [
+		@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.OverheadPressDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const deadliftData = [
+		@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.DeadliftDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const squatData = [
+		@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.SquatDataPointVMs)
+		{
+			@: @point.Value,
+		}
+			];
+
+				const data = {
+					labels: labels,
+					datasets: [
+						{
+							label: 'Bench Press',
+							data: benchPressData,
+							borderColor: 'rgba(255, 99, 132, 1)',
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Overhead Press',
+							data: overheadPressData,
+							borderColor: 'rgba(54, 162, 235, 1)',
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Deadlift',
+							data: deadliftData,
+							borderColor: 'rgba(75, 192, 192, 1)',
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Squat',
+							data: squatData,
+							borderColor: 'rgba(153, 102, 255, 1)',
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							fill: false
+						}
+					]
+				};
+
+				const config = {
+					type: 'line',
+					data: data,
+					options: {
+						responsive: true,
+						plugins: {
+							tooltip: {
+								mode: 'index',
+								intersect: false,
+							},
+							legend: {
+								display: true
+							}
+						},
+						scales: {
+							x: {
+								type: 'category',
+								title: {
+									display: true,
+									text: 'Date'
+								}
+							},
+							y: {
+								title: {
+									display: true,
+									text: 'Value'
+								}
+							}
+						}
+					}
+				};
+
+				// Inicjalizacja wykresu
+				const ctx = document.getElementById('ormChart').getContext('2d');
+				const ormChart = new Chart(ctx, config);
+			}
+
+			// SCRIPT FOR HANDLING ORM TAB
+			$('#ormTab').on('click', function (e) {
+				e.preventDefault();
+
+				var userId = $(this).data("userid");
+
+				$.ajax({
+					url: '@Url.Action("List", "TrainingOrms")',
+					type: 'GET',
+					data: { userId: userId },
+					success: function (data) {
+						// Załaduj zawartość do #orm
+						$('#orm').html(data);
+
+						// Inicjalizacja tabeli
+						$('.table').DataTable();
+
+						// Inicjalizacja wykresu po załadowaniu PartialView
+						initializeOrmChart();  // Funkcja, która rysuje wykres (przekażemy do niej odpowiednią logikę)
+
+						// Ustawienie zakładki na aktywną
+						$('#ormTab').tab('show');
+					},
+					error: function () {
+						alert("An error occurred while loading 'orm' content.");
 					}
 				});
 			});

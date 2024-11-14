@@ -1,4 +1,5 @@
 ﻿using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Charts;
 using EliteAthleteApp.Models.UserBodyAnalysis;
 
 namespace EliteAthleteApp.Contracts
@@ -17,8 +18,11 @@ namespace EliteAthleteApp.Contracts
         // GETS USER BODY ANALYSIS DELETE VIEW MODEL
         Task<UserBodyAnalysisDeleteVM> GetUserBodyAnalysisDeleteVM(int bodyAnalysisId);
 
-        // CREATES NEW USER BODY ANALYSIS ENTITY
-        Task CreateUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM, IFormFile? file);
+		// GETS USER BODY ANALYSIS CHART
+		Task<UserBodyAnalysisChartVM> GetUserBodyAnalysisChartVMAsync(string userId);
+
+		// CREATES NEW USER BODY ANALYSIS ENTITY
+		Task CreateUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM, IFormFile? file);
 
         // EDITS EXSITING USER BODY ANALYSIS ENTITY
         Task EditUserBodyAnalysisAsync(UserBodyAnalysisCreateVM userBodyAnalysisCreateVM, IFormFile? file);

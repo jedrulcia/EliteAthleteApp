@@ -1,4 +1,5 @@
 ﻿using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Charts;
 using EliteAthleteApp.Models.TrainingOrm;
 
 namespace EliteAthleteApp.Contracts
@@ -9,13 +10,16 @@ namespace EliteAthleteApp.Contracts
 		Task<List<TrainingOrmVM>> GetTrainingOrmVMsAsync(string userId);
 
 		// GETS TRAINING ORM CREATE VM
-		Task<TrainingOrmCreateVM> GetTrainingOrmCreateVM(string userId);
+		Task<TrainingOrmCreateVM> GetTrainingOrmCreateVMAsync(string userId);
 
 		// GETS TRAINING ORM EDIT VIEW MODEL
-		Task<TrainingOrmCreateVM> GetTrainingOrmEditVM(int trainingOrmId);
+		Task<TrainingOrmCreateVM> GetTrainingOrmEditVMAsync(int trainingOrmId);
 
 		// GETS TRAINING ORM DELETE VIEW MODEL
-		Task<TrainingOrmDeleteVM> GetTrainingOrmDeleteVM(int trainingOrmId);
+		Task<TrainingOrmDeleteVM> GetTrainingOrmDeleteVMAsync(int trainingOrmId);
+
+		// GETS TRAINING ORM CHART
+		Task<TrainingOrmChartVM> GetTrainingOrmChartVMAsync(string userId);
 
 		// CREATES NEW ORM ENTITY
 		Task CreateOrmAsync(TrainingOrmCreateVM trainingOrmCreateVM);
