@@ -1,4 +1,5 @@
 ﻿using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Charts;
 using EliteAthleteApp.Models.UserBodyMeasurements;
 
 namespace EliteAthleteApp.Contracts
@@ -17,8 +18,11 @@ namespace EliteAthleteApp.Contracts
         // GETS USER BODY MEASUREMENTS DELETE VIEW MODEL
         Task<UserBodyMeasurementsDeleteVM> GetUserBodyMeasurementDeleteVM(int bodyMeasurementId);
 
-        // CREATES NEW USER BODY MEASUREMENTS ENTITY
-        Task CreateUserBodyMeasurementAsync(UserBodyMeasurementsCreateVM userBodyMeasurementCreateVM);
+		// GETS USER BODY MEASUREMENTS CHART
+		Task<UserBodyMeasurementChartVM> GetUserBodyMeasurementsChartVMAsync(string userId);
+
+		// CREATES NEW USER BODY MEASUREMENTS ENTITY
+		Task CreateUserBodyMeasurementAsync(UserBodyMeasurementsCreateVM userBodyMeasurementCreateVM);
 
         // EDITS EXSITING USER BODY MEASUREMENTS ENTITY
         Task EditUserBodyMeasurementAsync(UserBodyMeasurementsCreateVM userBodyMeasurementCreateVM);

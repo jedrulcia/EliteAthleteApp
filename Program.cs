@@ -24,6 +24,8 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IUserChartService, UserChartService>();
+
 builder.Services.AddScoped<IUserBodyMeasurementsRepository, UserBodyMeasurementsRepository>();
 builder.Services.AddScoped<IUserMedicalTestRepository, UserMedicalTestRepository>();
 builder.Services.AddScoped<IUserBodyAnalysisRepository, UserBodyAnalysisRepository>();

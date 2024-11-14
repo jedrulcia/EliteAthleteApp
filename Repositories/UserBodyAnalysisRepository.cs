@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
+using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.Charts;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.UserBodyAnalysis;
 using Microsoft.AspNetCore.Identity;
@@ -51,6 +53,24 @@ namespace EliteAthleteApp.Repositories
 		public async Task<UserBodyAnalysisDeleteVM> GetUserBodyAnalysisDeleteVM(int bodyAnalysisId)
 		{
 			return mapper.Map<UserBodyAnalysisDeleteVM>(await GetAsync(bodyAnalysisId));
+		}
+
+		// GETS UBA CHART VM
+		public async Task<UserBodyAnalysisChartVM> GetUserBodyAnalysisChartVMAsync(string userId)
+		{
+			var userBodyAnalysisVMs = (await GetUserBodyAnalysisVMsAsync(userId)).OrderBy(t => t.DateTime).ToList();
+			var userBodyAnalysisChartVM = new UserBodyAnalysisChartVM();
+
+			foreach (var uba in userBodyAnalysisVMs)
+			{
+				var date = uba.DateTime;
+				userBodyAnalysisChartVM.WeightDataPointVMs.Add(new DataPointVM { Date = date, Value = uba.Weight });
+				userBodyAnalysisChartVM.FatPercentageDataPointVMs.Add(new DataPointVM { Date = date, Value = uba.FatPercentage });
+				userBodyAnalysisChartVM.MusclePercentageDataPointVMs.Add(new DataPointVM { Date = date, Value = uba.MusclePercentage });
+				userBodyAnalysisChartVM.WaterPercentageDataPointVMs.Add(new DataPointVM { Date = date, Value = uba.WaterPercentage });
+			}
+
+			return userBodyAnalysisChartVM;
 		}
 
 		// CREATES NEW USER BODY ANALYSIS ENTITY

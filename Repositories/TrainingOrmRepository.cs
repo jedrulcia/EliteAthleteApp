@@ -2,6 +2,9 @@
 using EliteAthleteApp.Contracts;
 using AutoMapper;
 using EliteAthleteApp.Models.TrainingOrm;
+using EliteAthleteApp.Models.Charts;
+using EliteAthleteApp.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -23,7 +26,7 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS TRAINING ORM CREATE VIEW MODEL
-		public async Task<TrainingOrmCreateVM> GetTrainingOrmCreateVM(string userId)
+		public async Task<TrainingOrmCreateVM> GetTrainingOrmCreateVMAsync(string userId)
 		{
 			var formattedDate = DateTime.Now.ToString("yyyy-MM-dd");
 			var trainingOrm = (await GetAllAsync())
@@ -37,15 +40,33 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS TRAINING ORM EDIT VIEW MODEL
-		public async Task<TrainingOrmCreateVM> GetTrainingOrmEditVM(int trainingOrmId)
+		public async Task<TrainingOrmCreateVM> GetTrainingOrmEditVMAsync(int trainingOrmId)
 		{
 			return mapper.Map<TrainingOrmCreateVM>(await GetAsync(trainingOrmId));
 		}
 
 		// GETS TRAINING ORM DELETE VIEW MODEL
-		public async Task<TrainingOrmDeleteVM> GetTrainingOrmDeleteVM(int trainingOrmId)
+		public async Task<TrainingOrmDeleteVM> GetTrainingOrmDeleteVMAsync(int trainingOrmId)
 		{
 			return mapper.Map<TrainingOrmDeleteVM>(await GetAsync(trainingOrmId));
+		}
+
+		// GETS TRAINING ORM CHART VM
+		public async Task<TrainingOrmChartVM> GetTrainingOrmChartVMAsync(string userId)
+		{
+			var trainingOrmVMs = (await GetTrainingOrmVMsAsync(userId)).OrderBy(t => t.DateTime).ToList();
+			var trainingOrmChartVM = new TrainingOrmChartVM();
+
+			foreach (var orm in trainingOrmVMs)
+			{
+				var date = orm.DateTime;
+				trainingOrmChartVM.BenchPressDataPointVMs.Add(new DataPointVM { Date = date, Value = orm.BenchPressOrm });
+				trainingOrmChartVM.OverheadPressDataPointVMs.Add(new DataPointVM { Date = date, Value = orm.OverheadPressOrm });
+				trainingOrmChartVM.DeadliftDataPointVMs.Add(new DataPointVM { Date = date, Value = orm.DeadliftOrm });
+				trainingOrmChartVM.SquatDataPointVMs.Add(new DataPointVM { Date = date, Value = orm.SquatOrm });
+			}
+
+			return trainingOrmChartVM;
 		}
 
 		// CREATES NEW ORM ENTITY

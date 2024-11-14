@@ -23,13 +23,15 @@ namespace EliteAthleteApp.Controllers
 		private readonly IUserRepository userRepository;
 		private readonly ApplicationDbContext context;
 		private readonly IGoogleDriveService googleDriveService;
+		private readonly IUserChartService userChartService;
 
 		public UsersController(UserManager<User> userManager,
 			IMapper mapper,
 			IHttpContextAccessor httpContextAccessor,
 			IUserRepository userRepository,
 			ApplicationDbContext context,
-			IGoogleDriveService googleDriveService)
+			IGoogleDriveService googleDriveService,
+			IUserChartService userChartService)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -37,6 +39,7 @@ namespace EliteAthleteApp.Controllers
 			this.userRepository = userRepository;
 			this.context = context;
 			this.googleDriveService = googleDriveService;
+			this.userChartService = userChartService;
 		}
 
 		// GET: Users/List
@@ -50,11 +53,16 @@ namespace EliteAthleteApp.Controllers
 		// GET: Users/List/Index
 		public async Task<IActionResult> Index(string? userId)
 		{
+			var userPanelVM = new UserPanelVM();
 			if (userId == null)
 			{
-				return View(mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)));
+				userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User));
+				userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
+				return View(userPanelVM);
 			}
-			return View(mapper.Map<UserVM>(await userManager.FindByIdAsync(userId)));
+			userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
+			userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
+			return View(userPanelVM);
 		}
 
 
