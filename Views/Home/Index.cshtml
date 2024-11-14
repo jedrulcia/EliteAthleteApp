@@ -1,16 +1,431 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using EliteAthleteApp.Models.Home
+
+@model HomeIndexVM
+
+@{
+	ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center col-md-12">
-    <h1 class="display-4">Training Plan Web App</h1>
-    <p>Created in ASP.NET Core 8 for educational and own purposes.</p>
-</div>
+@if (Model.IsLoggedIn == true)
+{
+	<div class="row">
+		<div class="col-md-7">
+			<canvas id="ormChart" width="800" height="300"></canvas>
+			<canvas id="ubaChart" width="800" height="300"></canvas>
+			<canvas id="ubmChart" width="800" height="300"></canvas>
+		</div>
+		<div class="col-md-5">
+			<div>
+				<h1>TUTAJ BEDZIE TAKI PRZYCISK Z TRENINGIEM</h1>
+			</div>
+			<div id="carouselExample" class="carousel slide">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						SLIDE 1
+					</div>
+					<div class="carousel-item">
+						SLIDE 2
+					</div>
+					<div class="carousel-item">
+						SLIDE 3
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
 
-<div class="text-center col-md-12">
-    <img src="~/images/homephoto.jpg" alt="Opis obrazka" class="img-fluid" />
-</div>
+		</div>
+	</div>
+}
+else
+{
+	<div class="text-center col-md-12">
+		<h1 class="display-4">Training Plan Web App</h1>
+		<p>Created in ASP.NET Core 8 for educational and own purposes.</p>
+	</div>
 
-<div class="text-end col-md-12">
-    <p>Created by: Jędrzej Koriat</p>
-</div>
+	<div class="text-center col-md-12">
+		<img src="~/images/homephoto.jpg" alt="Opis obrazka" class="img-fluid" />
+	</div>
+
+	<div class="text-end col-md-12">
+		<p>Created by: Jędrzej Koriat</p>
+	</div>
+}
+
+
+
+
+
+@section Scripts {
+	@if (Model.IsLoggedIn)
+	{
+		<script>
+			// Funkcja do inicjalizacji wykresu dla analizy ciała użytkownika (UserBodyAnalysisChartVM)
+			function initializeUbaChart() {
+				const labels = [
+			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WeightDataPointVMs)
+			{
+				@: '@point.Date?.ToString("yyyy-MM-dd")',
+			}
+														];
+
+				const weightData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WeightDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const fatPercentageData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.FatPercentageDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const musclePercentageData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.MusclePercentageDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const waterPercentageData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WaterPercentageDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const data = {
+					labels: labels,
+					datasets: [
+						{
+							label: 'Waga',
+							data: weightData,
+							borderColor: 'rgba(255, 99, 132, 1)',
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Procent tłuszczu',
+							data: fatPercentageData,
+							borderColor: 'rgba(54, 162, 235, 1)',
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Procent mięśni',
+							data: musclePercentageData,
+							borderColor: 'rgba(75, 192, 192, 1)',
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Procent wody',
+							data: waterPercentageData,
+							borderColor: 'rgba(153, 102, 255, 1)',
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							fill: false
+						}
+					]
+				};
+
+				const config = {
+					type: 'line',
+					data: data,
+					options: {
+						responsive: true,
+						plugins: {
+							tooltip: {
+								mode: 'index',
+								intersect: false,
+							},
+							legend: {
+								display: true
+							},
+							title: {
+								display: true,
+								text: 'Body-Analysis Results' // Tutaj ustawiasz tytuł wykresu
+							}
+						},
+						scales: {
+							x: {
+								type: 'category',
+								title: {
+									display: true,
+									text: 'Data'
+								}
+							},
+							y: {
+								title: {
+									display: true,
+									text: 'Wartość'
+								}
+							}
+						}
+					}
+				};
+
+				// Inicjalizacja wykresu
+				const ctx = document.getElementById('ubaChart').getContext('2d');
+				const ubaChart = new Chart(ctx, config);
+			}
+
+			// Funkcja do inicjalizacji wykresu dla pomiarów ciała użytkownika (UserBodyMeasurementChartVM)
+			function initializeUbmChart() {
+				const labels = [
+			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ChestDataPointVMs)
+			{
+				@: '@point.Date?.ToString("yyyy-MM-dd")',
+			}
+														];
+
+				const chestData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ChestDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const armsData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ArmsDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const waistData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.WaistDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const thighsData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ThighsDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const hipsData = [
+			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.HipsDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const data = {
+					labels: labels,
+					datasets: [
+						{
+							label: 'Klatka piersiowa',
+							data: chestData,
+							borderColor: 'rgba(255, 99, 132, 1)',
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Ramiona',
+							data: armsData,
+							borderColor: 'rgba(54, 162, 235, 1)',
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Talia',
+							data: waistData,
+							borderColor: 'rgba(75, 192, 192, 1)',
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Uda',
+							data: thighsData,
+							borderColor: 'rgba(153, 102, 255, 1)',
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Biodra',
+							data: hipsData,
+							borderColor: 'rgba(255, 159, 64, 1)',
+							backgroundColor: 'rgba(255, 159, 64, 0.2)',
+							fill: false
+						}
+					]
+				};
+
+				const config = {
+					type: 'line',
+					data: data,
+					options: {
+						responsive: true,
+						plugins: {
+							tooltip: {
+								mode: 'index',
+								intersect: false,
+							},
+							legend: {
+								display: true
+							},
+							title: {
+								display: true,
+								text: 'Body-Measurement Results' // Tutaj ustawiasz tytuł wykresu
+							}
+						},
+						scales: {
+							x: {
+								type: 'category',
+								title: {
+									display: true,
+									text: 'Data'
+								}
+							},
+							y: {
+								title: {
+									display: true,
+									text: 'Wartość'
+								}
+							}
+						}
+					}
+				};
+
+				// Inicjalizacja wykresu
+				const ctx = document.getElementById('ubmChart').getContext('2d');
+				const ubmChart = new Chart(ctx, config);
+			}
+
+			// Funkcja do inicjalizacji wykresu
+			function initializeOrmChart() {
+				// Przygotowanie danych dla wykresu
+				const labels = [
+			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.BenchPressDataPointVMs)
+			{
+				@: '@point.Date?.ToString("yyyy-MM-dd")',
+			}
+														];
+
+				const benchPressData = [
+			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.BenchPressDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const overheadPressData = [
+			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.OverheadPressDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const deadliftData = [
+			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.DeadliftDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const squatData = [
+			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.SquatDataPointVMs)
+			{
+				@: @point.Value,
+			}
+														];
+
+				const data = {
+					labels: labels,
+					datasets: [
+						{
+							label: 'Bench Press',
+							data: benchPressData,
+							borderColor: 'rgba(255, 99, 132, 1)',
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Overhead Press',
+							data: overheadPressData,
+							borderColor: 'rgba(54, 162, 235, 1)',
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Deadlift',
+							data: deadliftData,
+							borderColor: 'rgba(75, 192, 192, 1)',
+							backgroundColor: 'rgba(75, 192, 192, 0.2)',
+							fill: false
+						},
+						{
+							label: 'Squat',
+							data: squatData,
+							borderColor: 'rgba(153, 102, 255, 1)',
+							backgroundColor: 'rgba(153, 102, 255, 0.2)',
+							fill: false
+						}
+					]
+				};
+
+				const config = {
+					type: 'line',
+					data: data,
+					options: {
+						responsive: true,
+						plugins: {
+							tooltip: {
+								mode: 'index',
+								intersect: false,
+							},
+							legend: {
+								display: true
+							},
+							title: {
+								display: true,
+								text: 'One-Repetition Max Results' // Tutaj ustawiasz tytuł wykresu
+							}
+						},
+						scales: {
+							x: {
+								type: 'category',
+								title: {
+									display: true,
+									text: 'Date'
+								}
+							},
+							y: {
+								title: {
+									display: true,
+									text: 'Value'
+								}
+							}
+						}
+					}
+				};
+
+				// Inicjalizacja wykresu
+				const ctx = document.getElementById('ormChart').getContext('2d');
+				const ormChart = new Chart(ctx, config);
+			}
+
+
+			window.onload = function () {
+				initializeUbaChart();
+				initializeUbmChart();
+				initializeOrmChart();
+			};
+
+		</script>
+	}
+
+}
