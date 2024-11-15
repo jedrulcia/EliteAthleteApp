@@ -145,6 +145,21 @@ namespace EliteAthleteApp.Repositories
 			return trainingPlanRemoveExerciseVM;
 		}
 
+		public async Task<TrainingPlanDetailsVM?> GetDailyTrainingPlanVMAsync(string userId)
+		{
+			var todayDate = DateTime.Today.ToString("dd-MM-yyyy");
+			var trainingPlan = (await GetAllAsync()).Where(tp => tp.Date?.ToString("dd-MM-yyyy") == todayDate && tp.UserId == userId)
+				.FirstOrDefault();
+
+			if (trainingPlan != null && trainingPlan.IsEmpty == false)
+			{
+				var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
+				trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlan.Id);
+				return trainingPlanDetailsVM;
+			}
+			return null;
+		}
+
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		public async Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM trainingPlanCreateVM)
 		{

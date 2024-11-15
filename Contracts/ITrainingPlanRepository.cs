@@ -30,6 +30,9 @@ namespace EliteAthleteApp.Contracts
 		// GET THE TRAINING PLAN REMOVE EXERCISE VM
 		Task<TrainingPlanRemoveExerciseVM> GetTrainingPlanRemoveExerciseVM(int trainingPlanId, int trainingPlanExerciseDetailId, string name);
 
+		// GET THE TRAINING PLAN FOR TODAY
+		Task<TrainingPlanDetailsVM?> GetDailyTrainingPlanVMAsync(string userId);
+
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM model);
 

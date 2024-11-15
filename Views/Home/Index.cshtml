@@ -15,31 +15,73 @@
 			<canvas id="ubmChart" width="800" height="300"></canvas>
 		</div>
 		<div class="col-md-5">
-			<div>
-				<h1>TUTAJ BEDZIE TAKI PRZYCISK Z TRENINGIEM</h1>
-			</div>
-			<div id="carouselExample" class="carousel slide">
-				<div class="carousel-inner">
-					<div class="carousel-item active">
-						SLIDE 1
-					</div>
-					<div class="carousel-item">
-						SLIDE 2
-					</div>
-					<div class="carousel-item">
-						SLIDE 3
-					</div>
+			@if (Model.TrainingPlanDetailsVM != null)
+			{
+				<div>
+					<h1>TUTAJ BEDZIE TAKI PRZYCISK Z TRENINGIEM</h1>
 				</div>
-				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Previous</span>
-				</button>
-				<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Next</span>
-				</button>
-			</div>
-
+				<div id="carouselExample" class="carousel slide">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+								<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Name) - @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.ExerciseCategory.Name)</h1>
+								<dd class="col-sm-12">
+									<iframe width="765" height="430" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								</dd>
+								<dd class="col-sm-12">
+									@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Description)
+								</dd>
+								<dd class="col-sm-12">
+									@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Units)
+								</dd>
+								<dd class="col-sm-12">
+									Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Weight)
+								</dd>
+								<dd class="col-sm-12">
+									Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].RestTime)
+								</dd>
+								<dd class="col-sm-12">
+									Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Note)
+								</dd>
+						</div>
+						@for (int i = 1; i < Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs.Count; i++)
+						{
+							<div class="carousel-item">
+								<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name) - @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.ExerciseCategory.Name)</h1>
+							<dd class="col-sm-12">
+									<iframe width="765" height="430" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+							</dd>
+							<dd class="col-sm-12">
+									@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Description)
+							</dd>
+							<dd class="col-sm-12">
+									@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Units)
+							</dd>
+							<dd class="col-sm-12">
+									Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Weight)
+							</dd>
+							<dd class="col-sm-12">
+									Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].RestTime)
+							</dd>
+							<dd class="col-sm-12">
+									Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Note)
+								</dd>
+							</div>
+						}
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			}
+			else
+			{
+				<h1>DZISIAJ NIE MASZ TRENINGU</h1>
+			}
 		</div>
 	</div>
 }

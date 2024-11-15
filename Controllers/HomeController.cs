@@ -18,13 +18,15 @@ namespace EliteAthleteApp.Controllers
 		private readonly UserManager<User> userManager;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly IMapper mapper;
+		private readonly ITrainingPlanRepository trainingPlanRepository;
 
-		public HomeController(IUserChartService userChartService, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+		public HomeController(IUserChartService userChartService, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IMapper mapper, ITrainingPlanRepository trainingPlanRepository)
 		{
 			this.userChartService = userChartService;
 			this.userManager = userManager;
 			this.httpContextAccessor = httpContextAccessor;
 			this.mapper = mapper;
+			this.trainingPlanRepository = trainingPlanRepository;
 		}
 
 		public async Task<IActionResult> Index()
@@ -36,6 +38,7 @@ namespace EliteAthleteApp.Controllers
 				homeIndexVM.UserVM = mapper.Map<UserVM>(user);
 				homeIndexVM.UserChartsVM = await userChartService.GetUserCharts(user.Id);
 				homeIndexVM.IsLoggedIn = true;
+				homeIndexVM.TrainingPlanDetailsVM = await trainingPlanRepository.GetDailyTrainingPlanVMAsync(user.Id);
 			}
 			return View(homeIndexVM);
 		}
