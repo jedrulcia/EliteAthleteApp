@@ -80,17 +80,6 @@ namespace EliteAthleteApp.Repositories
 			return trainingPlanDetailsVM;
 		}
 
-		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
-		public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? trainingPlanId)
-		{
-			var trainingPlan = await GetAsync(trainingPlanId);
-			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(trainingPlan);
-
-			trainingPlanManageExercisesVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlanId);
-
-			return trainingPlanManageExercisesVM;
-		}
-
 		public async Task<TrainingPlanChangeStatusVM> GetTrainingPlanChangeStatusVMAsync(int id)
 		{
 			return mapper.Map<TrainingPlanChangeStatusVM>(await GetAsync(id));
@@ -191,12 +180,12 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
+		public async Task<TrainingPlanDetailsVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.ExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+				return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 			}
 
 			var trainingPlanExerciseDetail = mapper.Map<TrainingPlanExerciseDetail>(trainingPlanAddExerciseVM);
@@ -207,22 +196,22 @@ namespace EliteAthleteApp.Repositories
 			trainingPlan.TrainingPlanExerciseDetailIds.Add(trainingPlanExerciseDetail.Id);
 			await UpdateAsync(trainingPlan);
 
-			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+			return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 		}
 
 		// EDITS AN EXERCISE IN THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
+		public async Task<TrainingPlanDetailsVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.ExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+				return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 			}
 			int? id = trainingPlanAddExerciseVM.Id;
 			var trainingPlanExerciseDetail = mapper.Map<TrainingPlanExerciseDetail>(trainingPlanAddExerciseVM);
 			await trainingPlanExerciseDetailRepository.UpdateAsync(trainingPlanExerciseDetail);
 
-			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+			return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 		}
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.

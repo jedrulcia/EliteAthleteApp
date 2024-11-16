@@ -6,7 +6,7 @@ namespace EliteAthleteApp.Models.TrainingPlan
 	public class TrainingPlanAddExerciseVM : IValidatableObject
 	{
 		// IDs
-		public int? TrainingPlanId { get; set; }
+		public int TrainingPlanId { get; set; }
 		public int? Id { get; set; }
 
 		[Required]

@@ -12,9 +12,6 @@ namespace EliteAthleteApp.Contracts
 		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.
 		Task<TrainingPlanDetailsVM> GetTrainingPlanDetailsVMAsync(int trainingPlanId);
 
-		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
-		Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? trainingPlanId);
-
 		// GETS THE TRAINING PLAN COPY VM
 		Task<TrainingPlanCopyVM> GetTrainingPlanCopyVMAsync(int? copyFromId, List<int> trainingPlanIds, int trainingModuleId);
 
@@ -40,10 +37,10 @@ namespace EliteAthleteApp.Contracts
 		Task DeleteTrainingPlanAndDetailsAsync(int trainingPlanId);
 
 		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
-		Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM);
+		Task<TrainingPlanDetailsVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM);
 
 		// EDIT AN EXERCISE IN SPECIFIED TRAINING PLAN.
-		Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM);
+		Task<TrainingPlanDetailsVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanCreateVM);
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
 		Task RemoveExerciseFromTrainingPlanAsync(TrainingPlanRemoveExerciseVM trainingPlanRemoveExerciseVM);

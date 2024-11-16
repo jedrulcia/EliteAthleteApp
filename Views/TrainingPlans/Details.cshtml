@@ -1,11 +1,83 @@
 ﻿@using EliteAthleteApp.Models.TrainingPlan
+@using EliteAthleteApp.Configurations.Constants
 
 @model TrainingPlanDetailsVM
 
 @{
 	ViewData["Title"] = "Details";
+	var errorMessage = TempData["ErrorMessage"] as string;
 }
 
+<h1>@Model.Name</h1>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
+	</div>
+}
+
+<p>
+	<a asp-action="Index" class="btn btn-dark btn-sm" asp-route-trainingModuleId="@Model?.TrainingModuleId">Back to List</a>&nbsp;
+	@if (User.IsInRole(Roles.Coach) || User.IsInRole(Roles.Administrator))
+	{
+		<button class="btn btn-outline-primary-a btn-sm addExerciseBtn"
+				data-addexercisetrainingplanid="@Model.Id"
+				data-addexercisecoachid="@Model.CoachId"
+				type="button">
+			<i class="fa-solid fa-plus">&nbsp;</i>Add Exercise
+		</button>
+	}
+</p>
+
+@if (User.IsInRole(Roles.Coach) || User.IsInRole(Roles.Administrator))
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@for (int i = 0; i < Model.TrainingPlanExerciseDetailVMs.Count; i++)
+			{
+				<tr>
+					<td>
+						<strong>@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name)</strong>
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Units)
+					</td>
+					<td>
+						Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Weight)
+					</td>
+					<td>
+						Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].RestTime)
+					</td>
+					<td class="text-end">
+						<button data-editexercisetrainingplanid="@Model.Id"
+								data-editexercisecoachid="@Model.CoachId"
+								data-editexercisetrainingplanexercisedetailid="@Model.TrainingPlanExerciseDetailVMs[i].Id"
+								class="btn btn-primary btn-sm editExerciseBtn" type="button">
+							<i class="fa-solid fa-pen">&nbsp;</i>Edit
+						</button>
+						<button data-removeexercisetrainingplanid="@Model.Id"
+								data-removeexercisename="@Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name"
+								data-removeexercisetrainingplanexercisedetailid="@Model.TrainingPlanExerciseDetailVMs[i].Id"
+								class="btn btn-danger btn-sm removeExerciseBtn" type="button">
+							<i class="fa-solid fa-trash">&nbsp;</i>Remove
+						</button>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+<br />
 @for (int i = 0; i < Model.TrainingPlanExerciseDetailVMs.Count; i++)
 {
 	<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name) - @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].ExerciseVM.ExerciseCategory.Name)</h1>
@@ -27,4 +99,131 @@
 	<dd class="col-sm-12">
 		Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanExerciseDetailVMs[i].Note)
 	</dd>
+	<br />
+}
+
+<!-- MODAL FOR ADDING EXERCISE -->
+<div class="modal fade" id="trainingPlanAddExerciseModal" tabindex="-1" role="dialog" aria-labelledby="trainingPlanAddExerciseModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="trainingPlanAddExerciseLabel">Add Exercise</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="trainingPlanAddExerciseContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EDITING EXERCISE -->
+<div class="modal fade" id="trainingPlanEditExerciseModal" tabindex="-1" role="dialog" aria-labelledby="trainingPlanEditExerciseModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="trainingPlanEditExerciseModalLabel">Edit Exercise</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="trainingPlanEditExerciseContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR EXERCISE REMOVE -->
+<div class="modal fade" id="trainingPlanRemoveExerciseModal" tabindex="-1" role="dialog" aria-labelledby="trainingPlanRemoveExerciseModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="trainingPlanRemoveExerciseModalLabel">Remove Training Module</h5>
+				<button type="button" class="close btn btn-dark" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="trainingPlanRemoveExerciseContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts
+{
+	<script>
+		$(function () {
+			// DATATABLE INITIALIZE
+			$('.table').DataTable();
+
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
+			});
+
+			// AJAX FOR LOADING EXERCISE CREATE MODAL
+			$(document).on('click', '.addExerciseBtn', function (e) {
+				e.preventDefault();
+
+				var trainingPlanId = $(this).data("addexercisetrainingplanid");
+				var coachId = $(this).data("addexercisecoachid")
+				$.ajax({
+					url: '@Url.Action("AddExercise", "TrainingPlans")',
+					type: 'GET',
+					data: { trainingPlanId: trainingPlanId, coachId: coachId },
+					success: function (data) {
+						$('#trainingPlanAddExerciseContent').html(data);
+						$('#trainingPlanAddExerciseModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the training plan add exercise modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE CREATE MODAL
+			$(document).on('click', '.editExerciseBtn', function (e) {
+				e.preventDefault();
+
+				var trainingPlanId = $(this).data("editexercisetrainingplanid");
+				var trainingPlanExerciseDetailId = $(this).data("editexercisetrainingplanexercisedetailid");
+				var coachId = $(this).data("editexercisecoachid");
+				$.ajax({
+					url: '@Url.Action("EditExercise", "TrainingPlans")',
+					type: 'GET',
+					data: { trainingPlanId: trainingPlanId, trainingPlanExerciseDetailId: trainingPlanExerciseDetailId, coachId: coachId },
+					success: function (data) {
+						$('#trainingPlanEditExerciseContent').html(data);
+						$('#trainingPlanEditExerciseModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the training plan edit exercise modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE CREATE MODAL
+			$(document).on('click', '.removeExerciseBtn', function (e) {
+				e.preventDefault();
+
+				var trainingPlanId = $(this).data("removeexercisetrainingplanid");
+				var trainingPlanExerciseDetailId = $(this).data("removeexercisetrainingplanexercisedetailid");
+				var name = $(this).data("removeexercisename");
+				$.ajax({
+					url: '@Url.Action("RemoveExercise", "TrainingPlans")',
+					type: 'GET',
+					data: { trainingPlanId: trainingPlanId, trainingPlanExerciseDetailId: trainingPlanExerciseDetailId, name: name },
+					success: function (data) {
+						$('#trainingPlanRemoveExerciseContent').html(data);
+						$('#trainingPlanRemoveExerciseModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the training plan remove exercise modal.");
+					}
+				});
+			});
+
+		});
+	</script>
 }

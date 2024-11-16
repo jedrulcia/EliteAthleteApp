@@ -59,7 +59,7 @@
 												@Html.DisplayFor(modelItem => item.Date)
 											</td>
 											<td>
-												<a class="training-plan-link" data-detailstrainingplanid="@item.Id">
+												<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
 													@if (item.IsCompleted == true)
 													{
 														<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
@@ -99,7 +99,7 @@
 											@Html.DisplayFor(modelItem => item.Date)
 										</td>
 										<td>
-											<a class="detailsBtn" data-detailstrainingplanid="@item.Id">
+											<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
 												@if (item.IsEmpty)
 												{
 													<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>

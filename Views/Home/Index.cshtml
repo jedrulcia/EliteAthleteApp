@@ -21,8 +21,8 @@
 						<div class="card-body">
 							<h5 class="card-title">Special title treatment</h5>
 							<p class="card-text">Enter the button below to access the Training Plan.</p>
-							<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-outline-primary-a d-block w-100 text-center"
-							   asp-route-userId="@Model.UserVM.Id" asp-route-trainingModuleId="@Model.TrainingPlanDetailsVM.TrainingModuleId">
+							<a asp-action="Details" asp-controller="TrainingPlans" class="btn btn-outline-primary-a d-block w-100 text-center"
+							   asp-route-trainingPlanId="@Model.TrainingPlanDetailsVM.Id">
 								<i class=""></i> Training Plan
 							</a>
 						</div>
