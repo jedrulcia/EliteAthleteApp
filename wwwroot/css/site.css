@@ -7,6 +7,11 @@
 
 
 /*=====================================================TEXT=====================================================*/
+.text-normal {
+    font-weight: normal;
+}
+
+
 .text-primary {
     background: var(--primary-color); /* Apply gradient */
     -webkit-background-clip: text; /* Clip background to text */

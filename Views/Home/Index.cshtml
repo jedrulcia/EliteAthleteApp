@@ -9,22 +9,27 @@
 @if (Model.IsLoggedIn == true)
 {
 	<div class="row">
-		<div class="col-md-7">
-			<canvas id="ormChart" width="800" height="250"></canvas>
-			<br />
-			<canvas id="ubaChart" width="800" height="250"></canvas>
-			<br />
-			<canvas id="ubmChart" width="800" height="250"></canvas>
-		</div>
 		<div class="col-md-5">
 			<br />
 			@if (Model.TrainingPlanDetailsVM != null)
 			{
 				<div>
-					<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-outline-primary-a d-block w-100 text-center"
-					   asp-route-userId="@Model.UserVM.Id" asp-route-trainingModuleId="@Model.TrainingPlanDetailsVM.TrainingModuleId">
-						<i class=""></i> Training Plan
-					</a>
+					<div class="card text-center">
+						<div class="card-header">
+							Today's Training Plan
+						</div>
+						<div class="card-body">
+							<h5 class="card-title">Special title treatment</h5>
+							<p class="card-text">Enter the button below to access the Training Plan.</p>
+							<a asp-action="Index" asp-controller="TrainingPlans" class="btn btn-outline-primary-a d-block w-100 text-center"
+							   asp-route-userId="@Model.UserVM.Id" asp-route-trainingModuleId="@Model.TrainingPlanDetailsVM.TrainingModuleId">
+								<i class=""></i> Training Plan
+							</a>
+						</div>
+						<div class="card-footer text-body-secondary">
+							@DateTime.UtcNow.ToString("dd-MM-yyyy")
+						</div>
+					</div>
 				</div>
 				<br />
 				<div id="carouselExample" class="carousel slide">
@@ -89,6 +94,13 @@
 			{
 				<h1>DZISIAJ NIE MASZ TRENINGU</h1>
 			}
+		</div>
+		<div class="col-md-7">
+			<canvas id="ormChart" width="800" height="250"></canvas>
+			<br />
+			<canvas id="ubaChart" width="800" height="250"></canvas>
+			<br />
+			<canvas id="ubmChart" width="800" height="250"></canvas>
 		</div>
 	</div>
 }
