@@ -17,6 +17,7 @@ namespace EliteAthleteApp.Repositories
 		private readonly ITrainingExerciseCategoryRepository exerciseCategoryRepository;
 		private readonly ITrainingExerciseMuscleGroupRepository exerciseMuscleGroupRepository;
 		private readonly ITrainingExerciseMediaRepository exerciseMediaRepository;
+		private readonly IYoutubeService youtubeService;
 
 		public TrainingExerciseRepository(ApplicationDbContext context, 
 			IMapper mapper, 
@@ -24,7 +25,8 @@ namespace EliteAthleteApp.Repositories
 			IHttpContextAccessor httpContextAccessor, 
 			ITrainingExerciseCategoryRepository exerciseCategoryRepository,
 			ITrainingExerciseMuscleGroupRepository exerciseMuscleGroupRepository,
-			ITrainingExerciseMediaRepository exerciseMediaRepository) : base(context)
+			ITrainingExerciseMediaRepository exerciseMediaRepository,
+			IYoutubeService youtubeService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
@@ -33,6 +35,7 @@ namespace EliteAthleteApp.Repositories
 			this.exerciseCategoryRepository = exerciseCategoryRepository;
 			this.exerciseMuscleGroupRepository = exerciseMuscleGroupRepository;
 			this.exerciseMediaRepository = exerciseMediaRepository;
+			this.youtubeService = youtubeService;
 		}
 
 		// GETS EXERCISE INDEX VIEW MODEL (COACH ID)
@@ -101,6 +104,7 @@ namespace EliteAthleteApp.Repositories
 			{
 				var exerciseVM = mapper.Map<TrainingExerciseVM>(exercise);
 				exerciseVM = await GetExerciseForeignEntitiesAsync(exerciseVM, exercise);
+				exerciseVM.YoutubeLink = youtubeService.GetEmbeddedYouTubeLink(exerciseVM.YoutubeLink);
 				return exerciseVM;
 			}
 			return null;

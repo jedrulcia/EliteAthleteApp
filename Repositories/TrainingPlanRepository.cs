@@ -29,6 +29,7 @@ namespace EliteAthleteApp.Repositories
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository;
 		private readonly ITrainingPlanPhaseRepository trainingPlanPhaseRepository;
+		private readonly IYoutubeService youtubeService;
 
 		public TrainingPlanRepository(ApplicationDbContext context,
 			IMapper mapper,
@@ -36,7 +37,8 @@ namespace EliteAthleteApp.Repositories
 			UserManager<User> userManager,
 			IHttpContextAccessor httpContextAccessor,
 			ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository,
-			ITrainingPlanPhaseRepository trainingPlanPhaseRepository) : base(context)
+			ITrainingPlanPhaseRepository trainingPlanPhaseRepository,
+			IYoutubeService youtubeService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
@@ -45,6 +47,7 @@ namespace EliteAthleteApp.Repositories
 			this.httpContextAccessor = httpContextAccessor;
 			this.trainingPlanExerciseDetailRepository = trainingPlanExerciseDetailRepository;
 			this.trainingPlanPhaseRepository = trainingPlanPhaseRepository;
+			this.youtubeService = youtubeService;
 		}
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
@@ -282,6 +285,7 @@ namespace EliteAthleteApp.Repositories
 			{
 				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await trainingPlanExerciseDetailRepository.GetAsync(id));
 				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<TrainingExerciseVM>(await exerciseRepository.GetExerciseDetailsVMAsync(trainingPlanExerciseDetailVM.ExerciseId.Value));
+				trainingPlanExerciseDetailVM.ExerciseVM.YoutubeLink = youtubeService.GetEmbeddedYouTubeLink(trainingPlanExerciseDetailVM.ExerciseVM.YoutubeLink);
 				trainingPlanExerciseDetailVM.TrainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await trainingPlanPhaseRepository.GetAsync(trainingPlanExerciseDetailVM.TrainingPlanPhaseId));
 				if (trainingPlanExerciseDetailVM.ExerciseVM != null)
 				{
