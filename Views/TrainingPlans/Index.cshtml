@@ -12,8 +12,8 @@
 		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="trainingPlanTabs" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a asp-action="Index" asp-controller="TrainingModules" asp-route-trainingModuleId="@Model?.UserId" class="nav-link" id="back-to-list" aria-controls="training-modules" aria-selected="false">
-						<i class="bi bi-arrow-left">&nbsp;</i><strong>Back to Modules</strong>
+					<a asp-action="Index" asp-controller="Users" asp-route-userId="@Model?.UserId" class="nav-link" id="back-to-list" aria-controls="training-modules" aria-selected="false">
+						<i class="bi bi-arrow-left">&nbsp;</i><strong>Back to User Panel</strong>
 					</a>
 				</li>
 				<li class="nav-item" role="presentation">
@@ -59,7 +59,7 @@
 												@Html.DisplayFor(modelItem => item.Date)
 											</td>
 											<td>
-												<a class="training-plan-link" data-detailstrainingplanid="@item.Id">
+												<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
 													@if (item.IsCompleted == true)
 													{
 														<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
@@ -99,7 +99,7 @@
 											@Html.DisplayFor(modelItem => item.Date)
 										</td>
 										<td>
-											<a class="detailsBtn" data-detailstrainingplanid="@item.Id">
+											<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
 												@if (item.IsEmpty)
 												{
 													<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>

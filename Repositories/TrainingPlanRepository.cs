@@ -29,6 +29,7 @@ namespace EliteAthleteApp.Repositories
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository;
 		private readonly ITrainingPlanPhaseRepository trainingPlanPhaseRepository;
+		private readonly IYoutubeService youtubeService;
 
 		public TrainingPlanRepository(ApplicationDbContext context,
 			IMapper mapper,
@@ -36,7 +37,8 @@ namespace EliteAthleteApp.Repositories
 			UserManager<User> userManager,
 			IHttpContextAccessor httpContextAccessor,
 			ITrainingPlanExerciseDetailRepository trainingPlanExerciseDetailRepository,
-			ITrainingPlanPhaseRepository trainingPlanPhaseRepository) : base(context)
+			ITrainingPlanPhaseRepository trainingPlanPhaseRepository,
+			IYoutubeService youtubeService) : base(context)
 		{
 			this.context = context;
 			this.mapper = mapper;
@@ -45,6 +47,7 @@ namespace EliteAthleteApp.Repositories
 			this.httpContextAccessor = httpContextAccessor;
 			this.trainingPlanExerciseDetailRepository = trainingPlanExerciseDetailRepository;
 			this.trainingPlanPhaseRepository = trainingPlanPhaseRepository;
+			this.youtubeService = youtubeService;
 		}
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
@@ -75,17 +78,6 @@ namespace EliteAthleteApp.Repositories
 			trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlanId);
 
 			return trainingPlanDetailsVM;
-		}
-
-		// GETS THE TRAINING PLAN MANAGE EXERCISES VIEW MODEL FOR THE SPECIFIED TRAINING PLAN ID.
-		public async Task<TrainingPlanManageExercisesVM> GetTrainingPlanManageExercisesVMAsync(int? trainingPlanId)
-		{
-			var trainingPlan = await GetAsync(trainingPlanId);
-			var trainingPlanManageExercisesVM = mapper.Map<TrainingPlanManageExercisesVM>(trainingPlan);
-
-			trainingPlanManageExercisesVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlanId);
-
-			return trainingPlanManageExercisesVM;
 		}
 
 		public async Task<TrainingPlanChangeStatusVM> GetTrainingPlanChangeStatusVMAsync(int id)
@@ -145,6 +137,21 @@ namespace EliteAthleteApp.Repositories
 			return trainingPlanRemoveExerciseVM;
 		}
 
+		public async Task<TrainingPlanDetailsVM?> GetDailyTrainingPlanVMAsync(string userId)
+		{
+			var todayDate = DateTime.Today.ToString("dd-MM-yyyy");
+			var trainingPlan = (await GetAllAsync()).Where(tp => tp.Date?.ToString("dd-MM-yyyy") == todayDate && tp.UserId == userId)
+				.FirstOrDefault();
+
+			if (trainingPlan != null && trainingPlan.IsEmpty == false)
+			{
+				var trainingPlanDetailsVM = mapper.Map<TrainingPlanDetailsVM>(trainingPlan);
+				trainingPlanDetailsVM.TrainingPlanExerciseDetailVMs = await GetTrainingPlanExerciseDetailVMsAsync(trainingPlan.TrainingPlanExerciseDetailIds, trainingPlan.Id);
+				return trainingPlanDetailsVM;
+			}
+			return null;
+		}
+
 		// CREATES A NEW DATABASE ENTITY IN THE TRAINING PLAN TABLE AND RETURNS THE NEW ID.
 		public async Task<int> CreateTrainingPlanAsync(TrainingPlanCreateVM trainingPlanCreateVM)
 		{
@@ -173,12 +180,12 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// ADDS AN EXERCISE TO THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
+		public async Task<TrainingPlanDetailsVM> AddExerciseToTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.ExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+				return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 			}
 
 			var trainingPlanExerciseDetail = mapper.Map<TrainingPlanExerciseDetail>(trainingPlanAddExerciseVM);
@@ -189,22 +196,22 @@ namespace EliteAthleteApp.Repositories
 			trainingPlan.TrainingPlanExerciseDetailIds.Add(trainingPlanExerciseDetail.Id);
 			await UpdateAsync(trainingPlan);
 
-			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+			return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 		}
 
 		// EDITS AN EXERCISE IN THE SPECIFIED TRAINING PLAN.
-		public async Task<TrainingPlanManageExercisesVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
+		public async Task<TrainingPlanDetailsVM> EditExerciseInTrainingPlanAsync(TrainingPlanAddExerciseVM trainingPlanAddExerciseVM)
 		{
 			var exercise = await exerciseRepository.GetAsync(trainingPlanAddExerciseVM.ExerciseId);
 			if (exercise == null)
 			{
-				return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+				return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 			}
 			int? id = trainingPlanAddExerciseVM.Id;
 			var trainingPlanExerciseDetail = mapper.Map<TrainingPlanExerciseDetail>(trainingPlanAddExerciseVM);
 			await trainingPlanExerciseDetailRepository.UpdateAsync(trainingPlanExerciseDetail);
 
-			return await GetTrainingPlanManageExercisesVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
+			return await GetTrainingPlanDetailsVMAsync(trainingPlanAddExerciseVM.TrainingPlanId);
 		}
 
 		// REMOVES AN EXERCISE FROM THE SPECIFIED TRAINING PLAN BASED ON TRAINING PLAN ID AND EXERCISE INDEX.
@@ -267,6 +274,7 @@ namespace EliteAthleteApp.Repositories
 			{
 				var trainingPlanExerciseDetailVM = mapper.Map<TrainingPlanExerciseDetailVM>(await trainingPlanExerciseDetailRepository.GetAsync(id));
 				trainingPlanExerciseDetailVM.ExerciseVM = mapper.Map<TrainingExerciseVM>(await exerciseRepository.GetExerciseDetailsVMAsync(trainingPlanExerciseDetailVM.ExerciseId.Value));
+				trainingPlanExerciseDetailVM.ExerciseVM.YoutubeLink = youtubeService.GetEmbeddedYouTubeLink(trainingPlanExerciseDetailVM.ExerciseVM.YoutubeLink);
 				trainingPlanExerciseDetailVM.TrainingPlanPhaseVM = mapper.Map<TrainingPlanPhaseVM>(await trainingPlanPhaseRepository.GetAsync(trainingPlanExerciseDetailVM.TrainingPlanPhaseId));
 				if (trainingPlanExerciseDetailVM.ExerciseVM != null)
 				{

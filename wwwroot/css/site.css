@@ -5,8 +5,19 @@
     --danger-color: #f73434;
 }
 
+.card {
+    background-color: #1a1a1a; /* Ciemnoszary kolor z Bootstrap */
+    color: white; /* Bia³y tekst */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtelny cieñ */
+}
 
 /*=====================================================TEXT=====================================================*/
+.text-normal {
+    font-weight: normal;
+}
+
+
 .text-primary {
     background: var(--primary-color); /* Apply gradient */
     -webkit-background-clip: text; /* Clip background to text */
@@ -77,7 +88,7 @@ body {
 
 /* Apply the gradient to the body */
 body {
-    background: linear-gradient(to bottom, #000000 0%, #000000 2%, #3f3f3f 100%); /* Background gradient */
+    background: linear-gradient(to bottom, #000000 0%, #000000 8%, #3f3f3f); /* Background gradient */
     color: white; /* Default text color */
     min-height: 100vh; /* Ensure it covers the whole screen */
     margin: 0; /* Reset margin */
