@@ -53,16 +53,7 @@ namespace EliteAthleteApp.Controllers
 		// GET: Users/List/Index
 		public async Task<IActionResult> Index(string? userId)
 		{
-			var userPanelVM = new UserPanelVM();
-			if (userId == null)
-			{
-				userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User));
-				userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
-				return View(userPanelVM);
-			}
-			userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
-			userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
-			return View(userPanelVM);
+			return View();
 		}
 
 
@@ -92,7 +83,7 @@ namespace EliteAthleteApp.Controllers
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
 			await userRepository.UploadUserImageAsync(userId, imageFile);
-			return RedirectToAction(nameof(Index), "Users", new { userId = userId });
+			return RedirectToAction("Panel", "Home", new { userId = userId });
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
@@ -101,7 +92,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> DeleteImage(string userId)
 		{
 			await userRepository.DeleteUserImageAsync(userId);
-			return RedirectToAction(nameof(Index), "Users", new { userId = userId });
+			return RedirectToAction("Panel", "Home", new { userId = userId });
 		}
 
 		public async Task<IActionResult> AddAthlete(string? inviteCode, int athleteCount)
@@ -132,7 +123,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
+			return RedirectToAction("Panel", "Home", new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> DeclineInvite()
@@ -141,7 +132,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
+			return RedirectToAction("Panel", "Home", new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> DeleteCoach()
@@ -150,7 +141,7 @@ namespace EliteAthleteApp.Controllers
 			user.CoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
+			return RedirectToAction("Panel", "Home", new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> ResetInviteCode()
@@ -164,7 +155,7 @@ namespace EliteAthleteApp.Controllers
 
 			user.InviteCode = inviteCode;
 			await userRepository.UpdateAsync(user);
-			return RedirectToAction(nameof(Index), "Users", new { userId = user.Id });
+			return RedirectToAction("Panel", "Home", new { userId = user.Id });
 		}
     }
 }

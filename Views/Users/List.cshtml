@@ -24,7 +24,7 @@
 </form>
 
 <h1>Athletes</h1>
-<table class="table">
+<table class="table text-white table-dark" style="width:100%">
 	<thead>
 		<tr>
 			<th>
@@ -36,7 +36,7 @@
 			<th>
 				@Html.DisplayNameFor(model => model.First().Email)
 			</th>
-			<th></th>
+			<th style="width:10%"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -53,19 +53,29 @@
 					@Html.DisplayFor(modelItem => item.Email)
 				</td>
 				<td class="text-end">
-					<a asp-action="Index" class="btn btn-secondary" asp-controller="Users" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> User Panel</a>
-					<a asp-action="Chat" asp-route-userId="@item.Id" asp-controller="UserChats" class="btn btn-sm btn-danger">Chat</a>
+					<div class="dropdown">
+						<button class="btn btn-outline-primary-a btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+							<strong>Actions</strong>
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<li>
+								<button class="dropdown-item">
+									<a asp-action="Panel" asp-controller="Home" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> User Panel</a>
+								</button>
+							</li>
+							<li>
+								<button class="dropdown-item">
+									<a asp-action="Chat" asp-route-userId="@item.Id" asp-controller="UserChats">Chat</a>
+								</button>
+							</li>
+						</ul>
+					</div>
+
 				</td>
 			</tr>
 		}
 	</tbody>
 </table>
 
-@section Scripts
-{
-	<script>
-		$(function () {
-			$('.table').DataTable();
-		});
-	</script>
-}
+
+
