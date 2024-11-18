@@ -1,9 +1,60 @@
 ﻿@using EliteAthleteApp.Models.User
+
 @model UserIndexVM
 
+@{
+	ViewData["Title"] = "List";
+	var errorMessage = TempData["ErrorMessage"] as string;
+}
 
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+	<div class="alert alert-danger">
+		@errorMessage
+	</div>
+}
 
+<div class="row justify-content-center">
+	<div class="col-md-12">
+		<ul class="nav nav-tabs" id="coachTabs" role="tablist">
+			<li class="nav-item" role="presentation">
+				<a class="nav-link active" id="userListTab" data-toggle="tab" href="#userList" role="tab" aria-controls="userList" aria-selected="true">
+					<i class="bi bi-person">&nbsp;</i><strong>My Athletes</strong>
+				</a>
+			</li>
+			<li class="nav-item ms-auto" role="presentation">
+				<button class="nav-link addAthleteBtn" type="button" id="addAthleteTab" aria-controls="addAthlete" aria-selected="false" data-athletecount="@Model.AthleteCount">
+					<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Add Athlete</strong>
+				</button>
+			</li>
+		</ul>
+		<br />
+		<div class="tab-content" id="userListContent">
+			<div class="tab-pane fade show active" id="userList" role="tabpanel" aria-labelledby="userListTab">
+			</div>
+		</div>
+	</div>
+</div>
 
+<!-- MODAL FOR TRAINING MODULE EDIT -->
+<div class="modal fade" id="addAthleteModal" tabindex="-1" role="dialog" aria-labelledby="addAthleteModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title w-100" id="addAthleteModalLabel">
+					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
+						<strong>Add Athlete</strong>
+						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</span>
+				</h3>
+			</div>
+			<div class="modal-body" id="addAthleteContent">
+			</div>
+		</div>
+	</div>
+</div>
 
 @section Scripts
 {
@@ -12,8 +63,73 @@
 			// DATATABLE INITIALIZE
 			$('.table').DataTable();
 
+
+			// SCRIPT TO HANDLE CLOSING MODALS
+			$(document).on('click', '.close', function () {
+				$(this).closest('.modal').modal('hide');
+			});
+
+			// Handle tab switch with Bootstrap Tabs
+			$('#coachTabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				e.target // newly activated tab
+				e.relatedTarget // previous tab
+			});
+
 			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
 				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
+			});
+
+			// Ładowanie zawartości dla "userList" po załadowaniu strony
+			$.ajax({
+				url: '@Url.Action("List", "Users")',
+				type: 'GET',
+				success: function (data) {
+					$('#userList').html(data);
+					$('.table').DataTable();
+					$('#userListTab').tab('show');
+
+				},
+				error: function () {
+					alert("An error occurred while loading 'userList' content.");
+				}
+			});
+
+			// Handle tab click for "userList" tab
+			$('#userListTab').on('click', function (e) {
+				e.preventDefault();
+
+				$.ajax({
+					url: '@Url.Action("List", "Users")',
+					type: 'GET',
+					success: function (data) {
+						$('#userList').html(data);
+						$('.table').DataTable();
+						$('#userListTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'userList' content.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING EXERCISE ADD ATHLETE MODAL
+			$(document).on('click', '.addAthleteBtn', function (e) {
+				e.preventDefault();
+
+				var athleteCount = $(this).data("athletecount");
+				$.ajax({
+					url: '@Url.Action("AddAthlete", "Users")',
+					type: 'GET',
+					data: { athleteCount: athleteCount },
+					success: function (data) {
+						$('#addAthleteContent').html(data);
+						$('#addAthleteModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the add athlete modal.");
+					}
+				});
 			});
 
 		});

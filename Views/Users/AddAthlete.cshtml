@@ -1,0 +1,17 @@
+﻿@using EliteAthleteApp.Models.User
+
+@model UserAddAthleteVM
+
+<form asp-action="AddAthlete" asp-controller="Users" method="post">
+	<input type="hidden" asp-for="AthleteCount" />
+	<div class="row">
+		<div class="col-md-6">
+			<strong><label asp-for="InviteCode" class="control-label"></label></strong>
+			<input asp-for="InviteCode" class="form-control" />
+			<span asp-validation-for="InviteCode" class="text-danger"></span>
+		</div>
+		<div class="col-md-2 text-end">
+			<button type="submit" class="btn btn-outline-primary">Add Athlete</button>
+		</div>
+	</div>
+</form>
