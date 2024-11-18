@@ -1,29 +1,6 @@
 ﻿@using EliteAthleteApp.Models.User
 @model List<UserVM>
 
-@{
-	ViewData["Title"] = "List";
-	var errorMessage = TempData["ErrorMessage"] as string;
-}
-
-@if (!string.IsNullOrEmpty(errorMessage))
-{
-	<div class="alert alert-danger">
-		@errorMessage
-	</div>
-}
-
-<form asp-action="AddAthlete" asp-controller="Users" method="post">
-	<div class="form-group">
-		<input type="hidden" id="athleteCount" value="@Model.Count" />
-		<input type="hidden" id="athleteCount" name="athleteCount" value="@Model.Count" />
-		<label for="inviteCode">Invite Code</label>
-		<input type="text" class="form-control" id="inviteCode" name="InviteCode" required />
-	</div>
-	<button type="submit" class="btn btn-primary mt-2">Add</button>
-</form>
-
-<h1>Athletes</h1>
 <table class="table text-white table-dark" style="width:100%">
 	<thead>
 		<tr>

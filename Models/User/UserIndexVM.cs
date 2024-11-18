@@ -2,6 +2,7 @@
 {
 	public class UserIndexVM
 	{
-		public string? AdminId { get; set; }
+		public string? CoachId { get; set; }
+		public int? AthleteCount { get; set; }
 	}
 }

@@ -42,72 +42,42 @@ namespace EliteAthleteApp.Controllers
 			this.userChartService = userChartService;
 		}
 
+		// GET: Users/List/Index
+		public async Task<IActionResult> Index(string? userId)
+		{
+			string coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
+			var userListVM = mapper.Map<List<UserVM>>((await userRepository.GetAllAsync()).Where(u => u.CoachId == coachId));
+			return View(new UserIndexVM { AthleteCount = userListVM.Count, CoachId = coachId });
+		}
+
 		// GET: Users/List
 		public async Task<IActionResult> List()
 		{
 			string coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
 			var userListVM = mapper.Map<List<UserVM>>((await userRepository.GetAllAsync()).Where(u => u.CoachId == coachId));
-			return View(userListVM);
+			return PartialView(userListVM);
 		}
 
-		// GET: Users/List/Index
-		public async Task<IActionResult> Index(string? userId)
+		public async Task<IActionResult> AddAthlete(int athleteCount)
 		{
-			return View();
+			return PartialView(new UserAddAthleteVM { AthleteCount = athleteCount });
 		}
 
-
-		// GET: Users/List/Index/Info
-		public async Task<IActionResult> Info(string? userId)
-		{
-			var user = await userManager.FindByIdAsync(userId);
-			var userVM = mapper.Map<UserVM>(user);
-			var userInfoVM = new UserInfoVM { UserVM = userVM };
-			if (user.CoachId != null)
-			{
-				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
-				userInfoVM.CoachVM = coachVM;
-			}
-			if (user.NewCoachId != null)
-			{
-				var newCoachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.NewCoachId));
-				userInfoVM.NewCoachVM = newCoachVM;
-			}
-			return PartialView(userInfoVM);
-		}
-
-		// POST: TrainingExerciseMedia/EditMedia/UploadImage
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> UploadImage(string userId)
-		{
-			var imageFile = Request.Form.Files[$"imageUpload"];
-			await userRepository.UploadUserImageAsync(userId, imageFile);
-			return RedirectToAction("Panel", "Home", new { userId = userId });
-		}
-
-		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteImage(string userId)
-		{
-			await userRepository.DeleteUserImageAsync(userId);
-			return RedirectToAction("Panel", "Home", new { userId = userId });
-		}
-
-		public async Task<IActionResult> AddAthlete(string? inviteCode, int athleteCount)
+		public async Task<IActionResult> AddAthlete(UserAddAthleteVM userAddAthleteVM)
 		{
 			var coach = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			var subscription = await context.Set<UserSubscription>().FindAsync(coach.UserSubscriptionId);
 
-			if (athleteCount >= subscription.AthleteLimit)
+			if (userAddAthleteVM.AthleteCount >= subscription.AthleteLimit)
 			{
 				TempData["ErrorMessage"] = $"You have reached the limit of athletes in your subscription.";
 				return RedirectToAction(nameof(List), "Users");
 			}
 
 			var user = (await userRepository.GetAllAsync())
-				.Where(u => u.InviteCode == inviteCode)
+				.Where(u => u.InviteCode == userAddAthleteVM.InviteCode)
 				.FirstOrDefault();
 
 			user.NewCoachId = coach.Id;
@@ -157,5 +127,43 @@ namespace EliteAthleteApp.Controllers
 			await userRepository.UpdateAsync(user);
 			return RedirectToAction("Panel", "Home", new { userId = user.Id });
 		}
-    }
+
+		// GET: Users/List/Index/Info
+		public async Task<IActionResult> Info(string? userId)
+		{
+			var user = await userManager.FindByIdAsync(userId);
+			var userVM = mapper.Map<UserVM>(user);
+			var userInfoVM = new UserInfoVM { UserVM = userVM };
+			if (user.CoachId != null)
+			{
+				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
+				userInfoVM.CoachVM = coachVM;
+			}
+			if (user.NewCoachId != null)
+			{
+				var newCoachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.NewCoachId));
+				userInfoVM.NewCoachVM = newCoachVM;
+			}
+			return PartialView(userInfoVM);
+		}
+
+		// POST: TrainingExerciseMedia/EditMedia/UploadImage
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UploadImage(string userId)
+		{
+			var imageFile = Request.Form.Files[$"imageUpload"];
+			await userRepository.UploadUserImageAsync(userId, imageFile);
+			return RedirectToAction("Panel", "Home", new { userId = userId });
+		}
+
+		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteImage(string userId)
+		{
+			await userRepository.DeleteUserImageAsync(userId);
+			return RedirectToAction("Panel", "Home", new { userId = userId });
+		}
+	}
 }
