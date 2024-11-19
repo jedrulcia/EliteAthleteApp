@@ -17,8 +17,8 @@
 					</a>
 				</li>
 				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="training-plans-tab" data-toggle="tab" href="#training-plans" role="tab" aria-controls="training-plans" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i><strong>Training Plan</strong>
+					<a class="nav-link active" data-trainingmoduleid="@Model.TrainingModuleId" id="trainingPlanListTab" data-toggle="tab" href="#trainingPlanList" role="tab" aria-controls="trainingPlanList" aria-selected="true">
+						<i class="bi bi-person">&nbsp;</i><strong>Training Plan List</strong>
 					</a>
 				</li>
 				<li class="nav-item ms-auto" role="presentation">
@@ -28,125 +28,8 @@
 				</li>
 			</ul>
 			<br />
-			<div class="tab-content" id="trainingPlansTabsContent">
-				<div class="tab-pane fade show active" id="training-plans" role="tabpanel" aria-labelledby="training-plans-tab">
-					<h1><span class="badge bg-black d-block w-100"><strong>My Training Plan</strong></span></h1>
-					<div class="progress custom-progress" role="progressbar" aria-label="Success example" aria-valuenow="@Model.Progress" aria-valuemin="0" aria-valuemax="100">
-						<div class="progress-bar bg-success" style="width: @Model.Progress%"><strong>@Model.Progress%</strong></div>
-						<div class="progress-bar bg-dark" style="width: @(100 - Model.Progress)%"></div>
-					</div>
-					<table class="table">
-						<thead>
-							<tr>
-								<th class="text-start">
-									@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
-								</th>
-								<th>
-									@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
-								</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							@if (User.IsInRole(Roles.User))
-							{
-								@foreach (var item in Model.TrainingPlanVMs)
-								{
-									if (!item.IsEmpty)
-									{
-										<tr>
-											<td class="text-start">
-												@Html.DisplayFor(modelItem => item.Date)
-											</td>
-											<td>
-												<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
-													@if (item.IsCompleted == true)
-													{
-														<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
-													}
-													else
-													{
-														<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
-													}
-												</a>
-											</td>
-											<td class="text-end">
-												<div class="dropdown">
-													<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-														<strong>Actions</strong>
-													</button>
-													<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-														<li>
-															<button data-completetrainingplanid="@item.Id"
-																	data-completetrainingmoduleid="@item.TrainingModuleId"
-																	class="dropdown-item changeStatusBtn">
-																<i class="bi bi-check2">&nbsp;</i>Complete
-															</button>
-														</li>
-													</ul>
-												</div>
-											</td>
-										</tr>
-									}
-								}
-							}
-							@if (User.IsInRole(Roles.Coach) || User.IsInRole(Roles.Administrator))
-							{
-								@foreach (var item in Model.TrainingPlanVMs)
-								{
-									<tr>
-										<td class="text-start">
-											@Html.DisplayFor(modelItem => item.Date)
-										</td>
-										<td>
-											<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
-												@if (item.IsEmpty)
-												{
-													<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>
-												}
-												else if (item.IsCompleted == true)
-												{
-													<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
-												}
-												else
-												{
-													<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
-												}
-											</a>
-										</td>
-										<td class="text-end">
-											<div class="dropdown">
-												<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-													<strong>Actions</strong>
-												</button>
-												<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-													<li>
-														<button data-copyfromid="@item.Id"
-																data-copytrainingmoduleid="@item.TrainingModuleId"
-																class="dropdown-item copyBtn">
-															<i class="bi bi-clipboard">&nbsp;</i>Copy
-														</button>
-													</li>
-													<li>
-														<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId" class="dropdown-item">
-															<i class="bi bi-pencil">&nbsp;</i>Exercises
-														</a>
-													</li>
-													<li>
-														<button data-completetrainingplanid="@item.Id"
-																data-completetrainingmoduleid="@item.TrainingModuleId"
-																class="dropdown-item changeStatusBtn">
-															<i class="bi bi-check2">&nbsp;</i>Complete
-														</button>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-								}
-							}
-						</tbody>
-					</table>
+			<div class="tab-content" id="trainingPlanTabsContent">
+				<div class="tab-pane fade show active" id="trainingPlanList" role="tabpanel" aria-labelledby="trainingPlanListTtab">
 				</div>
 			</div>
 		</div>
@@ -235,6 +118,45 @@
 
 			$('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
 				$($.fn.dataTable.tables(true)).DataTable().fixedHeader.adjust();
+			});
+
+			// Ładowanie zawartości dla "trainingPlanList" po załadowaniu strony
+			var trainingModuleId = $('#trainingPlanListTab').data("trainingmoduleid");
+			$.ajax({
+				url: '@Url.Action("TrainingPlanList", "TrainingPlans")',
+				type: 'GET',
+				data: { trainingModuleId: trainingModuleId },
+				success: function (data) {
+					$('#trainingPlanList').html(data);
+					$('.table').DataTable();
+					$('#trainingPlanListTab').tab('show');
+
+				},
+				error: function () {
+					alert("An error occurred while loading 'trainingPlanList' content.");
+				}
+			});
+
+			// Handle tab click for "trainingPlanList" tab
+			$('#trainingPlanListTab').on('click', function (e) {
+				e.preventDefault();
+
+				var trainingModuleId = $('#trainingPlanListTab').data("trainingmoduleid");
+
+				$.ajax({
+					url: '@Url.Action("TrainingPlanList", "TrainingPlans")',
+					type: 'GET',
+					data: { trainingModuleId: trainingModuleId },
+					success: function (data) {
+						$('#trainingPlanList').html(data);
+						$('.table').DataTable();
+						$('#trainingPlanListTab').tab('show');
+
+					},
+					error: function () {
+						alert("An error occurred while loading 'trainingPlanList' content.");
+					}
+				});
 			});
 
 

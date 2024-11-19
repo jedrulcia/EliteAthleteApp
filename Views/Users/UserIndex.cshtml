@@ -81,7 +81,7 @@
 
 			// Ładowanie zawartości dla "userList" po załadowaniu strony
 			$.ajax({
-				url: '@Url.Action("List", "Users")',
+				url: '@Url.Action("UserList", "Users")',
 				type: 'GET',
 				success: function (data) {
 					$('#userList').html(data);
@@ -99,7 +99,7 @@
 				e.preventDefault();
 
 				$.ajax({
-					url: '@Url.Action("List", "Users")',
+					url: '@Url.Action("UserList", "Users")',
 					type: 'GET',
 					success: function (data) {
 						$('#userList').html(data);

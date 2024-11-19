@@ -1,6 +1,8 @@
-﻿namespace EliteAthleteApp.Models.Charts
+﻿using EliteAthleteApp.Models.UserCharts;
+
+namespace EliteAthleteApp.Models.Charts
 {
-	public class UserBodyMeasurementChartVM
+    public class UserBodyMeasurementChartVM
 	{
 		public List<DataPointVM> ChestDataPointVMs { get; set; } = new List<DataPointVM?>();
 		public List<DataPointVM> ArmsDataPointVMs { get; set; } = new List<DataPointVM?>();

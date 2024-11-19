@@ -1,7 +1,7 @@
 ﻿@using EliteAthleteApp.Configurations.Constants
-@using EliteAthleteApp.Models.Home
+@using EliteAthleteApp.Models.User
 
-@model HomePanelVM
+@model UserPanelVM
 
 @{
 	ViewData["Title"] = "Panel";
@@ -514,7 +514,7 @@
 				var userId = $(this).data("userid");
 
 				$.ajax({
-					url: '@Url.Action("Info", "Users")',
+					url: '@Url.Action("UserInfo", "Users")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {

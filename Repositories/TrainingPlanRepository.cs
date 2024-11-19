@@ -51,9 +51,8 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS A LIST OF SPECIFIC USER TRAINING PLANS BASED ON PROVIDED TRAINING PLAN IDs.
-		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVMAsync(List<int> trainingPlanIds, int trainingModuleId)
+		public async Task<TrainingPlanIndexVM> GetTrainingPlanIndexVMAsync(int trainingModuleId)
 		{
-			var (trainingPlanVMs, progress) = await GetTrainingPlanVMsAndProgressAsync(trainingPlanIds);
 			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			var coach = await userManager.FindByIdAsync(user.CoachId);
 
@@ -61,12 +60,16 @@ namespace EliteAthleteApp.Repositories
 			{
 				UserId = user.Id,
 				CoachId = coach.Id,
-				TrainingModuleId = trainingModuleId,
-				TrainingPlanVMs = trainingPlanVMs,
-				Progress = (int)progress
+				TrainingModuleId = trainingModuleId
 			};
 
 			return trainingPlanIndexVM;
+		}
+
+		public async Task<TrainingPlanListVM> GetTrainingPlanListVMAsync(List<int> trainingPlanIds)
+		{
+			var (trainingPlanVMs, progress) = await GetTrainingPlanVMsAndProgressAsync(trainingPlanIds);
+			return (new TrainingPlanListVM { Progress = progress, TrainingPlanVMs = trainingPlanVMs });
 		}
 
 		// GETS THE TRAINING PLAN DETAILS VIEW MODEL FOR THE SPECIFIED TRAINING PLAN.

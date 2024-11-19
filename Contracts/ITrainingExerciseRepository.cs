@@ -12,7 +12,10 @@ namespace EliteAthleteApp.Contracts
 		Task<List<TrainingExerciseVM>> GetExerciseVMsAsync(string? coachId);
 
 		// GETS LIST OF PRIVATE EXERCISES SET TO PUBLIC
-		Task<List<TrainingExerciseVM>> GetAdminExerciseVMsAsync();
+		Task<List<TrainingExerciseVM>> GetExerciseAdminVMsAsync();
+
+		// GETS SET EXERCISE AS PUBLIC VIEW MODEL
+		Task<TrainingExerciseAsPublicVM> GetExerciseAsPublicVMAsync(int? trainingExerciseId);
 
 		// GETS EXERCISE CREATE VIEW MODEL
 		Task<TrainingExerciseCreateVM> GetExerciseCreateVMAsync(int? privateExerciseCount);
@@ -34,5 +37,8 @@ namespace EliteAthleteApp.Contracts
 
 		// DELETES EXISTING DATABASE ENTITY FROM THE EXERCISE TABLE
 		Task DeleteExerciseAsync(TrainingExerciseDeleteVM trainingExerciseDeleteVM);
+
+		// SETS EXERCISE AS PUBLIC
+		Task SetExerciseAsPublic(int trainingExerciseId);
 	}
 }

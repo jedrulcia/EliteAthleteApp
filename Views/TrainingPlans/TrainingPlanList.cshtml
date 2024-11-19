@@ -1,0 +1,121 @@
+﻿@using EliteAthleteApp.Models.TrainingPlan
+@using EliteAthleteApp.Configurations.Constants
+
+@model TrainingPlanListVM
+
+<div class="progress custom-progress" role="progressbar" aria-label="Success example" aria-valuenow="@Model.Progress" aria-valuemin="0" aria-valuemax="100">
+	<div class="progress-bar bg-success" style="width: @Model.Progress%"><strong>@Model.Progress%</strong></div>
+	<div class="progress-bar bg-dark" style="width: @(100 - Model.Progress)%"></div>
+</div>
+<table class="table">
+	<thead>
+		<tr>
+			<th class="text-start">
+				@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Date)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TrainingPlanVMs.First().Name)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (User.IsInRole(Roles.User))
+		{
+			@foreach (var item in Model.TrainingPlanVMs)
+			{
+				if (!item.IsEmpty)
+				{
+					<tr>
+						<td class="text-start">
+							@Html.DisplayFor(modelItem => item.Date)
+						</td>
+						<td>
+							<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
+								@if (item.IsCompleted == true)
+								{
+									<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+								}
+								else
+								{
+									<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+								}
+							</a>
+						</td>
+						<td class="text-end">
+							<div class="dropdown">
+								<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+									<strong>Actions</strong>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<li>
+										<button data-completetrainingplanid="@item.Id"
+												data-completetrainingmoduleid="@item.TrainingModuleId"
+												class="dropdown-item changeStatusBtn">
+											<i class="bi bi-check2">&nbsp;</i>Complete
+										</button>
+									</li>
+								</ul>
+							</div>
+						</td>
+					</tr>
+				}
+			}
+		}
+		@if (User.IsInRole(Roles.Coach) || User.IsInRole(Roles.Administrator))
+		{
+			@foreach (var item in Model.TrainingPlanVMs)
+			{
+				<tr>
+					<td class="text-start">
+						@Html.DisplayFor(modelItem => item.Date)
+					</td>
+					<td>
+						<a asp-action="Details" asp-route-trainingPlanId="@item.Id">
+							@if (item.IsEmpty)
+							{
+								<i class="btn btn-secondary">@Html.DisplayFor(modelItem => item.Name)</i>
+							}
+							else if (item.IsCompleted == true)
+							{
+								<i class="btn btn-success">@Html.DisplayFor(modelItem => item.Name)</i>
+							}
+							else
+							{
+								<i class="btn btn-danger">@Html.DisplayFor(modelItem => item.Name)</i>
+							}
+						</a>
+					</td>
+					<td class="text-end">
+						<div class="dropdown">
+							<button class="btn btn-outline-info btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+								<strong>Actions</strong>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<li>
+									<button data-copyfromid="@item.Id"
+											data-copytrainingmoduleid="@item.TrainingModuleId"
+											class="dropdown-item copyBtn">
+										<i class="bi bi-clipboard">&nbsp;</i>Copy
+									</button>
+								</li>
+								<li>
+									<a asp-action="ManageExercises" asp-route-id="@item.Id" asp-route-trainingModuleId="@item.TrainingModuleId" class="dropdown-item">
+										<i class="bi bi-pencil">&nbsp;</i>Exercises
+									</a>
+								</li>
+								<li>
+									<button data-completetrainingplanid="@item.Id"
+											data-completetrainingmoduleid="@item.TrainingModuleId"
+											class="dropdown-item changeStatusBtn">
+										<i class="bi bi-check2">&nbsp;</i>Complete
+									</button>
+								</li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.TrainingExercise;
 using AutoMapper;
-using EliteAthleteApp.Models.Admin;
 using EliteAthleteApp.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -42,31 +41,25 @@ namespace EliteAthleteApp.Controllers
 			return PartialView(await trainingExerciseRepository.GetExerciseVMsAsync(coachId));
 		}
 
-		// GET: Admin/Index/ExerciseAdmin
+		// GET: AdminIndex/ExerciseAdmin
 		public async Task<IActionResult> ExerciseAdmin()
 		{
-			var exerciseVMs = await trainingExerciseRepository.GetAdminExerciseVMsAsync();
-
-			return PartialView(exerciseVMs);
+			return PartialView(await trainingExerciseRepository.GetExerciseAdminVMsAsync());
 		}
 
-		// GET: Admin/Index/ExerciseAsPublic
+		// GET: AdminIndex/ExerciseAsPublic
 		public async Task<IActionResult> ExerciseAsPublic(int trainingExerciseId)
 		{
-			var exerciseVM = mapper.Map<TrainingExerciseVM>(await trainingExerciseRepository.GetAsync(trainingExerciseId));
-			return PartialView(new TrainingExerciseAsPublicVM { TrainingExerciseVM = exerciseVM });
+			return PartialView(await trainingExerciseRepository.GetExerciseAsPublicVMAsync(trainingExerciseId));
 		}
 
-		// POST: Admin/Index/SetExerciseAsPublic
-		[HttpPost, ActionName("ExerciseAsPublic")]
+		// POST: AdminIndex/SetExerciseAsPublic
 		[ValidateAntiForgeryToken]
+		[HttpPost, ActionName("ExerciseAsPublic")]
 		public async Task<IActionResult> ExerciseAsPublicPost(int trainingExerciseId)
 		{
-			var exercise = await trainingExerciseRepository.GetAsync(trainingExerciseId);
-			exercise.CoachId = null;
-			exercise.SetAsPublic = true;
-			await trainingExerciseRepository.UpdateAsync(exercise);
-			return RedirectToAction(nameof(Index), "Admin");
+			await trainingExerciseRepository.SetExerciseAsPublic(trainingExerciseId);
+			return RedirectToAction(nameof(Index), "Users");
 		}
 
 		// GET: Exercises/Create
