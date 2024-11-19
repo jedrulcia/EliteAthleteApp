@@ -29,20 +29,6 @@ namespace EliteAthleteApp.Controllers
 			this.trainingPlanRepository = trainingPlanRepository;
 		}
 
-		public async Task<IActionResult> Panel(string? userId)
-		{
-			var userPanelVM = new HomePanelVM();
-			if (userId == null)
-			{
-				userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User));
-				userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
-				return View(userPanelVM);
-			}
-			userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
-			userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
-			return View(userPanelVM);
-		}
-
 		public async Task<IActionResult> Index()
 		{
 			var homeIndexVM = new HomeIndexVM();

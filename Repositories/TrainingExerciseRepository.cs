@@ -62,7 +62,7 @@ namespace EliteAthleteApp.Repositories
 		}
 
 		// GETS LIST OF PRIVATE EXERCISES SET TO PUBLIC
-		public async Task<List<TrainingExerciseVM>> GetAdminExerciseVMsAsync()
+		public async Task<List<TrainingExerciseVM>> GetExerciseAdminVMsAsync()
 		{
 			var exercises = (await GetAllAsync()).Where(e => e.CoachId != null && e.SetAsPublic == true).ToList();
 			var exerciseVMs = mapper.Map<List<TrainingExerciseVM>>(exercises);
@@ -73,6 +73,16 @@ namespace EliteAthleteApp.Repositories
 			}
 
 			return exerciseVMs;
+		}
+
+		// GETS SET EXERCISE AS PUBLIC VIEW MODEL
+		public async Task<TrainingExerciseAsPublicVM> GetExerciseAsPublicVMAsync(int? trainingExerciseId)
+		{
+			var trainingExerciseAsPublicVM = new TrainingExerciseAsPublicVM
+			{
+				TrainingExerciseVM = mapper.Map<TrainingExerciseVM>(await GetAsync(trainingExerciseId))
+			};
+			return trainingExerciseAsPublicVM;
 		}
 
 		// GETS EXERCISE CREATE VIEW MODEL
@@ -139,6 +149,14 @@ namespace EliteAthleteApp.Repositories
 			await DeleteAsync(trainingExerciseDeleteVM.Id);
 		}
 
+		public async Task SetExerciseAsPublic(int trainingExerciseId)
+		{
+			var exercise = await GetAsync(trainingExerciseId);
+			exercise.CoachId = null;
+			exercise.SetAsPublic = true;
+			await UpdateAsync(exercise);
+		}
+
 		// PRIVATE METHODS BELOW
 
 		// GETS THE CATEGORY AND MUSCLE GROUP ENTITIES VOR EXERCISE VIEW MODEL
@@ -169,5 +187,6 @@ namespace EliteAthleteApp.Repositories
 
 			return exerciseCreateVM;
 		}
+
 	}
 }

@@ -150,6 +150,7 @@ namespace EliteAthleteApp.Areas.Identity.Pages.Account
 				user.FirstName = Input.FirstName;
 				user.LastName = Input.LastName;
 				user.UserSubscriptionId = 1;
+				user.ImageUrl = "13WYfBCwvkwatxB6VFS4zm4YcaxjpuWtA";
 
 				if (Input.RegisterAsCoach)
 				{

@@ -1,9 +1,8 @@
 ﻿using EliteAthleteApp.Models.Charts;
-using EliteAthleteApp.Models.User;
 
-namespace EliteAthleteApp.Models.Home
+namespace EliteAthleteApp.Models.User
 {
-    public class HomePanelVM
+    public class UserPanelVM
     {
         public UserVM UserVM { get; set; }
         public UserChartsVM UserChartsVM { get; set; }

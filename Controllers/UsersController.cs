@@ -12,6 +12,9 @@ using EliteAthleteApp.Services;
 using System.Text.Json;
 using System.Text;
 using EliteAthleteApp.Contracts;
+using EliteAthleteApp.Models.Admin;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using EliteAthleteApp.Models.Home;
 
 namespace EliteAthleteApp.Controllers
 {
@@ -24,6 +27,7 @@ namespace EliteAthleteApp.Controllers
 		private readonly ApplicationDbContext context;
 		private readonly IGoogleDriveService googleDriveService;
 		private readonly IUserChartService userChartService;
+		private readonly IEmailSender emailSender;
 
 		public UsersController(UserManager<User> userManager,
 			IMapper mapper,
@@ -31,7 +35,8 @@ namespace EliteAthleteApp.Controllers
 			IUserRepository userRepository,
 			ApplicationDbContext context,
 			IGoogleDriveService googleDriveService,
-			IUserChartService userChartService)
+			IUserChartService userChartService,
+			IEmailSender emailSender)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
@@ -40,18 +45,32 @@ namespace EliteAthleteApp.Controllers
 			this.context = context;
 			this.googleDriveService = googleDriveService;
 			this.userChartService = userChartService;
+			this.emailSender = emailSender;
 		}
 
 		// GET: Users/List/Index
-		public async Task<IActionResult> Index(string? userId)
+		public async Task<IActionResult> UserIndex(string? userId)
 		{
 			string coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
 			var userListVM = mapper.Map<List<UserVM>>((await userRepository.GetAllAsync()).Where(u => u.CoachId == coachId));
 			return View(new UserIndexVM { AthleteCount = userListVM.Count, CoachId = coachId });
 		}
+		public async Task<IActionResult> UserPanel(string? userId)
+		{
+			var userPanelVM = new UserPanelVM();
+			if (userId == null)
+			{
+				userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User));
+				userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
+				return View(userPanelVM);
+			}
+			userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
+			userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
+			return View(userPanelVM);
+		}
 
 		// GET: Users/List
-		public async Task<IActionResult> List()
+		public async Task<IActionResult> UserList()
 		{
 			string coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
 			var userListVM = mapper.Map<List<UserVM>>((await userRepository.GetAllAsync()).Where(u => u.CoachId == coachId));
@@ -73,7 +92,7 @@ namespace EliteAthleteApp.Controllers
 			if (userAddAthleteVM.AthleteCount >= subscription.AthleteLimit)
 			{
 				TempData["ErrorMessage"] = $"You have reached the limit of athletes in your subscription.";
-				return RedirectToAction(nameof(List), "Users");
+				return RedirectToAction(nameof(UserList), "Users");
 			}
 
 			var user = (await userRepository.GetAllAsync())
@@ -83,7 +102,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = coach.Id;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(List), "Users");
+			return RedirectToAction(nameof(UserList), "Users");
 		}
 
 		public async Task<IActionResult> AcceptInvite()
@@ -93,7 +112,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction("Panel", "Home", new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> DeclineInvite()
@@ -102,7 +121,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction("Panel", "Home", new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> DeleteCoach()
@@ -111,7 +130,7 @@ namespace EliteAthleteApp.Controllers
 			user.CoachId = null;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction("Panel", "Home", new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
 		}
 
 		public async Task<IActionResult> ResetInviteCode()
@@ -125,11 +144,11 @@ namespace EliteAthleteApp.Controllers
 
 			user.InviteCode = inviteCode;
 			await userRepository.UpdateAsync(user);
-			return RedirectToAction("Panel", "Home", new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
 		}
 
 		// GET: Users/List/Index/Info
-		public async Task<IActionResult> Info(string? userId)
+		public async Task<IActionResult> UserInfo(string? userId)
 		{
 			var user = await userManager.FindByIdAsync(userId);
 			var userVM = mapper.Map<UserVM>(user);
@@ -154,7 +173,7 @@ namespace EliteAthleteApp.Controllers
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
 			await userRepository.UploadUserImageAsync(userId, imageFile);
-			return RedirectToAction("Panel", "Home", new { userId = userId });
+			return RedirectToAction(nameof(UserPanel), new { userId = userId });
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
@@ -163,7 +182,156 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> DeleteImage(string userId)
 		{
 			await userRepository.DeleteUserImageAsync(userId);
-			return RedirectToAction("Panel", "Home", new { userId = userId });
+			return RedirectToAction(nameof(UserPanel), new { userId = userId });
 		}
+
+
+		// GET: Admin/Index
+		public async Task<IActionResult> AdminIndex()
+		{
+			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			return View(new AdminIndexVM { AdminId = admin.Id });
+		}
+
+		// GET: Admin/Index/User
+		public async Task<IActionResult> AdminUserList()
+		{
+			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var users = await userRepository.GetAllAsync();
+			var userVMs = mapper.Map<List<UserVM>>(users);
+			return PartialView(new AdminUserVM { UserVMs = userVMs, AdminId = admin.Id });
+		}
+
+		// GET: Admin/Index/SendEmail
+		public async Task<IActionResult> SendEmail(string? userId)
+		{
+			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			return PartialView(new AdminSendEmailVM { UserId = userId, AdminId = admin.Id });
+		}
+
+		// POST: Admin/Index/SendEmail
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> SendEmail(AdminSendEmailVM adminSendEmailVM)
+		{
+
+			if (ModelState.IsValid)
+			{
+				string subject = adminSendEmailVM.Subject;
+				string message = adminSendEmailVM.Message;
+
+				if (adminSendEmailVM.UserId == null)
+				{
+					var users = await userRepository.GetAllAsync();
+					foreach (var user in users)
+					{
+						await emailSender.SendEmailAsync(user.Email, subject, message);
+					}
+				}
+				else
+				{
+					var user = await userManager.FindByIdAsync(adminSendEmailVM.UserId);
+					await emailSender.SendEmailAsync(user.Email, subject, message);
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			TempData["ErrorMessage"] = $"Error while sending emails. Please try again.";
+			return RedirectToAction(nameof(Index));
+		}
+
+		// GET: Admin/Index/UserDelete
+		public async Task<IActionResult> UserDelete(string userId)
+		{
+			var userVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
+			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			return PartialView(new AdminUserDeleteVM { AdminId = admin.Id, UserVM = userVM });
+		}
+
+		// POST: Admin/Index/UserDelete
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UserDelete(UserVM userVM)
+		{
+			var user = await userManager.FindByIdAsync(userVM.Id);
+			await userManager.DeleteAsync(user);
+			return RedirectToAction(nameof(Index));
+		}
+
+		// GET: Admin/Index/UserLockout
+		public async Task<IActionResult> UserLockout(string userId)
+		{
+			var userVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
+			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			return PartialView(new AdminUserLockoutVM { AdminId = admin.Id, UserVM = userVM });
+		}
+
+		// POST: Admin/Index/UserLockout
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UserLockout(AdminUserLockoutVM adminUserLockoutVM)
+		{
+			var user = await userManager.FindByIdAsync(adminUserLockoutVM.UserVM.Id);
+			user.LockoutEnd = adminUserLockoutVM.LockoutDate;
+			await userRepository.UpdateAsync(user);
+			return RedirectToAction(nameof(Index));
+		}
+
+		/*        public async Task<IActionResult> Chat(string? userId)
+        {
+            var viewerId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
+            var user1 = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+            var user2 = await userManager.FindByIdAsync(userId);
+
+            var coachVM = new UserVM();
+            var userVM = new UserVM();
+
+            if (User.IsInRole("Coach"))
+            {
+                coachVM = mapper.Map<UserVM>(user1);
+                userVM = mapper.Map<UserVM>(user2);
+            }
+            else
+            {
+                coachVM = mapper.Map<UserVM>(user2);
+                userVM = mapper.Map<UserVM>(user1);
+            }
+
+            // Sprawdź, czy chat między użytkownikami już istnieje
+            var chat = await context.Set<UserChat>().Where(uc => uc.UserId == userVM.Id && uc.CoachId == coachVM.Id).FirstOrDefaultAsync();
+
+            List<UserChatMessageVM> chatMessages;
+            if (chat == null)
+            {
+                // Tworzymy nowy plik JSON, jeśli chat nie istnieje
+                chatMessages = new List<UserChatMessageVM>();
+                string jsonContent = JsonSerializer.Serialize(chatMessages, new JsonSerializerOptions { WriteIndented = true });
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+
+                var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
+                string jsonUrl = await googleDriveService.UploadUserChatFileAsync(chatFile);
+
+                chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
+                await context.AddAsync(chat);
+                await context.SaveChangesAsync();
+            }
+            else
+            {
+                // Jeśli plik istnieje, pobierz wiadomości
+                var fileId = new Uri(chat.ChatUrl).Segments.Last();
+                chatMessages = await googleDriveService.GetChatMessagesAsync(fileId);
+            }
+
+            // Tworzymy model widoku
+            var chatVM = new UserChatVM
+            {
+                Id = chat.Id,
+                CoachVM = coachVM,
+                UserVM = userVM,
+                UserChatMessageVMs = chatMessages,
+                ViewerId = viewerId
+            };
+
+            return View(chatVM);
+        }*/
 	}
 }

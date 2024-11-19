@@ -23,8 +23,14 @@ namespace EliteAthleteApp.Controllers
 		// GET: TrainingPlans
 		public async Task<IActionResult> Index(int trainingModuleId)
         {
-            List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
-			return View(await trainingPlanRepository.GetTrainingPlanIndexVMAsync(trainingPlanIds, trainingModuleId));
+			return View(await trainingPlanRepository.GetTrainingPlanIndexVMAsync(trainingModuleId));
+		}
+
+		// GET: TrainingPlans
+		public async Task<IActionResult> TrainingPlanList(int trainingModuleId)
+		{
+			List<int> trainingPlanIds = (await trainingModuleRepository.GetAsync(trainingModuleId)).TrainingPlanIds;
+			return PartialView(await trainingPlanRepository.GetTrainingPlanListVMAsync(trainingPlanIds));
 		}
 
 		// GET: TrainingPlans/Details

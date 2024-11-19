@@ -16,16 +16,16 @@ namespace EliteAthleteApp.Services
 		}
 
 		// UPLOADS IMAGE TO EXERCISE BLOB STORAGE
-/*		public async Task<string> UploadImageAsync(IFormFile file)
-        {
-            return await UploadFileAsync(file, blobContainer);
+		public async Task<string> UploadImageAsync(IFormFile file)
+		{
+			return await UploadFileAsync(file, blobContainer);
 		}
 
 		// REMOVES IMAGE FROM EXERCISE BLOB STORAGE
 		public async Task RemoveImageAsync(string? imageUrl)
 		{
 			await RemoveFileAsync(imageUrl, blobContainer);
-		}*/
+		}
 
 		// PRIVATE METHODS BELOW
 

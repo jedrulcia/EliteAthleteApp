@@ -1,4 +1,5 @@
-﻿@using EliteAthleteApp.Models.Admin;
+﻿@    using EliteAthleteApp.Models.Admin;
+    using EliteAthleteApp.Models.User;
 
 @model AdminIndexVM
 
@@ -244,7 +245,7 @@
 			// SCRIPT TO HANDLE LOADING TAB AFTER OPENING INDEX
 			var adminId = $('#userListTab').data("adminid");
 			$.ajax({
-				url: '@Url.Action("UserList", "Admin")',
+				url: '@Url.Action("AdminUserList", "Users")',
 				type: 'GET',
 				data: { adminId: adminId },
 				success: function (data) {
@@ -265,7 +266,7 @@
 				var adminId = $('#userListTab').data("adminid");
 
 				$.ajax({
-					url: '@Url.Action("UserList", "Admin")',
+					url: '@Url.Action("AdminUserList", "Users")',
 					type: 'GET',
 					data: { adminId: adminId },
 					success: function (data) {
@@ -298,28 +299,6 @@
 					},
 					error: function () {
 						alert("An error occurred while loading 'privateExerciseList' content.");
-					}
-				});
-			});
-
-			// SCRIPT FOR HANDLING LOGS LIST TAB
-			$('#logList').on('click', function (e) {
-				e.preventDefault();
-
-				var adminId = $('#logListTab').data("adminid");
-
-				$.ajax({
-					url: '@Url.Action("Logs", "Admin")',
-					type: 'GET',
-					data: { adminId: adminId },
-					success: function (data) {
-						$('#logList').html(data);
-						$('.table').DataTable();
-						$('#logListTab').tab('show');
-
-					},
-					error: function () {
-						alert("An error occurred while loading 'log' content.");
 					}
 				});
 			});
@@ -427,7 +406,7 @@
 
 				var userId = $(this).data("userid");
 				$.ajax({
-					url: '@Url.Action("SendEmail", "Admin")',
+					url: '@Url.Action("SendEmail", "Users")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {
@@ -446,7 +425,7 @@
 
 				var userId = $(this).data("userid");
 				$.ajax({
-					url: '@Url.Action("UserLockout", "Admin")',
+					url: '@Url.Action("UserLockout", "Users")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {
@@ -465,7 +444,7 @@
 
 				var userId = $(this).data("userid");
 				$.ajax({
-					url: '@Url.Action("UserDelete", "Admin")',
+					url: '@Url.Action("UserDelete", "Users")',
 					type: 'GET',
 					data: { userId: userId },
 					success: function (data) {
