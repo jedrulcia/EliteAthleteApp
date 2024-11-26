@@ -104,7 +104,7 @@ namespace EliteAthleteApp.Controllers
 			TempData["ErrorMessage"] = ModelState.Values
 				.SelectMany(v => v.Errors)
 				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while editing the Exercise. Please try again.";
+				.FirstOrDefault() ?? "Error while Editing the Exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -121,8 +121,8 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// POST: Exercises/Delete
-		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
+		[HttpPost, ActionName("Delete")]
 		public async Task<IActionResult> DeleteConfirmed(TrainingExerciseDeleteVM trainingExerciseDeleteVM)
 		{
 			await trainingExerciseRepository.DeleteExerciseAsync(trainingExerciseDeleteVM);
