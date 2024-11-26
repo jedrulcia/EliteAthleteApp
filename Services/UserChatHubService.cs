@@ -12,20 +12,20 @@ using EliteAthleteApp.Contracts;
 
 public class UserChatHubService : Hub
 {
-	private readonly IGoogleDriveService googleDriveService;
+	private readonly IBackblazeStorageService backblazeService;
 	private readonly ApplicationDbContext context;
 	private readonly UserManager<User> userManager;
 
-	public UserChatHubService(IGoogleDriveService googleDriveService, ApplicationDbContext context, UserManager<User> userManager)
+	public UserChatHubService(IBackblazeStorageService backblazeService, ApplicationDbContext context, UserManager<User> userManager)
 	{
-		this.googleDriveService = googleDriveService;
+		this.backblazeService = backblazeService;
 		this.context = context;
 		this.userManager = userManager;
 	}
 
-/*    public async Task SendMessage(string message, string userId, string coachId, string senderId)
+    public async Task SendMessage(string message, string userId, string coachId, string senderId)
     {
-        var chat = await context.Set<UserChat>()
+/*        var chat = await context.Set<UserChat>()
             .Where(uc => (uc.UserId == userId && uc.CoachId == coachId) || (uc.UserId == coachId && uc.CoachId == userId))
             .FirstOrDefaultAsync();
 
@@ -53,6 +53,6 @@ public class UserChatHubService : Hub
         // Wysyłanie wiadomości do użytkowników
         var formattedTimestamp = newMessage.Timestamp.ToString("HH:mm");
         await Clients.User(userId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
-        await Clients.User(coachId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
-    }*/
+        await Clients.User(coachId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);*/
+    }
 }
