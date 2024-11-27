@@ -20,7 +20,7 @@ public class UserChatHubService : Hub
 		this.userManager = userManager;
 	}
 
-    public async Task SendMessage(string message, string userId, string coachId, string senderId, int chatId)
+    public async Task SendMessage(string message, string userId, string coachId, string senderId)
     {
         var userChat = await context.Set<UserChat>()
             .Where(uc => (uc.UserId == userId && uc.CoachId == coachId) || (uc.UserId == coachId && uc.CoachId == userId))
@@ -30,8 +30,7 @@ public class UserChatHubService : Hub
             throw new InvalidOperationException("Chat does not exist or invalid chat");
 
         // Pobieranie zawartości pliku z Google Drive
-        var fileId = new Uri(userChat.ChatUrl).Segments.Last();
-        var chatMessages = await backblazeService.GetChatAsync(fileId);
+        var chatMessages = await backblazeService.GetChatAsync(userChat.ChatUrl);
 
         // Tworzenie nowej wiadomości
         var newMessage = new UserChatMessageVM

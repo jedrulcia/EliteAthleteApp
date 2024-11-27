@@ -317,9 +317,7 @@ namespace EliteAthleteApp.Controllers
 			}
 			else
 			{
-				// Jeśli plik istnieje, pobierz wiadomości
-				var fileId = new Uri(chat.ChatUrl).Segments.Last();
-				chatMessages = await backblazeStorageService.GetChatAsync(fileId);
+				chatMessages = await backblazeStorageService.GetChatAsync(chat.ChatUrl);
 			}
 
 			// Tworzymy model widoku
