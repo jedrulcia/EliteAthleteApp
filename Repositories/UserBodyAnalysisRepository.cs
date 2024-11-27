@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
-using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.UserCharts;
 using EliteAthleteApp.Models.Charts;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.UserBodyAnalysis;

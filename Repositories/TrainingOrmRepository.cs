@@ -3,7 +3,7 @@ using EliteAthleteApp.Contracts;
 using AutoMapper;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.Charts;
-using EliteAthleteApp.Models;
+using EliteAthleteApp.Models.UserCharts;
 using Microsoft.AspNetCore.Identity;
 
 namespace EliteAthleteApp.Repositories

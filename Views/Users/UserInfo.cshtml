@@ -39,7 +39,7 @@
 			<strong>Coach:</strong> <p class="text-white">
 				@Model.CoachVM.FirstName @Model.CoachVM.LastName
 				<a asp-action="DeleteCoach" class="btn btn-sm btn-danger">Delete Coach</a>
-				<a asp-action="Chat" asp-route-userId="@Model.CoachVM.Id" asp-controller="UserChats" class="btn btn-sm btn-danger">Chat</a>
+				<a asp-action="Chat" asp-route-userId="@Model.CoachVM.Id" asp-controller="Users" class="btn btn-sm btn-danger">Chat</a>
 			</p>
 		}
 		@if (Model.NewCoachVM != null)

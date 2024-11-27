@@ -5,36 +5,32 @@ using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
-using EliteAthleteApp.Models.User;
-using Google.Apis.Drive.v3;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using EliteAthleteApp.Contracts;
 
 public class UserChatHubService : Hub
 {
-	private readonly IGoogleDriveService googleDriveService;
+	private readonly IBackblazeStorageService backblazeService;
 	private readonly ApplicationDbContext context;
 	private readonly UserManager<User> userManager;
 
-	public UserChatHubService(IGoogleDriveService googleDriveService, ApplicationDbContext context, UserManager<User> userManager)
+	public UserChatHubService(IBackblazeStorageService backblazeService, ApplicationDbContext context, UserManager<User> userManager)
 	{
-		this.googleDriveService = googleDriveService;
+		this.backblazeService = backblazeService;
 		this.context = context;
 		this.userManager = userManager;
 	}
 
-/*    public async Task SendMessage(string message, string userId, string coachId, string senderId)
+    public async Task SendMessage(string message, string userId, string coachId, string senderId)
     {
-        var chat = await context.Set<UserChat>()
+        var userChat = await context.Set<UserChat>()
             .Where(uc => (uc.UserId == userId && uc.CoachId == coachId) || (uc.UserId == coachId && uc.CoachId == userId))
             .FirstOrDefaultAsync();
 
-        if (chat == null)
+        if (userChat == null)
             throw new InvalidOperationException("Chat does not exist or invalid chat");
 
         // Pobieranie zawartości pliku z Google Drive
-        var fileId = new Uri(chat.ChatUrl).Segments.Last();
-        var chatMessages = await googleDriveService.GetChatMessagesAsync(fileId);
+        var chatMessages = await backblazeService.GetChatAsync(userChat.ChatUrl);
 
         // Tworzenie nowej wiadomości
         var newMessage = new UserChatMessageVM
@@ -48,11 +44,17 @@ public class UserChatHubService : Hub
         // Serializacja i aktualizacja pliku
         string jsonContent = JsonSerializer.Serialize(chatMessages, new JsonSerializerOptions { WriteIndented = true });
         var updatedStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
-        await googleDriveService.UploadUpdatedChatFileAsync(updatedStream, fileId);
+		var chatFile = new FormFile(updatedStream, 0, updatedStream.Length, "chatFile", "chatFile.json");
+		var chatName = userId;
+		var newChatId = await backblazeService.UploadChatAsync(chatFile, chatName);
+
+        userChat.ChatUrl = newChatId;
+        context.Update(userChat);
+        context.SaveChanges();
 
         // Wysyłanie wiadomości do użytkowników
         var formattedTimestamp = newMessage.Timestamp.ToString("HH:mm");
         await Clients.User(userId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
         await Clients.User(coachId).SendAsync("ReceiveMessage", message, senderId, formattedTimestamp);
-    }*/
+    }
 }

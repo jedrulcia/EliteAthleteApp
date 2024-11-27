@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnectionString") ?? throw new InvalidOperationException("Connection string 'DataBaseConnectionString' not found.");
-string sendGridConnectionString = builder.Configuration.GetConnectionString("SendGridConnectionString");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 	options.UseSqlServer(connectionString));
 
@@ -42,6 +41,10 @@ builder.Services.AddScoped<ITrainingPlanPhaseRepository, TrainingPlanPhaseReposi
 builder.Services.AddScoped<ITrainingModuleRepository, TrainingModuleRepository>();
 builder.Services.AddScoped<ITrainingOrmRepository, TrainingOrmRepository>();
 
+string backblazeApplicationKey = builder.Configuration["Backblaze:applicationKey"];
+string backblazeKeyId = builder.Configuration["Backblaze:keyId"];
+string backblazeBucketId = builder.Configuration["Backblaze:bucketId"];
+builder.Services.AddScoped<IBackblazeStorageService, BackblazeStorageService>(provider => new BackblazeStorageService(backblazeApplicationKey, backblazeKeyId, backblazeBucketId));
 
 builder.Services.AddScoped<IGoogleDriveService, GoogleDriveService>(provider =>
 {
@@ -62,6 +65,7 @@ builder.Services.AddScoped<IBlobStorageService, BlobStorageService>(provider =>	
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<IYoutubeService, YoutubeService>();
 
+string sendGridConnectionString = builder.Configuration.GetConnectionString("SendGridConnectionString");
 string sendFromEmailAddress = builder.Configuration.GetValue<string>("Email");
 builder.Services.AddTransient<IEmailSender, EmailSenderService>(provider => new EmailSenderService(sendGridConnectionString, sendFromEmailAddress));
 

@@ -37,12 +37,12 @@
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<li>
 								<button class="dropdown-item">
-									<a asp-action="Panel" asp-controller="Home" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> User Panel</a>
+									<a asp-action="Chat" asp-controller="Users" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> Chat</a>
 								</button>
 							</li>
 							<li>
 								<button class="dropdown-item">
-									<a asp-action="Chat" asp-route-userId="@item.Id" asp-controller="UserChats">Chat</a>
+									<a asp-action="UserPanel" asp-controller="Users" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> User Panel</a>
 								</button>
 							</li>
 						</ul>

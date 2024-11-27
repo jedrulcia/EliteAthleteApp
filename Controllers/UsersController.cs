@@ -12,7 +12,7 @@ using EliteAthleteApp.Services;
 using System.Text.Json;
 using System.Text;
 using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Models.Admin;
+using EliteAthleteApp.Models.UserChat;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using EliteAthleteApp.Models.Home;
 
@@ -25,27 +25,27 @@ namespace EliteAthleteApp.Controllers
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly IUserRepository userRepository;
 		private readonly ApplicationDbContext context;
-		private readonly IGoogleDriveService googleDriveService;
 		private readonly IUserChartService userChartService;
 		private readonly IEmailSender emailSender;
+		private readonly IBackblazeStorageService backblazeStorageService;
 
 		public UsersController(UserManager<User> userManager,
 			IMapper mapper,
 			IHttpContextAccessor httpContextAccessor,
 			IUserRepository userRepository,
 			ApplicationDbContext context,
-			IGoogleDriveService googleDriveService,
 			IUserChartService userChartService,
-			IEmailSender emailSender)
+			IEmailSender emailSender,
+			IBackblazeStorageService backblazeStorageService)
 		{
 			this.userManager = userManager;
 			this.mapper = mapper;
 			this.httpContextAccessor = httpContextAccessor;
 			this.userRepository = userRepository;
 			this.context = context;
-			this.googleDriveService = googleDriveService;
 			this.userChartService = userChartService;
 			this.emailSender = emailSender;
+			this.backblazeStorageService = backblazeStorageService;
 		}
 
 		// GET: Users/List/Index
@@ -276,62 +276,61 @@ namespace EliteAthleteApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		/*        public async Task<IActionResult> Chat(string? userId)
-        {
-            var viewerId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
-            var user1 = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-            var user2 = await userManager.FindByIdAsync(userId);
+		public async Task<IActionResult> Chat(string? userId)
+		{
+			var viewerId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
+			var user1 = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
+			var user2 = await userManager.FindByIdAsync(userId);
 
-            var coachVM = new UserVM();
-            var userVM = new UserVM();
+			var coachVM = new UserVM();
+			var userVM = new UserVM();
 
-            if (User.IsInRole("Coach"))
-            {
-                coachVM = mapper.Map<UserVM>(user1);
-                userVM = mapper.Map<UserVM>(user2);
-            }
-            else
-            {
-                coachVM = mapper.Map<UserVM>(user2);
-                userVM = mapper.Map<UserVM>(user1);
-            }
+			if (User.IsInRole("Coach"))
+			{
+				coachVM = mapper.Map<UserVM>(user1);
+				userVM = mapper.Map<UserVM>(user2);
+			}
+			else
+			{
+				coachVM = mapper.Map<UserVM>(user2);
+				userVM = mapper.Map<UserVM>(user1);
+			}
 
-            // Sprawdź, czy chat między użytkownikami już istnieje
-            var chat = await context.Set<UserChat>().Where(uc => uc.UserId == userVM.Id && uc.CoachId == coachVM.Id).FirstOrDefaultAsync();
+			// Sprawdź, czy chat między użytkownikami już istnieje
+			var chat = await context.Set<UserChat>().Where(uc => uc.UserId == userVM.Id && uc.CoachId == coachVM.Id).FirstOrDefaultAsync();
 
-            List<UserChatMessageVM> chatMessages;
-            if (chat == null)
-            {
-                // Tworzymy nowy plik JSON, jeśli chat nie istnieje
-                chatMessages = new List<UserChatMessageVM>();
-                string jsonContent = JsonSerializer.Serialize(chatMessages, new JsonSerializerOptions { WriteIndented = true });
-                var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
+			List<UserChatMessageVM> chatMessages;
+			if (chat == null)
+			{
+				// Tworzymy nowy plik JSON, jeśli chat nie istnieje
+				chatMessages = new List<UserChatMessageVM>();
+				string jsonContent = JsonSerializer.Serialize(chatMessages, new JsonSerializerOptions { WriteIndented = true });
+				var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
 
-                var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
-                string jsonUrl = await googleDriveService.UploadUserChatFileAsync(chatFile);
+				var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
+				var chatName = userVM.Id;
+				string jsonUrl = await backblazeStorageService.UploadChatAsync(chatFile, chatName);
 
-                chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
-                await context.AddAsync(chat);
-                await context.SaveChangesAsync();
-            }
-            else
-            {
-                // Jeśli plik istnieje, pobierz wiadomości
-                var fileId = new Uri(chat.ChatUrl).Segments.Last();
-                chatMessages = await googleDriveService.GetChatMessagesAsync(fileId);
-            }
+				chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
+				await context.AddAsync(chat);
+				await context.SaveChangesAsync();
+			}
+			else
+			{
+				chatMessages = await backblazeStorageService.GetChatAsync(chat.ChatUrl);
+			}
 
-            // Tworzymy model widoku
-            var chatVM = new UserChatVM
-            {
-                Id = chat.Id,
-                CoachVM = coachVM,
-                UserVM = userVM,
-                UserChatMessageVMs = chatMessages,
-                ViewerId = viewerId
-            };
+			// Tworzymy model widoku
+			var chatVM = new UserChatVM
+			{
+				Id = chat.Id,
+				CoachVM = coachVM,
+				UserVM = userVM,
+				UserChatMessageVMs = chatMessages,
+				ViewerId = viewerId
+			};
 
-            return View(chatVM);
-        }*/
+			return View(chatVM);
+		}
 	}
 }
