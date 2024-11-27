@@ -309,7 +309,7 @@ namespace EliteAthleteApp.Controllers
 
 				var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
 				var chatName = userVM.Id;
-				string jsonUrl = await backblazeStorageService.UploadNewChatAsync(chatFile, chatName);
+				string jsonUrl = await backblazeStorageService.UploadChatAsync(chatFile, chatName);
 
 				chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
 				await context.AddAsync(chat);
@@ -319,7 +319,7 @@ namespace EliteAthleteApp.Controllers
 			{
 				// Jeśli plik istnieje, pobierz wiadomości
 				var fileId = new Uri(chat.ChatUrl).Segments.Last();
-				//chatMessages = await backblazeStorageService.GetChatAsync(fileId);
+				chatMessages = await backblazeStorageService.GetChatAsync(fileId);
 			}
 
 			// Tworzymy model widoku
@@ -328,7 +328,7 @@ namespace EliteAthleteApp.Controllers
 				Id = chat.Id,
 				CoachVM = coachVM,
 				UserVM = userVM,
-				//UserChatMessageVMs = chatMessages,
+				UserChatMessageVMs = chatMessages,
 				ViewerId = viewerId
 			};
 
