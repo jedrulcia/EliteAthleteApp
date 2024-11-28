@@ -15,12 +15,12 @@
                     <form asp-action="UploadImage" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="@Model.Id" />
                         <input type="hidden" name="index" value="@i" />
-                        <label for="imageUpload_@i" class="upload-icon">⬆</label>
+                        <label for="imageUpload_@i" class="upload-icon" id="uploadIcon_@i">⬆</label>
                         <input type="file" name="imageUpload" id="imageUpload_@i" class="d-none" accept="image/*" data-index="@i" />
                         <div class="preview-thumbnail">
                             <img id="previewImg_@i" data-index="@i" src="" class="img-thumbnail d-none" />
                         </div>
-                        <button type="submit" class="remove-media">O</button>
+                        <button type="submit" class="add-media">+</button>
                     </form>
                 }
                 else
@@ -41,19 +41,19 @@
             {
                 <form asp-action="UploadVideo" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="@Model.Id" />
-                    <label for="videoUpload" class="upload-icon">⬆</label>
+                    <label for="videoUpload" class="upload-icon" id="uploadIconVideo">⬆</label>
                     <input type="file" name="videoUpload" id="videoUpload" class="d-none" accept="video/*" onchange="previewVideo(this)" />
                     <div class="preview-thumbnail">
                         <video id="previewVideo" class="d-none" controls width="100%"></video>
                     </div>
-                    <button type="submit" class="remove-media">O</button>
+                    <button type="submit" class="add-media">+</button>
                 </form>
             }
             else 
             {
                 <form asp-action="DeleteVideo">
                     <input type="hidden" name="id" value="@Model.Id" />
-                    <iframe src="https://drive.google.com/file/d/@Model.VideoUrl/preview" width="640" height="480" allow="autoplay"></iframe>
+                    <iframe src="https://drive.google.com/file/d/@Model.VideoUrl/preview" width="200" height="200" allow="autoplay"></iframe>
                     <button type="submit" class="remove-media">X</button>
                 </form>
             }
