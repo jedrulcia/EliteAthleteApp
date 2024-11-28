@@ -276,7 +276,7 @@ namespace EliteAthleteApp.Controllers
 			return RedirectToAction(nameof(Index));
 		}
 
-		public async Task<IActionResult> Chat(string? userId)
+		public async Task<IActionResult> UserChat(string? userId)
 		{
 			var viewerId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
 			var user1 = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);

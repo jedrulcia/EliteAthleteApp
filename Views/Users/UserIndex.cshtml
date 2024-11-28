@@ -19,12 +19,12 @@
 		<ul class="nav nav-tabs" id="coachTabs" role="tablist">
 			<li class="nav-item" role="presentation">
 				<a class="nav-link active" id="userListTab" data-toggle="tab" href="#userList" role="tab" aria-controls="userList" aria-selected="true">
-					<i class="bi bi-person">&nbsp;</i><strong>My Athletes</strong>
+					<i class="fa-solid fa-users">&nbsp;</i><strong>My Athletes</strong>
 				</a>
 			</li>
 			<li class="nav-item ms-auto" role="presentation">
 				<button class="nav-link addAthleteBtn" type="button" id="addAthleteTab" aria-controls="addAthlete" aria-selected="false" data-athletecount="@Model.AthleteCount">
-					<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Add Athlete</strong>
+					<i class="fa-solid fa-user-plus">&nbsp;</i><strong>Add Athlete</strong>
 				</button>
 			</li>
 		</ul>
@@ -36,19 +36,17 @@
 	</div>
 </div>
 
-<!-- MODAL FOR TRAINING MODULE EDIT -->
+<!-- MODAL FOR ADDING ATHLETE -->
 <div class="modal fade" id="addAthleteModal" tabindex="-1" role="dialog" aria-labelledby="addAthleteModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="addAthleteModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Add Athlete</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary" id="addAthleteModalLabel">
+					<strong>Add Athlete</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="addAthleteContent">
 			</div>

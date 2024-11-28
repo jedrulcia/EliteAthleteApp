@@ -36,18 +36,22 @@
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 							<li>
-								<button class="dropdown-item">
-									<a asp-action="Chat" asp-controller="Users" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> Chat</a>
-								</button>
+								<a class="dropdown-item" asp-action="Index" asp-controller="TrainingModules" asp-route-userId="@item.Id">
+									<i class="fa-solid fa-dumbbell"> &nbsp; </i> Training Modules
+								</a>
 							</li>
 							<li>
-								<button class="dropdown-item">
-									<a asp-action="UserPanel" asp-controller="Users" asp-route-userId="@item.Id"><i class="fa-solid fa-list"></i> User Panel</a>
-								</button>
+								<a class="dropdown-item" asp-action="UserChat" asp-controller="Users" asp-route-userId="@item.Id">
+									<i class="fa-solid fa-comment-dots"> &nbsp; </i> Chat
+								</a>
+							</li>
+							<li>
+								<a class="dropdown-item" asp-action="UserPanel" asp-controller="Users" asp-route-userId="@item.Id">
+									<i class="fa-solid fa-user"> &nbsp; </i> User Panel
+								</a>
 							</li>
 						</ul>
 					</div>
-
 				</td>
 			</tr>
 		}
