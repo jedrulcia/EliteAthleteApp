@@ -143,7 +143,7 @@ namespace EliteAthleteApp.Controllers
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
 			await trainingExerciseMediaRepository.UploadImageAsync(id, index, imageFile);
-			return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
+			return RedirectToAction(nameof(Index), "TrainingExercises");
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/UploadVideo
@@ -153,7 +153,7 @@ namespace EliteAthleteApp.Controllers
 		{
 			var videoFile = Request.Form.Files[$"videoUpload"];
 			await trainingExerciseMediaRepository.UploadVideoAsync(id, videoFile);
-			return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
+			return RedirectToAction(nameof(Index), "TrainingExercises");
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
@@ -162,7 +162,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> DeleteImage(int index, int id)
 		{
 			await trainingExerciseMediaRepository.DeleteImageAsync(id, index);
-			return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
+			return RedirectToAction(nameof(Index), "TrainingExercises");
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/DeleteVideo
@@ -171,7 +171,7 @@ namespace EliteAthleteApp.Controllers
 		public async Task<IActionResult> DeleteVideo(int id)
 		{
 			await trainingExerciseMediaRepository.DeleteVideoAsync(id);
-			return RedirectToAction(nameof(Index), "TrainingExercises", new { exerciseMediaId = id });
+			return RedirectToAction(nameof(Index), "TrainingExercises");
 		}
 	}
 }

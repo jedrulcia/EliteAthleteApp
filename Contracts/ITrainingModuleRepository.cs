@@ -5,6 +5,9 @@ namespace EliteAthleteApp.Contracts
 {
 	public interface ITrainingModuleRepository : IGenericRepository<TrainingModule>
 	{
+		// GETS LIST OF TRAINING MODULE INDEX VM
+		Task<TrainingModuleIndexVM> GetTrainingModuleIndexVMAsync(string? userId);
+
 		// GETS LIST OF TRAINING MODULES VIEW MODELS
 		Task<List<TrainingModuleVM>> GetTrainingModuleVMsAsync(string userId);
 

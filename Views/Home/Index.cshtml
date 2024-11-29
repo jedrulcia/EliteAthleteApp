@@ -36,56 +36,82 @@
 						<div id="carouselExample" class="carousel slide">
 							<div class="carousel-inner">
 								<div class="carousel-item active">
-									<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Name) - @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.ExerciseCategory.Name)</h1>
-									<dd class="col-sm-12">
-										<iframe width="461" height="258" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-									</dd>
-									<dd class="col-sm-12">
-										@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Description)
-									</dd>
-									<dd class="col-sm-12">
-										@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Units)
-									</dd>
-									<dd class="col-sm-12">
-										Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Weight)
-									</dd>
-									<dd class="col-sm-12">
-										Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].RestTime)
-									</dd>
-									<dd class="col-sm-12">
-										Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Note)
-									</dd>
+									<div class="container">
+										<div class="col-md-1">
+										</div>
+										<div class="col-md-10">
+											<dd class="col-sm-12">
+												<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Name)</h1>
+											</dd>
+											<dd class="col-sm-12">
+												<iframe width="370" height="230" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+											</dd>
+											<dd class="col-sm-12">
+												Category: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.ExerciseCategory.Name)
+											</dd>
+											<dd class="col-sm-12">
+												@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Description)
+											</dd>
+											<dd class="col-sm-12">
+												@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Units)
+											</dd>
+											<dd class="col-sm-12">
+												Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Weight)
+											</dd>
+											<dd class="col-sm-12">
+												Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].RestTime)
+											</dd>
+											<dd class="col-sm-12">
+												Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Note)
+											</dd>
+										</div>
+										<div class="col-md-1">
+										</div>
+									</div>
 								</div>
 								@for (int i = 1; i < Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs.Count; i++)
 								{
 									<div class="carousel-item">
-										<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name) - @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.ExerciseCategory.Name)</h1>
-										<dd class="col-sm-12">
-											<iframe width="461" height="258" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-										</dd>
-										<dd class="col-sm-12">
-											@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Description)
-										</dd>
-										<dd class="col-sm-12">
-											@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Units)
-										</dd>
-										<dd class="col-sm-12">
-											Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Weight)
-										</dd>
-										<dd class="col-sm-12">
-											Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].RestTime)
-										</dd>
-										<dd class="col-sm-12">
-											Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Note)
-										</dd>
+										<div class="container">
+											<div class="col-md-1">
+											</div>
+											<div class="col-md-10">
+												<dd class="col-sm-12">
+													<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Name)</h1>
+												</dd>
+												<dd class="col-sm-12">
+													<iframe width="370" height="230" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+												</dd>
+												<dd class="col-sm-12">
+													Category: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.ExerciseCategory.Name)
+												</dd>
+												<dd class="col-sm-12">
+													@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Description)
+												</dd>
+												<dd class="col-sm-12">
+													@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Units)
+												</dd>
+												<dd class="col-sm-12">
+													Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Weight)
+												</dd>
+												<dd class="col-sm-12">
+													Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].RestTime)
+												</dd>
+												<dd class="col-sm-12">
+													Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Note)
+												</dd>
+											</div>
+											<div class="col-md-1">
+											</div>
+										</div>
 									</div>
 								}
 							</div>
-							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+							<button class="carousel-control-prev position-absolute start-0 translate-middle-y ms-4" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
 								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 								<span class="visually-hidden">Previous</span>
 							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+							<button class="carousel-control-next position-absolute end-0 translate-middle-y me-4" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
 								<span class="carousel-control-next-icon" aria-hidden="true"></span>
 								<span class="visually-hidden">Next</span>
 							</button>
@@ -145,62 +171,62 @@ else
 			{
 				@: '@point.Date?.ToString("yyyy-MM-dd")',
 			}
-																										];
+																																						];
 
 				const weightData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WeightDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const fatPercentageData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.FatPercentageDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const musclePercentageData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.MusclePercentageDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const waterPercentageData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WaterPercentageDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const data = {
 					labels: labels,
 					datasets: [
 						{
-							label: 'Waga',
+							label: 'Weight',
 							data: weightData,
 							borderColor: 'rgba(255, 99, 132, 1)',
 							backgroundColor: 'rgba(255, 99, 132, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Procent tłuszczu',
+							label: 'Fat Percentage',
 							data: fatPercentageData,
 							borderColor: 'rgba(54, 162, 235, 1)',
 							backgroundColor: 'rgba(54, 162, 235, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Procent mięśni',
+							label: 'Muscle Percentage',
 							data: musclePercentageData,
 							borderColor: 'rgba(75, 192, 192, 1)',
 							backgroundColor: 'rgba(75, 192, 192, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Procent wody',
+							label: 'Water Percentage',
 							data: waterPercentageData,
 							borderColor: 'rgba(153, 102, 255, 1)',
 							backgroundColor: 'rgba(153, 102, 255, 0.2)',
@@ -232,13 +258,13 @@ else
 								type: 'category',
 								title: {
 									display: true,
-									text: 'Data'
+									text: 'Date'
 								}
 							},
 							y: {
 								title: {
 									display: true,
-									text: 'Wartość'
+									text: 'Value'
 								}
 							}
 						}
@@ -257,76 +283,76 @@ else
 			{
 				@: '@point.Date?.ToString("yyyy-MM-dd")',
 			}
-																										];
+																																						];
 
 				const chestData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ChestDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const armsData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ArmsDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const waistData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.WaistDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const thighsData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ThighsDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const hipsData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.HipsDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const data = {
 					labels: labels,
 					datasets: [
 						{
-							label: 'Klatka piersiowa',
+							label: 'Chest',
 							data: chestData,
 							borderColor: 'rgba(255, 99, 132, 1)',
 							backgroundColor: 'rgba(255, 99, 132, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Ramiona',
+							label: 'Arms',
 							data: armsData,
 							borderColor: 'rgba(54, 162, 235, 1)',
 							backgroundColor: 'rgba(54, 162, 235, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Talia',
+							label: 'Waist',
 							data: waistData,
 							borderColor: 'rgba(75, 192, 192, 1)',
 							backgroundColor: 'rgba(75, 192, 192, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Uda',
+							label: 'Thighs',
 							data: thighsData,
 							borderColor: 'rgba(153, 102, 255, 1)',
 							backgroundColor: 'rgba(153, 102, 255, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Biodra',
+							label: 'Hips',
 							data: hipsData,
 							borderColor: 'rgba(255, 159, 64, 1)',
 							backgroundColor: 'rgba(255, 159, 64, 0.2)',
@@ -358,13 +384,13 @@ else
 								type: 'category',
 								title: {
 									display: true,
-									text: 'Data'
+									text: 'Date'
 								}
 							},
 							y: {
 								title: {
 									display: true,
-									text: 'Wartość'
+									text: 'Value'
 								}
 							}
 						}
@@ -384,35 +410,35 @@ else
 			{
 				@: '@point.Date?.ToString("yyyy-MM-dd")',
 			}
-																										];
+																																						];
 
 				const benchPressData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.BenchPressDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const overheadPressData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.OverheadPressDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const deadliftData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.DeadliftDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const squatData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.SquatDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																										];
+																																						];
 
 				const data = {
 					labels: labels,

@@ -5,6 +5,7 @@ using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingModule;
 using EliteAthleteApp.Models.TrainingPlan;
+using EliteAthleteApp.Models.User;
 
 namespace EliteAthleteApp.Repositories
 {
@@ -26,6 +27,21 @@ namespace EliteAthleteApp.Repositories
 			this.trainingPlanRepository = trainingPlanRepository;
 			this.userManager = userManager;
 			this.httpContextAccessor = httpContextAccessor;
+		}
+
+		// GETS LIST OF TRAINING MODULE INDEX VM
+		public async Task<TrainingModuleIndexVM> GetTrainingModuleIndexVMAsync(string? userId)
+		{
+			var userVM = new UserVM();
+			if (userId == null)
+			{
+				userVM = mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User));
+			}
+			else
+			{ 
+				userVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
+			}
+			return new TrainingModuleIndexVM { UserVM = userVM };
 		}
 
 		// GETS LIST OF TRAINING MODULES VIEW MODELS
