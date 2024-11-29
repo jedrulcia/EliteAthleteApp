@@ -88,11 +88,10 @@ namespace EliteAthleteApp.Controllers
 		{
 			var coach = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
 			var subscription = await context.Set<UserSubscription>().FindAsync(coach.UserSubscriptionId);
-
 			if (userAddAthleteVM.AthleteCount >= subscription.AthleteLimit)
 			{
 				TempData["ErrorMessage"] = $"You have reached the limit of athletes in your subscription.";
-				return RedirectToAction(nameof(UserList), "Users");
+				return RedirectToAction(nameof(UserIndex), "Users");
 			}
 
 			var user = (await userRepository.GetAllAsync())
@@ -102,7 +101,7 @@ namespace EliteAthleteApp.Controllers
 			user.NewCoachId = coach.Id;
 			await userRepository.UpdateAsync(user);
 
-			return RedirectToAction(nameof(UserList), "Users");
+			return RedirectToAction(nameof(UserIndex), "Users");
 		}
 
 		public async Task<IActionResult> AcceptInvite()

@@ -16,10 +16,14 @@ namespace EliteAthleteApp.Models.UserBodyAnalysis
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
 		public DateTime? DateTime { get; set; }
 
-        // NUMBERS
-        public int? Weight { get; set; }
-        public int? FatPercentage { get; set; }
-        public int? MusclePercentage { get; set; }
-        public int? WaterPercentage { get; set; }
-    }
+		// NUMBERS
+		[Display(Name = "Weight")]
+		public int? Weight { get; set; }
+		[Display(Name = "Fat Percentage")]
+		public int? FatPercentage { get; set; }
+		[Display(Name = "Muscle Percentage")]
+		public int? MusclePercentage { get; set; }
+		[Display(Name = "Water Percentage")]
+		public int? WaterPercentage { get; set; }
+	}
 }

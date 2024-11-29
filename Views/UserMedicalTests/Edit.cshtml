@@ -3,40 +3,57 @@
 @model UserMedicalTestCreateVM
 
 @{
-	ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit";
 }
 
 <form asp-action="Edit" enctype="multipart/form-data">
-	<input type="hidden" asp-for="UserId" />
-	<input type="hidden" asp-for="Id" />
-	<div class="container">
-		<div class="row">
-			<div class="col-md-3 form-group">
-				<div>
-					<strong><label asp-for="Name" class="control-label"></label></strong>
-					<input asp-for="Name" class="form-control" />
-					<span asp-validation-for="Name" class="text-danger"></span>
-				</div>
-				<div>
-					<strong><label asp-for="DateTime" class="control-label"></label></strong>
-					<input asp-for="DateTime" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-					<span asp-validation-for="DateTime" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="col-md-9 form-group">
-				<div class="media-upload-box">
-					@if (string.IsNullOrEmpty(Model.FileUrl))
-					{
-						<label for="fileUpload" class="upload-icon">⬆</label>
-						<input type="file" name="fileUpload" id="fileUpload" class="d-none" accept="image/*,application/pdf" />
-					}
-				</div>
-			</div>
-		</div>
-		<div class="row align-items-end">
-			<div class="form-group col-md-4 text-end">
-				<button type="submit" class="btn btn-outline-primary-a"><strong>Save</strong></button>
-			</div>
-		</div>
-	</div>
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="Id" />
+    <div class="container">
+        <div class="row">
+            <!-- Pierwsza kolumna: labele (col-md-3) -->
+            <div class="col-md-3">
+                <br />
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label"><strong>Name:</strong></label>
+                </div>
+                <br />
+                <div class="form-group mb-3">
+                    <label asp-for="DateTime" class="control-label"><strong>Date:</strong></label>
+                </div>
+            </div>
+
+            <!-- Druga kolumna: input fields (col-md-3) -->
+            <div class="col-md-3">
+                <br />
+                <div class="form-group mb-3">
+                    <input asp-for="Name" class="form-control" style="height: 70%;" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <br />
+                <div class="form-group mb-3">
+                    <input asp-for="DateTime" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" style="height: 70%;" />
+                    <span asp-validation-for="DateTime" class="text-danger"></span>
+                </div>
+                <br />
+            </div>
+
+            <!-- Trzecia kolumna: upload box i przycisk Save (col-md-6) -->
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <div class="media-upload-box">
+                        @if (string.IsNullOrEmpty(Model.FileUrl))
+                        {
+                            <label for="fileUpload" class="upload-icon">⬆</label>
+                            <input type="file" name="fileUpload" id="fileUpload" class="d-none" accept="image/*,application/pdf" />
+                        }
+                    </div>
+                </div>
+
+                <div class="form-group text-end">
+                    <button type="submit" class="btn btn-outline-primary-a"><strong>Save</strong></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>

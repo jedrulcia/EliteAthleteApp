@@ -22,6 +22,9 @@ namespace EliteAthleteApp.Models.User
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Display(Name = "Invite Code")]
+        public string InviteCode { get; set; }
+
 		// OTHER
 
 		public DateTimeOffset? LockoutEnd { get; set; }

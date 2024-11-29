@@ -3,51 +3,71 @@
 @model UserBodyAnalysisCreateVM
 
 @{
-	ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create";
 }
 
 <form asp-action="Create" enctype="multipart/form-data">
-	<input type="hidden" asp-for="UserId" />
-	<input type="hidden" asp-for="CreatedToday" />
-	<input type="hidden" asp-for="CreationDate" value="@DateTime.Now" />
-	<div class="container">
-		<div class="row">
-			<div class="col-md-3 form-group">
-				<strong><label asp-for="Weight" class="control-label"></label></strong>
-				<input asp-for="Weight" class="form-control" />
-				<span asp-validation-for="Weight" class="text-danger"></span>
-			</div>
-			<div class="col-md-3 form-group">
-				<strong><label asp-for="FatPercentage" class="control-label"></label></strong>
-				<input asp-for="FatPercentage" class="form-control" />
-				<span asp-validation-for="FatPercentage" class="text-danger"></span>
-			</div>
-			<div class="col-md-3 form-group">
-				<strong><label asp-for="MusclePercentage" class="control-label"></label></strong>
-				<input asp-for="MusclePercentage" class="form-control" />
-				<span asp-validation-for="MusclePercentage" class="text-danger"></span>
-			</div>
-			<div class="col-md-3 form-group">
-				<strong><label asp-for="WaterPercentage" class="control-label"></label></strong>
-				<input asp-for="WaterPercentage" class="form-control" />
-				<span asp-validation-for="WaterPercentage" class="text-danger"></span>
-			</div>
-		</div>
-		<div class="row align-items-end">
-			<div class="form-group col-md-4">
-				<strong><label asp-for="DateTime" class="control-label"></label></strong>
-				<input asp-for="DateTime" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-				<span asp-validation-for="DateTime" class="text-danger"></span>
-			</div>
-			<div class="form-group col-md-4">
-				<div class="media-upload-box">
-					<label for="fileUpload" class="upload-icon">⬆</label>
-					<input type="file" name="fileUpload" id="fileUpload" class="d-none" accept="image/*,application/pdf" />
-				</div>
-			</div>
-			<div class="form-group col-md-4 text-end">
-				<button type="submit" class="btn btn-outline-primary-a"><strong>Create</strong></button>
-			</div>
-		</div>
-	</div>
+    <input type="hidden" asp-for="UserId" />
+    <input type="hidden" asp-for="CreatedToday" />
+    <input type="hidden" asp-for="CreationDate" value="@DateTime.Now" />
+    <div class="container">
+        <div class="row">
+            <!-- Pierwsza kolumna: labele (col-md-3) -->
+            <div class="col-md-3">
+                <div class="form-group mb-3">
+                    <label asp-for="Weight" class="control-label"><strong>Weight:</strong></label>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="FatPercentage" class="control-label"><strong>Fat Percentage:</strong></label>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="MusclePercentage" class="control-label"><strong>Muscle Percentage:</strong></label>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="WaterPercentage" class="control-label"><strong>Water Percentage:</strong></label>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="DateTime" class="control-label"><strong>Date:</strong></label>
+                </div>
+            </div>
+
+            <!-- Druga kolumna: input fields (col-md-3) -->
+            <div class="col-md-3">
+                <div class="form-group mb-3">
+                    <input asp-for="Weight" class="form-control" style="height: 70%;" />
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="FatPercentage" class="form-control" style="height: 70%;" />
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="MusclePercentage" class="form-control" style="height: 70%;" />
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="WaterPercentage" class="form-control" style="height: 70%;" />
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="DateTime" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" style="height: 70%;" />
+                </div>
+            </div>
+
+            <!-- Trzecia kolumna: upload box i przycisk Save (col-md-6) -->
+            <div class="col-md-6">
+                <!-- Media Upload Box -->
+                <div class="form-group mb-3">
+                    <div class="media-upload-box">
+                        <label for="fileUpload" class="upload-icon" id="uploadIcon">⬆</label>
+                        <input type="file" name="fileUpload" id="fileUpload" class="d-none" accept="image/*,application/pdf" onchange="previewImage(this)" />
+                        <div action="preview-thumbnail">
+                            <img id="previewFile" class="d-none" controls width="100%" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Przycisk Save -->
+                <div class="form-group text-end">
+                    <button type="submit" class="btn btn-outline-primary-a"><strong>Create</strong></button>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>

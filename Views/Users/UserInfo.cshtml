@@ -3,53 +3,75 @@
 @model UserInfoVM
 
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-2">
 		<div class="media-upload-box">
 			@if (string.IsNullOrEmpty(Model.UserVM.ImageUrl))
 			{
 				<form asp-action="UploadImage" enctype="multipart/form-data">
-					<input type="hidden" name="userId" value="@Model.UserVM.Id" />
-					<label for="imageUpload" class="upload-icon">⬆</label>
-					<input type="file" name="imageUpload" id="imageUpload" class="d-none" accept="image/*" />
+                    <input type="hidden" name="userId" value="@Model.UserVM.Id" />
+                    <label for="imageUpload" class="upload-icon" id="uploadIcon">⬆</label>
+					<input type="file" name="imageUpload" id="imageUpload" class="d-none" accept="image/*" onchange="previewImage(this)" />
 					<div class="preview-thumbnail">
-						<img id="previewImg" src="" class="img-thumbnail d-none" />
+						<img id="previewImg" class="d-none" controls width="100%" />
 					</div>
-					<button type="submit" class="remove-media">O</button>
+					<button type="submit" class="add-media">+</button>
 				</form>
 			}
 			else
 			{
 				<form asp-action="DeleteImage">
 					<input type="hidden" name="userId" value="@Model.UserVM.Id" />
-					<img src="https://drive.google.com/thumbnail?authuser=0&sz=w320&id=@Model.UserVM.ImageUrl" class="img-thumbnail" style="width: 100%; height: auto;" alt="User uploaded image" />
+					<img src="https://drive.google.com/thumbnail?authuser=0&sz=w320&id=@Model.UserVM.ImageUrl" class="img-thumbnail"/>
 					<button type="submit" class="remove-media">X</button>
 				</form>
 			}
 		</div>
 	</div>
-	<div class="col-md-3">
-		<strong>First Name:</strong><p class="text-white">@Model.UserVM.FirstName</p>
-		<strong>Last Name:</strong> <p class="text-white">@Model.UserVM.LastName</p>
-		<strong>Invite Code:</strong> <p class="text-white">
-			@Model.InviteCode
-			<a asp-action="ResetInviteCode" class="btn btn-sm btn-danger">Reset Code</a>
-		</p>
-		@if (Model.CoachVM != null)
-		{
-			<strong>Coach:</strong> <p class="text-white">
-				@Model.CoachVM.FirstName @Model.CoachVM.LastName
-				<a asp-action="DeleteCoach" class="btn btn-sm btn-danger">Delete Coach</a>
-				<a asp-action="UserChat" asp-route-userId="@Model.CoachVM.Id" asp-controller="Users" class="btn btn-sm btn-danger">Chat</a>
-			</p>
-		}
-		@if (Model.NewCoachVM != null)
-		{
-			<strong>You were invited by:</strong>
-			<p class="text-white">
-				@Model.NewCoachVM.FirstName @Model.NewCoachVM.LastName
-				<a asp-action="AcceptInvite" class="btn btn-sm btn-success me-2">Accept</a>
-				<a asp-action="DeclineInvite" class="btn btn-sm btn-danger">Decline</a>
-			</p>
-		}
-	</div>
+    <div class="col-md-4">
+        <br />
+        <div>
+            <span class="text-primary"><strong>First Name:</strong></span>
+            <span class="text-white">@Model.UserVM.FirstName</span>
+        </div>
+        <br />
+        <div>
+            <span class="text-primary"><strong>Last Name:</strong></span>
+            <span class="text-white">@Model.UserVM.LastName</span>
+        </div>
+        <br />
+        <div>
+            <span class="text-primary"><strong>Invite Code:</strong></span>
+            <span class="text-white">
+                @Model.UserVM.InviteCode
+                <a asp-action="ResetInviteCode" class="text-primary text-decoration-underline ms-2"><i class="fa-solid fa-arrows-rotate"></i></a>
+            </span>
+        </div>
+        <br />
+
+        @if (Model.CoachVM != null)
+        {
+            <div>
+                <span class="text-primary"><strong>Coach:</strong></span>
+                <span class="text-white">
+                    @Model.CoachVM.FirstName @Model.CoachVM.LastName
+                    <a asp-action="UserChat" asp-route-userId="@Model.CoachVM.Id" asp-controller="Users" class="text-primary text-decoration-underline ms-2"><strong><i class="bi bi-chat-dots">&nbsp;</i></strong></a>
+                    <a asp-action="DeleteCoach" class="text-danger text-decoration-underline ms-2"><i class="bi bi-trash"></i></a>
+                </span>
+            </div>
+            <br />
+        }
+
+        @if (Model.NewCoachVM != null)
+        {
+            <div>
+                <span class="text-primary"><strong>You were invited by:</strong></span>
+                <span class="text-white">
+                    @Model.NewCoachVM.FirstName @Model.NewCoachVM.LastName
+                    <a asp-action="AcceptInvite" class="text-success text-decoration-underline me-2"><i class="fa-solid fa-square-check"></i></a>
+                    <a asp-action="DeclineInvite" class="text-danger text-decoration-underline"><i class="fa-solid fa-square-xmark"></i></a>
+                </span>
+            </div>
+            <br />
+        }
+    </div>
 </div>

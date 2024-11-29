@@ -20,32 +20,37 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="actionPanelTabs" role="tablist">
-				<li class="nav-item" role="presentation">
+				<li class="nav-item" style="width: 270px;" role="presentation">
+					<a asp-action="Index" asp-controller="TrainingModules" asp-route-userId="@Model.UserVM.Id" class="nav-link d-flex justify-content-center align-items-center" id="trainingModuleTab" aria-controls="trainingModule" aria-selected="false">
+						<i class="fa-solid fa-dumbbell"></i>&nbsp;<strong>Training Modules</strong>
+					</a>
+				</li>
+				<li class="nav-item ms-auto" style="width: 220px;" role="presentation">
 					<button data-userid="@Model.UserVM.Id"
-							class="nav-link createOrmBtn" type="button" aria-selected="false">
+							class="nav-link createOrmBtn d-flex justify-content-center align-items-center" type="button" aria-selected="false">
 						<i class="bi bi-plus-square-fill">&nbsp;</i>
-						<strong>New One Repetition Max</strong>
+						<strong>New ORM</strong>
 					</button>
 				</li>
-				<li class="nav-item" role="presentation">
+				<li class="nav-item" style="width: 230px;" role="presentation">
 					<button data-userid="@Model.UserVM.Id"
-							class="nav-link createUbmBtn" type="button" aria-selected="false">
+							class="nav-link createUbmBtn d-flex justify-content-center align-items-center" type="button" aria-selected="false">
 						<i class="bi bi-plus-square-fill">&nbsp;</i>
-						<strong>New Body Meassurement</strong>
+						<strong>New UBM</strong>
 					</button>
 				</li>
-				<li class="nav-item" role="presentation">
+				<li class="nav-item" style="width: 180px;" role="presentation">
 					<button data-userid="@Model.UserVM.Id"
-							class="nav-link createUbaBtn" type="button" aria-selected="false">
+							class="nav-link createUbaBtn d-flex justify-content-center align-items-center" type="button" aria-selected="false">
 						<i class="bi bi-plus-square-fill">&nbsp;</i>
-						<strong>New Body Analysis</strong>
+						<strong>New UBA</strong>
 					</button>
 				</li>
-				<li class="nav-item" role="presentation">
+				<li class="nav-item" style="width: 180px;" role="presentation">
 					<button data-userid="@Model.UserVM.Id"
-							class="nav-link createUmtBtn" type="button" aria-selected="false">
+							class="nav-link createUmtBtn d-flex justify-content-center align-items-center" type="button" aria-selected="false">
 						<i class="bi bi-plus-square-fill">&nbsp;</i>
-						<strong>New Medical Test</strong>
+						<strong>New UMT</strong>
 					</button>
 				</li>
 			</ul>
@@ -53,33 +58,33 @@
 		</div>
 		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="userPanelTabs" role="tablist">
-				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="userInfoTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#userInfo" role="tab" aria-controls="userInfo" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
+				<li class="nav-item" style="width: 270px;" role="presentation">
+					<a class="nav-link active d-flex justify-content-center align-items-center" id="userInfoTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#userInfo" role="tab" aria-controls="userInfo" aria-selected="true">
+						<i class="bi bi-person"></i>
 						<strong>User Info</strong>
 					</a>
 				</li>
-				<li class="nav-item" role="presentation">
-					<a class="nav-link" id="ormTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
+				<li class="nav-item ms-auto" style="width: 220px;" role="presentation">
+					<a class="nav-link d-flex justify-content-center align-items-center" id="ormTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#orm" role="tab" aria-controls="orm" aria-selected="true">
+						<i class="fa-solid fa-dumbbell">&nbsp;</i>
 						<strong>One Repetition Max</strong>
 					</a>
 				</li>
-				<li class="nav-item" role="presentation">
-					<a class="nav-link" id="ubmTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#ubm" role="tab" aria-controls="ubm" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
+				<li class="nav-item" style="width: 230px;" role="presentation">
+					<a class="nav-link d-flex justify-content-center align-items-center" id="ubmTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#ubm" role="tab" aria-controls="ubm" aria-selected="true">
+						<i class="fa-solid fa-ruler">&nbsp;</i>
 						<strong>Body Measurements</strong>
 					</a>
 				</li>
-				<li class="nav-item" role="presentation">
-					<a class="nav-link" id="ubaTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#uba" role="tab" aria-controls="uba" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
+				<li class="nav-item" style="width: 180px;" role="presentation">
+					<a class="nav-link d-flex justify-content-center align-items-center" id="ubaTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#uba" role="tab" aria-controls="uba" aria-selected="true">
+						<i class="fa-solid fa-flask">&nbsp;</i>
 						<strong>Body Analysis</strong>
 					</a>
 				</li>
-				<li class="nav-item" role="presentation">
-					<a class="nav-link" id="umtTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#umt" role="tab" aria-controls="umt" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
+				<li class="nav-item" style="width: 180px;" role="presentation">
+					<a class="nav-link d-flex justify-content-center align-items-center" id="umtTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#umt" role="tab" aria-controls="umt" aria-selected="true">
+						<i class="fa-solid fa-notes-medical">&nbsp;</i>
 						<strong>Medical Tests</strong>
 					</a>
 				</li>
@@ -111,14 +116,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ormCreateModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Create New ORM (One-Rep Max)</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ormCreateModalLabel">
+					<strong>Create One Repetition Max</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ormCreateContent">
 			</div>
@@ -131,14 +134,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ormEditModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Edit ORM (One-Rep Max)</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ormEditModalLabel">
+					<strong>Edit One Repetition Max</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ormEditContent">
 			</div>
@@ -151,14 +152,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ormDeleteModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Delete ORM (One-Rep Max)</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ormDeleteModalLabel">
+					<strong>Delete One Repetition Max</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ormDeleteContent">
 			</div>
@@ -171,14 +170,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ubmCreateModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Create New User Body Measurements</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ubmCreateModalLabel">
+					<strong>Create User Body Measurement</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ubmCreateContent">
 			</div>
@@ -191,14 +188,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ubmEditModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Edit User Body Measurements</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ubmEditModalLabel">
+					<strong>Edit User Body Measurement</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ubmEditContent">
 			</div>
@@ -211,14 +206,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ubmDeleteModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Delete User Body Measurements</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ubmDeleteModalLabel">
+					<strong>Delete User Body Measurement</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ubmDeleteContent">
 			</div>
@@ -231,14 +224,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="umtCreateModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Create New User Medical Tests</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="umtCreateModalLabel">
+					<strong>Create User Medical Test</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="umtCreateContent">
 			</div>
@@ -251,14 +242,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="umtEditModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Edit User Medical Tests</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="umtEditModalLabel">
+					<strong>Edit User Medical Test</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="umtEditContent">
 			</div>
@@ -271,14 +260,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="umtDeleteModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Delete User Medical Tests</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="umtDeleteModalLabel">
+					<strong>Delete User Medical Test</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="umtDeleteContent">
 			</div>
@@ -291,14 +278,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ubaCreateModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Create New User Body Analysis</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ubaCreateModalLabel">
+					<strong>Create User Body Analysis</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ubaCreateContent">
 			</div>
@@ -311,14 +296,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ubaEditModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Edit User Body Analysis</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ubaEditModalLabel">
+					<strong>Edit User Body Analysis</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ubaEditContent">
 			</div>
@@ -331,14 +314,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="ubaDeleteModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Delete User Body Analysis</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="ubaDeleteModalLabel">
+					<strong>Delete User Body Analysis</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="ubaDeleteContent">
 			</div>
@@ -471,28 +452,28 @@
 					labels: labels,
 					datasets: [
 						{
-							label: 'Waga',
+							label: 'Weight',
 							data: weightData,
 							borderColor: 'rgba(255, 99, 132, 1)',
 							backgroundColor: 'rgba(255, 99, 132, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Procent tłuszczu',
+							label: 'Fat Percentage',
 							data: fatPercentageData,
 							borderColor: 'rgba(54, 162, 235, 1)',
 							backgroundColor: 'rgba(54, 162, 235, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Procent mięśni',
+							label: 'Muscle Percentage',
 							data: musclePercentageData,
 							borderColor: 'rgba(75, 192, 192, 1)',
 							backgroundColor: 'rgba(75, 192, 192, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Procent wody',
+							label: 'Water Percentage',
 							data: waterPercentageData,
 							borderColor: 'rgba(153, 102, 255, 1)',
 							backgroundColor: 'rgba(153, 102, 255, 0.2)',
@@ -520,13 +501,13 @@
 								type: 'category',
 								title: {
 									display: true,
-									text: 'Data'
+									text: 'Date'
 								}
 							},
 							y: {
 								title: {
 									display: true,
-									text: 'Wartość'
+									text: 'Value'
 								}
 							}
 						}
@@ -608,35 +589,35 @@
 					labels: labels,
 					datasets: [
 						{
-							label: 'Klatka piersiowa',
+							label: 'Chest',
 							data: chestData,
 							borderColor: 'rgba(255, 99, 132, 1)',
 							backgroundColor: 'rgba(255, 99, 132, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Ramiona',
+							label: 'Arms',
 							data: armsData,
 							borderColor: 'rgba(54, 162, 235, 1)',
 							backgroundColor: 'rgba(54, 162, 235, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Talia',
+							label: 'Waist',
 							data: waistData,
 							borderColor: 'rgba(75, 192, 192, 1)',
 							backgroundColor: 'rgba(75, 192, 192, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Uda',
+							label: 'Thighs',
 							data: thighsData,
 							borderColor: 'rgba(153, 102, 255, 1)',
 							backgroundColor: 'rgba(153, 102, 255, 0.2)',
 							fill: false
 						},
 						{
-							label: 'Biodra',
+							label: 'Hips',
 							data: hipsData,
 							borderColor: 'rgba(255, 159, 64, 1)',
 							backgroundColor: 'rgba(255, 159, 64, 0.2)',
@@ -664,13 +645,13 @@
 								type: 'category',
 								title: {
 									display: true,
-									text: 'Data'
+									text: 'Date'
 								}
 							},
 							y: {
 								title: {
 									display: true,
-									text: 'Wartość'
+									text: 'Values'
 								}
 							}
 						}
