@@ -14,7 +14,7 @@
 			<select id="copyToSelect" name="copyToId" class="form-control">
 				@foreach (var item in Model.TrainingPlanVMs.OrderBy(m => m.Date))
 				{
-					var backgroundColor = item.IsEmpty ? "background-color: gray;" : "background-color: red;";
+					var backgroundColor = item.IsEmpty ? "background-color: var(--primary-color);" : "background-color: var(--danger-color);";
 					var textColor = "color: white;";
 					<option value="@item.Id" style="@backgroundColor @textColor">@item.Name</option>
 				}

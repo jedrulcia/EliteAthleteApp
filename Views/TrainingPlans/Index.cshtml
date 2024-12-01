@@ -12,17 +12,17 @@
 		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="trainingPlanTabs" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a asp-action="Index" asp-controller="Users" asp-route-userId="@Model?.UserId" class="nav-link" id="back-to-list" aria-controls="training-modules" aria-selected="false">
-						<i class="bi bi-arrow-left">&nbsp;</i><strong>Back to User Panel</strong>
+					<a asp-action="Index" asp-controller="TrainingModules" asp-route-userId="@Model?.UserId" class="nav-link" id="back-to-list" aria-controls="training-modules" aria-selected="false">
+						<i class="fa-solid fa-arrow-left">&nbsp;</i><strong>Back to Training Modules</strong>
 					</a>
 				</li>
 				<li class="nav-item" role="presentation">
 					<a class="nav-link active" data-trainingmoduleid="@Model.TrainingModuleId" id="trainingPlanListTab" data-toggle="tab" href="#trainingPlanList" role="tab" aria-controls="trainingPlanList" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i><strong>Training Plan List</strong>
+						<i class="fa-solid fa-dumbbell">&nbsp;</i><strong>Training Plan List</strong>
 					</a>
 				</li>
 				<li class="nav-item ms-auto" role="presentation">
-					<a asp-action="PrintPDF" asp-route-trainingModuleId="@Model.TrainingModuleId" class="nav-link text-danger" id="print-pdf" aria-controls="training-modules" aria-selected="false">
+					<a asp-action="PrintPDF" asp-route-trainingModuleId="@Model.TrainingModuleId" class="nav-link" id="print-pdf" aria-controls="training-modules" aria-selected="false">
 						<i class="bi bi-file-earmark-pdf-fill">&nbsp;</i><strong>Print Training Plan</strong>
 					</a>
 				</li>

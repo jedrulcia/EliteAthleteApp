@@ -94,5 +94,10 @@ namespace EliteAthleteApp.Controllers
 			await userMedicalTestRepository.DeleteUserMedicalTestAsync(userMedicalTestDeleteVM);
 			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestDeleteVM.UserId });
 		}
+
+		public async Task<IActionResult> Media(string fileUrl)
+		{
+			return PartialView(new UserMedicalTestMediaVM { FileUrl = fileUrl });
+		}
 	}
 }

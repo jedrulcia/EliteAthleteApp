@@ -3,6 +3,7 @@ using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.UserBodyAnalysis;
 using EliteAthleteApp.Models.UserBodyAnalysis;
+using EliteAthleteApp.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -92,6 +93,11 @@ namespace EliteAthleteApp.Controllers
 		{
 			await userBodyAnalysisRepository.DeleteUserBodyAnalysisAsync(userBodyAnalysisDeleteVM);
 			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyAnalysisDeleteVM.UserId });
+		}
+
+		public async Task<IActionResult> Media(string fileUrl)
+		{
+			return PartialView(new UserBodyAnalysisMediaVM { FileUrl = fileUrl });
 		}
 	}
 }

@@ -273,6 +273,24 @@
 	</div>
 </div>
 
+<!-- MODAL FOR UMT MEDIA -->
+<div class="modal fade" id="umtMediaModal" tabindex="-1" role="dialog" aria-labelledby="umtMediaModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="umtMediaModalLabel">
+					<strong>Media User Medical Test</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="umtMediaContent">
+			</div>
+		</div>
+	</div>
+</div>
+
 <!-- MODAL FOR UBA CREATE -->
 <div class="modal fade" id="ubaCreateModal" tabindex="-1" role="dialog" aria-labelledby="ubaCreateModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -322,6 +340,24 @@
 				</button>
 			</div>
 			<div class="modal-body" id="ubaDeleteContent">
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL FOR UBA MEDIA -->
+<div class="modal fade" id="ubaMediaModal" tabindex="-1" role="dialog" aria-labelledby="ubaMediaModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title text-primary-decorative" id="ubaMediaModalLabel">
+					<strong>Media User Body Analysis</strong>
+				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="ubaMediaMediaContent">
 			</div>
 		</div>
 	</div>
@@ -996,6 +1032,25 @@
 				});
 			});
 
+			// AJAX FOR LOADING TRAINING UMT Delete MODAL
+			$(document).on('click', '.mediaUmtBtn', function (e) {
+				e.preventDefault();
+
+				var fileUrl = $(this).data("mediaumturl");
+				$.ajax({
+					url: '@Url.Action("Media", "UserMedicalTests")',
+					type: 'GET',
+					data: { fileUrl: fileUrl },
+					success: function (data) {
+						$('#umtMediaContent').html(data);
+						$('#umtMediaModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the umt media modal.");
+					}
+				});
+			});
+
 			// AJAX FOR LOADING TRAINING UBA CREATE MODAL
 			$(document).on('click', '.createUbaBtn', function (e) {
 				e.preventDefault();
@@ -1049,6 +1104,25 @@
 					},
 					error: function () {
 						alert("An error occurred while loading the uba delete modal.");
+					}
+				});
+			});
+
+			// AJAX FOR LOADING TRAINING UBA Delete MODAL
+			$(document).on('click', '.mediaUbaBtn', function (e) {
+				e.preventDefault();
+
+				var fileUrl = $(this).data("mediaubaurl");
+				$.ajax({
+					url: '@Url.Action("Media", "UserBodyAnalysis")',
+					type: 'GET',
+					data: { fileUrl: fileUrl },
+					success: function (data) {
+						$('#batMediaContent').html(data);
+						$('#ubaMediaModal').modal('show');
+					},
+					error: function () {
+						alert("An error occurred while loading the uba media modal.");
 					}
 				});
 			});

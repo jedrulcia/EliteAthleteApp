@@ -62,7 +62,7 @@
     }
 
 .text-logo {
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); /* Apply gradient */
+    background: linear-gradient(to right, var(--primary-color), var(--primary-color)); /* Apply gradient */
     -webkit-background-clip: text; /* Clip background to text */
     -webkit-text-fill-color: transparent; /* Make the text itself transparent */
     background-clip: text;
@@ -117,7 +117,7 @@ body {
         right: 0;
         height: 2px; /* Adjust the thickness of the bottom line */
         background-color: var(--primary-color); /* The blue margin color */
-        width: 67%;
+        width: 66%;
         margin: 0 auto; /* Center the line */
     }
 
@@ -171,18 +171,12 @@ body {
 }
 
     .btn-outline-primary-a::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
-        border-radius: 4px; /* Match the border-radius of the button */
-        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-        padding: 2px; /* Border thickness */
-        background-clip: padding-box; /* Only show the gradient inside the border */
-        transition: opacity 0.3s;
+        background-color: #2c2c2c;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        border-radius: 4px;
+        padding: 0.3em 0.8em;
+        transition: all 0.3s ease;
     }
 
     .btn-outline-primary-a:hover::before {
