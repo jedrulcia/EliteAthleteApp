@@ -230,8 +230,22 @@ body {
         border-color: var(--secondary-color); /* Change hover border color to green */
     }
 
-/*=====================================================BUTTONS=====================================================*/
+/*=====================================================BADGES =====================================================*/
+.bg-primary-a {
+    position: relative;
+    background-color: var(--primary-color); /* Solid primary color */
+    color: #fff; /* White text color */
+    border: none; /* No border */
+    overflow: hidden;
+    transition: color 0.3s, background-color 0.3s;
+    outline: none;
+    border-radius: 12px; /* Optional: Rounded corners */
+    font-family: 'Montserrat';
+    font-size: 12px;
+    font-weight: bold;
+}
 
+/*=====================================================BUTTONS=====================================================*/
 .btn-primary-a {
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     background-size: 200% 100%;
