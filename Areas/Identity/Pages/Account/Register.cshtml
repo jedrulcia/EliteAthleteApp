@@ -4,74 +4,84 @@
 	ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-
 <div class="row">
 	<div class="col-md-12">
 		<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-			<h2>Create a new account.</h2>
-			<hr />
+			<h3 class="text-primary">Create a new account</h3>
 			<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-			<div class="form-floating">
-				<input asp-for="Input.FirstName" class="form-control" autocomplete="firstname" aria-required="true" />
-				<label asp-for="Input.FirstName"></label>
+
+			<!-- First Name -->
+			<label asp-for="Input.FirstName" class="text-primary">First Name</label>
+			<div class="form">
+				<input asp-for="Input.FirstName" class="form" autocomplete="firstname" aria-required="true" />
 				<span asp-validation-for="Input.FirstName" class="text-danger"></span>
 			</div>
 			<br />
-			<div class="form-floating">
-				<input asp-for="Input.LastName" class="form-control" autocomplete="lastname" aria-required="true" />
-				<label asp-for="Input.LastName"></label>
+
+			<!-- Last Name -->
+			<label asp-for="Input.LastName" class="text-primary">Last Name</label>
+			<div class="form">
+				<input asp-for="Input.LastName" class="form" autocomplete="lastname" aria-required="true" />
 				<span asp-validation-for="Input.LastName" class="text-danger"></span>
 			</div>
 			<br />
-			<div class="form-floating">
-				<input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-				<label asp-for="Input.Email">Email</label>
+
+			<!-- Email -->
+			<label asp-for="Input.Email" class="text-primary">Email</label>
+			<div class="form">
+				<input asp-for="Input.Email" class="form" autocomplete="username" aria-required="true"  />
 				<span asp-validation-for="Input.Email" class="text-danger"></span>
 			</div>
 			<br />
-			<div class="form-floating">
-				<input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
-				<label asp-for="Input.Password">Password</label>
+
+			<!-- Password -->
+			<label asp-for="Input.Password" class="text-primary">Password</label>
+			<div class="form">
+				<input asp-for="Input.Password" class="form" autocomplete="new-password" aria-required="true" />
 				<span asp-validation-for="Input.Password" class="text-danger"></span>
 			</div>
 			<br />
-			<div class="form-floating">
-				<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
-				<label asp-for="Input.ConfirmPassword">Confirm Password</label>
+
+			<!-- Confirm Password -->
+			<label asp-for="Input.ConfirmPassword" class="text-primary">Confirm Password</label>
+			<div class="form">
+				<input asp-for="Input.ConfirmPassword" class="form" autocomplete="new-password" aria-required="true" />
 				<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
 			</div>
 			<br />
-			<div class="form-group form-check col-md-10">
-				<input type="checkbox" asp-for="Input.RegisterAsCoach" class="form-check-input" id="registerAsCoachCheckbox" />
-				<label class="form-check-label" asp-for="Input.RegisterAsCoach">&nbsp;<strong>I am a coach.</strong></label>
+
+			<!-- Checkbox: I am a coach -->
+			<div class="checkbox-container">
+				<input type="checkbox" asp-for="Input.RegisterAsCoach" class="checkbox-input" id="registerAsCoachCheckbox" />
+				<label class="checkbox-label" for="registerAsCoachCheckbox"><span class="text-primary">I am a coach.</span></label>
 				<span asp-validation-for="Input.RegisterAsCoach" class="text-danger"></span>
 			</div>
-			<div class="form-group form-check col-md-10">
-				<input type="checkbox" asp-for="Input.AcceptedRodo" class="form-check-input" id="acceptedRodoCheckbox" />
-				<label class="form-check-label" asp-for="Input.AcceptedRodo">
-					&nbsp;
-					<strong>
-						I consent to the processing of my personal data in accordance with the General Data Protection Regulation (GDPR) for the purpose of account creation and service provision.<span class="text-danger"> *</span>
-					</strong>
+			<br />
+
+			<!-- Checkbox: GDPR consent -->
+			<div class="checkbox-container">
+				<input type="checkbox" asp-for="Input.AcceptedRodo" class="checkbox-input" id="acceptedRodoCheckbox" />
+				<label class="checkbox-label" for="acceptedRodoCheckbox">
+					<span class="text-primary">I consent to the processing of my personal data in accordance with the General Data Protection Regulation (GDPR) for the purpose of account creation and service provision.</span><span class="text-danger"> *</span>
 				</label>
 				<span asp-validation-for="Input.AcceptedRodo" class="text-danger"></span>
 			</div>
-			<div class="form-group form-check col-md-10">
-				<input type="checkbox" asp-for="Input.AcceptedPrivacy" class="form-check-input" id="acceptedPrivacyCheckbox" />
-				<label class="form-check-label" asp-for="Input.AcceptedPrivacy">
-					&nbsp;
-					<strong>
-						I acknowledge that I have read the Privacy Policy and Terms of Service and agree to their terms.<span class="text-danger"> *</span>
-					</strong>
+			<br />
+
+			<!-- Checkbox: Privacy policy -->
+			<div class="checkbox-container">
+				<input type="checkbox" asp-for="Input.AcceptedPrivacy" class="checkbox-input" id="acceptedPrivacyCheckbox" />
+				<label class="checkbox-label" for="acceptedPrivacyCheckbox">
+					<span class="text-primary">I acknowledge that I have read the Privacy Policy and Terms of Service and agree to their terms.</span><span class="text-danger"> *</span>
 				</label>
-				<br />
 				<span asp-validation-for="Input.AcceptedPrivacy" class="text-danger"></span>
 			</div>
-			<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+			<br />
+
+			<!-- Submit button -->
+			<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-outline-primary-a" style="height: 50px">Register</button>
 		</form>
 	</div>
-
 </div>
 
 @section Scripts {

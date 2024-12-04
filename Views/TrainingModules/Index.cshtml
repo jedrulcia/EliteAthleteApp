@@ -16,22 +16,22 @@
 }
 
 <body>
-	<h3 class="text-gradient-primary">@Model.UserVM.FirstName @Model.UserVM.LastName Panel</h3>
+	<h3 class="text-gradient-primary">@Model.UserVM.FirstName @Model.UserVM.LastName</h3>
 	<div class="row justify-content-center">
-		<div class="col-md-12">
-			<ul class="nav nav-tabs" id="actionPanelTabs" role="tablist">
-			</ul>
-			<br />
-		</div>
 		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="userPanelTabs" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a class="nav-link active" id="trainingModuleTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#trainingModule" role="tab" aria-controls="trainingModule" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i>
-						<strong>Training Modules</strong>
+					<a asp-action="UserPanel" asp-controller="Users" asp-route-userId="@Model.UserVM.Id" class="nav-link d-flex justify-content-center align-items-center" id="userPanelTab" aria-controls="userPanel" aria-selected="false">
+						<i class="fa-solid fa-arrow-left"></i>&nbsp;<strong>User Panel</strong>
 					</a>
 				</li>
 				<li class="nav-item" role="presentation">
+					<a class="nav-link active" id="trainingModuleTab" data-toggle="tab" data-userid="@Model.UserVM.Id" href="#trainingModule" role="tab" aria-controls="trainingModule" aria-selected="true">
+						<i class="fa-solid fa-dumbbell">&nbsp;</i>
+						<strong>Training Modules</strong>
+					</a>
+				</li>
+				<li class="nav-item ms-auto" role="presentation">
 					<button class="nav-link createBtn" type="button" data-userid="@Model.UserVM.Id" data-coachid="@Model.UserVM.CoachId" aria-selected="false">
 						<i class="bi bi-plus-square-fill">&nbsp;</i><strong>Create New Training Module</strong>
 					</button>
@@ -52,14 +52,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="trainingModuleCreateModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Create New Training Module</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="trainingModuleCreateModalLabel">
+					<strong>Create Training Module</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="trainingModuleCreateContent">
 			</div>
@@ -72,14 +70,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="trainingModuleEditModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Edit Training Module</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="trainingModuleEditModalLabel">
+					<strong>Edit Training Module</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="trainingModuleEditContent">
 			</div>
@@ -92,14 +88,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="trainingModuleDeleteModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Delete Training Module</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="trainingModuleDeleteModalLabel">
+					<strong>Delete Training Module</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="trainingModuleDeleteContent">
 			</div>

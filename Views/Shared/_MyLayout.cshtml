@@ -38,91 +38,91 @@
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-					<div class="flex-grow-1 d-flex justify-content-center">
-						<ul class="navbar-nav">
-							@if (User.IsInRole("Administrator") || User.IsInRole("Coach"))
-							{
-								<li class="nav-item text-primary mx-2">
-									<strong>
-										<a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="AdminIndex">A D M I N</a>
-									</strong>
-								</li>
-							}
-							@if (User.IsInRole("Administrator") || User.IsInRole("Coach"))
-							{
-								<li class="nav-item text-primary mx-2">
-									<strong>
-										<a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="UserIndex">A T H L E T E S</a>
-									</strong>
-								</li>
-								<li class="nav-item text-primary mx-2">
-									<strong>
-										<a class="nav-link text-white" asp-area="" asp-controller="TrainingExercises" asp-action="Index">E X E R C I S E S</a>
-									</strong>
-								</li>
-								<li class="nav-item text-primary mx-2">
-									<strong>
-										<a class="nav-link text-white" asp-controller="Users" asp-action="UserPanel">M Y &nbsp; P A N E L</a>
-									</strong>
-								</li>
-								<li class="nav-item text-primary mx-2">
-									<strong>
-										<a class="nav-link text-white" asp-controller="TrainingModules" asp-action="Index">M Y &nbsp; T R A I N I N G &nbsp; M O D U L E S</a>
-									</strong>
-								</li>
-							}
-							@if (User.IsInRole(Roles.User))
-							{
-								<li class="nav-item text-primary mx-2">
-									<strong>
-										<a class="nav-link text-white" asp-controller="Users" asp-action="UserPanel">M Y &nbsp; P A N E L</a>
-									</strong>
-								</li>
-								<li class="nav-item text-primary mx-2">
-									<strong>
-										<a class="nav-link text-white" asp-controller="TrainingModules" asp-action="Index">M Y &nbsp; T R A I N I N G &nbsp; M O D U L E S</a>
-									</strong>
-								</li>
-							}
-						</ul>
-					</div>
-					<ul class="navbar-nav text-black">
-						<li class="nav-item">
-							<div class="dropdown">
-								<button class="btn btn-outline-primary-a btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-									<strong>User</strong>
-								</button>
-								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-									@if (SignInManager.IsSignedIn(User))
-									{
-										<li>
-											<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="~/">
-												<button type="submit" class="dropdown-item text-black">
-													<i class="bi bi-person-circle"></i>&nbsp; <strong>L O G O U T</strong>
-												</button>
-											</form>
-										</li>
-									}
-									else
-									{
-										<li>
-											<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register"><i class="bi bi-person-circle"></i>&nbsp; R E G I S T E R</a>
-										</li>
-										<li>
-											<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-person-circle"></i>&nbsp; L O G I N</a>
-										</li>
-									}
-									<li>
-										<a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
-											<i class="bi bi-gear">&nbsp;</i>S E T T I N G S
-										</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</div>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <div class="flex-grow-1 d-flex justify-content-center">
+                        <ul class="navbar-nav">
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Coach"))
+                            {
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="AdminIndex">A D M I N</a>
+                                    </strong>
+                                </li>
+                            }
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Coach"))
+                            {
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="UserIndex">A T H L E T E S</a>
+                                    </strong>
+                                </li>
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-area="" asp-controller="TrainingExercises" asp-action="Index">E X E R C I S E S</a>
+                                    </strong>
+                                </li>
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-controller="Users" asp-action="UserPanel">M Y &nbsp; P A N E L</a>
+                                    </strong>
+                                </li>
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-controller="TrainingModules" asp-action="Index">M Y &nbsp; T R A I N I N G &nbsp; M O D U L E S</a>
+                                    </strong>
+                                </li>
+                            }
+                            @if (User.IsInRole(Roles.User))
+                            {
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-controller="Users" asp-action="UserPanel">M Y &nbsp; P A N E L</a>
+                                    </strong>
+                                </li>
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-controller="TrainingModules" asp-action="Index">M Y &nbsp; T R A I N I N G &nbsp; M O D U L E S</a>
+                                    </strong>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="d-flex ms-auto">
+                        <ul class="navbar-nav">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index">S E T T I N G S</a>
+                                    </strong>
+                                </li>
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="~/">
+                                            <button type="submit" class="nav-link text-black">
+                                                <strong>L O G O U T</strong>
+                                            </button>
+                                        </form>
+                                    </strong>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Register">R E G I S T E R</a>
+                                    </strong>
+                                </li>
+                                <li class="nav-item text-primary mx-2">
+                                    <strong>
+                                        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Login">L O G I N</a>
+                                    </strong>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
 			</div>
 		</nav>
 	</header>
@@ -135,7 +135,7 @@
 
 	<footer class="border-top footer text-muted">
 		<div class="container">
-			&copy; 2024 - EliteAthleteApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Rules & Privacy Policy</a>
+			&copy; 2024 - EliteAthleteApp - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-primary">Rules & Privacy Policy</a>
 		</div>
 	</footer>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

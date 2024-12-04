@@ -7,22 +7,21 @@
 	ViewData["Title"] = "Index";
 }
 
-<div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<ul class="nav nav-tabs" id="trainingPlanTabs" role="tablist">
 				<li class="nav-item" role="presentation">
-					<a asp-action="Index" asp-controller="Users" asp-route-userId="@Model?.UserId" class="nav-link" id="back-to-list" aria-controls="training-modules" aria-selected="false">
-						<i class="bi bi-arrow-left">&nbsp;</i><strong>Back to User Panel</strong>
+					<a asp-action="Index" asp-controller="TrainingModules" asp-route-userId="@Model?.UserId" class="nav-link" id="back-to-list" aria-controls="training-modules" aria-selected="false">
+						<i class="fa-solid fa-arrow-left">&nbsp;</i><strong>Back to Training Modules</strong>
 					</a>
 				</li>
 				<li class="nav-item" role="presentation">
 					<a class="nav-link active" data-trainingmoduleid="@Model.TrainingModuleId" id="trainingPlanListTab" data-toggle="tab" href="#trainingPlanList" role="tab" aria-controls="trainingPlanList" aria-selected="true">
-						<i class="bi bi-person">&nbsp;</i><strong>Training Plan List</strong>
+						<i class="fa-solid fa-dumbbell">&nbsp;</i><strong>Training Plan List</strong>
 					</a>
 				</li>
 				<li class="nav-item ms-auto" role="presentation">
-					<a asp-action="PrintPDF" asp-route-trainingModuleId="@Model.TrainingModuleId" class="nav-link text-danger" id="print-pdf" aria-controls="training-modules" aria-selected="false">
+					<a asp-action="PrintPDF" asp-route-trainingModuleId="@Model.TrainingModuleId" class="nav-link" id="print-pdf" aria-controls="training-modules" aria-selected="false">
 						<i class="bi bi-file-earmark-pdf-fill">&nbsp;</i><strong>Print Training Plan</strong>
 					</a>
 				</li>
@@ -34,7 +33,6 @@
 			</div>
 		</div>
 	</div>
-</div>
 
 
 <!-- MODAL FOR COPY TRAINING PLAN -->
@@ -42,14 +40,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="trainingPlanCopyModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Copy Training Plan</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="trainingPlanCopyModalLabel">
+					<strong>Copy Training Plan</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="trainingPlanCopyContent">
 			</div>
@@ -62,14 +58,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="trainingPlanChangeStatusModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Complete Training Plan</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="trainingPlanChangeStatusModalLabel">
+					<strong>Change Status of Training Plan</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="trainingPlanChangeStatusContent">
 			</div>
@@ -82,14 +76,12 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3 class="modal-title w-100" id="trainingPlanDetailsModalLabel">
-					<span class="badge bg-dark d-flex justify-content-between align-items-center w-100">
-						<strong>Training Plan Details</strong>
-						<button type="button" class="close btn text-white" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</span>
+				<h3 class="modal-title text-primary-decorative" id="trainingPlanDetailsModalLabel">
+					<strong>Details of Training Plan</strong>
 				</h3>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 			<div class="modal-body" id="trainingPlanDetailsContent">
 			</div>

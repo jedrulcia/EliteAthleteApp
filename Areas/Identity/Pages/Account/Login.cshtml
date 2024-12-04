@@ -5,44 +5,43 @@
     ViewData["Title"] = "Log in";
 }
 
-<h1>@ViewData["Title"]</h1>
 <div class="row">
     <div class="col-md-12">
         <section>
             <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
+                <h3 class="text-primary">Use a local account to log in</h3>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating">
+                <div class="form">
+                    <label asp-for="Input.Email" class="form-label text-primary">Email</label>
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <br />
-                <div class="form-floating">
+                <div class="form">
+                    <label asp-for="Input.Password" class="form-label text-primary">Password</label>
                     <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <br />
-                <div class="checkbox">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                <div class="checkbox-container">
+                    <input type="checkbox" asp-for="Input.RememberMe" class="checkbox-input" />
+                    <label class="checkbox-label text-primary" asp-for="Input.RememberMe">
+                       @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
                 <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-outline-primary-a" style="height: 50px">Log in</button>
                 </div>
                 <br />
                 <div>
-                    <p>
+                    <p class="text-primary">
                         <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                     </p>
-                    <p>
+                    <p class="text-primary">
                         <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
                     </p>
-                    <p>
+                    <p class="text-primary">
                         <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
                     </p>
                 </div>

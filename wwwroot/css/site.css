@@ -62,7 +62,7 @@
     }
 
 .text-logo {
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color)); /* Apply gradient */
+    background: linear-gradient(to right, var(--primary-color), var(--primary-color)); /* Apply gradient */
     -webkit-background-clip: text; /* Clip background to text */
     -webkit-text-fill-color: transparent; /* Make the text itself transparent */
     background-clip: text;
@@ -95,6 +95,98 @@ body {
     padding: 0; /* Reset padding */
 }
 
+/*=====================================================FORM FLOATING=====================================================*/
+
+/* Stylowanie dla input i textarea */
+.form input,
+.form textarea,
+.form select {
+    background-color: #2c2c2c; /* Ciemne t³o */
+    color: #ffffff !important; /* Bia³y tekst */
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 0.3em 0.6em;
+    width: 475px;
+}
+
+    .form input:focus,
+    .form textarea:focus,
+    .form select:focus {
+        background-color: #3b3b3b; /* Jaœniejsze t³o */
+        color: #ffffff !important;
+        border-color: var(--secondary-color);
+        outline: none;
+        box-shadow: 0 0 5px rgba(209, 122, 15, 0.7); /* Pomarañczowa poœwiata */
+        width: 475px;
+    }
+
+    .form input:disabled {
+        background-color: #1c1c1c; /* Ciemniejsze t³o dla disabled */
+        color: #a1a1a1 !important; /* Jasnoszary tekst */
+        border: 1px solid #555555; /* Przyt³umiona ramka */
+        border-radius: 4px;
+        padding: 0.3em 0.6em;
+        width: 475px;
+        cursor: not-allowed; /* Zmiana kursora na brak mo¿liwoœci edycji */
+        opacity: 0.8; /* Nieco przejrzyste */
+    }
+
+/* Stylowanie checkboxów */
+.checkbox-container {
+    display: flex;
+    gap: 0.5em; /* Odstêp miêdzy checkboxem a tekstem */
+}
+
+.checkbox-input {
+    appearance: none;
+    -webkit-appearance: none; /* Lepsza kompatybilnoœæ */
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    background-color: #2c2c2c;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+    .checkbox-input:checked {
+        border-color: #d17a0f; /* Pomarañczowy kolor obramowania */
+        box-shadow: 0 0 5px rgba(209, 122, 15, 0.7); /* Delikatna poœwiata */
+    }
+
+        .checkbox-input:checked::after {
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            left: 2px;
+            top: -1px;
+        }
+
+    .checkbox-input:focus {
+        outline: none;
+    }
+
+.checkbox-label {
+    color: #ffffff; /* Bia³y tekst */
+    font-size: 1em;
+}
+
+/* Stylowanie autofill */
+.form input:-webkit-autofill,
+.form input:-webkit-autofill:hover,
+.form input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff;
+    -webkit-box-shadow: 0 0 0px 1000px #2c2c2c inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.form- input:focus {
+    background-color: #3b3b3b !important;
+    color: #ffffff !important;
+}
+
 /*=====================================================NAVBAR=====================================================*/
 .navbar {
     background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
@@ -117,7 +209,7 @@ body {
         right: 0;
         height: 2px; /* Adjust the thickness of the bottom line */
         background-color: var(--primary-color); /* The blue margin color */
-        width: 67%;
+        width: 66%;
         margin: 0 auto; /* Center the line */
     }
 
@@ -138,8 +230,22 @@ body {
         border-color: var(--secondary-color); /* Change hover border color to green */
     }
 
-/*=====================================================BUTTONS=====================================================*/
+/*=====================================================BADGES =====================================================*/
+.bg-primary-a {
+    position: relative;
+    background-color: var(--primary-color); /* Solid primary color */
+    color: #fff; /* White text color */
+    border: none; /* No border */
+    overflow: hidden;
+    transition: color 0.3s, background-color 0.3s;
+    outline: none;
+    border-radius: 12px; /* Optional: Rounded corners */
+    font-family: 'Montserrat';
+    font-size: 12px;
+    font-weight: bold;
+}
 
+/*=====================================================BUTTONS=====================================================*/
 .btn-primary-a {
     background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
     background-size: 200% 100%;
@@ -171,18 +277,12 @@ body {
 }
 
     .btn-outline-primary-a::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
-        border-radius: 4px; /* Match the border-radius of the button */
-        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-        padding: 2px; /* Border thickness */
-        background-clip: padding-box; /* Only show the gradient inside the border */
-        transition: opacity 0.3s;
+        background-color: #2c2c2c;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        border-radius: 4px;
+        padding: 0.3em 0.8em;
+        transition: all 0.3s ease;
     }
 
     .btn-outline-primary-a:hover::before {
@@ -230,18 +330,12 @@ body {
 }
 
     .btn-outline-danger-a::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
-        border-radius: 4px; /* Match the border-radius of the button */
-        background: linear-gradient(to right, var(--danger-color), var(--secondary-color));
-        padding: 2px; /* Border thickness */
-        background-clip: padding-box; /* Only show the gradient inside the border */
-        transition: opacity 0.3s;
+        background-color: #2c2c2c;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        border-radius: 4px;
+        padding: 0.3em 0.8em;
+        transition: all 0.3s ease;
     }
 
     .btn-outline-danger-a:hover::before {
