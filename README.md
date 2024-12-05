@@ -123,6 +123,14 @@
 
 ---
 
-## 📄 License
+## ⚖️ Privacy and Copyright Policy
 
-This project is licensed under the [MIT License](LICENSE).
+All content, code, and materials in this repository are the intellectual property of the author and are protected by copyright laws. Unauthorized reproduction, distribution, or use of the content without explicit permission is prohibited.
+
+By using this application, you agree that:
+
+You will not use the application or its components for illegal purposes.
+The author retains all rights to the application and its source code.
+The application or its components will not be used for commercial purposes without the explicit knowledge and consent of the author.
+No sensitive personal data is collected, stored, or shared by this application. However, you are responsible for ensuring compliance with applicable data protection laws when using it.
+For inquiries about usage, licensing, or permissions, please contact the repository owner.
