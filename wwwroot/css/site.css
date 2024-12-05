@@ -5,12 +5,61 @@
     --danger-color: #f73434;
 }
 
+/*=====================================================CARD=====================================================*/
+
 .card {
     background-color: #1a1a1a; /* Ciemnoszary kolor z Bootstrap */
     color: white; /* Bia³y tekst */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtelny cieñ */
 }
+
+/*=====================================================CHAT=====================================================*/
+.card-chat {
+    background-color: #1a1a1a; /* Ciemnoszary kolor */
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column; /* Ustawienie pionowe dla elementów wewnêtrznych */
+    height: 100%; /* Elastyczna wysokoœæ */
+    overflow: hidden;
+}
+
+.card-header-chat {
+    background-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.card-body-chat {
+    flex-grow: 1; /* Zajmuje ca³¹ dostêpn¹ przestrzeñ */
+    overflow-y: auto; /* W³¹cza przewijanie pionowe */
+    padding: 10px;
+    max-height: 650px;
+}
+
+.card-footer-chat {
+    background-color: #000000;
+    padding: 10px;
+}
+.card-body-chat::-webkit-scrollbar {
+    width: 10px; /* Szerokoœæ paska przewijania */
+    height: 10px; /* Wysokoœæ paska przewijania (dla przewijania poziomego, jeœli istnieje) */
+}
+
+.card-body-chat::-webkit-scrollbar-track {
+    background: #1a1a1a; /* Kolor t³a paska przewijania */
+}
+
+.card-body-chat::-webkit-scrollbar-thumb {
+    background: #2c2c2c; /* Gradient kciuka */
+    border-radius: 5px; /* Zaokr¹glenie */
+}
+
+    .card-body-chat::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-color); /* Kolor kciuka po najechaniu */
+    }
 
 /*=====================================================TEXT=====================================================*/
 .text-normal {
@@ -483,12 +532,12 @@ table.dataTable .btn-action {
 }
 
 .dataTables_scrollBody::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(to bottom, var(--primary-color), var(--primary-color));
     border-radius: 5px;
 }
 
     .dataTables_scrollBody::-webkit-scrollbar-thumb:hover {
-        background: var(--secondary-color);
+        background: #2c2c2c;
     }
 
 

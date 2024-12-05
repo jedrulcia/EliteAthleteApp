@@ -15,94 +15,62 @@
 			{
 				<div>
 					<div class="card text-center">
-						<div class="card-header">
-							Today's Training Plan
-						</div>
-						<div class="card-body">
-							<a asp-action="Details" asp-controller="TrainingPlans" class="btn btn-outline-primary-a d-block w-100 text-center"
-							   asp-route-trainingPlanId="@Model.TrainingPlanDetailsVM.Id">
-								<i class=""></i> Training Plan
-							</a>
-						</div>
-						<div class="card-footer text-white">
-							@DateTime.UtcNow.ToString("dd-MM-yyyy")
+						<div class="card-body" style="height: 100px;">
+							<p>
+								<a asp-action="UserChat" asp-route-userId="@Model.UserVM.CoachId" asp-controller="Users" class="btn btn-outline-primary-a d-block w-100 text-center"><strong><i class="fa-solid fa-comment-dots">&nbsp;</i>Chat with your coach</strong></a>
+							</p>
+							<p>
+								@if (Model.TrainingPlanDetailsVM.Date.Value.ToString("dd-MM-yyyy") == DateTime.UtcNow.ToString("dd-MM-yyyy"))
+								{
+									<a asp-action="Details" asp-controller="TrainingPlans" class="btn btn-outline-primary-a d-block w-100 text-center"
+									   asp-route-trainingPlanId="@Model.TrainingPlanDetailsVM.Id">
+										<i class="fa-solid fa-dumbbell"></i> Today's Training Plan (@Model.TrainingPlanDetailsVM.Date.Value.ToString("dd-MM-yyyy"))
+									</a>
+								}
+								else
+								{
+									<a asp-action="Details" asp-controller="TrainingPlans" class="btn btn-outline-primary-a d-block w-100 text-center"
+									   asp-route-trainingPlanId="@Model.TrainingPlanDetailsVM.Id">
+										<i class="fa-solid fa-dumbbell"></i> Last Training Plan (@Model.TrainingPlanDetailsVM.Date.Value.ToString("dd-MM-yyyy"))
+									</a>
+								}
+							</p>
 						</div>
 					</div>
 				</div>
-				<br />
 
 				<div class="card">
 					<div class="card-body">
 						<div id="carouselExample" class="carousel slide">
 							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<div class="container">
-										<div class="col-md-1">
-										</div>
-										<div class="col-md-10">
-											<dd class="col-sm-12">
-												<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Name)</h1>
-											</dd>
-											<dd class="col-sm-12">
-												<iframe width="370" height="230" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-											</dd>
-											<dd class="col-sm-12">
-												Category: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.ExerciseCategory.Name)
-											</dd>
-											<dd class="col-sm-12">
-												@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Description)
-											</dd>
-											<dd class="col-sm-12">
-												@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Units)
-											</dd>
-											<dd class="col-sm-12">
-												Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Weight)
-											</dd>
-											<dd class="col-sm-12">
-												Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].RestTime)
-											</dd>
-											<dd class="col-sm-12">
-												Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Note)
-											</dd>
-										</div>
-										<div class="col-md-1">
-										</div>
-									</div>
-								</div>
-								@for (int i = 1; i < Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs.Count; i++)
+								@for (int i = 0; i < Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs.Count; i++)
 								{
-									<div class="carousel-item">
+									<div class="carousel-item @(i == 0 ? "active" : "")">
 										<div class="container">
-											<div class="col-md-1">
-											</div>
-											<div class="col-md-10">
-												<dd class="col-sm-12">
-													<h1>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Name)</h1>
-												</dd>
-												<dd class="col-sm-12">
-													<iframe width="370" height="230" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-												</dd>
-												<dd class="col-sm-12">
-													Category: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.ExerciseCategory.Name)
-												</dd>
-												<dd class="col-sm-12">
-													@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].ExerciseVM.Description)
-												</dd>
-												<dd class="col-sm-12">
-													@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Units)
-												</dd>
-												<dd class="col-sm-12">
-													Weight: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Weight)
-												</dd>
-												<dd class="col-sm-12">
-													Rest: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].RestTime)
-												</dd>
-												<dd class="col-sm-12">
-													Notes: @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[0].Note)
-												</dd>
-											</div>
-											<div class="col-md-1">
-											</div>
+											<dd class="col-sm-12 text-primary">
+												<h4>@Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Index): @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Name)</h4>
+											</dd>
+											<dd class="col-sm-12">
+												<iframe width="390" height="230" src="@Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.YoutubeLink" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+											</dd>
+											<dd class="col-sm-12">
+												<span class="text-primary">Category:</span> @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.ExerciseCategory.Name)
+											</dd>
+											<dd class="col-sm-12">
+												<span class="text-primary">Description:</span>  @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].ExerciseVM.Description)
+											</dd>
+											<dd class="col-sm-12">
+												<span class="text-primary">Amount:</span>  @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Sets)x @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Units)
+											</dd>
+											<dd class="col-sm-12">
+												<span class="text-primary">Weight:</span>  @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Weight)
+											</dd>
+											<dd class="col-sm-12">
+												<span class="text-primary">Rest:</span>  @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].RestTime)
+											</dd>
+											<dd class="col-sm-12">
+												<span class="text-primary">Notes:</span>  @Html.DisplayFor(modelItem => Model.TrainingPlanDetailsVM.TrainingPlanExerciseDetailVMs[i].Note)
+											</dd>
 										</div>
 									</div>
 								}
@@ -122,9 +90,14 @@
 			else
 			{
 				<div class="card">
-					<div class="card-body">
-						<h1>DZISIAJ NIE MASZ TRENINGU</h1>
-					</div>
+					<p>
+						<a asp-action="UserChat" asp-route-userId="@Model.UserVM.CoachId" asp-controller="Users" class="btn btn-outline-primary-a d-block w-100 text-center"><strong><i class="fa-solid fa-comment-dots">&nbsp;</i>Chat with your coach!</strong></a>
+					</p>
+					<p>
+						<div class="card-body">
+							<h1>NO TRAINING TO DISPLAY</h1>
+						</div>
+					</p>
 				</div>
 			}
 		</div>
@@ -142,23 +115,68 @@
 }
 else
 {
-	<div class="text-center col-md-12">
-		<h1 class="display-4">Training Plan Web App</h1>
-		<p>Created in ASP.NET Core 8 for educational and own purposes.</p>
+	<div class="card">
+		<div class="card-body" style="height: 730px;">
+			<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<div class="text-center">
+							<h4 class="text-primary">Let your athletes easily track their results on the homepage.</h4>
+						</div>
+						<br />
+						<img src="~/images/homepage.png" class="d-block w-100 img-fluid rounded" alt="Homepage">
+					</div>
+					<div class="carousel-item">
+						<div class="text-center">
+							<h4 class="text-primary">Add your own exercises and share them with other coaches.</h4>
+						</div>
+						<br />
+						<img src="~/images/exercises.png" class="d-block w-100 img-fluid rounded" alt="Exercises">
+					</div>
+					<div class="carousel-item">
+						<div class="text-center">
+							<h4 class="text-primary">Easily manage the training plans with many built-in functionalities.</h4>
+						</div>
+						<br />
+						<img src="~/images/trainingplans.png" class="d-block w-100 img-fluid rounded" alt="Training Plans">
+					</div>
+					<div class="carousel-item">
+						<div class="text-center">
+							<h4 class="text-primary">Use your private or global exercises in your athletes' training plans.</h4>
+						</div>
+						<br />
+						<img src="~/images/manageexercise.png" class="d-block w-100 img-fluid rounded" alt="Manage Exercise">
+					</div>
+					<div class="carousel-item">
+						<div class="text-center">
+							<h4 class="text-primary">Track your athletes' results and important informations in the user panel.</h4>
+						</div>
+						<br />
+						<img src="~/images/userpanel.png" class="d-block w-100 img-fluid rounded" alt="User Panel">
+					</div>
+					<div class="carousel-item">
+						<div class="text-center">
+							<h4 class="text-primary">Chat with your athletes on the built-in chat.</h4>
+						</div>
+						<br />
+						<img src="~/images/chat.png" class="d-block w-100 img-fluid rounded" alt="Chat">
+					</div>
+				</div>
+				<button class="carousel-control-prev position-absolute start-0 translate-middle-y ms-4" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next position-absolute end-0 translate-middle-y me-4" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+			<br />
+			<p class="text-secondary text-end">By Jedrzej Koriat</p>
+		</div>
 	</div>
-
-	<div class="text-center col-md-12">
-		<img src="~/images/homephoto.jpg" alt="Opis obrazka" class="img-fluid" />
-	</div>
-
-	<div class="text-end col-md-12">
-		<p>Created by: Jędrzej Koriat</p>
-	</div>
+	
 }
-
-
-
-
 
 @section Scripts {
 	@if (Model.IsLoggedIn)
@@ -171,35 +189,35 @@ else
 			{
 				@: '@point.Date?.ToString("yyyy-MM-dd")',
 			}
-																																						];
+																																												];
 
 				const weightData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WeightDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const fatPercentageData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.FatPercentageDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const musclePercentageData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.MusclePercentageDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const waterPercentageData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyAnalysisChartVM.WaterPercentageDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const data = {
 					labels: labels,
@@ -283,42 +301,42 @@ else
 			{
 				@: '@point.Date?.ToString("yyyy-MM-dd")',
 			}
-																																						];
+																																												];
 
 				const chestData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ChestDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const armsData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ArmsDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const waistData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.WaistDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const thighsData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.ThighsDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const hipsData = [
 			@foreach (var point in Model.UserChartsVM.UserBodyMeasurementsChartVM.HipsDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const data = {
 					labels: labels,
@@ -410,35 +428,35 @@ else
 			{
 				@: '@point.Date?.ToString("yyyy-MM-dd")',
 			}
-																																						];
+																																												];
 
 				const benchPressData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.BenchPressDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const overheadPressData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.OverheadPressDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const deadliftData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.DeadliftDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const squatData = [
 			@foreach (var point in Model.UserChartsVM.TrainingOrmChartVM.SquatDataPointVMs)
 			{
 				@: @point.Value,
 			}
-																																						];
+																																												];
 
 				const data = {
 					labels: labels,
