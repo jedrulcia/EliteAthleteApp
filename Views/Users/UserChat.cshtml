@@ -6,58 +6,64 @@
 }
 
 <div class="container d-flex justify-content-center mt-4">
-	<div class="card" style="max-width: 550px; width: 100%;">
-		<div class="card-body">
-			@for (int i = 0; i < Model.UserChatMessageVMs.Count(); i++)
-			{
-				if (i > 0)
-				{
-					if (Model.UserChatMessageVMs[i].Timestamp.Day != Model.UserChatMessageVMs[i - 1].Timestamp.Day)
-					{
-						<div class="text-center my-2">
-							<small class="text-muted">@Model.UserChatMessageVMs[i].Timestamp.ToString("dd-MM-yyyy")</small>
-						</div>
-					}
+    <div class="card-chat" style="max-width: 550px; width: 100%;">
+        <div class="card-header-chat">
+            <i class="bi bi-person-circle"></i> @Model.UserVM.FirstName @Model.UserVM.LastName
+        </div>
+        <div class="card-body-chat" id="card-body-chat">
+            <!-- Treść wiadomości -->
+            @for (int i = 0; i < Model.UserChatMessageVMs.Count(); i++)
+            {
+                if (i > 0)
+                {
+                    if (Model.UserChatMessageVMs[i].Timestamp.Day != Model.UserChatMessageVMs[i - 1].Timestamp.Day)
+                    {
+                        <div class="text-center my-2">
+                            <small class="text-muted">@Model.UserChatMessageVMs[i].Timestamp.ToString("dd-MM-yyyy")</small>
+                        </div>
+                    }
 
-					if ((Model.UserChatMessageVMs[i].Timestamp - Model.UserChatMessageVMs[i - 1].Timestamp).TotalMinutes > 15)
-					{
-						<div class="text-center my-1">
-							<small class="text-muted"><strong>@Model.UserChatMessageVMs[i].Timestamp.ToString("HH:mm")</strong></small>
-						</div>
-					}
-				}
-				<div class="message mb-3">
-					<div class="row">
-						@if (Model.UserChatMessageVMs[i].UserId == Model.ViewerId)
-						{
-							<div class="text-end">
-								<div class="p-2 bg-primary-a text-white rounded d-inline-block">
-									<strong>@Model.UserChatMessageVMs[i].Content</strong>
-								</div>
-							</div>
-						}
-						else
-						{
-							<div class="text-start">
-								<div class="p-2 bg-light text-dark rounded d-inline-block">
-									<strong>@Model.UserChatMessageVMs[i].Content</strong>
-								</div>
-							</div>
-						}
-					</div>
-				</div>
-			}
-			<div class="mt-3">
-				<ul id="discussion"></ul>
-			</div>
-
-			<div class="mt-5 d-flex form">
-				<input type="text" id="message" class="form-control me-2" placeholder="Type your message..." />
-				<button id="sendmessage" class="btn btn-outline-primary-a"><i class="fa-solid fa-right-long"></i></button>
-			</div>
-		</div>
-	</div>
+                    if ((Model.UserChatMessageVMs[i].Timestamp - Model.UserChatMessageVMs[i - 1].Timestamp).TotalMinutes > 5)
+                    {
+                        <div class="text-center my-1">
+                            <small class="text-muted"><strong>@Model.UserChatMessageVMs[i].Timestamp.ToString("HH:mm")</strong></small>
+                        </div>
+                    }
+                }
+                <div class="message mb-3">
+                    <div class="row">
+                        @if (Model.UserChatMessageVMs[i].UserId == Model.ViewerId)
+                        {
+                            <div class="text-end">
+                                <div class="p-2 bg-primary-a text-white rounded d-inline-block" style="font-size: 12px;">
+                                    <strong>@Model.UserChatMessageVMs[i].Content</strong>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-start">
+                                <div class="p-2 bg-dark text-white rounded d-inline-block" style="font-size: 12px;">
+                                    <strong>@Model.UserChatMessageVMs[i].Content</strong>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            <div class="mt-3">
+                <ul id="discussion"></ul>
+            </div>
+        </div>
+        <div class="card-footer-chat">
+            <div class="d-flex form">
+                <input type="text" id="message" class="form-control me-2" placeholder="Type your message..." />
+                <button id="sendmessage" class="btn btn-outline-primary-a"><i class="fa-solid fa-right-long"></i></button>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 
 @section Scripts
@@ -90,29 +96,53 @@
 				event.preventDefault();
 			});
 
-			connection.on("ReceiveMessage", function (message, senderId, timestamp) {
-				console.log("Nowa wiadomość: ", message);
+            connection.on("ReceiveMessage", function (message, senderId, timestamp) {
+                console.log("Nowa wiadomość: ", message);
 
-				var divMessage = document.createElement("div");
-				divMessage.classList.add("message");
+                var divMessage = document.createElement("div");
+                divMessage.classList.add("message", "mb-3");
 
-				var divRow = document.createElement("div");
-				divRow.classList.add("row");
+                var divRow = document.createElement("div");
+                divRow.classList.add("row");
 
-				var divContent = document.createElement("div");
-				if (senderId === '@Model.ViewerId') {
-					divContent.classList.add("text-end");
-				} else {
-					divContent.classList.add("text-start");
-				}
+                var divContent = document.createElement("div");
+                var messageContent = document.createElement("div");
+                messageContent.classList.add("p-2", "text-white", "rounded", "d-inline-block");
+                messageContent.style.fontSize = "12px"; // Taki sam rozmiar jak w wiadomościach serwera
 
-				divContent.innerHTML = `${message}`;
+                if (senderId === '@Model.ViewerId') {
+                    divContent.classList.add("text-end");
+                    messageContent.classList.add("bg-primary-a"); // Styl wiadomości użytkownika
+                } else {
+                    divContent.classList.add("text-start");
+                    messageContent.classList.add("bg-dark"); // Styl wiadomości od innych
+                }
 
-				divMessage.appendChild(divContent);
-				divMessage.appendChild(divRow);
+                messageContent.innerHTML = `<strong>${message}</strong>`;
+                divContent.appendChild(messageContent);
+                divRow.appendChild(divContent);
+                divMessage.appendChild(divRow);
 
-				document.getElementById("discussion").appendChild(divMessage);
-			});
+                document.getElementById("discussion").appendChild(divMessage);
+
+                // Automatyczne przewinięcie do dołu
+                scrollToBottom();
+            });
+
+
 		});
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardBody = document.getElementById('card-body-chat');
+            cardBody.scrollTop = cardBody.scrollHeight; // Automatyczne przewinięcie na dół
+        });
+
+        // Jeśli chcesz przewijać na dół po dodaniu nowej wiadomości:
+        function scrollToBottom() {
+            const cardBody = document.getElementById('card-body-chat');
+            cardBody.scrollTop = cardBody.scrollHeight;
+        }
+
+        // Wywołaj `scrollToBottom()` po dodaniu wiadomości.
 	</script>
 }
