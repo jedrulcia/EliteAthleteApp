@@ -60,8 +60,12 @@
 ---
 
 ## 📦 **Preview**
-
-![Feature Preview (Screenshots Coming Soon)](https://via.placeholder.com/800x400?text=Preview+Coming+Soon)
+![homepage](https://github.com/user-attachments/assets/a0b2cda1-126a-44c2-9054-bab49e387305)
+![exercises](https://github.com/user-attachments/assets/47e08368-ad98-4561-88aa-389ff33b7ca2)
+![trainingplans](https://github.com/user-attachments/assets/f339df39-9a24-4b01-add4-4b57e90c28aa)
+![manageexercise](https://github.com/user-attachments/assets/de9ff558-e6dd-4b6c-9d41-9d70557e1164)
+![userpanel](https://github.com/user-attachments/assets/20c7500e-7e00-4a7e-93a7-bd82f9eecba7)
+![chat](https://github.com/user-attachments/assets/ed2eecfb-032e-42d5-947e-4c8b5e09734b)
 
 ---
 
