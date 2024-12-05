@@ -71,12 +71,36 @@
    ```bash
    git clone https://github.com/your-username/EliteAthleteApp.git
    ```
-2. Set up an MSSQL database.
-3. Run database migrations using Entity Framework:  
+2. Set up essential services (Backblaze Storage, SendGrid, Google Drive, MSSQL database)
+3. Create appsettings.json file inside of the main folder
+4. Add this structure to appsettings.json and fill the fields in square brackets:
+   ```json
+   {
+     "ConnectionStrings": {
+    "DatabaseConnectionString": "Server=[YOUR SERVER NAME];Database=[YOUR DATABASE NAME];Trusted_Connection=True;MultipleActiveResultSets=true;Encrypt=False",
+    "SendGridConnectionString": "[SEND GRID ID]"
+     },
+     "GoogleFolders": {
+       "userimage": "[GOOGLE DRIVE FOLDER ID]",
+       "exerciseimage": "[GOOGLE DRIVE FOLDER ID]",
+       "exercisevideo": "[GOOGLE DRIVE FOLDER ID]",
+       "medicaltestimage": "[GOOGLE DRIVE FOLDER ID]",
+       "bodyanalysisimage": "[GOOGLE DRIVE FOLDER ID]"
+     },
+     "Email": "[YOUR EMAIL FOR EMAIL SENDER]",
+     "Backblaze": {
+       "keyId": "[YOUR BACKBLAZE KEYID]",
+       "applicationKey": "[YOUR BACKBLAZE APPLICATION KEY]",
+       "bucketId": "[YOUR BACKBLAZE BUCKET ID]"
+     },
+       "AllowedHosts": "*"
+     }
+   ```
+5. Run database migrations using Entity Framework:  
    ```bash
    dotnet ef database update
    ```
-4. Start the application:  
+6. Start the application:  
    ```bash
    dotnet run
    ```
