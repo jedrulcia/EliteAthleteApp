@@ -3,6 +3,11 @@
 
 **EliteAthleteApp** is a comprehensive tool for managing training plans, designed for coaches and their athletes. Currently, the app is a web application and will soon be extended to mobile devices. 
 
+## 📦 **Preview**
+![homepage](https://github.com/user-attachments/assets/a0b2cda1-126a-44c2-9054-bab49e387305)
+
+---
+
 ## 🚀 Technologies
 
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-512BD4?style=for-the-badge&logo=.net&logoColor=white)
@@ -24,17 +29,21 @@
 ## 📋 Features
 
 ### 🏋️‍♂️ **Exercises**
+![exercises](https://github.com/user-attachments/assets/47e08368-ad98-4561-88aa-389ff33b7ca2)
 - Creating (Private/Public)  
 - Editing  
 - Deleting  
 - Adding custom photos and videos (handled by Google Drive Storage)  
 
+
 ### 🗓️ **Training Modules**
+![trainingplans](https://github.com/user-attachments/assets/f339df39-9a24-4b01-add4-4b57e90c28aa)
 - Creating (Creating a training module for a specific time frame generates a single training plan for every day during that period)  
 - Editing (Adjusting the time frame)  
 - Deleting  
 
 ### 📋 **Training Plans**
+![manageexercise](https://github.com/user-attachments/assets/de9ff558-e6dd-4b6c-9d41-9d70557e1164)
 - Managing Exercises (Adding/editing exercises in a training plan)  
 - Copying training plan content to other training plans  
 - Completing a training plan + sending a report  
@@ -42,6 +51,7 @@
 - Exporting training plans to PDF  
 
 ### 🧑‍💻 **User Panel**
+![userpanel](https://github.com/user-attachments/assets/20c7500e-7e00-4a7e-93a7-bd82f9eecba7)
 **One-Repetition-Max, Body Measurements, Body Analysis, Medical Tests**:  
 - Creating  
 - Editing  
@@ -49,6 +59,7 @@
 - Tracking progress (charts powered by Chart.js)  
 
 ### 💬 **Chat**
+![chat](https://github.com/user-attachments/assets/ed2eecfb-032e-42d5-947e-4c8b5e09734b)
 - Real-time communication between coach and athlete (powered by SignalR)  
 
 ### 👨‍💼 **Admin Panel**
@@ -56,28 +67,6 @@
 - Deleting users  
 - Banning/Unbanning users  
 - Setting exercises as public upon request  
-
----
-
-## 📦 **Preview**
-
-**HOME PAGE**
-![homepage](https://github.com/user-attachments/assets/a0b2cda1-126a-44c2-9054-bab49e387305)
-
-**EXERCISE MODULE**
-![exercises](https://github.com/user-attachments/assets/47e08368-ad98-4561-88aa-389ff33b7ca2)
-
-**TRAINING PLAN MODULE**
-![trainingplans](https://github.com/user-attachments/assets/f339df39-9a24-4b01-add4-4b57e90c28aa)
-
-**MANAGE EXERCISES MODULE**
-![manageexercise](https://github.com/user-attachments/assets/de9ff558-e6dd-4b6c-9d41-9d70557e1164)
-
-**USER PANEL**
-![userpanel](https://github.com/user-attachments/assets/20c7500e-7e00-4a7e-93a7-bd82f9eecba7)
-
-**CHAT**
-![chat](https://github.com/user-attachments/assets/ed2eecfb-032e-42d5-947e-4c8b5e09734b)
 
 ---
 
