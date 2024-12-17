@@ -51,21 +51,26 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Users/List/Index
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> UserIndex(string? userId)
 		{
 			return View(await userRepository.GetUserIndexVMAsync(userId));
 		}
+
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> UserPanel(string? userId)
 		{
 			return View(await userRepository.GetUserPanelVMAsync(userId));
 		}
 
 		// GET: Users/List
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> UserList()
 		{
 			return PartialView(await userRepository.GetUserListVMAsync());
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> AddAthlete(int athleteCount)
 		{
 			return PartialView(await userRepository.GetUserAddAthleteVMAsync(athleteCount));
@@ -73,6 +78,7 @@ namespace EliteAthleteApp.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> AddAthlete(UserAddAthleteVM userAddAthleteVM)
 		{
 			if (ModelState.IsValid)
@@ -85,27 +91,32 @@ namespace EliteAthleteApp.Controllers
 
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> AcceptInvite()
 		{
 			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.AcceptInviteAsync() });
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> DeclineInvite()
 		{
 			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.DeclineInviteAsync() });
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> DeleteCoach()
 		{
 			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.DeleteCoachAsync() });
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> ResetInviteCode()
 		{
 			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.ResetInviteCodeAsync() });
 		}
 
 		// GET: Users/List/Index/Info
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> UserInfo(string? userId)
 		{
 			return PartialView(await userRepository.GetUserInfoVMAsync(userId));
@@ -114,6 +125,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingExerciseMedia/EditMedia/UploadImage
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> UploadImage(string userId)
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
@@ -124,6 +136,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> DeleteImage(string userId)
 		{
 			await userRepository.DeleteUserImageAsync(userId);
@@ -131,18 +144,21 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Admin/Index
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> AdminIndex()
 		{
 			return View(await userRepository.GetAdminIndexVMAsync());
 		}
 
 		// GET: Admin/Index/User
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> AdminUserList()
 		{
 			return PartialView(await userRepository.GetAdminUserListVMAsync());
 		}
 
 		// GET: Admin/Index/SendEmail
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> SendEmail(string? userId)
 		{
 			return PartialView(await userRepository.GetAdminSendEmailVMAsync(userId));
@@ -151,6 +167,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: Admin/Index/SendEmail
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> SendEmail(AdminSendEmailVM adminSendEmailVM)
 		{
 
@@ -164,6 +181,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Admin/Index/UserDelete
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserDelete(string userId)
 		{
 			return PartialView(await userRepository.GetAdminUserDeleteVMAsync(userId));
@@ -172,6 +190,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: Admin/Index/UserDelete
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserDelete(UserVM userVM)
 		{
 			await userRepository.UserDeleteAsync(userVM);
@@ -179,6 +198,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Admin/Index/UserLockout
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserLockout(string userId)
 		{
 			return PartialView(await userRepository.GetAdminUserLockoutVMAsync(userId));
@@ -187,12 +207,14 @@ namespace EliteAthleteApp.Controllers
 		// POST: Admin/Index/UserLockout
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserLockout(AdminUserLockoutVM adminUserLockoutVM)
 		{
 			userRepository.UserLockoutAsync(adminUserLockoutVM);
 			return RedirectToAction(nameof(Index));
 		}
 
+		[Authorize(Roles = $"{Roles.Administrator},{Roles.Coach},{Roles.User}")]
 		public async Task<IActionResult> UserChat(string? userId)
 		{
 			return View(await userRepository.GetUserChatVMAsync(userId));

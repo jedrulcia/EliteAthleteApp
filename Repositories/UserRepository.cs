@@ -228,7 +228,7 @@ namespace EliteAthleteApp.Repositories
 		{
 			var userVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
 			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			return new AdminUserDeleteVM { AdminId = admin.Id, UserVM = userVM );
+			return new AdminUserDeleteVM { AdminId = admin.Id, UserVM = userVM };
 		}
 
 		public async Task UserDeleteAsync(UserVM userVM)
@@ -260,15 +260,15 @@ namespace EliteAthleteApp.Repositories
 			var coachVM = new UserVM();
 			var userVM = new UserVM();
 
-			if (User.IsInRole("Coach"))
-			{
-				coachVM = mapper.Map<UserVM>(user1);
-				userVM = mapper.Map<UserVM>(user2);
-			}
-			else
+			if (user1.UserSubscriptionId == 1)
 			{
 				coachVM = mapper.Map<UserVM>(user2);
 				userVM = mapper.Map<UserVM>(user1);
+			}
+			else
+			{
+				coachVM = mapper.Map<UserVM>(user1);
+				userVM = mapper.Map<UserVM>(user2);
 			}
 
 			// Sprawdź, czy chat między użytkownikami już istnieje
