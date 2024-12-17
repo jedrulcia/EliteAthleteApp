@@ -1,4 +1,5 @@
 ﻿using EliteAthleteApp.Data;
+using EliteAthleteApp.Models.Home;
 
 namespace EliteAthleteApp.Contracts
 {
@@ -6,5 +7,6 @@ namespace EliteAthleteApp.Contracts
     {
         Task UploadUserImageAsync(string userId, IFormFile imageFile);
         Task DeleteUserImageAsync(string userId);
+        Task<HomeIndexVM> GetHomeIndexVMAsync();
     }
 }

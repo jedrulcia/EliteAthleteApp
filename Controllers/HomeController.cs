@@ -19,28 +19,16 @@ namespace EliteAthleteApp.Controllers
 		private readonly IHttpContextAccessor httpContextAccessor;
 		private readonly IMapper mapper;
 		private readonly ITrainingPlanRepository trainingPlanRepository;
+		private readonly IUserRepository userRepository;
 
-		public HomeController(IUserChartService userChartService, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IMapper mapper, ITrainingPlanRepository trainingPlanRepository)
+		public HomeController(IUserRepository userRepository)
 		{
-			this.userChartService = userChartService;
-			this.userManager = userManager;
-			this.httpContextAccessor = httpContextAccessor;
-			this.mapper = mapper;
-			this.trainingPlanRepository = trainingPlanRepository;
+			this.userRepository = userRepository;
 		}
 
 		public async Task<IActionResult> Index()
 		{
-			var homeIndexVM = new HomeIndexVM();
-			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			if (user != null)
-			{
-				homeIndexVM.UserVM = mapper.Map<UserVM>(user);
-				homeIndexVM.UserChartsVM = await userChartService.GetUserCharts(user.Id);
-				homeIndexVM.IsLoggedIn = true;
-				homeIndexVM.TrainingPlanDetailsVM = await trainingPlanRepository.GetDailyTrainingPlanVMAsync(user.Id);
-			}
-			return View(homeIndexVM);
+			return View(await userRepository.GetHomeIndexVMAsync());
 		}
 
 		public IActionResult Privacy()

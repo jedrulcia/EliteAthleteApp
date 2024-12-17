@@ -1,10 +1,13 @@
-﻿using EliteAthleteApp.Contracts;
+﻿using EliteAthleteApp.Configurations.Constants;
+using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.TrainingOrm;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EliteAthleteApp.Controllers
 {
-    public class TrainingOrmsController : Controller
+	[Authorize]
+	public class TrainingOrmsController : Controller
 	{
 		private readonly ITrainingOrmRepository trainingOrmRepository;
 
@@ -14,12 +17,14 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: TrainingOrm/List
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> List(string userId)
 		{
 			return PartialView(await trainingOrmRepository.GetTrainingOrmVMsAsync(userId));
 		}
 
 		// GET: TrainingOrm/Create
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Create(string userId)
 		{
 			return PartialView(await trainingOrmRepository.GetTrainingOrmCreateVMAsync(userId));
@@ -28,6 +33,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingOrm/Create
 		[HttpPost, ActionName("Create")]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Create(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -43,21 +49,23 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: TrainingOrm/Edit
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Edit(int trainingOrmId)
 		{
-			var trainingOrm = await trainingOrmRepository.GetTrainingOrmEditVMAsync(trainingOrmId);
-			return PartialView(trainingOrm);
+			return PartialView(await trainingOrmRepository.GetTrainingOrmEditVMAsync(trainingOrmId));
 		}
 
 		// POST: TrainingOrm/Edit
 		[HttpPost, ActionName("Edit")]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Edit(TrainingOrmCreateVM trainingOrmCreateVM)
 		{
 			await trainingOrmRepository.EditOrmAsync(trainingOrmCreateVM);
 			return RedirectToAction(nameof(Index), "Users", new { userId = trainingOrmCreateVM.UserId });
 		}
-		
+
 		// GET: TrainingOrm/Delete
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Delete(int trainingOrmId)
 		{
 			return PartialView(await trainingOrmRepository.GetTrainingOrmDeleteVMAsync(trainingOrmId));
@@ -65,6 +73,7 @@ namespace EliteAthleteApp.Controllers
 
 		// POST: TrainingOrm/Delete
 		[HttpPost, ActionName("Delete")]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Delete(TrainingOrmDeleteVM trainingOrmDeleteVM)
 		{
 			await trainingOrmRepository.DeleteOrmAsync(trainingOrmDeleteVM);

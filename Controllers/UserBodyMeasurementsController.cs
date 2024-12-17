@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
+using EliteAthleteApp.Configurations.Constants;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Data;
 using EliteAthleteApp.Models.TrainingOrm;
 using EliteAthleteApp.Models.UserBodyMeasurements;
 using EliteAthleteApp.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EliteAthleteApp.Controllers
 {
-    public class UserBodyMeasurementsController : Controller
+	[Authorize]
+	public class UserBodyMeasurementsController : Controller
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;
@@ -29,12 +32,14 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: UserBodyMeasurements/List
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> List(string? userId)
 		{
 			return PartialView(await userBodyMeasurementsRepository.GetUserBodyMeasurementsVMsAsync(userId));
 		}
 
 		// GET: UserBodyMeasurements/Create
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Create(string userId)
 		{
 			return PartialView(await userBodyMeasurementsRepository.GetUserBodyMeasurementCreateVM(userId));
@@ -43,6 +48,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: UserBodyMeasurements/Create
 		[HttpPost, ActionName("Create")]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Create(UserBodyMeasurementsCreateVM userBodyMeasurementsCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -58,6 +64,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: UserBodyMeasurements/Edit
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Edit(int bodyMeasurementId)
 		{
 			return PartialView(await userBodyMeasurementsRepository.GeUserBodyMeasurementEditVM(bodyMeasurementId));
@@ -65,6 +72,7 @@ namespace EliteAthleteApp.Controllers
 
 		// POST: UserBodyMeasurements/Edit
 		[HttpPost, ActionName("Edit")]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Edit(UserBodyMeasurementsCreateVM userBodyMeasurementsCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -80,6 +88,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: UserBodyMeasurements/Delete
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Delete(int bodyMeasurementId)
 		{
 			return PartialView(await userBodyMeasurementsRepository.GetUserBodyMeasurementDeleteVM(bodyMeasurementId));
@@ -87,6 +96,7 @@ namespace EliteAthleteApp.Controllers
 
 		// POST: UserBodyMeasurements/Delete
 		[HttpPost, ActionName("Delete")]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Delete(UserBodyMeasurementsDeleteVM userBodyMeasurementsDeleteVM)
 		{
 			await userBodyMeasurementsRepository.DeleteUserBodyMeasurementAsync(userBodyMeasurementsDeleteVM);

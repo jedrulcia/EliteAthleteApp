@@ -15,10 +15,12 @@ using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.UserChat;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using EliteAthleteApp.Models.Home;
+using EliteAthleteApp.Configurations.Constants;
 
 namespace EliteAthleteApp.Controllers
 {
-    public class UsersController : Controller
+	[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
+	public class UsersController : Controller
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;

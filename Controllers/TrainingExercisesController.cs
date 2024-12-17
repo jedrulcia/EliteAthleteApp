@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using EliteAthleteApp.Contracts;
 using EliteAthleteApp.Models.TrainingExercise;
+using EliteAthleteApp.Configurations.Constants;
 using AutoMapper;
 using EliteAthleteApp.Repositories;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using EliteAthleteApp.Data;
 
 namespace EliteAthleteApp.Controllers
 {
+	[Authorize]
 	public class TrainingExercisesController : Controller
 	{
 		private readonly ITrainingExerciseRepository trainingExerciseRepository;
@@ -24,30 +26,35 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Exercises
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> Index(int? exerciseMediaId)
 		{
 			return View(await trainingExerciseRepository.GetExerciseIndexVMAsync(exerciseMediaId));
 		}
 
 		// GET: Exercises/ExercisePublic
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> ExercisePublic()
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseVMsAsync(null));
 		}
 
 		// GET: Exercises/ExercisePrivate
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> ExercisePrivate(string coachId)
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseVMsAsync(coachId));
 		}
 
 		// GET: AdminIndex/ExerciseAdmin
+		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ExerciseAdmin()
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseAdminVMsAsync());
 		}
 
 		// GET: AdminIndex/ExerciseAsPublic
+		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ExerciseAsPublic(int trainingExerciseId)
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseAsPublicVMAsync(trainingExerciseId));
@@ -56,6 +63,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: AdminIndex/SetExerciseAsPublic
 		[ValidateAntiForgeryToken]
 		[HttpPost, ActionName("ExerciseAsPublic")]
+		[Authorize(Roles = Roles.Administrator)]
 		public async Task<IActionResult> ExerciseAsPublicPost(int trainingExerciseId)
 		{
 			await trainingExerciseRepository.SetExerciseAsPublic(trainingExerciseId);
@@ -63,6 +71,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Exercises/Create
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> Create(int? privateExerciseCount)
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseCreateVMAsync(privateExerciseCount));
@@ -71,6 +80,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: Exercises/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> Create(TrainingExerciseCreateVM exerciseCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -86,6 +96,7 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Exercises/Edit
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> Edit(int id)
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseEditVMAsync(id));
@@ -94,6 +105,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: Exercises/Edit
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> Edit(TrainingExerciseCreateVM exerciseCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -109,12 +121,14 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Exercises/Details
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> Details(int id)
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseDetailsVMAsync(id));
 		}
 
 		// GET: Exercises/Delete
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			return PartialView(await trainingExerciseRepository.GetExerciseDeleteVMAsync(id));
@@ -123,6 +137,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: Exercises/Delete
 		[ValidateAntiForgeryToken]
 		[HttpPost, ActionName("Delete")]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> DeleteConfirmed(TrainingExerciseDeleteVM trainingExerciseDeleteVM)
 		{
 			await trainingExerciseRepository.DeleteExerciseAsync(trainingExerciseDeleteVM);
@@ -131,6 +146,7 @@ namespace EliteAthleteApp.Controllers
 
 
 		// GET: TrainingExercise/Edit
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> EditMedia(int exerciseMediaId)
 		{
 			return PartialView(await trainingExerciseMediaRepository.GetTrainingExerciseMediaCreateVMAsync(exerciseMediaId));
@@ -139,6 +155,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingExercise/EditMedia/UploadImage
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> UploadImage(int index, int id)
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
@@ -149,6 +166,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingExerciseMedia/EditMedia/UploadVideo
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> UploadVideo(int id)
 		{
 			var videoFile = Request.Form.Files[$"videoUpload"];
@@ -159,6 +177,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> DeleteImage(int index, int id)
 		{
 			await trainingExerciseMediaRepository.DeleteImageAsync(id, index);
@@ -168,6 +187,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingExerciseMedia/EditMedia/DeleteVideo
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> DeleteVideo(int id)
 		{
 			await trainingExerciseMediaRepository.DeleteVideoAsync(id);
