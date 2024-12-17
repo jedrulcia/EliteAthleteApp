@@ -49,10 +49,7 @@ namespace EliteAthleteApp.Controllers
 				await trainingModuleRepository.CreateTrainingModuleAsync(trainingModuleCreateVM);
 				return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while creating the Training Module. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while creating the Training Module. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 		}
 
@@ -74,10 +71,7 @@ namespace EliteAthleteApp.Controllers
 				await trainingModuleRepository.EditTrainingModuleAsync(trainingModuleCreateVM);
 				return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while editing the Training Module. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while editing the Training Module. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = trainingModuleCreateVM.UserId });
 		}
 

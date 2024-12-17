@@ -41,10 +41,7 @@ namespace EliteAthleteApp.Controllers
 				await trainingOrmRepository.CreateOrmAsync(trainingOrmCreateVM);
 				return RedirectToAction(nameof(Index), "Users", new { userId = trainingOrmCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while creating the ORM. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while creating the ORM. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = trainingOrmCreateVM.UserId });
 		}
 

@@ -86,10 +86,7 @@ namespace EliteAthleteApp.Controllers
 				await trainingPlanRepository.AddExerciseToTrainingPlanAsync(trainingPlanAddExerciseVM);
 				return RedirectToAction(nameof(Details), new { trainingPlanId = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while adding Exercise. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while adding Exercise. Please try again.";
 			return RedirectToAction(nameof(Details), new { trainingPlanId = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 
@@ -111,10 +108,7 @@ namespace EliteAthleteApp.Controllers
 				await trainingPlanRepository.EditExerciseInTrainingPlanAsync(trainingPlanAddExerciseVM);
 				return RedirectToAction(nameof(Details), new { trainingPlanId = trainingPlanAddExerciseVM.TrainingPlanId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while editing Exercise. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while editing Exercise. Please try again.";
 			return RedirectToAction(nameof(Details), new { trainingPlanId = trainingPlanAddExerciseVM.TrainingPlanId });
 		}
 

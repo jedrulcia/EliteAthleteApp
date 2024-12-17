@@ -56,10 +56,7 @@ namespace EliteAthleteApp.Controllers
 				await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM, file);
 				return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while creating User Mdeical Test. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while creating User Mdeical Test. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
@@ -81,10 +78,7 @@ namespace EliteAthleteApp.Controllers
 				await userMedicalTestRepository.EditUserMedicalTestAsync(userMedicalTestCreateVM, file);
 				return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while editing User Mdeical Test. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while editing User Mdeical Test. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 

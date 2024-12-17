@@ -56,10 +56,7 @@ namespace EliteAthleteApp.Controllers
 				await userBodyMeasurementsRepository.CreateUserBodyMeasurementAsync(userBodyMeasurementsCreateVM);
 				return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while creating User Body Measruements. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while creating User Body Measruements. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 		}
 
@@ -80,10 +77,7 @@ namespace EliteAthleteApp.Controllers
 				await userBodyMeasurementsRepository.EditUserBodyMeasurementAsync(userBodyMeasurementsCreateVM);
 				return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while editing User Body Measruements. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while editing User Body Measruements. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = userBodyMeasurementsCreateVM.UserId });
 		}
 

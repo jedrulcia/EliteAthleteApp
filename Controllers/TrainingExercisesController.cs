@@ -88,10 +88,7 @@ namespace EliteAthleteApp.Controllers
 				await trainingExerciseRepository.CreateExerciseAsync(exerciseCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while creating the Exercise. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while creating the Exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -113,10 +110,7 @@ namespace EliteAthleteApp.Controllers
 				await trainingExerciseRepository.EditExerciseAsync(exerciseCreateVM);
 				return RedirectToAction(nameof(Index));
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while Editing the Exercise. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while Editing the Exercise. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 
