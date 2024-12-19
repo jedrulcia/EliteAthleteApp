@@ -18,9 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using EliteAthleteApp.Data;
+using EliteAthleteAppShared.Data;
 using Microsoft.EntityFrameworkCore;
-using EliteAthleteApp.Configurations.Constants;
+using EliteAthleteAppShared.Configurations.Constants;
 
 namespace EliteAthleteApp.Areas.Identity.Pages.Account
 {

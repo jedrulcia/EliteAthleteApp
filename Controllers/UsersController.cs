@@ -3,19 +3,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.User;
+using EliteAthleteAppShared.Data;
+using EliteAthleteAppShared.Models.User;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using EliteAthleteApp.Repositories;
+using EliteAthleteAppShared.Repositories;
 using Microsoft.EntityFrameworkCore;
-using EliteAthleteApp.Services;
+using EliteAthleteAppShared.Services;
 using System.Text.Json;
 using System.Text;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Models.UserChat;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Models.UserChat;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using EliteAthleteApp.Models.Home;
-using EliteAthleteApp.Configurations.Constants;
+using EliteAthleteAppShared.Models.Home;
+using EliteAthleteAppShared.Configurations.Constants;
 
 namespace EliteAthleteApp.Controllers
 {

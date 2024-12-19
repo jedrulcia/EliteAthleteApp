@@ -1,6 +1,6 @@
-﻿using EliteAthleteApp.Configurations.Constants;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Models.TrainingOrm;
+﻿using EliteAthleteAppShared.Configurations.Constants;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Models.TrainingOrm;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

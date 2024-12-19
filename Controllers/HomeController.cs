@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using EliteAthleteApp.Models;
+using EliteAthleteAppShared.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using EliteAthleteApp.Contracts;
+using EliteAthleteAppShared.Contracts;
 using Microsoft.AspNetCore.Identity;
-using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.Home;
+using EliteAthleteAppShared.Data;
+using EliteAthleteAppShared.Models.Home;
 using AutoMapper;
-using EliteAthleteApp.Models.User;
+using EliteAthleteAppShared.Models.User;
 
 namespace EliteAthleteApp.Controllers
 {

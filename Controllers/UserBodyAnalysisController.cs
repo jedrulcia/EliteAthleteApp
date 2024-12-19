@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using EliteAthleteApp.Configurations.Constants;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.UserBodyAnalysis;
-using EliteAthleteApp.Models.UserBodyAnalysis;
-using EliteAthleteApp.Repositories;
+using EliteAthleteAppShared.Configurations.Constants;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Data;
+using EliteAthleteAppShared.Models.UserBodyAnalysis;
+using EliteAthleteAppShared.Models.UserBodyAnalysis;
+using EliteAthleteAppShared.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

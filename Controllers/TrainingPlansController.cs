@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Models.TrainingPlan;
-using EliteAthleteApp.Configurations.Constants;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Models.TrainingPlan;
+using EliteAthleteAppShared.Configurations.Constants;
 
 namespace EliteAthleteApp.Controllers
 {

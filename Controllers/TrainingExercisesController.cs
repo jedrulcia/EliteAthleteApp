@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Models.TrainingExercise;
-using EliteAthleteApp.Configurations.Constants;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Models.TrainingExercise;
+using EliteAthleteAppShared.Configurations.Constants;
 using AutoMapper;
-using EliteAthleteApp.Repositories;
+using EliteAthleteAppShared.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using EliteAthleteApp.Data;
+using EliteAthleteAppShared.Data;
 
 namespace EliteAthleteApp.Controllers
 {
