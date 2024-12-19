@@ -3,6 +3,9 @@
 
 **EliteAthleteApp** is a comprehensive tool for managing training plans, designed for coaches and their athletes. Currently, the app is a web application and will soon be extended to mobile devices. 
 
+.NET MAUI application repo - [EliteAthleteAppMobile](https://github.com/jedrulcia/EliteAthleteAppMobile) 📱
+Backend for application repo - [EliteAthleteAppShared](https://github.com/jedrulcia/EliteAthleteAppShared) 🖥️
+
 ## 📦 **Preview**
 ![homepage](https://github.com/user-attachments/assets/a0b2cda1-126a-44c2-9054-bab49e387305)
 
@@ -76,9 +79,16 @@
    ```bash
    git clone https://github.com/your-username/EliteAthleteApp.git
    ```
-2. Set up essential services (Backblaze Storage, SendGrid, Google Drive, MSSQL database)
-3. Create appsettings.json file inside of the main folder
-4. Add this structure to appsettings.json and fill the fields in square brackets:
+2. Clone the backend repository:
+   ```bash
+   https://github.com/jedrulcia/EliteAthleteAppShared.git
+   ```
+3. Clone the mobile app repository:
+   ```bash
+   https://github.com/jedrulcia/EliteAthleteAppMobile.git
+   ```
+4. Create appsettings.json file inside of the main folder
+5. Add this structure to appsettings.json and fill the fields in square brackets:
    ```json
    {
      "ConnectionStrings": {
@@ -101,11 +111,12 @@
        "AllowedHosts": "*"
      }
    ```
-5. Run database migrations using Entity Framework:  
+6. Set up essential services (Backblaze Storage, SendGrid, Google Drive, MSSQL database)
+7. Run database migrations using Entity Framework:  
    ```bash
    dotnet ef database update
    ```
-6. Start the application:  
+8. Start the application:  
    ```bash
    dotnet run
    ```
