@@ -3,6 +3,14 @@
 
 **EliteAthleteApp** is a comprehensive tool for managing training plans, designed for coaches and their athletes. Currently, the app is a web application and will soon be extended to mobile devices. 
 
+.NET MAUI application repo - [EliteAthleteAppMobile](https://github.com/jedrulcia/EliteAthleteAppMobile) 📱
+Backend for application repo - [EliteAthleteAppShared](https://github.com/jedrulcia/EliteAthleteAppShared) 🖥️
+
+## 📦 **Preview**
+![homepage](https://github.com/user-attachments/assets/a0b2cda1-126a-44c2-9054-bab49e387305)
+
+---
+
 ## 🚀 Technologies
 
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-512BD4?style=for-the-badge&logo=.net&logoColor=white)
@@ -24,17 +32,21 @@
 ## 📋 Features
 
 ### 🏋️‍♂️ **Exercises**
+![exercises](https://github.com/user-attachments/assets/47e08368-ad98-4561-88aa-389ff33b7ca2)
 - Creating (Private/Public)  
 - Editing  
 - Deleting  
 - Adding custom photos and videos (handled by Google Drive Storage)  
 
+
 ### 🗓️ **Training Modules**
+![trainingplans](https://github.com/user-attachments/assets/f339df39-9a24-4b01-add4-4b57e90c28aa)
 - Creating (Creating a training module for a specific time frame generates a single training plan for every day during that period)  
 - Editing (Adjusting the time frame)  
 - Deleting  
 
 ### 📋 **Training Plans**
+![manageexercise](https://github.com/user-attachments/assets/de9ff558-e6dd-4b6c-9d41-9d70557e1164)
 - Managing Exercises (Adding/editing exercises in a training plan)  
 - Copying training plan content to other training plans  
 - Completing a training plan + sending a report  
@@ -42,6 +54,7 @@
 - Exporting training plans to PDF  
 
 ### 🧑‍💻 **User Panel**
+![userpanel](https://github.com/user-attachments/assets/20c7500e-7e00-4a7e-93a7-bd82f9eecba7)
 **One-Repetition-Max, Body Measurements, Body Analysis, Medical Tests**:  
 - Creating  
 - Editing  
@@ -49,6 +62,7 @@
 - Tracking progress (charts powered by Chart.js)  
 
 ### 💬 **Chat**
+![chat](https://github.com/user-attachments/assets/ed2eecfb-032e-42d5-947e-4c8b5e09734b)
 - Real-time communication between coach and athlete (powered by SignalR)  
 
 ### 👨‍💼 **Admin Panel**
@@ -59,37 +73,22 @@
 
 ---
 
-## 📦 **Preview**
-
-**HOME PAGE**
-![homepage](https://github.com/user-attachments/assets/a0b2cda1-126a-44c2-9054-bab49e387305)
-
-**EXERCISE MODULE**
-![exercises](https://github.com/user-attachments/assets/47e08368-ad98-4561-88aa-389ff33b7ca2)
-
-**TRAINING PLAN MODULE**
-![trainingplans](https://github.com/user-attachments/assets/f339df39-9a24-4b01-add4-4b57e90c28aa)
-
-**MANAGE EXERCISES MODULE**
-![manageexercise](https://github.com/user-attachments/assets/de9ff558-e6dd-4b6c-9d41-9d70557e1164)
-
-**USER PANEL**
-![userpanel](https://github.com/user-attachments/assets/20c7500e-7e00-4a7e-93a7-bd82f9eecba7)
-
-**CHAT**
-![chat](https://github.com/user-attachments/assets/ed2eecfb-032e-42d5-947e-4c8b5e09734b)
-
----
-
 ## 💡 How to Run the Project Locally?
 
 1. Clone the repository:  
    ```bash
    git clone https://github.com/your-username/EliteAthleteApp.git
    ```
-2. Set up essential services (Backblaze Storage, SendGrid, Google Drive, MSSQL database)
-3. Create appsettings.json file inside of the main folder
-4. Add this structure to appsettings.json and fill the fields in square brackets:
+2. Clone the backend repository:
+   ```bash
+   https://github.com/jedrulcia/EliteAthleteAppShared.git
+   ```
+3. Clone the mobile app repository:
+   ```bash
+   https://github.com/jedrulcia/EliteAthleteAppMobile.git
+   ```
+4. Create appsettings.json file inside of the main folder
+5. Add this structure to appsettings.json and fill the fields in square brackets:
    ```json
    {
      "ConnectionStrings": {
@@ -112,17 +111,49 @@
        "AllowedHosts": "*"
      }
    ```
-5. Run database migrations using Entity Framework:  
+6. Set up essential services (Backblaze Storage, SendGrid, Google Drive, MSSQL database)
+7. Run database migrations using Entity Framework:  
    ```bash
    dotnet ef database update
    ```
-6. Start the application:  
+8. Start the application:  
    ```bash
    dotnet run
    ```
 
 ---
 
-## 📄 License
+## ⚖️ Privacy and Copyright Policy
 
-This project is licensed under the [MIT License](LICENSE).
+All content, code, and materials in this repository are the intellectual property of the author and are protected by copyright laws. Unauthorized reproduction, distribution, or use of the content without explicit permission is prohibited.
+
+By using this application, you agree that:
+
+1. You will not use the application or its components for illegal purposes. 
+2. The author retains all rights to the application and its source code. 
+3. The application or its components will not be used for commercial purposes without the explicit knowledge and consent of the author.
+4. No sensitive personal data is collected, stored, or shared by this application. However, you are responsible for ensuring compliance with applicable data protection laws when using it.
+
+For inquiries about usage, licensing, or permissions, please contact the repository owner.
+
+MIT License
+
+Copyright (c) 2024 Jędrzej Koriat
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
