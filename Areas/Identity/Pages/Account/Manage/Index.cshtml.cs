@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using EliteAthleteApp.Data;
+using EliteAthleteAppShared.Data;
 
 namespace EliteAthleteApp.Areas.Identity.Pages.Account.Manage
 {

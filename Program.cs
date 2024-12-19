@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using EliteAthleteApp.Configurations;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Data;
-using EliteAthleteApp.Repositories;
-using EliteAthleteApp.Services;
+using EliteAthleteAppShared.Configurations;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Data;
+using EliteAthleteAppShared.Repositories;
+using EliteAthleteAppShared.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 

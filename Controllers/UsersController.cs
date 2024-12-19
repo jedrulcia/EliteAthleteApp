@@ -3,22 +3,24 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.User;
+using EliteAthleteAppShared.Data;
+using EliteAthleteAppShared.Models.User;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using EliteAthleteApp.Repositories;
+using EliteAthleteAppShared.Repositories;
 using Microsoft.EntityFrameworkCore;
-using EliteAthleteApp.Services;
+using EliteAthleteAppShared.Services;
 using System.Text.Json;
 using System.Text;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Models.UserChat;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Models.UserChat;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using EliteAthleteApp.Models.Home;
+using EliteAthleteAppShared.Models.Home;
+using EliteAthleteAppShared.Configurations.Constants;
 
 namespace EliteAthleteApp.Controllers
 {
-    public class UsersController : Controller
+	[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
+	public class UsersController : Controller
 	{
 		private readonly UserManager<User> userManager;
 		private readonly IMapper mapper;
@@ -49,125 +51,81 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: Users/List/Index
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> UserIndex(string? userId)
 		{
-			string coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
-			var userListVM = mapper.Map<List<UserVM>>((await userRepository.GetAllAsync()).Where(u => u.CoachId == coachId));
-			return View(new UserIndexVM { AthleteCount = userListVM.Count, CoachId = coachId });
+			return View(await userRepository.GetUserIndexVMAsync(userId));
 		}
+
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> UserPanel(string? userId)
 		{
-			var userPanelVM = new UserPanelVM();
-			if (userId == null)
-			{
-				userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User));
-				userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
-				return View(userPanelVM);
-			}
-			userPanelVM.UserVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
-			userPanelVM.UserChartsVM = await userChartService.GetUserCharts(userPanelVM.UserVM.Id);
-			return View(userPanelVM);
+			return View(await userRepository.GetUserPanelVMAsync(userId));
 		}
 
 		// GET: Users/List
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> UserList()
 		{
-			string coachId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
-			var userListVM = mapper.Map<List<UserVM>>((await userRepository.GetAllAsync()).Where(u => u.CoachId == coachId));
-			return PartialView(userListVM);
+			return PartialView(await userRepository.GetUserListVMAsync());
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> AddAthlete(int athleteCount)
 		{
-			return PartialView(new UserAddAthleteVM { AthleteCount = athleteCount });
+			return PartialView(await userRepository.GetUserAddAthleteVMAsync(athleteCount));
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator}")]
 		public async Task<IActionResult> AddAthlete(UserAddAthleteVM userAddAthleteVM)
 		{
-			var coach = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			var subscription = await context.Set<UserSubscription>().FindAsync(coach.UserSubscriptionId);
-			if (userAddAthleteVM.AthleteCount >= subscription.AthleteLimit)
+			if (ModelState.IsValid)
 			{
-				TempData["ErrorMessage"] = $"You have reached the limit of athletes in your subscription.";
+				await userRepository.AddAthleteAsync(userAddAthleteVM);
 				return RedirectToAction(nameof(UserIndex), "Users");
 			}
-
-			var user = (await userRepository.GetAllAsync())
-				.Where(u => u.InviteCode == userAddAthleteVM.InviteCode)
-				.FirstOrDefault();
-
-			user.NewCoachId = coach.Id;
-			await userRepository.UpdateAsync(user);
-
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while adding athlete. Please try again.";
 			return RedirectToAction(nameof(UserIndex), "Users");
+
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> AcceptInvite()
 		{
-			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			user.CoachId = user.NewCoachId;
-			user.NewCoachId = null;
-			await userRepository.UpdateAsync(user);
-
-			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.AcceptInviteAsync() });
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> DeclineInvite()
 		{
-			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			user.NewCoachId = null;
-			await userRepository.UpdateAsync(user);
-
-			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.DeclineInviteAsync() });
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> DeleteCoach()
 		{
-			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			user.CoachId = null;
-			await userRepository.UpdateAsync(user);
-
-			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.DeleteCoachAsync() });
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> ResetInviteCode()
 		{
-			var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			string inviteCode;
-			do
-			{
-				inviteCode = Guid.NewGuid().ToString("N").Substring(0, 8);
-			} while (await userManager.Users.AnyAsync(u => u.InviteCode == inviteCode));
-
-			user.InviteCode = inviteCode;
-			await userRepository.UpdateAsync(user);
-			return RedirectToAction(nameof(UserPanel), new { userId = user.Id });
+			return RedirectToAction(nameof(UserPanel), new { userId = await userRepository.ResetInviteCodeAsync() });
 		}
 
 		// GET: Users/List/Index/Info
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> UserInfo(string? userId)
 		{
-			var user = await userManager.FindByIdAsync(userId);
-			var userVM = mapper.Map<UserVM>(user);
-			var userInfoVM = new UserInfoVM { UserVM = userVM };
-			if (user.CoachId != null)
-			{
-				var coachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.CoachId));
-				userInfoVM.CoachVM = coachVM;
-			}
-			if (user.NewCoachId != null)
-			{
-				var newCoachVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(user.NewCoachId));
-				userInfoVM.NewCoachVM = newCoachVM;
-			}
-			return PartialView(userInfoVM);
+			return PartialView(await userRepository.GetUserInfoVMAsync(userId));
 		}
 
 		// POST: TrainingExerciseMedia/EditMedia/UploadImage
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> UploadImage(string userId)
 		{
 			var imageFile = Request.Form.Files[$"imageUpload"];
@@ -178,158 +136,88 @@ namespace EliteAthleteApp.Controllers
 		// POST: TrainingExerciseMedia/EditMedia/DeleteImage
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> DeleteImage(string userId)
 		{
 			await userRepository.DeleteUserImageAsync(userId);
 			return RedirectToAction(nameof(UserPanel), new { userId = userId });
 		}
 
-
 		// GET: Admin/Index
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> AdminIndex()
 		{
-			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			return View(new AdminIndexVM { AdminId = admin.Id });
+			return View(await userRepository.GetAdminIndexVMAsync());
 		}
 
 		// GET: Admin/Index/User
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> AdminUserList()
 		{
-			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			var users = await userRepository.GetAllAsync();
-			var userVMs = mapper.Map<List<UserVM>>(users);
-			return PartialView(new AdminUserVM { UserVMs = userVMs, AdminId = admin.Id });
+			return PartialView(await userRepository.GetAdminUserListVMAsync());
 		}
 
 		// GET: Admin/Index/SendEmail
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> SendEmail(string? userId)
 		{
-			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			return PartialView(new AdminSendEmailVM { UserId = userId, AdminId = admin.Id });
+			return PartialView(await userRepository.GetAdminSendEmailVMAsync(userId));
 		}
 
 		// POST: Admin/Index/SendEmail
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> SendEmail(AdminSendEmailVM adminSendEmailVM)
 		{
 
 			if (ModelState.IsValid)
 			{
-				string subject = adminSendEmailVM.Subject;
-				string message = adminSendEmailVM.Message;
-
-				if (adminSendEmailVM.UserId == null)
-				{
-					var users = await userRepository.GetAllAsync();
-					foreach (var user in users)
-					{
-						await emailSender.SendEmailAsync(user.Email, subject, message);
-					}
-				}
-				else
-				{
-					var user = await userManager.FindByIdAsync(adminSendEmailVM.UserId);
-					await emailSender.SendEmailAsync(user.Email, subject, message);
-				}
+				await userRepository.SendEmailAsync(adminSendEmailVM);
 				return RedirectToAction(nameof(Index));
 			}
-			TempData["ErrorMessage"] = $"Error while sending emails. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while sending email. Please try again.";
 			return RedirectToAction(nameof(Index));
 		}
 
 		// GET: Admin/Index/UserDelete
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserDelete(string userId)
 		{
-			var userVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
-			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			return PartialView(new AdminUserDeleteVM { AdminId = admin.Id, UserVM = userVM });
+			return PartialView(await userRepository.GetAdminUserDeleteVMAsync(userId));
 		}
 
 		// POST: Admin/Index/UserDelete
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserDelete(UserVM userVM)
 		{
-			var user = await userManager.FindByIdAsync(userVM.Id);
-			await userManager.DeleteAsync(user);
+			await userRepository.UserDeleteAsync(userVM);
 			return RedirectToAction(nameof(Index));
 		}
 
 		// GET: Admin/Index/UserLockout
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserLockout(string userId)
 		{
-			var userVM = mapper.Map<UserVM>(await userManager.FindByIdAsync(userId));
-			var admin = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			return PartialView(new AdminUserLockoutVM { AdminId = admin.Id, UserVM = userVM });
+			return PartialView(await userRepository.GetAdminUserLockoutVMAsync(userId));
 		}
 
 		// POST: Admin/Index/UserLockout
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Administrator}")]
 		public async Task<IActionResult> UserLockout(AdminUserLockoutVM adminUserLockoutVM)
 		{
-			var user = await userManager.FindByIdAsync(adminUserLockoutVM.UserVM.Id);
-			user.LockoutEnd = adminUserLockoutVM.LockoutDate;
-			await userRepository.UpdateAsync(user);
+			userRepository.UserLockoutAsync(adminUserLockoutVM);
 			return RedirectToAction(nameof(Index));
 		}
 
+		[Authorize(Roles = $"{Roles.Administrator},{Roles.Coach},{Roles.User}")]
 		public async Task<IActionResult> UserChat(string? userId)
 		{
-			var viewerId = (await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User)).Id;
-			var user1 = await userManager.GetUserAsync(httpContextAccessor.HttpContext?.User);
-			var user2 = await userManager.FindByIdAsync(userId);
-
-			var coachVM = new UserVM();
-			var userVM = new UserVM();
-
-			if (User.IsInRole("Coach"))
-			{
-				coachVM = mapper.Map<UserVM>(user1);
-				userVM = mapper.Map<UserVM>(user2);
-			}
-			else
-			{
-				coachVM = mapper.Map<UserVM>(user2);
-				userVM = mapper.Map<UserVM>(user1);
-			}
-
-			// Sprawdź, czy chat między użytkownikami już istnieje
-			var chat = await context.Set<UserChat>().Where(uc => uc.UserId == userVM.Id && uc.CoachId == coachVM.Id).FirstOrDefaultAsync();
-
-			List<UserChatMessageVM> chatMessages;
-			if (chat == null)
-			{
-				// Tworzymy nowy plik JSON, jeśli chat nie istnieje
-				chatMessages = new List<UserChatMessageVM>();
-				string jsonContent = JsonSerializer.Serialize(chatMessages, new JsonSerializerOptions { WriteIndented = true });
-				var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonContent));
-
-				var chatFile = new FormFile(stream, 0, stream.Length, "chatFile", "chatFile.json");
-				var chatName = userVM.Id;
-				string jsonUrl = await backblazeStorageService.UploadChatAsync(chatFile, chatName);
-
-				chat = new UserChat { CoachId = coachVM.Id, UserId = userVM.Id, ChatUrl = jsonUrl };
-				await context.AddAsync(chat);
-				await context.SaveChangesAsync();
-			}
-			else
-			{
-				chatMessages = await backblazeStorageService.GetChatAsync(chat.ChatUrl);
-			}
-
-			// Tworzymy model widoku
-			var chatVM = new UserChatVM
-			{
-				Id = chat.Id,
-				CoachVM = coachVM,
-				UserVM = userVM,
-				UserChatMessageVMs = chatMessages,
-				ViewerId = viewerId
-			};
-
-			return View(chatVM);
+			return View(await userRepository.GetUserChatVMAsync(userId));
 		}
 	}
 }

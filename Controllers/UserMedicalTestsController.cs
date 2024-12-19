@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-using EliteAthleteApp.Contracts;
-using EliteAthleteApp.Data;
-using EliteAthleteApp.Models.UserMedicalTest;
-using EliteAthleteApp.Models.UserMedicalTest;
-using EliteAthleteApp.Repositories;
+using EliteAthleteAppShared.Configurations.Constants;
+using EliteAthleteAppShared.Contracts;
+using EliteAthleteAppShared.Data;
+using EliteAthleteAppShared.Models.UserMedicalTest;
+using EliteAthleteAppShared.Models.UserMedicalTest;
+using EliteAthleteAppShared.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,12 +31,14 @@ namespace EliteAthleteApp.Controllers
 		}
 
 		// GET: UserMedicalTest/List
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> List(string? userId)
 		{
 			return PartialView(await userMedicalTestRepository.GetUserMedicalTestVMsAsync(userId));
 		}
 
 		// GET: UserMedicalTest/Create
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Create(string userId)
 		{
 			return PartialView(await userMedicalTestRepository.GetUserMedicalTestCreateVM(userId));
@@ -43,6 +47,7 @@ namespace EliteAthleteApp.Controllers
 		// POST: UserMedicalTest/Create
 		[HttpPost, ActionName("Create")]
 		[ValidateAntiForgeryToken]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Create(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -51,14 +56,12 @@ namespace EliteAthleteApp.Controllers
 				await userMedicalTestRepository.CreateUserMedicalTestAsync(userMedicalTestCreateVM, file);
 				return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while creating User Mdeical Test. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while creating User Mdeical Test. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
 		// GET: UserMedicalTest/Edit
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Edit(int medicalTestId)
 		{
 			return PartialView(await userMedicalTestRepository.GeUserMedicalTestEditVM(medicalTestId));
@@ -66,6 +69,7 @@ namespace EliteAthleteApp.Controllers
 
 		// POST: UserMedicalTest/Edit
 		[HttpPost, ActionName("Edit")]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Edit(UserMedicalTestCreateVM userMedicalTestCreateVM)
 		{
 			if (ModelState.IsValid)
@@ -74,14 +78,12 @@ namespace EliteAthleteApp.Controllers
 				await userMedicalTestRepository.EditUserMedicalTestAsync(userMedicalTestCreateVM, file);
 				return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 			}
-			TempData["ErrorMessage"] = ModelState.Values
-				.SelectMany(v => v.Errors)
-				.Select(e => e.ErrorMessage)
-				.FirstOrDefault() ?? "Error while editing User Mdeical Test. Please try again.";
+			TempData["ErrorMessage"] = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).FirstOrDefault() ?? "Error while editing User Mdeical Test. Please try again.";
 			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestCreateVM.UserId });
 		}
 
 		// GET: UserMedicalTest/Delete
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Delete(int medicalTestId)
 		{
 			return PartialView(await userMedicalTestRepository.GetUserMedicalTestDeleteVM(medicalTestId));
@@ -89,12 +91,14 @@ namespace EliteAthleteApp.Controllers
 
 		// POST: UserMedicalTest/Delete
 		[HttpPost, ActionName("Delete")]
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Delete(UserMedicalTestDeleteVM userMedicalTestDeleteVM)
 		{
 			await userMedicalTestRepository.DeleteUserMedicalTestAsync(userMedicalTestDeleteVM);
 			return RedirectToAction(nameof(Index), "Users", new { userId = userMedicalTestDeleteVM.UserId });
 		}
 
+		[Authorize(Roles = $"{Roles.Coach},{Roles.Administrator},{Roles.User}")]
 		public async Task<IActionResult> Media(string fileUrl)
 		{
 			return PartialView(new UserMedicalTestMediaVM { FileUrl = fileUrl });
