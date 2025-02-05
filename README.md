@@ -3,9 +3,9 @@
 
 **EliteAthleteApp** is a comprehensive tool for managing training plans, designed for coaches and their athletes. Currently, the app is a web application and will soon be extended to mobile devices. 
 
-.NET MAUI application repo - [EliteAthleteAppMobile](https://github.com/jedrulcia/EliteAthleteAppMobile) 📱
+.NET MAUI application repo - [EliteAthleteAppMobile](https://github.com/jedrzejkoriat/EliteAthleteAppMobile) 📱
 
-Backend for application repo - [EliteAthleteAppShared](https://github.com/jedrulcia/EliteAthleteAppShared) 🖥️
+Backend for application repo - [EliteAthleteAppShared](https://github.com/jedrzejkoriat/EliteAthleteAppShared) 🖥️
 
 ## 📦 **Preview**
 ![homepage](https://github.com/user-attachments/assets/a0b2cda1-126a-44c2-9054-bab49e387305)
